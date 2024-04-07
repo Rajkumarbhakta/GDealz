@@ -11,7 +11,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import cafe.adriel.voyager.navigator.Navigator
+import cafe.adriel.voyager.transitions.FadeTransition
 import cafe.adriel.voyager.transitions.SlideTransition
+import com.rkbapps.gdealz.ui.screens.HomeScreen
 import com.rkbapps.gdealz.ui.theme.GDealzTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -26,6 +28,10 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
+
+                    Navigator(screen = HomeScreen()){
+                        FadeTransition(navigator = it)
+                    }
 
                 }
             }
