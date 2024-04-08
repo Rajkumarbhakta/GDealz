@@ -6,14 +6,10 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.transitions.FadeTransition
-import cafe.adriel.voyager.transitions.SlideTransition
-import com.rkbapps.gdealz.ui.screens.HomeScreen
+import com.rkbapps.gdealz.ui.screens.SplashScreen
 import com.rkbapps.gdealz.ui.theme.GDealzTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -29,7 +25,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
 
-                    Navigator(screen = HomeScreen()){
+                    Navigator(screen = SplashScreen()){
                         FadeTransition(navigator = it)
                     }
 

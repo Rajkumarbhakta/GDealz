@@ -69,6 +69,9 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+    //navigation
+    implementation(libs.androidx.navigation.compose)
+
     //Voyager
     implementation(libs.voyager.navigator)
     implementation(libs.voyager.bottomSheetNavigator)

@@ -15,6 +15,9 @@ interface ApiInterface {
     suspend fun getDeals(@Query("storeID") storeId:Int,@Query("upperPrice")upperPrice:Int):Response<List<Deals>>
 
     @GET("deals")
+    suspend fun getAllDeals():Response<List<Deals>>
+
+    @GET("deals")
     suspend fun getDealsInfo(@Query("id")id:String):Response<DealsInfo>
 
     @GET("games?title=batman")
