@@ -9,6 +9,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.transitions.FadeTransition
+import com.rkbapps.gdealz.ui.screens.MainScreen
 import com.rkbapps.gdealz.ui.screens.SplashScreen
 import com.rkbapps.gdealz.ui.theme.GDealzTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -25,7 +26,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
 
-                    Navigator(screen = SplashScreen()){
+                    Navigator(screen = MainScreen()){
                         FadeTransition(navigator = it)
                     }
 
