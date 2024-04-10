@@ -102,7 +102,7 @@ fun DealsItem(deals: Deals,onClick:()->Unit) {
             onClick.invoke()
         },
         elevation = CardDefaults.cardElevation(10.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.onPrimary),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background),
         modifier = Modifier
             .fillMaxSize()
             .height(85.dp)
@@ -155,8 +155,6 @@ fun DealsItem(deals: Deals,onClick:()->Unit) {
                 }
             }
             Spacer(modifier = Modifier.width(10.dp))
-
-
         }
 
 
