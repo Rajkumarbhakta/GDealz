@@ -12,8 +12,8 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeTabViewModel @Inject constructor(private val repository: HomeTabRepository) :
     ViewModel() {
-        val deals :StateFlow<List<Deals>> = repository.deals
 
+        val deals :StateFlow<List<Deals>> = repository.deals
 
         init {
             viewModelScope.launch {

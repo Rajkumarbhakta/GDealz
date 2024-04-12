@@ -97,6 +97,9 @@ dependencies {
     //coil
     implementation(libs.coil.compose)
 
+    //pull refresh
+    implementation (libs.androidx.material)
+
 }
 
 kapt {
