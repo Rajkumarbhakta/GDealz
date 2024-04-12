@@ -39,10 +39,10 @@ import cafe.adriel.voyager.navigator.Navigator
 import coil.compose.AsyncImage
 import com.rkbapps.gdealz.R
 import com.rkbapps.gdealz.models.Deals
-import com.rkbapps.gdealz.ui.screens.DealLookupScreen
+import com.rkbapps.gdealz.ui.screens.dealslookup.DealLookupScreen
 import com.rkbapps.gdealz.ui.tab.home.viewmodel.HomeTabViewModel
-import com.rkbapps.gdealz.util.calculatePercentage
 import com.rkbapps.gdealz.util.ShimmerBrush
+import com.rkbapps.gdealz.util.calculatePercentage
 import java.util.UUID
 
 
@@ -60,7 +60,7 @@ fun HomeTab(
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary,
                     titleContentColor = MaterialTheme.colorScheme.onPrimary
-                )
+                ),
             )
         },
         containerColor = MaterialTheme.colorScheme.background
@@ -82,10 +82,8 @@ fun HomeTab(
                     text = "Fresh Deals",
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold,
-
-                    )
+                )
                 IconButton(onClick = {
-
 
                 }) {
                     Icon(
@@ -101,7 +99,12 @@ fun HomeTab(
                         deals.value[it].dealID ?: "${UUID.randomUUID()}"
                     }) { index ->
                         DealsItem(deals = deals.value[index]) {
-                            navigator.push(DealLookupScreen(delaId = deals.value[index].dealID))
+                            navigator.push(
+                                DealLookupScreen(
+                                    delaId = deals.value[index].dealID,
+                                    title = deals.value[index].title
+                                )
+                            )
                         }
                     }
                 }
@@ -111,7 +114,7 @@ fun HomeTab(
                         .fillMaxSize()
                 ) {
                     LazyColumn {
-                        items(10){
+                        items(10) {
                             ShimmerDealsItem()
                         }
                     }

@@ -7,3 +7,14 @@ object ApiConst {
         return "$REDIRECT_URL?dealID=$dealId"
     }
 }
+
+enum class ShortingOptions(val option:String){
+    Rating(option = "DealRating"),
+    Title(option = "Title"),
+    Savings(option = "Savings"),
+    Price(option = "Price"),
+    Reviews(option = "Reviews"),
+    Release(option = "Release"),
+    Store(option = "Store"),
+    Recent(option = "Recent")
+}
