@@ -4,8 +4,9 @@ data class DealsInfo(
     val cheaperStores: List<CheaperStore>?,
     val cheapestPrice: CheapestPrice?,
     val gameInfo: GameInfo?
-)
-
+) {
+    constructor():this(emptyList(),null,null)
+}
 
 data class CheapestPrice(
     val date: Int?,

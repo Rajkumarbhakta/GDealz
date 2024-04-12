@@ -29,7 +29,6 @@ class HomeTabRepository @Inject constructor(private val api:ApiInterface) {
             if (response.isSuccessful){
                 _deals.emit(response.body()!!)
             }
-
         }catch (e:Exception){
             e.printStackTrace()
         }
