@@ -13,11 +13,14 @@ class DealLookupRepository @Inject constructor(private val api:ApiInterface) {
 
     suspend fun getDealsInfo(id:String){
         try {
-            Log.d("DEALSLOOKUP", "ID = $id")
+
             val response = api.getDealsInfo(id = id)
+//            val response = api.getDealsInfo()
+//            Log.d("DEALSLOOKUP", "${response.raw()}")
             if (response.isSuccessful){
+                response.raw()
                 _dealsData.emit(response.body()!!)
-                Log.d("DEALSLOOKUP", "${ response.body() }")
+//                Log.d("DEALSLOOKUP", "${ response.body() }")
             }else{
                 Log.d("DEALSLOOKUP", "${ response.errorBody()?.string() }")
             }

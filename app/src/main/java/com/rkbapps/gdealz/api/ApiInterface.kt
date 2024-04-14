@@ -29,7 +29,8 @@ interface ApiInterface {
     ): Response<List<Deals>>
 
     @GET("deals")
-    suspend fun getDealsInfo(@Query("id") id: String): Response<DealsInfo>
+    suspend fun getDealsInfo(@Query("id",encoded = true) id: String): Response<DealsInfo>
+
 
     @GET("games")
     suspend fun getGames(@Query("title") title: String): Response<List<Game>>
