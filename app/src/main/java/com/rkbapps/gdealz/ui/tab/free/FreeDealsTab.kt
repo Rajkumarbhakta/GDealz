@@ -40,7 +40,7 @@ import coil.compose.AsyncImage
 import com.rkbapps.gdealz.models.Giveaway
 import com.rkbapps.gdealz.ui.tab.free.viewmodel.FreeDealsViewModel
 import com.rkbapps.gdealz.util.ErrorScreen
-import com.rkbapps.gdealz.util.ShimmerBrush
+import com.rkbapps.gdealz.util.shimmerBrush
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -63,11 +63,11 @@ fun FreeDealsTab(navigator: Navigator) {
                 ),
             )
         },
-    ) {
+    ) { paddingValue ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(it)
+                .padding(paddingValue)
         ) {
             Spacer(modifier = Modifier.height(16.dp))
             Card(
@@ -250,7 +250,7 @@ fun FreeGameItemsShimmer() {
         Column(Modifier.fillMaxWidth()) {
             Box(
                 modifier = Modifier
-                    .background(brush = ShimmerBrush())
+                    .background(brush = shimmerBrush())
                     .fillMaxWidth()
                     .height(150.dp)
             )
@@ -261,7 +261,7 @@ fun FreeGameItemsShimmer() {
             ) {
                 Box(
                     modifier = Modifier
-                        .background(brush = ShimmerBrush(), shape = RoundedCornerShape(8.dp))
+                        .background(brush = shimmerBrush(), shape = RoundedCornerShape(8.dp))
                         .fillMaxWidth()
                         .height(50.dp)
                 )

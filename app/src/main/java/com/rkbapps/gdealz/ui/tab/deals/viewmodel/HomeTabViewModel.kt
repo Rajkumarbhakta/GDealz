@@ -1,9 +1,9 @@
-package com.rkbapps.gdealz.ui.tab.home.viewmodel
+package com.rkbapps.gdealz.ui.tab.deals.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rkbapps.gdealz.models.Deals
-import com.rkbapps.gdealz.ui.tab.home.repository.HomeTabRepository
+import com.rkbapps.gdealz.ui.tab.deals.repository.HomeTabRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch

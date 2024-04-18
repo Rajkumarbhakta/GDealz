@@ -1,4 +1,4 @@
-package com.rkbapps.gdealz.ui.tab.home
+package com.rkbapps.gdealz.ui.tab.deals
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -41,8 +41,8 @@ import coil.compose.AsyncImage
 import com.rkbapps.gdealz.R
 import com.rkbapps.gdealz.models.Deals
 import com.rkbapps.gdealz.ui.screens.dealslookup.DealLookupScreen
-import com.rkbapps.gdealz.ui.tab.home.viewmodel.HomeTabViewModel
-import com.rkbapps.gdealz.util.ShimmerBrush
+import com.rkbapps.gdealz.ui.tab.deals.viewmodel.HomeTabViewModel
+import com.rkbapps.gdealz.util.shimmerBrush
 import com.rkbapps.gdealz.util.calculatePercentage
 import java.util.UUID
 
@@ -215,7 +215,7 @@ fun ShimmerDealsItem() {
         ) {
             Box(
                 modifier = Modifier
-                    .background(brush = ShimmerBrush(), shape = RoundedCornerShape(8.dp))
+                    .background(brush = shimmerBrush(), shape = RoundedCornerShape(8.dp))
                     .height(80.dp)
                     .width(80.dp)
                     .align(alignment = Alignment.CenterVertically)
@@ -231,7 +231,7 @@ fun ShimmerDealsItem() {
             ) {
                 Box(
                     modifier = Modifier
-                        .background(brush = ShimmerBrush(), shape = RoundedCornerShape(8.dp))
+                        .background(brush = shimmerBrush(), shape = RoundedCornerShape(8.dp))
                         .fillMaxWidth()
                         .height(20.dp)
                 )
@@ -239,14 +239,14 @@ fun ShimmerDealsItem() {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Box(
                         modifier = Modifier
-                            .background(brush = ShimmerBrush(), shape = RoundedCornerShape(8.dp))
+                            .background(brush = shimmerBrush(), shape = RoundedCornerShape(8.dp))
                             .height(20.dp)
                             .width(40.dp)
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Box(
                         modifier = Modifier
-                            .background(brush = ShimmerBrush(), shape = RoundedCornerShape(8.dp))
+                            .background(brush = shimmerBrush(), shape = RoundedCornerShape(8.dp))
                             .height(20.dp)
                             .width(80.dp)
 
@@ -254,7 +254,7 @@ fun ShimmerDealsItem() {
                     Spacer(modifier = Modifier.width(8.dp))
                     Box(
                         modifier = Modifier
-                            .background(brush = ShimmerBrush(), shape = RoundedCornerShape(8.dp))
+                            .background(brush = shimmerBrush(), shape = RoundedCornerShape(8.dp))
                             .height(20.dp)
                             .width(80.dp)
                     )

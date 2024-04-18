@@ -1,4 +1,4 @@
-package com.rkbapps.gdealz.util
+package com.rkbapps.gdealz.ui.tab.free
 
 import com.rkbapps.gdealz.models.Giveaway
 

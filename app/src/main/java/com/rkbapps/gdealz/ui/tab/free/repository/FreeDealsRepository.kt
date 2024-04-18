@@ -4,7 +4,7 @@ import android.util.Log
 import com.rkbapps.gdealz.api.GamePowerApi
 import com.rkbapps.gdealz.api.GiveawayPlatforms
 import com.rkbapps.gdealz.ui.tab.free.FreeGameItemsPosition
-import com.rkbapps.gdealz.util.FreeGamesUiState
+import com.rkbapps.gdealz.ui.tab.free.FreeGamesUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject

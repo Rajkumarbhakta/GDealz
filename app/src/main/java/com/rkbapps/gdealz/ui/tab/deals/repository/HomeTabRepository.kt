@@ -1,4 +1,4 @@
-package com.rkbapps.gdealz.ui.tab.home.repository
+package com.rkbapps.gdealz.ui.tab.deals.repository
 
 import com.rkbapps.gdealz.api.ApiInterface
 import com.rkbapps.gdealz.models.Deals

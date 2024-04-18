@@ -9,8 +9,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import cafe.adriel.voyager.navigator.Navigator
 import com.rkbapps.gdealz.ui.tab.FavTab
-import com.rkbapps.gdealz.ui.tab.home.HomeTab
-import com.rkbapps.gdealz.ui.tab.SearchTab
+import com.rkbapps.gdealz.ui.tab.deals.HomeTab
+import com.rkbapps.gdealz.ui.tab.search.SearchTab
 import com.rkbapps.gdealz.ui.tab.free.FreeDealsTab
 
 @Composable
@@ -21,7 +21,7 @@ fun BottomNavigationNavgraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = BottomNavigationItem.Free.route,
+        startDestination = BottomNavigationItem.Deals.route,
         modifier = Modifier.padding(innerPadding)
     ) {
         composable(route = BottomNavigationItem.Deals.route) {
