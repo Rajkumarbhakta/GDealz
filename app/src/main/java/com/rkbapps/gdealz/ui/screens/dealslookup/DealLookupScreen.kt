@@ -1,5 +1,7 @@
 package com.rkbapps.gdealz.ui.screens.dealslookup
 
+import android.content.Intent
+import android.net.Uri
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -20,6 +22,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Card
+import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -34,7 +37,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -47,8 +50,8 @@ import cafe.adriel.voyager.hilt.getViewModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import coil.compose.AsyncImage
 import com.rkbapps.gdealz.R
+import com.rkbapps.gdealz.api.ApiConst.redirect
 import com.rkbapps.gdealz.ui.screens.dealslookup.viewmodel.DealLookupViewModel
-import com.rkbapps.gdealz.ui.theme.aquamarine
 import com.rkbapps.gdealz.util.calculatePercentage
 
 class DealLookupScreen(private val delaId: String?, private val title: String?) : Screen {
@@ -56,6 +59,7 @@ class DealLookupScreen(private val delaId: String?, private val title: String?) 
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.current
+        val context = LocalContext.current
         val viewModel: DealLookupViewModel = getViewModel()
         val gameData = viewModel.gameData.collectAsState()
 
@@ -236,7 +240,9 @@ class DealLookupScreen(private val delaId: String?, private val title: String?) 
 
                                 ReviewItems(
                                     title = "Total Rating",
-                                    value = getTotalReviews(count = gameData.value.gameInfo?.steamRatingCount ?: "0")
+                                    value = getTotalReviews(
+                                        count = gameData.value.gameInfo?.steamRatingCount ?: "0"
+                                    )
                                 )
 
                                 ReviewItems(
@@ -275,6 +281,29 @@ class DealLookupScreen(private val delaId: String?, private val title: String?) 
 
                     }
 
+                    Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp)) {
+
+
+
+                    }
+
+
+
+                    ElevatedButton(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 8.dp),
+                        onClick = {
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(delaId?.let { it1 ->
+                            redirect(
+                                it1
+                            )
+                        }))
+                        context.startActivity(intent)
+                    }) {
+                        Text(text = "Garb the deal")
+                    }
+
 
                 } else {
 
@@ -283,14 +312,14 @@ class DealLookupScreen(private val delaId: String?, private val title: String?) 
         }
     }
 
-    private fun getTotalReviews(count:String):String{
+    private fun getTotalReviews(count: String): String {
         return try {
-            if (count.toLong()>1000){
-                "${count.toLong()/1000}K"
-            }else{
+            if (count.toLong() > 1000) {
+                "${count.toLong() / 1000}K"
+            } else {
                 "$count"
             }
-        }catch (e:Exception){
+        } catch (e: Exception) {
             count
         }
 

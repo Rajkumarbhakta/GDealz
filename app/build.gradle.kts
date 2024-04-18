@@ -100,6 +100,9 @@ dependencies {
     //pull refresh
     implementation (libs.androidx.material)
 
+    //lottie
+    implementation (libs.lottie.compose)
+
 }
 
 kapt {

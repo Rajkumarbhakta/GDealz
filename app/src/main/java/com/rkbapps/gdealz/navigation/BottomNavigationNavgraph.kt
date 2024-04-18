@@ -11,6 +11,7 @@ import cafe.adriel.voyager.navigator.Navigator
 import com.rkbapps.gdealz.ui.tab.FavTab
 import com.rkbapps.gdealz.ui.tab.home.HomeTab
 import com.rkbapps.gdealz.ui.tab.SearchTab
+import com.rkbapps.gdealz.ui.tab.free.FreeDealsTab
 
 @Composable
 fun BottomNavigationNavgraph(
@@ -20,10 +21,10 @@ fun BottomNavigationNavgraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = BottomNavigationItem.Home.route,
+        startDestination = BottomNavigationItem.Free.route,
         modifier = Modifier.padding(innerPadding)
     ) {
-        composable(route = BottomNavigationItem.Home.route) {
+        composable(route = BottomNavigationItem.Deals.route) {
             HomeTab(navigator = navigator)
         }
         composable(route = BottomNavigationItem.Search.route) {
@@ -31,6 +32,9 @@ fun BottomNavigationNavgraph(
         }
         composable(route = BottomNavigationItem.Fav.route) {
             FavTab(navigator = navigator)
+        }
+        composable(route = BottomNavigationItem.Free.route) {
+            FreeDealsTab(navigator = navigator)
         }
     }
 }

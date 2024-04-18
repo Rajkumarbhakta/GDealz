@@ -15,7 +15,8 @@ class MainScreen : Screen {
     override fun Content() {
         val navController = rememberNavController()
         val navigationItems = listOf(
-            BottomNavigationItem.Home,
+            BottomNavigationItem.Deals,
+            BottomNavigationItem.Free,
             BottomNavigationItem.Search,
             BottomNavigationItem.Fav
         )

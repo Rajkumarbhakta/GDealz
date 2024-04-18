@@ -1,7 +1,9 @@
 package com.rkbapps.gdealz.di
 
 import com.rkbapps.gdealz.api.ApiConst.BASE_URL
+import com.rkbapps.gdealz.api.ApiConst.BASE_URL_GAME_POWER
 import com.rkbapps.gdealz.api.ApiInterface
+import com.rkbapps.gdealz.api.GamePowerApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -27,6 +29,16 @@ object NetworkModule {
     @Singleton
     fun provideApiInterface(retrofit: Retrofit): ApiInterface {
         return retrofit.create(ApiInterface::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGamePowerApi():GamePowerApi{
+        return Retrofit.Builder()
+            .baseUrl(BASE_URL_GAME_POWER)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(GamePowerApi::class.java)
     }
 
 
