@@ -1,8 +1,8 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
-    kotlin("kapt")
     id("com.google.dagger.hilt.android")
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -42,7 +42,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.5.12"
     }
     packaging {
         resources {
@@ -79,20 +79,22 @@ dependencies {
     implementation(libs.voyager.tabNavigator)
     implementation(libs.voyager.hilt)
 
-    //room
-    implementation(libs.androidx.room.runtime)
-    kapt(libs.room.compiler)
-    implementation(libs.androidx.room.ktx)
-    implementation(libs.androidx.room.paging)
 
     //hilt
     implementation(libs.hilt.android)
-    kapt(libs.dagger.hilt.android.compiler)
+    ksp(libs.dagger.hilt.android.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
 
     //retrofit
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
+
+    //room
+    implementation(libs.androidx.room.runtime)
+    annotationProcessor(libs.room.compiler)
+    ksp(libs.room.compiler)
+    implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.room.paging)
 
     //coil
     implementation(libs.coil.compose)
@@ -103,8 +105,4 @@ dependencies {
     //lottie
     implementation (libs.lottie.compose)
 
-}
-
-kapt {
-    correctErrorTypes = true
 }
