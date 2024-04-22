@@ -1,7 +1,5 @@
 package com.rkbapps.gdealz.models
 
-import java.util.UUID
-import kotlin.random.Random
 
 data class Deals(
     val dealID: String?,
