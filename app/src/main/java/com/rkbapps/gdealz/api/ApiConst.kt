@@ -1,12 +1,26 @@
 package com.rkbapps.gdealz.api
 
+import java.text.SimpleDateFormat
+import java.util.Locale
+
 object ApiConst {
     const val BASE_URL = "https://www.cheapshark.com/api/1.0/"
     const val BASE_URL_GAME_POWER = "https://www.gamerpower.com/api/"
     private const val REDIRECT_URL = "https://www.cheapshark.com/redirect"
+    const val IMAGE_URL = "https://www.cheapshark.com"
     fun redirect(dealId: String): String {
         return "$REDIRECT_URL?dealID=$dealId"
     }
+
+    fun getFormattedDate(timestamp: Long?): String? {
+        return try {
+            SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(timestamp)
+        }catch (e:Exception){
+            null
+        }
+    }
+
+
 }
 
 

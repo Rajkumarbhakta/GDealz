@@ -14,13 +14,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Card
 import androidx.compose.material3.ElevatedButton
@@ -36,8 +37,10 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -51,6 +54,8 @@ import cafe.adriel.voyager.hilt.getViewModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import coil.compose.AsyncImage
 import com.rkbapps.gdealz.R
+import com.rkbapps.gdealz.api.ApiConst.IMAGE_URL
+import com.rkbapps.gdealz.api.ApiConst.getFormattedDate
 import com.rkbapps.gdealz.api.ApiConst.redirect
 import com.rkbapps.gdealz.ui.screens.dealslookup.viewmodel.DealLookupViewModel
 import com.rkbapps.gdealz.util.calculatePercentage
@@ -63,11 +68,17 @@ class DealLookupScreen(private val delaId: String?, private val title: String?) 
         val context = LocalContext.current
         val viewModel: DealLookupViewModel = getViewModel()
         val gameData = viewModel.gameData.collectAsState()
+        val storeData = viewModel.storeData.collectAsState()
+        val favStatus = viewModel.dealFavStatus.collectAsState()
+        val isFav = remember {
+            viewModel.isFavDeal
+        }
 
         LaunchedEffect(key1 = Unit) {
             delaId?.let {
                 Log.d("DEALSLOOKUP", " ID $it")
                 viewModel.getDealsInfo(it)
+                viewModel.dealFavStatus(it)
             }
         }
 
@@ -96,9 +107,14 @@ class DealLookupScreen(private val delaId: String?, private val title: String?) 
                         }
                     },
                     actions = {
-                        IconButton(onClick = { /*TODO*/ }) {
+                        IconButton(onClick = {
+                            delaId?.let {
+                                viewModel.toggleFavDeal(gameData.value, it)
+                            }
+                        }
+                        ) {
                             Icon(
-                                imageVector = Icons.Default.FavoriteBorder,
+                                imageVector = if (isFav.value) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
                                 contentDescription = "mark fav",
                                 tint = MaterialTheme.colorScheme.onPrimary
                             )
@@ -282,9 +298,78 @@ class DealLookupScreen(private val delaId: String?, private val title: String?) 
 
                     }
 
-                    Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp)) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 8.dp)
+                    ) {
+                        if (storeData.value != null) {
+                            Card(
+                                modifier = Modifier.weight(1f)
+                            ) {
+                                Column(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(8.dp),
+                                    horizontalAlignment = Alignment.CenterHorizontally
+                                ) {
+                                    Text(
+                                        text = "Store",
+                                        fontWeight = FontWeight.Bold,
+                                        textAlign = TextAlign.Center
+                                    )
+                                    Spacer(modifier = Modifier.height(8.dp))
+                                    OutlinedCard(modifier = Modifier.size(50.dp)) {
+                                        AsyncImage(
+                                            model = IMAGE_URL + storeData.value?.banner,
+                                            contentDescription = "store logo",
+                                            modifier = Modifier
+                                                .size(50.dp)
+                                                .padding(8.dp),
+                                            contentScale = ContentScale.Fit
+                                        )
+                                    }
+                                    Spacer(modifier = Modifier.height(8.dp))
+                                    Text(
+                                        text = storeData.value?.storeName ?: "Unknown",
+                                        textAlign = TextAlign.Center
+                                    )
 
 
+                                }
+                            }
+                            Spacer(modifier = Modifier.width(10.dp))
+                        }
+
+
+                        Card(
+                            modifier = Modifier
+                                .weight(1f)
+                                .align(Alignment.CenterVertically)
+                        ) {
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(8.dp),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+
+                                Text(
+                                    text = "Release Date",
+                                    fontWeight = FontWeight.Bold,
+                                    textAlign = TextAlign.Center
+                                )
+                                Spacer(modifier = Modifier.height(8.dp))
+
+                                Text(
+                                    text = getFormattedDate(gameData.value.gameInfo?.releaseDate)
+                                        ?: "Unknown",
+                                    textAlign = TextAlign.Center
+                                )
+
+                            }
+
+                        }
 
                     }
 
@@ -295,13 +380,13 @@ class DealLookupScreen(private val delaId: String?, private val title: String?) 
                             .fillMaxWidth()
                             .padding(horizontal = 16.dp, vertical = 8.dp),
                         onClick = {
-                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(delaId?.let { it1 ->
-                            redirect(
-                                it1
-                            )
-                        }))
-                        context.startActivity(intent)
-                    }) {
+                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(delaId?.let { it1 ->
+                                redirect(
+                                    it1
+                                )
+                            }))
+                            context.startActivity(intent)
+                        }) {
                         Text(text = "Garb the deal")
                     }
 
@@ -318,7 +403,7 @@ class DealLookupScreen(private val delaId: String?, private val title: String?) 
             if (count.toLong() > 1000) {
                 "${count.toLong() / 1000}K"
             } else {
-                "$count"
+                count
             }
         } catch (e: Exception) {
             count

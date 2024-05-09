@@ -20,6 +20,9 @@ interface StoreDao {
     suspend fun findById(id:String):Store
 
     @Query("select * from store")
-    suspend fun findAll():Flow<List<Store>>
+    fun findAll():Flow<List<Store>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(stores:List<Store>)
 
 }

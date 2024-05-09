@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "fav-deals")
 data class FavDeals (
     @PrimaryKey(autoGenerate = true)
-    val id:Int,
+    val id:Int = 0,
     val dealID: String,
     val gameID: String,
     val thumb: String?,

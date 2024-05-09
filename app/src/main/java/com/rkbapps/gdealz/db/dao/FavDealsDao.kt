@@ -18,13 +18,23 @@ interface FavDealsDao {
     suspend fun deleteFavDeals(favDeals: FavDeals)
 
     @Query("select * from `fav-deals`")
-    suspend fun selectAllFavDeals():Flow<List<FavDeals>>
+    fun selectAllFavDeals():Flow<List<FavDeals>>
+
+    @Query("select * from `fav-deals` where dealID=:dealID")
+    suspend fun findByDealID(dealID:String):FavDeals
+
+    @Query("delete from `fav-deals` where dealID=:dealID")
+    suspend fun deleteByDealID(dealID:Int)
 
     @Query("select * from `fav-deals` where id =:id")
     suspend fun findById(id:Int):FavDeals
 
     @Query("select exists(select * from `fav-deals` where id =:id)")
     suspend fun isExists(id:Int):Boolean
+
+    @Query("select exists(select * from `fav-deals` where dealID=:dealID)")
+    suspend fun isExistsByDealID(dealID:String):Boolean
+
 
 
 

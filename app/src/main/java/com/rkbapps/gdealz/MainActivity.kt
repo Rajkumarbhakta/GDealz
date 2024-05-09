@@ -10,13 +10,12 @@ import androidx.compose.ui.Modifier
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.transitions.FadeTransition
 import com.rkbapps.gdealz.ui.screens.MainScreen
-import com.rkbapps.gdealz.ui.screens.SplashScreen
+import com.rkbapps.gdealz.ui.screens.splash.SplashScreen
 import com.rkbapps.gdealz.ui.theme.GDealzTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -25,14 +24,14 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-
                     Navigator(screen = MainScreen()){
                         FadeTransition(navigator = it)
                     }
-
                 }
             }
         }
     }
 }
+
+
 

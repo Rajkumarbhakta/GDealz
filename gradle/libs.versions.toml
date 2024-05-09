@@ -1,6 +1,6 @@
 [versions]
 accompanistSwiperefresh = "0.35.0-alpha"
-agp = "8.3.1"
+agp = "8.4.0"
 coilCompose = "2.6.0"
 converterGson = "2.11.0"
 hiltAndroid = "2.48"

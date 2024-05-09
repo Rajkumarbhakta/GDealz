@@ -26,7 +26,7 @@ data class GameInfo(
     val metacriticScore: String?,
     val name: String?,
     val publisher: String?,
-    val releaseDate: Int?,
+    val releaseDate: Long?,
     val retailPrice: String?,
     val salePrice: String?,
     val steamAppID: String?,
