@@ -35,7 +35,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import cafe.adriel.voyager.navigator.Navigator
+import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.rkbapps.gdealz.models.Giveaway
 import com.rkbapps.gdealz.ui.tab.free.viewmodel.FreeDealsViewModel
@@ -44,8 +44,8 @@ import com.rkbapps.gdealz.util.shimmerBrush
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FreeDealsTab(navigator: Navigator) {
-    val viewModel:FreeDealsViewModel = hiltViewModel()
+fun FreeDealsTab(navController: NavHostController,viewModel:FreeDealsViewModel = hiltViewModel()) {
+
     val giveaways = viewModel.giveaway.collectAsState()
 
     val currentSelectedOption = rememberSaveable {

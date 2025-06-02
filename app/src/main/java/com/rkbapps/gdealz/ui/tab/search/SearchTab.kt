@@ -28,7 +28,6 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,7 +38,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import cafe.adriel.voyager.navigator.Navigator
+import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.rkbapps.gdealz.R
 import com.rkbapps.gdealz.models.Game
@@ -50,9 +49,10 @@ import com.rkbapps.gdealz.util.ErrorScreen
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchTab(
-    navigator: Navigator
+    navController: NavHostController,
+    viewModel: SearchViewModel = hiltViewModel()
 ) {
-    val viewModel: SearchViewModel = hiltViewModel()
+
     val searchResult = viewModel.searchResult.collectAsState()
 
     val query = rememberSaveable {

@@ -12,44 +12,37 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.navigator.LocalNavigator
-import com.rkbapps.gdealz.ui.screens.MainScreen
-import kotlinx.coroutines.delay
+import androidx.navigation.NavHostController
+import com.rkbapps.gdealz.navigation.Routes
 
-class SplashScreen:Screen {
-    @Composable
-    override fun Content() {
-        val navigator = LocalNavigator.current
-        val viewModel:SplashScreenViewModel = hiltViewModel()
+@Composable
+fun SplashScreen(
+    navController: NavHostController,
+    viewModel: SplashScreenViewModel = hiltViewModel()
+) {
 
-        val isSuccess = remember {
-            viewModel.isSuccess
-        }
+    val isSuccess = remember {
+        viewModel.isSuccess
+    }
 
-//        LaunchedEffect(key1 = isSuccess.value) {
-////            delay(3000)
-//            navigator?.replace(MainScreen())
-//        }
-
-        Scaffold {
-            Column(modifier = Modifier
+    Scaffold {
+        Column(
+            modifier = Modifier
                 .fillMaxSize()
                 .padding(it),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                Text(text = "Splash Screen")
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(text = "Splash Screen")
 
-                if (isSuccess.value){
-                    LaunchedEffect(key1 = Unit) {
-                        navigator?.replace(MainScreen())
+            if (isSuccess.value) {
+                LaunchedEffect(key1 = Unit) {
+                    navController.navigate(Routes.Main) {
+                        popUpTo(0)
                     }
                 }
             }
         }
-
-
-
     }
+
 }

@@ -1,26 +1,28 @@
 [versions]
 accompanistSwiperefresh = "0.35.0-alpha"
-agp = "8.4.0"
+agp = "8.10.1"
 coilCompose = "2.6.0"
 converterGson = "2.11.0"
-hiltAndroid = "2.48"
-hiltAndroidCompiler = "2.48"
+hiltAndroid = "2.56.2"
 hiltNavigationCompose = "1.2.0"
-kotlin = "1.9.23"
-coreKtx = "1.12.0"
+kotlin = "2.1.20"
+ksp = "2.1.20-2.0.1"
+coreKtx = "1.16.0"
 junit = "4.13.2"
-junitVersion = "1.1.5"
-espressoCore = "3.5.1"
-lifecycleRuntimeKtx = "2.7.0"
-activityCompose = "1.9.0"
-composeBom = "2024.04.01"
-lottieCompose = "6.4.0"
-material = "1.6.6"
-navigationCompose = "2.7.7"
+junitVersion = "1.2.1"
+espressoCore = "3.6.1"
+lifecycleRuntimeKtx = "2.9.0"
+activityCompose = "1.10.1"
+composeBom = "2025.05.01"
+lottieCompose = "6.6.2"
+material = "1.8.2"
+navigationCompose = "2.9.0"
 retrofit = "2.11.0"
-roomCompiler = "2.6.1"
-roomRuntime = "2.6.1"
+roomCompiler = "2.7.1"
+roomRuntime = "2.7.1"
 voyager = "1.0.0"
+
+kotlinx-serialization = "1.8.1"
 
 [libraries]
 accompanist-swiperefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "accompanistSwiperefresh" }
@@ -33,7 +35,7 @@ androidx-room-paging = { module = "androidx.room:room-paging", version.ref = "ro
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
-dagger-hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltAndroidCompiler" }
+dagger-hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltAndroid" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
@@ -51,11 +53,6 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "lottieCompose" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomCompiler" }
-voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator", version.ref = "voyager" }
-voyager-bottomSheetNavigator = { module = "cafe.adriel.voyager:voyager-bottom-sheet-navigator", version.ref = "voyager" }
-voyager-tabNavigator = { module = "cafe.adriel.voyager:voyager-tab-navigator", version.ref = "voyager" }
-voyager-transitions = { module = "cafe.adriel.voyager:voyager-transitions", version.ref = "voyager" }
-voyager-hilt = { module = "cafe.adriel.voyager:voyager-hilt", version.ref = "voyager" }
 
 
 
@@ -63,4 +60,8 @@ voyager-hilt = { module = "cafe.adriel.voyager:voyager-hilt", version.ref = "voy
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+hilt-android = {id = "com.google.dagger.hilt.android" , version.ref = 'hiltAndroid'}
+devtools-ksp = {id= "com.google.devtools.ksp",version.ref = "ksp"}
+kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 

@@ -36,24 +36,24 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import cafe.adriel.voyager.navigator.Navigator
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.rkbapps.gdealz.R
 import com.rkbapps.gdealz.models.Deals
-import com.rkbapps.gdealz.ui.screens.dealslookup.DealLookupScreen
+import com.rkbapps.gdealz.navigation.Routes
 import com.rkbapps.gdealz.ui.tab.deals.viewmodel.HomeTabViewModel
-import com.rkbapps.gdealz.util.shimmerBrush
 import com.rkbapps.gdealz.util.calculatePercentage
+import com.rkbapps.gdealz.util.shimmerBrush
 import java.util.UUID
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeTab(
-    navigator: Navigator
-) {
-    val viewModel: HomeTabViewModel = hiltViewModel()
-    val deals = viewModel.deals.collectAsState()
+fun HomeTab(navController: NavHostController,viewModel: HomeTabViewModel = hiltViewModel()) {
+
+    val deals = viewModel.deals.collectAsStateWithLifecycle()
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -97,15 +97,13 @@ fun HomeTab(
             if (deals.value.isNotEmpty()) {
                 LazyColumn() {
                     items(deals.value.size, key = {
-                        deals.value[it].dealID ?: "${UUID.randomUUID()}"
+                        deals.value[it].dealID+"${UUID.randomUUID()}"
                     }) { index ->
                         DealsItem(deals = deals.value[index]) {
-                            navigator.push(
-                                DealLookupScreen(
-                                    delaId = deals.value[index].dealID,
-                                    title = deals.value[index].title
-                                )
-                            )
+                            navController.navigate(Routes.DealsLookup(
+                                dealId = deals.value[index].dealID,
+                                title = deals.value[index].title
+                            ))
                         }
                     }
                 }

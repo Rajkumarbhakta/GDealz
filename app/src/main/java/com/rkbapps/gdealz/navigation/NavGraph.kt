@@ -1,0 +1,67 @@
+package com.rkbapps.gdealz.navigation
+
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import com.rkbapps.gdealz.ui.screens.MainScreen
+import com.rkbapps.gdealz.ui.screens.dealslookup.DealLookupScreen
+import com.rkbapps.gdealz.ui.screens.splash.SplashScreen
+import com.rkbapps.gdealz.ui.tab.FavTab
+import com.rkbapps.gdealz.ui.tab.deals.HomeTab
+import com.rkbapps.gdealz.ui.tab.free.FreeDealsTab
+import com.rkbapps.gdealz.ui.tab.search.SearchTab
+
+
+@Composable
+fun NavGraph(navController: NavHostController) {
+    NavHost(navController = navController, startDestination = Routes.Splash) {
+        destinations(navController)
+    }
+
+}
+
+@Composable
+fun BottomNavigationNavGraph(
+    navController: NavHostController,
+) {
+    NavHost(
+        navController = navController,
+        startDestination = Routes.Home,
+    ) {
+        destinations(navController)
+    }
+}
+
+
+fun NavGraphBuilder.destinations(navController: NavHostController) {
+    composable<Routes.Splash> {
+        SplashScreen(navController)
+    }
+    composable<Routes.Home> {
+        HomeTab(navController)
+    }
+    composable<Routes.Search> {
+        SearchTab(navController)
+    }
+    composable<Routes.Fav> {
+        FavTab(navController)
+    }
+    composable<Routes.FreeDeals> {
+        FreeDealsTab(navController)
+    }
+
+    composable<Routes.Main> {
+        MainScreen(navController)
+    }
+
+    composable<Routes.DealsLookup> {
+        DealLookupScreen(navController)
+    }
+
+}
+

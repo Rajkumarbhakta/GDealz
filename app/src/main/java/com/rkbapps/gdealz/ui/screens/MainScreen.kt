@@ -1,39 +1,38 @@
 package com.rkbapps.gdealz.ui.screens
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.currentOrThrow
 import com.rkbapps.gdealz.navigation.BottomNavigationItem
-import com.rkbapps.gdealz.navigation.BottomNavigationNavgraph
-import com.rkbapps.gdealz.ui.tab.BottomNavigation
+import com.rkbapps.gdealz.navigation.BottomNavigationNavGraph
+import com.rkbapps.gdealz.ui.tab.BottomNavigationBar
 
-class MainScreen : Screen {
-    @Composable
-    override fun Content() {
-        val navController = rememberNavController()
-        val navigationItems = listOf(
-            BottomNavigationItem.Deals,
-            BottomNavigationItem.Free,
-            BottomNavigationItem.Search,
-            BottomNavigationItem.Fav
-        )
-        val navigator = LocalNavigator.currentOrThrow
 
-        Scaffold(
-            bottomBar = {
-                BottomNavigation(items = navigationItems, navController = navController)
-            }
+@Composable
+fun MainScreen(navController: NavHostController){
+    val navigationItems = listOf(
+        BottomNavigationItem.Deals,
+        BottomNavigationItem.Free,
+        BottomNavigationItem.Search,
+        BottomNavigationItem.Fav
+    )
+    val navController = rememberNavController()
+    Scaffold(
+        bottomBar = {
+            BottomNavigationBar(items = navigationItems, navController = navController)
+        }
+    ) {
+        Column(
+            modifier = Modifier.fillMaxSize().padding(bottom = it.calculateBottomPadding())
         ) {
-            BottomNavigationNavgraph(
+            BottomNavigationNavGraph(
                 navController = navController,
-                innerPadding = it,
-                navigator = navigator
             )
         }
-
-
     }
 }

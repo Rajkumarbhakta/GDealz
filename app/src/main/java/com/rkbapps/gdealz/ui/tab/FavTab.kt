@@ -7,11 +7,11 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import cafe.adriel.voyager.navigator.Navigator
+import androidx.navigation.NavHostController
 
 @Composable
 fun FavTab(
-    navigator: Navigator
+    navController: NavHostController
 ) {
     Scaffold {
         Column(
