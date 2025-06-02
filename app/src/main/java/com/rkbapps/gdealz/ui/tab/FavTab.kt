@@ -8,12 +8,17 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import com.rkbapps.gdealz.ui.composables.CommonTopBar
 
 @Composable
 fun FavTab(
     navController: NavHostController
 ) {
-    Scaffold {
+    Scaffold(
+        topBar = {
+            CommonTopBar("Fav")
+        }
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()

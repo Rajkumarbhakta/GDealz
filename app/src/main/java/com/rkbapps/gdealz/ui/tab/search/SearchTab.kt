@@ -42,6 +42,7 @@ import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.rkbapps.gdealz.R
 import com.rkbapps.gdealz.models.Game
+import com.rkbapps.gdealz.ui.composables.CommonTopBar
 import com.rkbapps.gdealz.ui.tab.deals.ShimmerDealsItem
 import com.rkbapps.gdealz.ui.tab.search.viewmodel.SearchViewModel
 import com.rkbapps.gdealz.util.ErrorScreen
@@ -62,13 +63,7 @@ fun SearchTab(
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text(text = "Search") },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimary
-                ),
-            )
+            CommonTopBar(title = "Search")
         },
     ) {
         Column(

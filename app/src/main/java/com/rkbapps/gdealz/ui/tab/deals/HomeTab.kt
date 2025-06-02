@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -28,6 +29,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -42,7 +45,9 @@ import coil.compose.AsyncImage
 import com.rkbapps.gdealz.R
 import com.rkbapps.gdealz.models.Deals
 import com.rkbapps.gdealz.navigation.Routes
+import com.rkbapps.gdealz.ui.composables.CommonTopBar
 import com.rkbapps.gdealz.ui.tab.deals.viewmodel.HomeTabViewModel
+import com.rkbapps.gdealz.util.ErrorScreen
 import com.rkbapps.gdealz.util.calculatePercentage
 import com.rkbapps.gdealz.util.shimmerBrush
 import java.util.UUID
@@ -51,18 +56,11 @@ import java.util.UUID
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeTab(navController: NavHostController,viewModel: HomeTabViewModel = hiltViewModel()) {
-
     val deals = viewModel.deals.collectAsStateWithLifecycle()
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text(text = stringResource(id = R.string.app_name)) },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimary
-                ),
-            )
+            CommonTopBar(title = stringResource(R.string.app_name))
         },
         containerColor = MaterialTheme.colorScheme.background
     ) { innerPadding ->
@@ -94,32 +92,42 @@ fun HomeTab(navController: NavHostController,viewModel: HomeTabViewModel = hiltV
                 }
             }
 
-            if (deals.value.isNotEmpty()) {
-                LazyColumn() {
-                    items(deals.value.size, key = {
-                        deals.value[it].dealID+"${UUID.randomUUID()}"
-                    }) { index ->
-                        DealsItem(deals = deals.value[index]) {
-                            navController.navigate(Routes.DealsLookup(
-                                dealId = deals.value[index].dealID,
-                                title = deals.value[index].title
-                            ))
+            when{
+                deals.value.isLoading->{
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                    ) {
+                        LazyColumn {
+                            items(10) {
+                                ShimmerDealsItem()
+                            }
                         }
                     }
                 }
-            } else {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                ) {
-                    LazyColumn {
-                        items(10) {
-                            ShimmerDealsItem()
+                deals.value.error!=null ->{
+                    ErrorScreen(message = deals.value.error!!)
+                }
+                deals.value.data!=null->{
+                    LazyColumn() {
+
+                        items (
+                            deals.value.data!!,
+                            key = { it.dealID + it.key }
+                        ){
+                            DealsItem(it) {
+                                navController.navigate(Routes.DealsLookup(
+                                    dealId = it.dealID,
+                                    title = it.title
+                                ))
+                            }
+                        }
+                        item {
+                            Spacer(Modifier.height(10.dp))
                         }
                     }
                 }
             }
-
         }
     }
 }

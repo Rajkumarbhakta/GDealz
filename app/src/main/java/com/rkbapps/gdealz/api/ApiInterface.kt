@@ -15,7 +15,7 @@ interface ApiInterface {
     suspend fun getDeals(
         @Query("storeID") storeId: Int,
         @Query("upperPrice") upperPrice: Int
-    ): Response<List<Deals>>
+    ): List<Deals>
 
     @GET("deals")
     suspend fun getAllDeals(
@@ -26,10 +26,10 @@ interface ApiInterface {
         @Query("desc") orderBy: Boolean = false,
         @Query("lowerPrice") lowerPrice: Int = 0,
         @Query("upperPrice") upperPrice: Int = 50
-    ): Response<List<Deals>>
+    ): List<Deals>
 
     @GET("deals")
-    suspend fun getDealsInfo(@Query("id",encoded = true) id: String): Response<DealsInfo>
+    suspend fun getDealsInfo(@Query("id",encoded = true) id: String): DealsInfo
 
 
     @GET("games")

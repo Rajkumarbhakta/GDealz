@@ -13,14 +13,13 @@ import javax.inject.Inject
 class HomeTabViewModel @Inject constructor(private val repository: HomeTabRepository) :
     ViewModel() {
 
-        val deals :StateFlow<List<Deals>> = repository.deals
+        val deals  = repository.deals
 
         init {
             viewModelScope.launch {
                 repository.getAllDeals()
             }
         }
-
 
     fun getDealsByFilter(storeId:Int,upperPrice:Int){
         viewModelScope.launch {

@@ -1,10 +1,9 @@
 package com.rkbapps.gdealz.ui.tab
 
-
-
-import androidx.compose.material.BottomNavigation
-import androidx.compose.material.BottomNavigationItem
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.material3.Icon
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -25,10 +24,11 @@ fun BottomNavigationBar(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
     val destination = items.any { currentDestination?.hasRoute(route = it.route::class)==true }
-    if (destination) {
-        BottomNavigation {
+
+    AnimatedVisibility(destination) {
+        NavigationBar {
             items.forEachIndexed { _, bottomNavigationItem ->
-                BottomNavigationItem(
+                NavigationBarItem(
                     icon = {
                         Icon(
                             imageVector = ImageVector.vectorResource(bottomNavigationItem.icon),

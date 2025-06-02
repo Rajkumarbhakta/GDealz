@@ -38,6 +38,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.rkbapps.gdealz.models.Giveaway
+import com.rkbapps.gdealz.ui.composables.CommonTopBar
 import com.rkbapps.gdealz.ui.tab.free.viewmodel.FreeDealsViewModel
 import com.rkbapps.gdealz.util.ErrorScreen
 import com.rkbapps.gdealz.util.shimmerBrush
@@ -55,13 +56,7 @@ fun FreeDealsTab(navController: NavHostController,viewModel:FreeDealsViewModel =
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text(text = "Free") },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimary
-                ),
-            )
+            CommonTopBar(title = "Free")
         },
     ) { paddingValue ->
         Column(

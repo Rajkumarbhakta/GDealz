@@ -1,6 +1,5 @@
 package com.rkbapps.gdealz.ui.screens.dealslookup.viewmodel
 
-import android.net.Uri
 import androidx.compose.runtime.State
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -16,7 +15,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import androidx.core.net.toUri
+import kotlinx.coroutines.Dispatchers
 
 @HiltViewModel
 class DealLookupViewModel @Inject constructor(
@@ -24,7 +23,7 @@ class DealLookupViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ):ViewModel() {
 
-    val gameData : StateFlow<DealsInfo> = repository.gameData
+    val dealData = repository.dealsData
     val isFavDeal: State<Boolean> = repository.isFavDeal
     val dealFavStatus: StateFlow<FavDealsState> = repository.dealFavStatus
     val storeData: StateFlow<Store?> = repository.storeData
@@ -34,7 +33,7 @@ class DealLookupViewModel @Inject constructor(
     val title = dealLookup.title
 
     init {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             dealLookup.dealId?.let {
                 getDealsInfo(it)
                 dealFavStatus(it)
@@ -44,12 +43,16 @@ class DealLookupViewModel @Inject constructor(
 
 
     fun dealFavStatus(id:String){
-        repository.isDealFav(id)
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.isDealFav(id)
+        }
     }
 
     fun toggleFavDeal(deal: DealsInfo){
-        dealLookup.dealId?.let {
-            repository.markFavDeals(deal, it)
+        viewModelScope.launch(Dispatchers.IO){
+            dealLookup.dealId?.let {
+                repository.markFavDeals(deal, it)
+            }
         }
     }
 

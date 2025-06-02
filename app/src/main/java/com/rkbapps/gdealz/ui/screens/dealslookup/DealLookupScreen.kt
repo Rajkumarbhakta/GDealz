@@ -21,10 +21,12 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
@@ -32,12 +34,11 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -59,14 +60,16 @@ import com.rkbapps.gdealz.util.calculatePercentage
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DealLookupScreen(navController: NavHostController,viewModel: DealLookupViewModel = hiltViewModel()) {
-    val context = LocalContext.current
+fun DealLookupScreen(
+    navController: NavHostController,
+    viewModel: DealLookupViewModel = hiltViewModel()
+) {
+
     val uriHandler = LocalUriHandler.current
-    val gameData = viewModel.gameData.collectAsStateWithLifecycle()
+    val dealsData = viewModel.dealData.collectAsStateWithLifecycle()
     val storeData = viewModel.storeData.collectAsStateWithLifecycle()
     val favStatus = viewModel.dealFavStatus.collectAsStateWithLifecycle()
     val isFav = remember { viewModel.isFavDeal }
-
 
 
     Scaffold(
@@ -83,25 +86,29 @@ fun DealLookupScreen(navController: NavHostController,viewModel: DealLookupViewM
                     titleContentColor = MaterialTheme.colorScheme.onPrimary
                 ),
                 navigationIcon = {
-                    IconButton(onClick = {
-                        navController.navigateUp()
-                    }) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "navigation back",
-                            tint = MaterialTheme.colorScheme.onPrimary
+                    FilledIconButton(
+                        onClick = { navController.navigateUp() },
+                        colors = IconButtonDefaults.filledIconButtonColors(
+                            containerColor = Color.White.copy(alpha = 0.2f),
+                            contentColor = Color.White
                         )
+                    ) {
+                        Icon(imageVector = Icons.AutoMirrored.Default.ArrowBack, "back")
                     }
                 },
                 actions = {
-                    IconButton(onClick = {
-                        viewModel.toggleFavDeal(gameData.value)
-                    }
+                    FilledIconButton(
+                        onClick = {
+                            dealsData.value.data?.let { viewModel.toggleFavDeal(it) }
+                        },
+                        colors = IconButtonDefaults.filledIconButtonColors(
+                            containerColor = Color.White.copy(alpha = 0.2f),
+                            contentColor = Color.White
+                        )
                     ) {
                         Icon(
                             imageVector = if (isFav.value) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
-                            contentDescription = "mark fav",
-                            tint = MaterialTheme.colorScheme.onPrimary
+                            "back"
                         )
                     }
                 }
@@ -115,182 +122,232 @@ fun DealLookupScreen(navController: NavHostController,viewModel: DealLookupViewM
                 .verticalScroll(rememberScrollState())
         )
         {
-            if (gameData.value.gameInfo != null) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(
-                            horizontal = 16.dp,
-                            vertical = 8.dp
-                        ),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    AsyncImage(
-                        model = gameData.value.gameInfo?.thumb,
-                        contentDescription = "game thumb", modifier = Modifier
-                            .height(80.dp)
-                            .width(80.dp)
-                            .align(Alignment.CenterVertically)
-                    )
-                    Spacer(modifier = Modifier.width(10.dp))
-                    Card(
+
+            when {
+                dealsData.value.isLoading -> {
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
+                        CircularProgressIndicator()
+                    }
+                }
+                dealsData.value.error != null -> {
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
+                        Text("${dealsData.value.error}", color = MaterialTheme.colorScheme.error)
+                    }
+                }
+                dealsData.value.data != null -> {
+                    Row(
                         modifier = Modifier
-                            .weight(1f)
-                            .height(80.dp),
+                            .fillMaxWidth()
+                            .padding(
+                                horizontal = 16.dp,
+                                vertical = 8.dp
+                            ),
+                        verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        Column(
+                        AsyncImage(
+                            model = dealsData.value.data?.gameInfo?.thumb,
+                            contentDescription = "game thumb", modifier = Modifier.height(80.dp)
+                                .width(80.dp).align(Alignment.CenterVertically)
+                        )
+                        Spacer(modifier = Modifier.width(10.dp))
+                        Card(
                             modifier = Modifier
-                                .padding(8.dp)
-                                .weight(1f),
-                            verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = Alignment.CenterHorizontally
+                                .weight(1f)
+                                .height(80.dp),
                         ) {
-                            Text(
-                                text = viewModel.title ?: "",
-                                style = MaterialTheme.typography.titleMedium,
-                                modifier = Modifier.fillMaxWidth(),
-                                maxLines = 2,
-                                overflow = TextOverflow.Ellipsis,
-                                textAlign = TextAlign.Center
-                            )
+                            Column(
+                                modifier = Modifier
+                                    .padding(8.dp)
+                                    .weight(1f),
+                                verticalArrangement = Arrangement.Center,
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Text(
+                                    text = viewModel.title ?: "",
+                                    style = MaterialTheme.typography.titleMedium,
+                                    modifier = Modifier.fillMaxWidth(),
+                                    maxLines = 2,
+                                    overflow = TextOverflow.Ellipsis,
+                                    textAlign = TextAlign.Center
+                                )
 //                                Spacer(modifier = Modifier.height(8.dp))
 //                                Text(
 //                                    text = gameData.value.gameInfo?.publisher ?: "",
 //                                    style = MaterialTheme.typography.titleSmall
 //                                )
+                            }
                         }
+
+
                     }
 
-
-                }
-
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
-                ) {
-                    Column(
-                        modifier = Modifier.padding(8.dp)
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 8.dp)
                     ) {
-                        Text(
-                            text = "Deal",
-                            modifier = Modifier.fillMaxWidth(),
-                            fontWeight = FontWeight.Bold,
-                            textAlign = TextAlign.Center
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.Center
+                        Column(
+                            modifier = Modifier.padding(8.dp)
                         ) {
                             Text(
-                                text = "-${
-                                    calculatePercentage(
-                                        gameData.value.gameInfo?.retailPrice ?: "",
-                                        gameData.value.gameInfo?.salePrice ?: ""
-                                    )
-                                }% ",
-                                color = MaterialTheme.colorScheme.primary,
+                                text = "Deal",
+                                modifier = Modifier.fillMaxWidth(),
+                                fontWeight = FontWeight.Bold,
+                                textAlign = TextAlign.Center
                             )
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text(
-                                text = "$${gameData.value.gameInfo?.retailPrice}",
-                                style = TextStyle(textDecoration = TextDecoration.LineThrough),
-
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.Center
+                            ) {
+                                Text(
+                                    text = "-${
+                                        calculatePercentage(
+                                            dealsData.value.data?.gameInfo?.retailPrice ?: "",
+                                            dealsData.value.data?.gameInfo?.salePrice ?: ""
+                                        )
+                                    }% ",
+                                    color = MaterialTheme.colorScheme.primary,
                                 )
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text(
-                                text = if ((gameData.value.gameInfo?.salePrice
-                                        ?: "").contains("0.00")
-                                ) "Free" else "$${gameData.value.gameInfo?.salePrice}",
-                                color = MaterialTheme.colorScheme.onPrimaryContainer
-                            )
-                            Spacer(modifier = Modifier.width(8.dp))
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text(
+                                    text = "$${dealsData.value.data?.gameInfo?.retailPrice}",
+                                    style = TextStyle(textDecoration = TextDecoration.LineThrough),
+
+                                    )
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text(
+                                    text = if ((dealsData.value.data?.gameInfo?.salePrice
+                                            ?: "").contains("0.00")
+                                    ) "Free" else "$${dealsData.value.data?.gameInfo?.salePrice}",
+                                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                                )
+                                Spacer(modifier = Modifier.width(8.dp))
+                            }
                         }
+
+
                     }
 
-
-                }
-
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
-                ) {
-                    Column(modifier = Modifier.padding(8.dp)) {
-                        Text(
-                            text = "Ratting & Review",
-                            modifier = Modifier.fillMaxWidth(),
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.Bold,
-                            textAlign = TextAlign.Center
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceEvenly
-
-                        ) {
-                            ReviewItems(
-                                title = "Meta Critic", value = " ${
-                                    gameData.value.gameInfo?.metacriticScore ?: 0
-                                }"
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 8.dp)
+                    ) {
+                        Column(modifier = Modifier.padding(8.dp)) {
+                            Text(
+                                text = "Ratting & Review",
+                                modifier = Modifier.fillMaxWidth(),
+                                style = MaterialTheme.typography.titleMedium,
+                                fontWeight = FontWeight.Bold,
+                                textAlign = TextAlign.Center
                             )
+                            Spacer(modifier = Modifier.height(8.dp))
 
-                            ReviewItems(
-                                title = "Total Rating",
-                                value = getTotalReviews(
-                                    count = gameData.value.gameInfo?.steamRatingCount ?: "0"
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.SpaceEvenly
+
+                            ) {
+                                ReviewItems(
+                                    title = "Meta Critic", value = " ${
+                                        dealsData.value.data?.gameInfo?.metacriticScore ?: 0
+                                    }"
                                 )
-                            )
 
-                            ReviewItems(
-                                title = "Rate", value = "${
-                                    gameData.value.gameInfo?.steamRatingPercent ?: 0
-                                }%"
-                            )
-
-                        }
-                        Spacer(modifier = Modifier.height(8.dp))
-                        OutlinedCard {
-                            Column(modifier = Modifier.padding(8.dp)) {
-                                Text(
-                                    text = "Overall Ratting",
-                                    modifier = Modifier.fillMaxWidth(),
-                                    textAlign = TextAlign.Center,
-                                    style = MaterialTheme.typography.titleMedium,
-                                    fontWeight = FontWeight.Bold
+                                ReviewItems(
+                                    title = "Total Rating",
+                                    value = getTotalReviews(
+                                        count = dealsData.value.data?.gameInfo?.steamRatingCount ?: "0"
+                                    )
                                 )
-                                Spacer(modifier = Modifier.height(8.dp))
 
-                                Text(
-                                    text = gameData.value.gameInfo?.steamRatingText
-                                        ?: "Unknown",
-                                    modifier = Modifier.fillMaxWidth(),
-                                    textAlign = TextAlign.Center,
-                                    style = MaterialTheme.typography.titleSmall,
+                                ReviewItems(
+                                    title = "Rate", value = "${
+                                        dealsData.value.data?.gameInfo?.steamRatingPercent ?: 0
+                                    }%"
                                 )
 
                             }
+                            Spacer(modifier = Modifier.height(8.dp))
+                            OutlinedCard {
+                                Column(modifier = Modifier.padding(8.dp)) {
+                                    Text(
+                                        text = "Overall Ratting",
+                                        modifier = Modifier.fillMaxWidth(),
+                                        textAlign = TextAlign.Center,
+                                        style = MaterialTheme.typography.titleMedium,
+                                        fontWeight = FontWeight.Bold
+                                    )
+                                    Spacer(modifier = Modifier.height(8.dp))
 
+                                    Text(
+                                        text = dealsData.value.data?.gameInfo?.steamRatingText
+                                            ?: "Unknown",
+                                        modifier = Modifier.fillMaxWidth(),
+                                        textAlign = TextAlign.Center,
+                                        style = MaterialTheme.typography.titleSmall,
+                                    )
+
+                                }
+
+
+                            }
 
                         }
 
                     }
 
-                }
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 8.dp)
+                    ) {
+                        if (storeData.value != null) {
+                            Card(
+                                modifier = Modifier.weight(1f)
+                            ) {
+                                Column(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(8.dp),
+                                    horizontalAlignment = Alignment.CenterHorizontally
+                                ) {
+                                    Text(
+                                        text = "Store",
+                                        fontWeight = FontWeight.Bold,
+                                        textAlign = TextAlign.Center
+                                    )
+                                    Spacer(modifier = Modifier.height(8.dp))
+                                    OutlinedCard(modifier = Modifier.size(50.dp)) {
+                                        AsyncImage(
+                                            model = IMAGE_URL + storeData.value?.banner,
+                                            contentDescription = "store logo",
+                                            modifier = Modifier
+                                                .size(50.dp)
+                                                .padding(8.dp),
+                                            contentScale = ContentScale.Fit
+                                        )
+                                    }
+                                    Spacer(modifier = Modifier.height(8.dp))
+                                    Text(
+                                        text = storeData.value?.storeName ?: "Unknown",
+                                        textAlign = TextAlign.Center
+                                    )
 
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
-                ) {
-                    if (storeData.value != null) {
+
+                                }
+                            }
+                            Spacer(modifier = Modifier.width(10.dp))
+                        }
+
+
                         Card(
-                            modifier = Modifier.weight(1f)
+                            modifier = Modifier
+                                .weight(1f)
+                                .align(Alignment.CenterVertically)
                         ) {
                             Column(
                                 modifier = Modifier
@@ -298,82 +355,38 @@ fun DealLookupScreen(navController: NavHostController,viewModel: DealLookupViewM
                                     .padding(8.dp),
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
+
                                 Text(
-                                    text = "Store",
+                                    text = "Release Date",
                                     fontWeight = FontWeight.Bold,
                                     textAlign = TextAlign.Center
                                 )
                                 Spacer(modifier = Modifier.height(8.dp))
-                                OutlinedCard(modifier = Modifier.size(50.dp)) {
-                                    AsyncImage(
-                                        model = IMAGE_URL + storeData.value?.banner,
-                                        contentDescription = "store logo",
-                                        modifier = Modifier
-                                            .size(50.dp)
-                                            .padding(8.dp),
-                                        contentScale = ContentScale.Fit
-                                    )
-                                }
-                                Spacer(modifier = Modifier.height(8.dp))
+
                                 Text(
-                                    text = storeData.value?.storeName ?: "Unknown",
+                                    text = getFormattedDate(dealsData.value.data?.gameInfo?.releaseDate)
+                                        ?: "Unknown",
                                     textAlign = TextAlign.Center
                                 )
 
-
                             }
+
                         }
-                        Spacer(modifier = Modifier.width(10.dp))
+
                     }
 
-
-                    Card(
+                    ElevatedButton(
                         modifier = Modifier
-                            .weight(1f)
-                            .align(Alignment.CenterVertically)
-                    ) {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(8.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-
-                            Text(
-                                text = "Release Date",
-                                fontWeight = FontWeight.Bold,
-                                textAlign = TextAlign.Center
-                            )
-                            Spacer(modifier = Modifier.height(8.dp))
-
-                            Text(
-                                text = getFormattedDate(gameData.value.gameInfo?.releaseDate)
-                                    ?: "Unknown",
-                                textAlign = TextAlign.Center
-                            )
-
-                        }
-
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 8.dp),
+                        onClick = {
+                            viewModel.redirectionUrl?.let { url ->
+                                uriHandler.openUri(url)
+                            }
+                        }) {
+                        Text(text = "Garb the deal")
                     }
-
                 }
-
-
-
-                ElevatedButton(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp),
-                    onClick = {
-                        viewModel.redirectionUrl?.let { url ->
-                            uriHandler.openUri(url)
-                        }
-                    }) {
-                    Text(text = "Garb the deal")
-                }
-
-            } else {
-
             }
         }
     }

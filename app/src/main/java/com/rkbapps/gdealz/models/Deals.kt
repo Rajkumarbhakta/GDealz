@@ -1,7 +1,10 @@
 package com.rkbapps.gdealz.models
 
+import java.util.UUID
+
 
 data class Deals(
+    val key: String = "${UUID.randomUUID()}",
     val dealID: String?,
     val dealRating: String?,
     val gameID: String?,
