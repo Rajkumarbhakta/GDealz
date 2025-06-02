@@ -18,6 +18,6 @@ interface GamePowerApi {
         @Query("platform",encoded = true) platform:String = GiveawayPlatforms.PC,
         @Query("type") type:String = "game",
         @Query("sort-by") sortBY :String = GiveawaySortingOptions.DATE,
-    ):Response<List<Giveaway>>
+    ):List<Giveaway>
 
 }

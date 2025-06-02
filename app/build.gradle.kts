@@ -80,6 +80,9 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
 
+    // okhttp logging
+    implementation(libs.okhttp.logging.intercepter)
+
     //room
     implementation(libs.androidx.room.runtime)
     annotationProcessor(libs.room.compiler)
