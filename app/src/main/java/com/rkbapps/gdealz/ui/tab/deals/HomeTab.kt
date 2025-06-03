@@ -1,5 +1,6 @@
 package com.rkbapps.gdealz.ui.tab.deals
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -28,6 +29,8 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -39,6 +42,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
@@ -49,6 +53,7 @@ import com.rkbapps.gdealz.R
 import com.rkbapps.gdealz.models.Deals
 import com.rkbapps.gdealz.navigation.Routes
 import com.rkbapps.gdealz.ui.composables.CommonTopBar
+import com.rkbapps.gdealz.ui.composables.FilterDialog
 import com.rkbapps.gdealz.ui.tab.deals.viewmodel.HomeTabViewModel
 import com.rkbapps.gdealz.util.ErrorScreen
 import com.rkbapps.gdealz.util.calculatePercentage
@@ -61,6 +66,10 @@ import java.util.UUID
 fun HomeTab(navController: NavHostController,viewModel: HomeTabViewModel = hiltViewModel()) {
     val deals = viewModel.deals.collectAsStateWithLifecycle()
     val dealsPagingData = viewModel.dealsPagingData.collectAsLazyPagingItems()
+    val filter = viewModel.filter.collectAsStateWithLifecycle()
+    val stores = viewModel.stores.collectAsStateWithLifecycle()
+
+    val isFilterDialogVisible = remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
@@ -68,6 +77,22 @@ fun HomeTab(navController: NavHostController,viewModel: HomeTabViewModel = hiltV
         },
         containerColor = MaterialTheme.colorScheme.background
     ) { innerPadding ->
+
+        if (isFilterDialogVisible.value){
+            Dialog(onDismissRequest = { isFilterDialogVisible.value = !isFilterDialogVisible.value }) {
+                FilterDialog(
+                    filter = filter.value,
+                    stores = stores.value,
+                    onCancel = {isFilterDialogVisible.value = false}
+                ){
+                    viewModel.updateFilter(it)
+                    isFilterDialogVisible.value = false
+                    Log.d("Filter", "FilterDialog: $it")
+                }
+            }
+        }
+
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -87,7 +112,7 @@ fun HomeTab(navController: NavHostController,viewModel: HomeTabViewModel = hiltV
                     fontWeight = FontWeight.Bold,
                 )
                 IconButton(onClick = {
-
+                    isFilterDialogVisible.value = true
                 }) {
                     Icon(
                         painter = painterResource(id = R.drawable.filter_list),

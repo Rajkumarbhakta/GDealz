@@ -6,10 +6,12 @@ import com.rkbapps.gdealz.api.ApiInterface
 import com.rkbapps.gdealz.api.NetworkResponse
 import com.rkbapps.gdealz.api.safeApiCall
 import com.rkbapps.gdealz.models.Deals
+import com.rkbapps.gdealz.models.Filter
 import retrofit2.HttpException
 
 class DealsPagingSource(
-    private val api: ApiInterface
+    private val api: ApiInterface,
+    private val filter: Filter
 ):PagingSource<Int, Deals>() {
     override fun getRefreshKey(state: PagingState<Int, Deals>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
@@ -21,9 +23,15 @@ class DealsPagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Deals> {
         try {
             val position = params.key ?: 0
-            val response = safeApiCall { api.getAllDeals(
-                pageNumber = position
-            ) }
+            val response = safeApiCall {
+                api.getAllDeals(
+                    storeId = filter.store,
+                    shortBy = filter.sortBy.option,
+                    orderBy = filter.orderByDesc,
+                    upperPrice = filter.upperPrice,
+                    lowerPrice = filter.lowerPrice,
+                    pageNumber = position,
+                ) }
             return when(response){
                 is NetworkResponse.Error.HttpError -> {
                     LoadResult.Error(response.error)
