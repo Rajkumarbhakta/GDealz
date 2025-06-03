@@ -1,9 +1,6 @@
 package com.rkbapps.gdealz.navigation
 
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -12,7 +9,7 @@ import com.rkbapps.gdealz.ui.screens.MainScreen
 import com.rkbapps.gdealz.ui.screens.dealslookup.DealLookupScreen
 import com.rkbapps.gdealz.ui.screens.free_game_details.FreeGameDetailsScreen
 import com.rkbapps.gdealz.ui.screens.splash.SplashScreen
-import com.rkbapps.gdealz.ui.tab.FavTab
+import com.rkbapps.gdealz.ui.tab.fav.FavTab
 import com.rkbapps.gdealz.ui.tab.deals.HomeTab
 import com.rkbapps.gdealz.ui.tab.free.FreeDealsTab
 import com.rkbapps.gdealz.ui.tab.search.SearchTab
