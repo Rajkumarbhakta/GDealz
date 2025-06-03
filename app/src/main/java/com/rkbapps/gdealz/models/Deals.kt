@@ -1,5 +1,6 @@
 package com.rkbapps.gdealz.models
 
+import com.google.gson.annotations.SerializedName
 import java.util.UUID
 
 
@@ -11,8 +12,10 @@ data class Deals(
     val internalName: String?,
     val isOnSale: String?,
     val lastChange: Int?,
-    val metacriticLink: String?,
-    val metacriticScore: String?,
+    @SerializedName("metacriticLink")
+    val metaCriticPageUrl: String?,
+    @SerializedName("metacriticScore")
+    val metaCriticScore: String?,
     val normalPrice: String?,
     val releaseDate: Int?,
     val salePrice: String?,

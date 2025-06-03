@@ -1,6 +1,5 @@
 package com.rkbapps.gdealz.ui.screens.free_game_details
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,7 +18,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -53,7 +51,7 @@ fun FreeGameDetailsScreen(
                 Button(
                     modifier = Modifier.fillMaxWidth(),
                     onClick = {
-                        giveaway?.open_giveaway_url?.let {
+                        giveaway?.openGiveawayUrl?.let {
                             uriHandler.openUri(it)
                         }
                     }
@@ -100,12 +98,12 @@ fun FreeGameDetailsScreen(
                     CommonCard(
                         modifier = Modifier.weight(1f),
                         title = "Published",
-                        subtitle = getFormattedDate(giveaway?.published_date?:"")?:""
+                        subtitle = getFormattedDate(giveaway?.publishedDate?:"")?:""
                     )
                     CommonCard(
                         modifier = Modifier.weight(1f),
                         title = "Offer Ending",
-                        subtitle = getFormattedDate(giveaway?.end_date?:"")?:""
+                        subtitle = getFormattedDate(giveaway?.endDate?:"")?:""
                     )
                 }
 
