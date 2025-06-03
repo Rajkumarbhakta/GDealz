@@ -20,6 +20,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedButton
@@ -115,6 +116,23 @@ fun DealLookupScreen(
                 }
             )
         },
+        bottomBar = {
+            Box(
+                modifier = Modifier.fillMaxWidth().padding(10.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Button(
+                    modifier = Modifier.fillMaxWidth(),
+                    onClick = {
+                        viewModel.redirectionUrl?.let { url ->
+                            uriHandler.openUri(url)
+                        }
+                    }
+                ) {
+                    Text(text = "Garb the deal")
+                }
+            }
+        }
     ) {
         Column(
             modifier = Modifier
@@ -382,18 +400,6 @@ fun DealLookupScreen(
 
                         }*/
 
-                    }
-
-                    ElevatedButton(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp, vertical = 8.dp),
-                        onClick = {
-                            viewModel.redirectionUrl?.let { url ->
-                                uriHandler.openUri(url)
-                            }
-                        }) {
-                        Text(text = "Garb the deal")
                     }
                 }
             }

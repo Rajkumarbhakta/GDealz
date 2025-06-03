@@ -99,4 +99,8 @@ dependencies {
     //lottie
     implementation (libs.lottie.compose)
 
+    //paging 3
+    implementation(libs.pagging.runtime)
+    implementation(libs.pagging.compose)
+
 }

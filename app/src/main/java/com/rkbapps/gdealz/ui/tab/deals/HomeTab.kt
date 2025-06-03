@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -41,6 +42,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
+import androidx.paging.LoadState
+import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.AsyncImage
 import com.rkbapps.gdealz.R
 import com.rkbapps.gdealz.models.Deals
@@ -57,6 +60,7 @@ import java.util.UUID
 @Composable
 fun HomeTab(navController: NavHostController,viewModel: HomeTabViewModel = hiltViewModel()) {
     val deals = viewModel.deals.collectAsStateWithLifecycle()
+    val dealsPagingData = viewModel.dealsPagingData.collectAsLazyPagingItems()
 
     Scaffold(
         topBar = {
@@ -92,7 +96,66 @@ fun HomeTab(navController: NavHostController,viewModel: HomeTabViewModel = hiltV
                 }
             }
 
-            when{
+            LazyColumn() {
+
+                when(dealsPagingData.loadState.refresh){
+                    is LoadState.Loading -> {
+                        items(10) {
+                            ShimmerDealsItem()
+                        }
+                    }
+                    is LoadState.Error -> {
+                        item {
+                            Text("Something went wrong...")
+                        }
+                    }
+                    is LoadState.NotLoading -> {}
+                }
+
+                items(
+                    count = dealsPagingData.itemCount,
+                ) {position->
+                    val deal = dealsPagingData[position]
+                    deal?.let {
+                        DealsItem(it) {
+                            navController.navigate(Routes.DealsLookup(
+                                dealId = it.dealID,
+                                title = it.title
+                            ))
+                        }
+                    }
+                }
+                when (dealsPagingData.loadState.append) {
+                    is LoadState.Loading -> {
+                        item {
+                            Box (modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(10.dp), contentAlignment = Alignment.Center){
+                                CircularProgressIndicator()
+                            }
+                        }
+                    }
+
+                    is LoadState.Error -> {
+                        item {
+                            Box (modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(10.dp), contentAlignment = Alignment.Center){
+                                Text("Something went wrong!")
+                            }
+                        }
+                    }
+                    is LoadState.NotLoading -> {}
+                }
+
+
+                item {
+                    Spacer(Modifier.height(10.dp))
+                }
+            }
+
+
+            /*when{
                 deals.value.isLoading->{
                     Box(
                         modifier = Modifier
@@ -127,7 +190,7 @@ fun HomeTab(navController: NavHostController,viewModel: HomeTabViewModel = hiltV
                         }
                     }
                 }
-            }
+            }*/
         }
     }
 }

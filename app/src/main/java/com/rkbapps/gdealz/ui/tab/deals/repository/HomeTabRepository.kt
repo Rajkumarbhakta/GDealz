@@ -1,9 +1,12 @@
 package com.rkbapps.gdealz.ui.tab.deals.repository
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
 import com.rkbapps.gdealz.api.ApiInterface
 import com.rkbapps.gdealz.api.NetworkResponse
 import com.rkbapps.gdealz.api.safeApiCall
 import com.rkbapps.gdealz.models.Deals
+import com.rkbapps.gdealz.ui.tab.deals.DealsPagingSource
 import com.rkbapps.gdealz.util.UiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,6 +18,7 @@ class HomeTabRepository @Inject constructor(private val api:ApiInterface) {
 
     private val _deals = MutableStateFlow(UiState<List<Deals>>())
     val deals = _deals.asStateFlow()
+
 
     suspend fun getAllDeals() {
         _deals.value = UiState(isLoading = true)
@@ -63,6 +67,12 @@ class HomeTabRepository @Inject constructor(private val api:ApiInterface) {
             }
         }
     }
+
+
+    fun getDealsPager() = Pager(
+        config = PagingConfig(pageSize = 20, maxSize = 100, initialLoadSize = 20),
+        pagingSourceFactory = { DealsPagingSource(api)}
+    ).flow
 
 
 

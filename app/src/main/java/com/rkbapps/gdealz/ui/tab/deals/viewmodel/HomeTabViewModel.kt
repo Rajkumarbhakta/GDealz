@@ -2,6 +2,7 @@ package com.rkbapps.gdealz.ui.tab.deals.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.cachedIn
 import com.rkbapps.gdealz.models.Deals
 import com.rkbapps.gdealz.ui.tab.deals.repository.HomeTabRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,7 +18,7 @@ class HomeTabViewModel @Inject constructor(private val repository: HomeTabReposi
 
         init {
             viewModelScope.launch {
-                repository.getAllDeals()
+                //repository.getAllDeals()
             }
         }
 
@@ -26,6 +27,8 @@ class HomeTabViewModel @Inject constructor(private val repository: HomeTabReposi
             repository.getDealsByFilter(storeId, upperPrice)
         }
     }
+
+    val dealsPagingData = repository.getDealsPager().cachedIn(viewModelScope)
 
 
 
