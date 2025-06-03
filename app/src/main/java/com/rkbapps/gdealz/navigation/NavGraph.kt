@@ -10,6 +10,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.rkbapps.gdealz.ui.screens.MainScreen
 import com.rkbapps.gdealz.ui.screens.dealslookup.DealLookupScreen
+import com.rkbapps.gdealz.ui.screens.free_game_details.FreeGameDetailsScreen
 import com.rkbapps.gdealz.ui.screens.splash.SplashScreen
 import com.rkbapps.gdealz.ui.tab.FavTab
 import com.rkbapps.gdealz.ui.tab.deals.HomeTab
@@ -62,6 +63,11 @@ fun NavGraphBuilder.destinations(navController: NavHostController) {
     composable<Routes.DealsLookup> {
         DealLookupScreen(navController)
     }
+
+    composable<Routes.FreeGameDetails> {
+        FreeGameDetailsScreen(navController)
+    }
+
 
 }
 

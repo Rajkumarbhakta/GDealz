@@ -20,6 +20,20 @@ object ApiConst {
         }
     }
 
+    fun getFormattedDate(dateString: String,format:String ="yyyy-MM-dd HH:mm:ss" ): String? {
+        return try {
+            val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+            val date = inputFormat.parse(dateString)
+            val outputFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            date?.let { outputFormat.format(it) } // Safely format if date is not null
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+
+
 
 }
 

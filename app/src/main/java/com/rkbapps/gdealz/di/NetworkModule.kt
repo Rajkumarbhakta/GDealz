@@ -1,5 +1,7 @@
 package com.rkbapps.gdealz.di
 
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.rkbapps.gdealz.api.ApiConst.BASE_URL
 import com.rkbapps.gdealz.api.ApiConst.BASE_URL_GAME_POWER
 import com.rkbapps.gdealz.api.ApiInterface
@@ -21,6 +23,11 @@ object NetworkModule {
     val okHttpClient = OkHttpClient.Builder()
         .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
         .build()
+
+
+    @Provides
+    @Singleton
+    fun provideGson(): Gson = GsonBuilder().create()
 
     @Provides
     @Singleton

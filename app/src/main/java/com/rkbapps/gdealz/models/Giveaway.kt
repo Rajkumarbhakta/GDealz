@@ -1,5 +1,9 @@
 package com.rkbapps.gdealz.models
 
+import kotlinx.serialization.Serializable
+
+
+@Serializable
 data class Giveaway(
     val description: String,
     val end_date: String,

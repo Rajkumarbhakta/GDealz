@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import com.rkbapps.gdealz.R
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -26,7 +27,7 @@ fun CommonTopBar(
     onNavigateBack: () -> Unit = {}
 ){
     TopAppBar(
-        title = { Text(text = title) },
+        title = { Text(text = title, maxLines = 1, overflow = TextOverflow.Ellipsis) },
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = Color.Transparent,
             titleContentColor = MaterialTheme.colorScheme.onPrimary

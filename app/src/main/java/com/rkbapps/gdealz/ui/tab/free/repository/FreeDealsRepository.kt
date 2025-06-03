@@ -1,6 +1,5 @@
 package com.rkbapps.gdealz.ui.tab.free.repository
 
-import android.util.Log
 import com.rkbapps.gdealz.api.GamePowerApi
 import com.rkbapps.gdealz.api.GiveawayPlatforms
 import com.rkbapps.gdealz.api.NetworkResponse
@@ -9,8 +8,8 @@ import com.rkbapps.gdealz.models.Giveaway
 import com.rkbapps.gdealz.ui.tab.free.FreeGameItemsPosition
 import com.rkbapps.gdealz.util.UiState
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import retrofit2.Response
 import javax.inject.Inject
 
 class FreeDealsRepository @Inject constructor(private val api: GamePowerApi) {
@@ -20,18 +19,29 @@ class FreeDealsRepository @Inject constructor(private val api: GamePowerApi) {
 
     suspend fun getFreeGames(platform: String = GiveawayPlatforms.PC) {
         _giveaways.value = UiState(isLoading = true)
-        when(val response = safeApiCall { api.getGiveawayByFilter(platform = platform) }){
+        when (val response = safeApiCall { api.getGiveawayByFilter(platform = platform) }) {
             is NetworkResponse.Error.HttpError -> {
-                _giveaways.value = UiState(error = "Code : ${response.errorCode} Error : ${response.error.localizedMessage}")
+                _giveaways.value =
+                    UiState(error = "Code : ${response.errorCode} Error : ${response.error.localizedMessage}")
             }
+
             NetworkResponse.Error.NetworkError -> {
-                _giveaways.value = UiState(error = "Unable to connect please check your internet connection.")
+                _giveaways.value =
+                    UiState(error = "Unable to connect please check your internet connection.")
             }
+
             NetworkResponse.Error.UnknownError -> {
                 _giveaways.value = UiState(error = "Something went wrong")
             }
-            is NetworkResponse.Success<List<Giveaway>> -> {
-                _giveaways.value = UiState(data = response.value)
+
+            is NetworkResponse.Success<List<Giveaway>?> -> {
+                val data = response.value
+                if (data!=null) {
+                    _giveaways.value = UiState(data = data)
+                } else {
+                    _giveaways.value =
+                        UiState(error = "No active giveaways available at the moment, please try again later.")
+                }
             }
         }
     }
@@ -48,18 +58,29 @@ class FreeDealsRepository @Inject constructor(private val api: GamePowerApi) {
             else -> GiveawayPlatforms.PC
         }
 
-        when(val response = safeApiCall { api.getGiveawayByFilter(platform = platform) }){
+        when (val response = safeApiCall { api.getGiveawayByFilter(platform = platform) }) {
             is NetworkResponse.Error.HttpError -> {
-                _giveaways.value = UiState(error = "Code : ${response.errorCode} Error : ${response.error.localizedMessage}")
+                _giveaways.value =
+                    UiState(error = "Code : ${response.errorCode} Error : ${response.error.localizedMessage}")
             }
+
             NetworkResponse.Error.NetworkError -> {
-                _giveaways.value = UiState(error = "Unable to connect please check your internet connection.")
+                _giveaways.value =
+                    UiState(error = "Unable to connect please check your internet connection.")
             }
+
             NetworkResponse.Error.UnknownError -> {
                 _giveaways.value = UiState(error = "Something went wrong")
             }
-            is NetworkResponse.Success<List<Giveaway>> -> {
-                _giveaways.value = UiState(data = response.value)
+
+            is NetworkResponse.Success<List<Giveaway>?> -> {
+                val data = response.value
+                if (data!=null) {
+                    _giveaways.value = UiState(data = data)
+                } else {
+                    _giveaways.value =
+                        UiState(error = "No active giveaways available at the moment, please try again later.")
+                }
             }
         }
 

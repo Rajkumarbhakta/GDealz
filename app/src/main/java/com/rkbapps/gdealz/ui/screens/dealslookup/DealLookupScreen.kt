@@ -54,6 +54,7 @@ import coil.compose.AsyncImage
 import com.rkbapps.gdealz.R
 import com.rkbapps.gdealz.api.ApiConst.IMAGE_URL
 import com.rkbapps.gdealz.api.ApiConst.getFormattedDate
+import com.rkbapps.gdealz.ui.composables.CommonCard
 import com.rkbapps.gdealz.ui.screens.dealslookup.viewmodel.DealLookupViewModel
 import com.rkbapps.gdealz.util.calculatePercentage
 
@@ -343,8 +344,16 @@ fun DealLookupScreen(
                             Spacer(modifier = Modifier.width(10.dp))
                         }
 
+                        CommonCard(
+                            modifier = Modifier
+                                .weight(1f)
+                                .align(Alignment.CenterVertically),
+                            title = "Release Date",
+                            subtitle = getFormattedDate(dealsData.value.data?.gameInfo?.releaseDate)
+                                ?: "Unknown"
+                        )
 
-                        Card(
+                       /* Card(
                             modifier = Modifier
                                 .weight(1f)
                                 .align(Alignment.CenterVertically)
@@ -371,7 +380,7 @@ fun DealLookupScreen(
 
                             }
 
-                        }
+                        }*/
 
                     }
 

@@ -2,14 +2,18 @@ package com.rkbapps.gdealz.ui.tab.free.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.gson.Gson
+import com.rkbapps.gdealz.models.Giveaway
 import com.rkbapps.gdealz.ui.tab.free.repository.FreeDealsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class FreeDealsViewModel @Inject constructor(private val repository: FreeDealsRepository):ViewModel() {
+class FreeDealsViewModel @Inject constructor(
+    private val repository: FreeDealsRepository,
+    private val gson: Gson
+) : ViewModel() {
     val giveaway = repository.giveaway
 
 //    val currentSelectedOption = repository.currentSelectedOption
@@ -20,7 +24,7 @@ class FreeDealsViewModel @Inject constructor(private val repository: FreeDealsRe
         }
     }
 
-    fun getGiveaways(currentSelectedOption:Int){
+    fun getGiveaways(currentSelectedOption: Int) {
         viewModelScope.launch {
             repository.getFreeGamesByFilter(currentSelectedOption = currentSelectedOption)
         }
@@ -29,6 +33,10 @@ class FreeDealsViewModel @Inject constructor(private val repository: FreeDealsRe
 //    fun changeCurrentPosition(position: Int){
 //        repository.changeCurrentPosition(position)
 //    }
+
+    fun getGiveawayJson(giveaway: Giveaway): String {
+        return gson.toJson(giveaway)
+    }
 
 
 }

@@ -37,6 +37,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.rkbapps.gdealz.models.Giveaway
+import com.rkbapps.gdealz.navigation.Routes
 import com.rkbapps.gdealz.ui.composables.CommonTopBar
 import com.rkbapps.gdealz.ui.tab.free.viewmodel.FreeDealsViewModel
 import com.rkbapps.gdealz.util.ErrorScreen
@@ -144,10 +145,11 @@ fun FreeDealsTab(
                     giveaways.value.data != null -> {
                         LazyColumn {
                             items(
-                                giveaways.value.data!!
+                                giveaways.value.data?:emptyList()
                             ) {
                                 FreeGameItems(it) {
-
+                                    val giveaway = viewModel.getGiveawayJson(it)
+                                    navController.navigate(Routes.FreeGameDetails(giveaway))
                                 }
                             }
                         }
