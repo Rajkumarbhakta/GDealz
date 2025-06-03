@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -18,13 +19,10 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
@@ -42,6 +40,7 @@ import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.rkbapps.gdealz.R
 import com.rkbapps.gdealz.models.Game
+import com.rkbapps.gdealz.navigation.Routes
 import com.rkbapps.gdealz.ui.composables.CommonTopBar
 import com.rkbapps.gdealz.ui.tab.deals.ShimmerDealsItem
 import com.rkbapps.gdealz.ui.tab.search.viewmodel.SearchViewModel
@@ -60,7 +59,6 @@ fun SearchTab(
         mutableStateOf("")
     }
 
-
     Scaffold(
         topBar = {
             CommonTopBar(title = "Search")
@@ -72,7 +70,8 @@ fun SearchTab(
                 .padding(it),
         ) {
 
-            OutlinedTextField(value = query.value, onValueChange = {
+            OutlinedTextField(
+                value = query.value, onValueChange = {
                 query.value = it
             },
                 modifier = Modifier
@@ -124,18 +123,23 @@ fun SearchTab(
             } else {
                 if (!searchResult.value.isLoading && searchResult.value.data.isNotEmpty()) {
                     LazyColumn {
-                        items(count = searchResult.value.data.size, key = {
+                        items(searchResult.value.data, key = {
                             it.hashCode()
-                        }) { position ->
-                            SearchItem(game = searchResult.value.data[position]) {
-
+                        }) { game ->
+                            SearchItem(game = game) {
+                                navController.navigate(
+                                    Routes.DealsLookup(
+                                        title = game.external,
+                                        dealId = game.cheapestDealID
+                                    )
+                                )
                             }
                         }
                     }
                 } else {
-                    if (searchResult.value.data.isEmpty()){
+                    if (searchResult.value.data.isEmpty()) {
                         ErrorScreen("Nothing Found")
-                    }else{
+                    } else {
                         searchResult.value.userMessage?.let {
                             ErrorScreen(it)
                         }

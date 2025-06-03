@@ -34,7 +34,9 @@ fun CommonCard(
 
             Text(
                 text = title,
-                style = MaterialTheme.typography.titleMedium
+                style = MaterialTheme.typography.titleMedium.copy(
+                    fontWeight = FontWeight.Bold
+                )
             )
             Text(
                 text = subtitle,

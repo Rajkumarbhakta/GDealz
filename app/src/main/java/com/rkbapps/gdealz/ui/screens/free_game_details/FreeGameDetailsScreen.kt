@@ -18,6 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -40,14 +41,14 @@ fun FreeGameDetailsScreen(
     Scaffold(
         topBar = {
             CommonTopBar(
-                title = giveaway?.title?:"",
+                title = giveaway?.title ?: "",
                 isNavigationBack = true
-            ){
+            ) {
                 navController.navigateUp()
             }
         },
         bottomBar = {
-            Box(modifier = Modifier.padding(10.dp), contentAlignment = Alignment.Center){
+            Box(modifier = Modifier.padding(10.dp), contentAlignment = Alignment.Center) {
                 Button(
                     modifier = Modifier.fillMaxWidth(),
                     onClick = {
@@ -60,9 +61,11 @@ fun FreeGameDetailsScreen(
                 }
             }
         }
-    ) {innerPadding->
-        Column(modifier = Modifier.fillMaxSize()
-            .padding(innerPadding),
+    ) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
 
@@ -72,21 +75,29 @@ fun FreeGameDetailsScreen(
                 modifier = Modifier.fillMaxWidth()
             )
 
-            Column(modifier = Modifier.fillMaxSize()
-                .padding(vertical = 8.dp, horizontal = 16.dp).verticalScroll(rememberScrollState())
-                ,
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(vertical = 8.dp, horizontal = 16.dp)
+                    .verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-                Text(giveaway?.title?:"", style = MaterialTheme.typography.titleLarge)
+                Text(giveaway?.title ?: "", style = MaterialTheme.typography.titleLarge)
 
-                Text("Description", style = MaterialTheme.typography.titleMedium)
-                Text(giveaway?.description?:"")
+                Text(
+                    "Description",
+                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
+                )
+                Text(giveaway?.description ?: "")
 
-                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
                     CommonCard(
                         modifier = Modifier.weight(1f),
                         title = "Platform",
-                        subtitle = giveaway?.platforms?:""
+                        subtitle = giveaway?.platforms ?: ""
                     )
                     CommonCard(
                         modifier = Modifier.weight(1f),
@@ -94,23 +105,27 @@ fun FreeGameDetailsScreen(
                         subtitle = "${giveaway?.type}"
                     )
                 }
-                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
                     CommonCard(
                         modifier = Modifier.weight(1f),
                         title = "Published",
-                        subtitle = getFormattedDate(giveaway?.publishedDate?:"")?:""
+                        subtitle = getFormattedDate(giveaway?.publishedDate ?: "") ?: ""
                     )
                     CommonCard(
                         modifier = Modifier.weight(1f),
                         title = "Offer Ending",
-                        subtitle = getFormattedDate(giveaway?.endDate?:"")?:""
+                        subtitle = getFormattedDate(giveaway?.endDate ?: "") ?: ""
                     )
                 }
 
-                Text("Instruction", style = MaterialTheme.typography.titleMedium)
-                Text(giveaway?.instructions?:"",)
-
-
+                Text(
+                    "Instruction",
+                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
+                )
+                Text(giveaway?.instructions ?: "")
 
             }
         }

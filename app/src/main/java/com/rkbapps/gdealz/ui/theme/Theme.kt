@@ -78,7 +78,7 @@ private val DarkColors = darkColorScheme(
 @Composable
 fun GDealzTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    dynamicColor: Boolean = false,
+    dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {

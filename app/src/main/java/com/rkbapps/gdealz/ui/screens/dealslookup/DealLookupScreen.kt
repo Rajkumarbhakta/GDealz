@@ -1,5 +1,6 @@
 package com.rkbapps.gdealz.ui.screens.dealslookup
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -116,19 +117,21 @@ fun DealLookupScreen(
             )
         },
         bottomBar = {
-            Box(
-                modifier = Modifier.fillMaxWidth().padding(10.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                Button(
-                    modifier = Modifier.fillMaxWidth(),
-                    onClick = {
-                        viewModel.redirectionUrl?.let { url ->
-                            uriHandler.openUri(url)
-                        }
-                    }
+            AnimatedVisibility(dealsData.value.data!=null){
+                Box(
+                    modifier = Modifier.fillMaxWidth().padding(10.dp),
+                    contentAlignment = Alignment.Center
                 ) {
-                    Text(text = "Garb the deal")
+                    Button(
+                        modifier = Modifier.fillMaxWidth(),
+                        onClick = {
+                            viewModel.redirectionUrl?.let { url ->
+                                uriHandler.openUri(url)
+                            }
+                        }
+                    ) {
+                        Text(text = "Garb the deal")
+                    }
                 }
             }
         }
