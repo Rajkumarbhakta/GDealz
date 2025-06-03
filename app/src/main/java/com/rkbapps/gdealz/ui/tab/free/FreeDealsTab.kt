@@ -145,7 +145,8 @@ fun FreeDealsTab(
                     giveaways.value.data != null -> {
                         LazyColumn {
                             items(
-                                giveaways.value.data?:emptyList()
+                                giveaways.value.data?:emptyList(),
+                                key = { it.id }
                             ) {
                                 FreeGameItems(it) {
                                     val giveaway = viewModel.getGiveawayJson(it)

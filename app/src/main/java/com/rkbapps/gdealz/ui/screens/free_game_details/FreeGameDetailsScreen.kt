@@ -104,7 +104,7 @@ fun FreeGameDetailsScreen(
                     )
                     CommonCard(
                         modifier = Modifier.weight(1f),
-                        title = "Offer Ended",
+                        title = "Offer Ending",
                         subtitle = getFormattedDate(giveaway?.end_date?:"")?:""
                     )
                 }
