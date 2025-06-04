@@ -109,7 +109,7 @@ fun DealsItem(deals: Deals, onClick: () -> Unit) {
 
 
             Text(
-                text = if (isFree) "Free" else "-${percentage}%",
+                text = if (isFree) "Free" else "${percentage}%",
                 color = if (isFree) darkGreen else
                     MaterialTheme.colorScheme.primary,
                 modifier = Modifier

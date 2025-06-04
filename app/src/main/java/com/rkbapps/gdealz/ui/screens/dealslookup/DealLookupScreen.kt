@@ -211,7 +211,7 @@ fun DealLookupScreen(
                                     val isFree = remember { (dealsData.value.data?.gameInfo?.salePrice ?: "").contains("0.00") }
 
                                     Text(
-                                        text = if (isFree) "Free" else "-${percentage}% OFF",
+                                        text = if (isFree) "Free" else "${percentage}% OFF",
                                         color = if (isFree) darkGreen else
                                             MaterialTheme.colorScheme.primary,
                                         modifier = Modifier
