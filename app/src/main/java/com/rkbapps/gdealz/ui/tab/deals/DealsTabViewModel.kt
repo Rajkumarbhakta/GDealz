@@ -1,27 +1,26 @@
-package com.rkbapps.gdealz.ui.tab.deals.viewmodel
+package com.rkbapps.gdealz.ui.tab.deals
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
-import com.rkbapps.gdealz.models.Deals
 import com.rkbapps.gdealz.models.Filter
-import com.rkbapps.gdealz.ui.tab.deals.repository.HomeTabRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeTabViewModel @Inject constructor(private val repository: HomeTabRepository) :
+class DealsTabViewModel @Inject constructor(private val repository: DealsTabRepository) :
     ViewModel() {
 
         val deals  = repository.deals
 
         val filter = repository.filter
 
-        val stores = repository.storeFlow.stateIn(viewModelScope,SharingStarted.WhileSubscribed(5_000), emptyList())
+        val stores = repository.storeFlow.stateIn(
+            viewModelScope,
+            SharingStarted.Companion.WhileSubscribed(5_000), emptyList())
 
 
         init {

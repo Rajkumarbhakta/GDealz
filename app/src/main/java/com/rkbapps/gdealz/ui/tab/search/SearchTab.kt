@@ -21,7 +21,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -43,9 +42,8 @@ import com.rkbapps.gdealz.R
 import com.rkbapps.gdealz.models.Game
 import com.rkbapps.gdealz.navigation.Routes
 import com.rkbapps.gdealz.ui.composables.CommonTopBar
-import com.rkbapps.gdealz.ui.tab.deals.ShimmerDealsItem
-import com.rkbapps.gdealz.ui.tab.search.viewmodel.SearchViewModel
-import com.rkbapps.gdealz.util.ErrorScreen
+import com.rkbapps.gdealz.ui.composables.ErrorScreen
+import com.rkbapps.gdealz.ui.tab.deals.composables.DealsItemShimmer
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -115,7 +113,7 @@ fun SearchTab(
                     items(count = 20, key = {
                         it.hashCode()
                     }) {
-                        ShimmerDealsItem()
+                        DealsItemShimmer()
                     }
                 }
             } else {

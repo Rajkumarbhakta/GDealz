@@ -2,9 +2,9 @@ package com.rkbapps.gdealz.ui.tab.deals
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.rkbapps.gdealz.api.ApiInterface
-import com.rkbapps.gdealz.api.NetworkResponse
-import com.rkbapps.gdealz.api.safeApiCall
+import com.rkbapps.gdealz.network.ApiInterface
+import com.rkbapps.gdealz.network.NetworkResponse
+import com.rkbapps.gdealz.network.safeApiCall
 import com.rkbapps.gdealz.models.Deals
 import com.rkbapps.gdealz.models.Filter
 

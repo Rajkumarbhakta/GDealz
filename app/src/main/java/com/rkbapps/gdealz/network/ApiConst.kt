@@ -1,4 +1,4 @@
-package com.rkbapps.gdealz.api
+package com.rkbapps.gdealz.network
 
 import java.text.SimpleDateFormat
 import java.util.Locale

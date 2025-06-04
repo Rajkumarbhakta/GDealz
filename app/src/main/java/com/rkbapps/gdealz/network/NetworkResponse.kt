@@ -1,4 +1,4 @@
-package com.rkbapps.gdealz.api
+package com.rkbapps.gdealz.network
 
 import retrofit2.HttpException
 import java.net.UnknownHostException

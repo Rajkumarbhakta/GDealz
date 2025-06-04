@@ -1,6 +1,7 @@
 package com.rkbapps.gdealz.ui.composables
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -24,6 +25,7 @@ import com.rkbapps.gdealz.R
 fun CommonTopBar(
     title: String,
     isNavigationBack: Boolean = false,
+    actions: @Composable (RowScope.() -> Unit) = {},
     onNavigateBack: () -> Unit = {}
 ){
     TopAppBar(
@@ -49,6 +51,7 @@ fun CommonTopBar(
                     Icon(imageVector = Icons.AutoMirrored.Default.ArrowBack,"back")
                 }
             }
-        }
+        },
+        actions = actions
     )
 }

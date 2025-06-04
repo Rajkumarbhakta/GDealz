@@ -1,17 +1,15 @@
-package com.rkbapps.gdealz.ui.tab.search.repository
+package com.rkbapps.gdealz.ui.tab.search
 
-import com.rkbapps.gdealz.api.ApiInterface
-import com.rkbapps.gdealz.ui.tab.search.SearchUiState
+import com.rkbapps.gdealz.network.ApiInterface
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
-class SearchRepository @Inject constructor(private val api:ApiInterface) {
+class SearchRepository @Inject constructor(private val api: ApiInterface) {
 
     private val _searchResult = MutableStateFlow(SearchUiState(isLoading = true))
 
-    val searchResult:StateFlow<SearchUiState> = _searchResult
+    val searchResult: StateFlow<SearchUiState> = _searchResult
 
 
     suspend fun getSearchResult(query:String){

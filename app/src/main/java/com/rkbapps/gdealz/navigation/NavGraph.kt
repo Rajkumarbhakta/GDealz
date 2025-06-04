@@ -10,7 +10,7 @@ import com.rkbapps.gdealz.ui.screens.dealslookup.DealLookupScreen
 import com.rkbapps.gdealz.ui.screens.free_game_details.FreeGameDetailsScreen
 import com.rkbapps.gdealz.ui.screens.splash.SplashScreen
 import com.rkbapps.gdealz.ui.tab.fav.FavTab
-import com.rkbapps.gdealz.ui.tab.deals.HomeTab
+import com.rkbapps.gdealz.ui.tab.deals.DealsTab
 import com.rkbapps.gdealz.ui.tab.free.FreeDealsTab
 import com.rkbapps.gdealz.ui.tab.search.SearchTab
 
@@ -29,7 +29,7 @@ fun BottomNavigationNavGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Routes.Home,
+        startDestination = Routes.Deals,
     ) {
         destinations(navController)
     }
@@ -40,8 +40,8 @@ fun NavGraphBuilder.destinations(navController: NavHostController) {
     composable<Routes.Splash> {
         SplashScreen(navController)
     }
-    composable<Routes.Home> {
-        HomeTab(navController)
+    composable<Routes.Deals> {
+        DealsTab(navController)
     }
     composable<Routes.Search> {
         SearchTab(navController)

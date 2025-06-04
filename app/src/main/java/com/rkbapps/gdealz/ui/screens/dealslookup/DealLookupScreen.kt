@@ -53,10 +53,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.rkbapps.gdealz.R
-import com.rkbapps.gdealz.api.ApiConst.IMAGE_URL
-import com.rkbapps.gdealz.api.ApiConst.getFormattedDate
+import com.rkbapps.gdealz.network.ApiConst.IMAGE_URL
+import com.rkbapps.gdealz.network.ApiConst.getFormattedDate
 import com.rkbapps.gdealz.ui.composables.CommonCard
-import com.rkbapps.gdealz.ui.screens.dealslookup.viewmodel.DealLookupViewModel
+import com.rkbapps.gdealz.ui.composables.CommonTopBar
+import com.rkbapps.gdealz.ui.screens.dealslookup.DealLookupViewModel
 import com.rkbapps.gdealz.util.calculatePercentage
 
 
@@ -76,37 +77,16 @@ fun DealLookupScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = viewModel.title ?: stringResource(id = R.string.app_name),
-                        maxLines = 1
-                    )
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimary
-                ),
-                navigationIcon = {
-                    FilledIconButton(
-                        onClick = { navController.navigateUp() },
-                        colors = IconButtonDefaults.filledIconButtonColors(
-                            containerColor = Color.White.copy(alpha = 0.2f),
-                            contentColor = Color.White
-                        )
-                    ) {
-                        Icon(imageVector = Icons.AutoMirrored.Default.ArrowBack, "back")
-                    }
-                },
+
+            CommonTopBar(title = viewModel.title ?: stringResource(id = R.string.app_name),
+                isNavigationBack = true,
                 actions = {
                     FilledIconButton(
                         onClick = {
                             dealsData.value.data?.let { viewModel.toggleFavDeal(it) }
                         },
-                        colors = IconButtonDefaults.filledIconButtonColors(
-                            containerColor = Color.White.copy(alpha = 0.2f),
-                            contentColor = Color.White
-                        )
+                        colors = IconButtonDefaults.filledIconButtonColors(containerColor = Color.White.copy(alpha = 0.2f),
+                            contentColor = Color.White)
                     ) {
                         Icon(
                             imageVector = if (isFav.value) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
@@ -114,7 +94,9 @@ fun DealLookupScreen(
                         )
                     }
                 }
-            )
+            ){
+                navController.navigateUp()
+            }
         },
         bottomBar = {
             AnimatedVisibility(dealsData.value.data!=null){
@@ -143,7 +125,6 @@ fun DealLookupScreen(
                 .verticalScroll(rememberScrollState())
         )
         {
-
             when {
                 dealsData.value.isLoading -> {
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center){

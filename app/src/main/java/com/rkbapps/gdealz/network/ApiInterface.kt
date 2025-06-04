@@ -1,4 +1,4 @@
-package com.rkbapps.gdealz.api
+package com.rkbapps.gdealz.network
 
 import com.rkbapps.gdealz.models.Deals
 import com.rkbapps.gdealz.models.DealsInfo

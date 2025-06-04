@@ -1,27 +1,25 @@
-package com.rkbapps.gdealz.ui.screens.dealslookup.viewmodel
+package com.rkbapps.gdealz.ui.screens.dealslookup
 
 import androidx.compose.runtime.State
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import com.rkbapps.gdealz.api.ApiConst.redirect
 import com.rkbapps.gdealz.db.entity.Store
 import com.rkbapps.gdealz.models.DealsInfo
 import com.rkbapps.gdealz.navigation.Routes
-import com.rkbapps.gdealz.ui.screens.dealslookup.repository.DealLookupRepository
-import com.rkbapps.gdealz.ui.screens.dealslookup.repository.FavDealsState
+import com.rkbapps.gdealz.network.ApiConst
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlinx.coroutines.Dispatchers
 
 @HiltViewModel
 class DealLookupViewModel @Inject constructor(
     private val repository: DealLookupRepository,
     savedStateHandle: SavedStateHandle
-):ViewModel() {
+): ViewModel() {
 
     val dealData = repository.dealsData
     val isFavDeal: State<Boolean> = repository.isFavDeal
@@ -60,6 +58,6 @@ class DealLookupViewModel @Inject constructor(
         repository.getDealsInfo(id)
     }
 
-    val redirectionUrl = dealLookup.dealId?.let { id -> redirect(id) }
+    val redirectionUrl = dealLookup.dealId?.let { id -> ApiConst.redirect(id) }
 
 }

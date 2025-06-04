@@ -1,6 +1,6 @@
 package com.rkbapps.gdealz.models
 
-import com.rkbapps.gdealz.api.ShortingOptions
+import com.rkbapps.gdealz.network.ShortingOptions
 
 data class Filter(
     val store:Int? = null,

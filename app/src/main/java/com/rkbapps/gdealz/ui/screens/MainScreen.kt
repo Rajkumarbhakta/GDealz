@@ -12,7 +12,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.rkbapps.gdealz.navigation.BottomNavigationItem
 import com.rkbapps.gdealz.navigation.BottomNavigationNavGraph
-import com.rkbapps.gdealz.ui.tab.BottomNavigationBar
+import com.rkbapps.gdealz.ui.composables.BottomNavigationBar
 
 
 @Composable

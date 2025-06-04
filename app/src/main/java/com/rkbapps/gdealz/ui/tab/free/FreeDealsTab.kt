@@ -39,8 +39,7 @@ import coil.compose.AsyncImage
 import com.rkbapps.gdealz.models.Giveaway
 import com.rkbapps.gdealz.navigation.Routes
 import com.rkbapps.gdealz.ui.composables.CommonTopBar
-import com.rkbapps.gdealz.ui.tab.free.viewmodel.FreeDealsViewModel
-import com.rkbapps.gdealz.util.ErrorScreen
+import com.rkbapps.gdealz.ui.composables.ErrorScreen
 import com.rkbapps.gdealz.util.shimmerBrush
 
 @OptIn(ExperimentalMaterial3Api::class)

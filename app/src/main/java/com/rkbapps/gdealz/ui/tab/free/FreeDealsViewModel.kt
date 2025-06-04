@@ -1,10 +1,9 @@
-package com.rkbapps.gdealz.ui.tab.free.viewmodel
+package com.rkbapps.gdealz.ui.tab.free
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
 import com.rkbapps.gdealz.models.Giveaway
-import com.rkbapps.gdealz.ui.tab.free.repository.FreeDealsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

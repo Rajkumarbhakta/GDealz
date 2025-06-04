@@ -2,10 +2,10 @@ package com.rkbapps.gdealz.di
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.rkbapps.gdealz.api.ApiConst.BASE_URL
-import com.rkbapps.gdealz.api.ApiConst.BASE_URL_GAME_POWER
-import com.rkbapps.gdealz.api.ApiInterface
-import com.rkbapps.gdealz.api.GamePowerApi
+import com.rkbapps.gdealz.network.ApiConst.BASE_URL
+import com.rkbapps.gdealz.network.ApiConst.BASE_URL_GAME_POWER
+import com.rkbapps.gdealz.network.ApiInterface
+import com.rkbapps.gdealz.network.GamePowerApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

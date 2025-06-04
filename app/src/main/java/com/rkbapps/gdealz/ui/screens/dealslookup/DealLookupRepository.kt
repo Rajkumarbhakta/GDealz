@@ -1,10 +1,10 @@
-package com.rkbapps.gdealz.ui.screens.dealslookup.repository
+package com.rkbapps.gdealz.ui.screens.dealslookup
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import com.rkbapps.gdealz.api.ApiInterface
-import com.rkbapps.gdealz.api.NetworkResponse
-import com.rkbapps.gdealz.api.safeApiCall
+import com.rkbapps.gdealz.network.ApiInterface
+import com.rkbapps.gdealz.network.NetworkResponse
+import com.rkbapps.gdealz.network.safeApiCall
 import com.rkbapps.gdealz.db.dao.FavDealsDao
 import com.rkbapps.gdealz.db.dao.StoreDao
 import com.rkbapps.gdealz.db.entity.FavDeals

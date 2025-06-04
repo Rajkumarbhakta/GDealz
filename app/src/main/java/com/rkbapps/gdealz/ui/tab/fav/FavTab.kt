@@ -3,6 +3,7 @@ package com.rkbapps.gdealz.ui.tab.fav
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -35,7 +36,7 @@ import coil.compose.AsyncImage
 import com.rkbapps.gdealz.db.entity.FavDeals
 import com.rkbapps.gdealz.navigation.Routes
 import com.rkbapps.gdealz.ui.composables.CommonTopBar
-import com.rkbapps.gdealz.util.ErrorScreen
+import com.rkbapps.gdealz.ui.composables.ErrorScreen
 
 @Composable
 fun FavTab(
@@ -97,6 +98,9 @@ fun FavTab(
                 ErrorScreen("Nothing here..")
             } else {
                 LazyColumn(Modifier.fillMaxSize()) {
+                    item{
+                        Spacer(Modifier.height(10.dp))
+                    }
                     items(favList.value) {
                         FavItem(it, onDelete = {
                             deletableFav.value = it
@@ -108,6 +112,9 @@ fun FavTab(
                                 )
                             )
                         }
+                    }
+                    item{
+                        Spacer(Modifier.height(10.dp))
                     }
                 }
             }

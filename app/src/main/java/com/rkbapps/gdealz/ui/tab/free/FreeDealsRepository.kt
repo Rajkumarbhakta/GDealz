@@ -1,15 +1,13 @@
-package com.rkbapps.gdealz.ui.tab.free.repository
+package com.rkbapps.gdealz.ui.tab.free
 
-import com.rkbapps.gdealz.api.GamePowerApi
-import com.rkbapps.gdealz.api.GiveawayPlatforms
-import com.rkbapps.gdealz.api.NetworkResponse
-import com.rkbapps.gdealz.api.safeApiCall
+import com.rkbapps.gdealz.network.GamePowerApi
+import com.rkbapps.gdealz.network.GiveawayPlatforms
+import com.rkbapps.gdealz.network.NetworkResponse
+import com.rkbapps.gdealz.network.safeApiCall
 import com.rkbapps.gdealz.models.Giveaway
-import com.rkbapps.gdealz.ui.tab.free.FreeGameItemsPosition
 import com.rkbapps.gdealz.util.UiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import retrofit2.Response
 import javax.inject.Inject
 
 class FreeDealsRepository @Inject constructor(private val api: GamePowerApi) {

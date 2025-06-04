@@ -1,7 +1,7 @@
 package com.rkbapps.gdealz.navigation
 
-import com.rkbapps.gdealz.models.Giveaway
 import kotlinx.serialization.Serializable
+
 
 sealed class Routes {
 
@@ -12,7 +12,7 @@ sealed class Routes {
     data object Splash : Routes()
 
     @Serializable
-    data object Home : Routes()
+    data object Deals : Routes()
 
     @Serializable
     data object Search : Routes()
@@ -24,15 +24,10 @@ sealed class Routes {
     data object FreeDeals : Routes()
 
     @Serializable
-    data class DealsLookup(
-        val dealId: String?,
-        val title:String?
-    ) : Routes()
+    data class DealsLookup(val dealId: String?, val title: String?) : Routes()
 
     @Serializable
-    data class FreeGameDetails(
-        val giveaway: String,
-    ):Routes()
+    data class FreeGameDetails(val giveaway: String) : Routes()
 
 
 }

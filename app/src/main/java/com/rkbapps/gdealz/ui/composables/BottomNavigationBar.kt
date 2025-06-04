@@ -1,4 +1,4 @@
-package com.rkbapps.gdealz.ui.tab
+package com.rkbapps.gdealz.ui.composables
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.material3.Icon

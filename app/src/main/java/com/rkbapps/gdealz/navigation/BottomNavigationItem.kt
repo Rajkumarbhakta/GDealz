@@ -7,7 +7,7 @@ sealed class BottomNavigationItem(
     val title: String,
     val icon: Int,
 ) {
-    data object Deals : BottomNavigationItem(Routes.Home, "Deals", R.drawable.shoppingcart)
+    data object Deals : BottomNavigationItem(Routes.Deals, "Deals", R.drawable.shoppingcart)
     data object Search :
         BottomNavigationItem(Routes.Search, title = "Search", icon = R.drawable.search)
 

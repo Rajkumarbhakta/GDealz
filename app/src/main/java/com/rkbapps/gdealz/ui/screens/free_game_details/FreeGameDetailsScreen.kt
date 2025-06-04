@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
-import com.rkbapps.gdealz.api.ApiConst.getFormattedDate
+import com.rkbapps.gdealz.network.ApiConst.getFormattedDate
 import com.rkbapps.gdealz.ui.composables.CommonCard
 import com.rkbapps.gdealz.ui.composables.CommonTopBar
 
