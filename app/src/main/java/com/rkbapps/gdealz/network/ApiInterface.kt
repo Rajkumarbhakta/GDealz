@@ -33,7 +33,7 @@ interface ApiInterface {
 
 
     @GET("games")
-    suspend fun getGames(@Query("title") title: String): Response<List<Game>>
+    suspend fun getGames(@Query("title") title: String): List<Game>
 
     @GET("games")
     suspend fun getGameInfo(@Query("id") id: Int): Response<GameLookUp>

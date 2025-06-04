@@ -51,23 +51,17 @@ fun FreeDealsTab(
 
     val giveaways = viewModel.giveaway.collectAsStateWithLifecycle()
 
-    val currentSelectedOption = rememberSaveable {
-        mutableIntStateOf(FreeGameItemsPosition.PC)
-    }
+    val currentSelectedOption = rememberSaveable { mutableIntStateOf(FreeGameItemsPosition.PC) }
 
     Scaffold(
         topBar = { CommonTopBar(title = "Free") },
     ) { paddingValue ->
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValue)
+            modifier = Modifier.fillMaxSize().padding(paddingValue)
         ) {
             Spacer(modifier = Modifier.height(16.dp))
             Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp,)
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp,)
             ) {
                 Row(
                     Modifier.fillMaxWidth(),
