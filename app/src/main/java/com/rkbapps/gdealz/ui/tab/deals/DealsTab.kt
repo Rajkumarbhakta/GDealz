@@ -87,11 +87,14 @@ fun DealsTab(navController: NavHostController, viewModel: DealsTabViewModel = hi
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(
-                    text = "Fresh Deals",
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Bold,
-                )
+                Column {
+                    Text(
+                        text = "Fresh Deals",
+                        style = MaterialTheme.typography.headlineMedium,
+                        fontWeight = FontWeight.W400,
+                    )
+                    Text("Hot gaming deals updated daily")
+                }
                 IconButton(onClick = {
                     isFilterDialogVisible.value = true
                 }) {
@@ -101,6 +104,8 @@ fun DealsTab(navController: NavHostController, viewModel: DealsTabViewModel = hi
                     )
                 }
             }
+
+            Spacer(modifier = Modifier.height(10.dp))
 
             LazyColumn(
                 modifier = Modifier
