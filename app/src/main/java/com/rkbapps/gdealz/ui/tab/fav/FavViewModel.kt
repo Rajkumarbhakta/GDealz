@@ -26,4 +26,10 @@ class FavViewModel @Inject constructor(
         }
     }
 
+    fun deleteAllFav(){
+        viewModelScope.launch {
+            repository.deleteAllFav()
+        }
+    }
+
 }

@@ -35,6 +35,9 @@ interface FavDealsDao {
     @Query("select exists(select * from `fav-deals` where dealID=:dealID)")
     suspend fun isExistsByDealID(dealID:String):Boolean
 
+    @Query("delete from `fav-deals`")
+    suspend fun deleteAllFavDeals()
+
 
 
 

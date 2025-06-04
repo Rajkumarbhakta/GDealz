@@ -18,7 +18,12 @@ class FavRepository @Inject constructor(
         }
     }
 
-
-
+    suspend fun deleteAllFav(){
+        try {
+            favDb.deleteAllFavDeals()
+        }catch (e: Exception){
+            e.printStackTrace()
+        }
+    }
 
 }
