@@ -13,8 +13,11 @@ object ApiConst {
     }
 
     fun getFormattedDate(timestamp: Long?): String? {
+
+        // MMM dd, yyyy
+
         return try {
-            SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(timestamp)
+            SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).format(timestamp)
         }catch (e:Exception){
             null
         }
@@ -24,7 +27,7 @@ object ApiConst {
         return try {
             val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
             val date = inputFormat.parse(dateString)
-            val outputFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            val outputFormat = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
             date?.let { outputFormat.format(it) } // Safely format if date is not null
         } catch (e: Exception) {
             e.printStackTrace()

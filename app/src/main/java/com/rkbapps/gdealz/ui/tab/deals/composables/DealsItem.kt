@@ -118,8 +118,7 @@ fun DealsItem(deals: Deals, onClick: () -> Unit) {
                         color =
                             if (isFree) darkGreen.copy(alpha = 0.2f) else
                                 MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)
-                    )
-                    .padding(horizontal = 10.dp, vertical = 4.dp)
+                    ).padding(horizontal = 10.dp, vertical = 4.dp)
             )
             Spacer(modifier = Modifier.width(10.dp))
         }
