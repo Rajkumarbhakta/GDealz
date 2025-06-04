@@ -350,14 +350,15 @@ fun DealLookupScreen(
                                 Spacer(modifier = Modifier.width(10.dp))
                             }
 
+                            val releaseDate = remember { getFormattedDate(dealsData.value.data?.gameInfo?.releaseDate) }
+
                             CommonCard(
                                 modifier = Modifier
                                     .height(130.dp)
                                     .weight(1f)
                                     .align(Alignment.CenterVertically),
                                 title = "Release Info",
-                                subtitle = getFormattedDate(dealsData.value.data?.gameInfo?.releaseDate)
-                                    ?: "Unknown"
+                                subtitle = releaseDate ?: "Unknown"
                             )
 
                         }

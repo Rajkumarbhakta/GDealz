@@ -1,6 +1,10 @@
 package com.rkbapps.gdealz.network
 
+import android.icu.util.TimeZone
+import android.util.Log
+import java.lang.String.format
 import java.text.SimpleDateFormat
+import java.util.Date
 import java.util.Locale
 
 object ApiConst {
@@ -12,20 +16,29 @@ object ApiConst {
         return "$REDIRECT_URL?dealID=$dealId"
     }
 
-    fun getFormattedDate(timestamp: Long?): String? {
-
-        // MMM dd, yyyy
-
+    fun getFormattedDate(
+        timestamp: Long?,
+        format: String = "MMM dd, yyyy",
+        //timeZone: TimeZone = TimeZone.getDefault()
+    ): String? {
+        Log.d("TAG", "getFormattedDate: $timestamp")
+        if (timestamp==null || timestamp <= 0) {
+            return null // Return null if timestamp is invalid
+        }
         return try {
-            SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).format(timestamp)
-        }catch (e:Exception){
+            val date = Date(timestamp * 1000L)
+            val sdf = SimpleDateFormat(format, Locale.getDefault())
+            //sdf.timeZone = timeZone
+            sdf.format(date)
+        } catch (e: Exception) {
+            e.printStackTrace()
             null
         }
     }
 
     fun getFormattedDate(dateString: String,format:String ="yyyy-MM-dd HH:mm:ss" ): String? {
         return try {
-            val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+            val inputFormat = SimpleDateFormat(format, Locale.getDefault())
             val date = inputFormat.parse(dateString)
             val outputFormat = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
             date?.let { outputFormat.format(it) } // Safely format if date is not null
