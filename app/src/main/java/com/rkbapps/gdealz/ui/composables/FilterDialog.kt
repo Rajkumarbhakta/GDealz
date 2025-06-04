@@ -43,13 +43,6 @@ val filterOptions = listOf(
     "Order",
 )
 
-val fakeStores = listOf(
-    Store("1", "Epic Games", null, null, null),
-    Store("1", "Steam", null, null, null),
-    Store("1", "Epic Games", null, null, null),
-    Store("1", "Epic Games", null, null, null),
-)
-
 
 @Preview
 @Composable
@@ -121,8 +114,9 @@ fun FilterDialog(
             ) {
                 when (selectFilter) {
                     "Store" -> {
+                        val store = remember { stores.find { it.storeID == "${updatedFilter.store}" } }
                         StoreFilter(
-                            selectedStore = stores.find { it.storeID == "${updatedFilter.store}" },
+                            selectedStore = store,
                             stores = stores
                         ) { store ->
                             val storeId = try {
@@ -191,7 +185,7 @@ fun FilterDialog(
 @Composable
 fun StoreFilter(
     selectedStore: Store? = null,
-    stores: List<Store> = fakeStores,
+    stores: List<Store>,
     selectionChange: (Store?) -> Unit = {}
 ) {
     LazyColumn {

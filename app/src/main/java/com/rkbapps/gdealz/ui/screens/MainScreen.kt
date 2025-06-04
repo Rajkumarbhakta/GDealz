@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.navigation.NavHostController
@@ -17,12 +18,12 @@ import com.rkbapps.gdealz.ui.composables.BottomNavigationBar
 
 @Composable
 fun MainScreen(navController: NavHostController){
-    val navigationItems = listOf(
-        BottomNavigationItem.Deals,
-        BottomNavigationItem.Free,
-        BottomNavigationItem.Search,
-        BottomNavigationItem.Fav
-    )
+    val navigationItems = remember { listOf(
+            BottomNavigationItem.Deals,
+            BottomNavigationItem.Free,
+            BottomNavigationItem.Search,
+            BottomNavigationItem.Fav
+        ) }
     val navController = rememberNavController()
     Scaffold(
         bottomBar = {

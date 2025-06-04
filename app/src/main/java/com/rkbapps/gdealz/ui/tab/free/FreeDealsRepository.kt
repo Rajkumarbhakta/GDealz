@@ -29,7 +29,7 @@ class FreeDealsRepository @Inject constructor(private val api: GamePowerApi) {
             }
 
             NetworkResponse.Error.UnknownError -> {
-                _giveaways.value = UiState(error = "Something went wrong")
+                _giveaways.value = UiState(error = "No active giveaways available at the moment, please try again later.")
             }
 
             is NetworkResponse.Success<List<Giveaway>?> -> {
@@ -68,7 +68,7 @@ class FreeDealsRepository @Inject constructor(private val api: GamePowerApi) {
             }
 
             NetworkResponse.Error.UnknownError -> {
-                _giveaways.value = UiState(error = "Something went wrong")
+                _giveaways.value = UiState(error = "No active giveaways available at the moment, please try again later.")
             }
 
             is NetworkResponse.Success<List<Giveaway>?> -> {
