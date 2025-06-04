@@ -79,7 +79,7 @@ fun DealsItem(deals: Deals, onClick: () -> Unit) {
                 verticalArrangement = Arrangement.Center,
                 modifier = Modifier
                     .fillMaxHeight()
-                    .weight(0.8f)
+                    .weight(1f)
             ) {
                 Text(
                     text = deals.title ?: "",
