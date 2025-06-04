@@ -114,9 +114,8 @@ fun FilterDialog(
             ) {
                 when (selectFilter) {
                     "Store" -> {
-                        val store = remember { stores.find { it.storeID == "${updatedFilter.store}" } }
                         StoreFilter(
-                            selectedStore = store,
+                            selectedStore = stores.find { it.storeID == "${updatedFilter.store}" },
                             stores = stores
                         ) { store ->
                             val storeId = try {
