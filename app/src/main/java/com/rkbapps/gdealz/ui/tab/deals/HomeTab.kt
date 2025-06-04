@@ -14,10 +14,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -25,16 +23,11 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -58,12 +51,11 @@ import com.rkbapps.gdealz.ui.tab.deals.viewmodel.HomeTabViewModel
 import com.rkbapps.gdealz.util.ErrorScreen
 import com.rkbapps.gdealz.util.calculatePercentage
 import com.rkbapps.gdealz.util.shimmerBrush
-import java.util.UUID
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeTab(navController: NavHostController,viewModel: HomeTabViewModel = hiltViewModel()) {
+fun HomeTab(navController: NavHostController, viewModel: HomeTabViewModel = hiltViewModel()) {
     val deals = viewModel.deals.collectAsStateWithLifecycle()
     val dealsPagingData = viewModel.dealsPagingData.collectAsLazyPagingItems()
     val filter = viewModel.filter.collectAsStateWithLifecycle()
@@ -78,16 +70,17 @@ fun HomeTab(navController: NavHostController,viewModel: HomeTabViewModel = hiltV
         containerColor = MaterialTheme.colorScheme.background
     ) { innerPadding ->
 
-        if (isFilterDialogVisible.value){
-            Dialog(onDismissRequest = { isFilterDialogVisible.value = !isFilterDialogVisible.value }) {
+        if (isFilterDialogVisible.value) {
+            Dialog(onDismissRequest = {
+                isFilterDialogVisible.value = !isFilterDialogVisible.value
+            }) {
                 FilterDialog(
                     filter = filter.value,
                     stores = stores.value,
-                    onCancel = {isFilterDialogVisible.value = false}
-                ){
+                    onCancel = { isFilterDialogVisible.value = false }
+                ) {
                     viewModel.updateFilter(it)
                     isFilterDialogVisible.value = false
-                    Log.d("Filter", "FilterDialog: $it")
                 }
             }
         }
@@ -121,41 +114,59 @@ fun HomeTab(navController: NavHostController,viewModel: HomeTabViewModel = hiltV
                 }
             }
 
-            LazyColumn() {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 16.dp)
+                , verticalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
 
-                when(dealsPagingData.loadState.refresh){
+                when (dealsPagingData.loadState.refresh) {
                     is LoadState.Loading -> {
                         items(10) {
                             ShimmerDealsItem()
                         }
                     }
+
                     is LoadState.Error -> {
                         item {
-                            Text("Something went wrong...")
+                            ErrorScreen("Something went wrong...")
                         }
                     }
+
                     is LoadState.NotLoading -> {}
+                }
+
+                if (dealsPagingData.itemCount <= 0) {
+                    item {
+                        ErrorScreen("No Deals Found!")
+                    }
                 }
 
                 items(
                     count = dealsPagingData.itemCount,
-                ) {position->
+                ) { position ->
                     val deal = dealsPagingData[position]
                     deal?.let {
                         DealsItem(it) {
-                            navController.navigate(Routes.DealsLookup(
-                                dealId = it.dealID,
-                                title = it.title
-                            ))
+                            navController.navigate(
+                                Routes.DealsLookup(
+                                    dealId = it.dealID,
+                                    title = it.title
+                                )
+                            )
                         }
                     }
                 }
+
                 when (dealsPagingData.loadState.append) {
                     is LoadState.Loading -> {
                         item {
-                            Box (modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(10.dp), contentAlignment = Alignment.Center){
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(10.dp), contentAlignment = Alignment.Center
+                            ) {
                                 CircularProgressIndicator()
                             }
                         }
@@ -163,13 +174,10 @@ fun HomeTab(navController: NavHostController,viewModel: HomeTabViewModel = hiltV
 
                     is LoadState.Error -> {
                         item {
-                            Box (modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(10.dp), contentAlignment = Alignment.Center){
-                                Text("Something went wrong!")
-                            }
+                            ErrorScreen("Something went wrong!")
                         }
                     }
+
                     is LoadState.NotLoading -> {}
                 }
 
@@ -178,44 +186,6 @@ fun HomeTab(navController: NavHostController,viewModel: HomeTabViewModel = hiltV
                     Spacer(Modifier.height(10.dp))
                 }
             }
-
-
-            /*when{
-                deals.value.isLoading->{
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                    ) {
-                        LazyColumn {
-                            items(10) {
-                                ShimmerDealsItem()
-                            }
-                        }
-                    }
-                }
-                deals.value.error!=null ->{
-                    ErrorScreen(message = deals.value.error!!)
-                }
-                deals.value.data!=null->{
-                    LazyColumn() {
-
-                        items (
-                            deals.value.data!!,
-                            key = { it.dealID + it.key }
-                        ){
-                            DealsItem(it) {
-                                navController.navigate(Routes.DealsLookup(
-                                    dealId = it.dealID,
-                                    title = it.title
-                                ))
-                            }
-                        }
-                        item {
-                            Spacer(Modifier.height(10.dp))
-                        }
-                    }
-                }
-            }*/
         }
     }
 }
@@ -228,17 +198,15 @@ fun DealsItem(deals: Deals, onClick: () -> Unit) {
         onClick = {
             onClick.invoke()
         },
-        elevation = CardDefaults.cardElevation(4.dp),
         modifier = Modifier
-            .fillMaxSize()
-            .height(85.dp)
-            .padding(horizontal = 16.dp, vertical = 5.dp)
+            .fillMaxWidth()
+            .height(90.dp)
     ) {
         Row(
             horizontalArrangement = Arrangement.Center,
             modifier = Modifier
-                .fillMaxSize()
-                .padding(8.dp)
+                .fillMaxWidth()
+                .padding(10.dp)
         ) {
             AsyncImage(
                 model = deals.thumb,

@@ -21,6 +21,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -55,9 +56,7 @@ fun SearchTab(
 
     val searchResult = viewModel.searchResult.collectAsState()
 
-    val query = rememberSaveable {
-        mutableStateOf("")
-    }
+    val query = rememberSaveable { mutableStateOf("") }
 
     Scaffold(
         topBar = {
@@ -69,11 +68,10 @@ fun SearchTab(
                 .fillMaxSize()
                 .padding(it),
         ) {
-
             OutlinedTextField(
                 value = query.value, onValueChange = {
-                query.value = it
-            },
+                    query.value = it
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp, vertical = 8.dp),

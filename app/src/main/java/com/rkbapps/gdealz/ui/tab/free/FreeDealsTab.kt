@@ -56,11 +56,8 @@ fun FreeDealsTab(
         mutableIntStateOf(FreeGameItemsPosition.PC)
     }
 
-
     Scaffold(
-        topBar = {
-            CommonTopBar(title = "Free")
-        },
+        topBar = { CommonTopBar(title = "Free") },
     ) { paddingValue ->
         Column(
             modifier = Modifier
@@ -71,7 +68,7 @@ fun FreeDealsTab(
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 8.dp)
+                    .padding(horizontal = 16.dp,)
             ) {
                 Row(
                     Modifier.fillMaxWidth(),
@@ -114,19 +111,14 @@ fun FreeDealsTab(
                         viewModel.getGiveaways(currentSelectedOption.intValue)
                     }
                 }
-
-
             }
             Spacer(modifier = Modifier.height(10.dp))
 
             Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 8.dp)
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
             ) {
                 Text(text = "Games")
                 Spacer(modifier = Modifier.height(10.dp))
-
                 when {
                     giveaways.value.isLoading -> {
                         LazyColumn {
@@ -139,13 +131,16 @@ fun FreeDealsTab(
                     }
 
                     giveaways.value.error != null -> {
-                        ErrorScreen(giveaways.value.error!!)
+                        ErrorScreen(giveaways.value.error?:"Something went wrong")
                     }
 
                     giveaways.value.data != null -> {
-                        LazyColumn {
+                        LazyColumn(
+                            modifier = Modifier.fillMaxSize(),
+                            verticalArrangement = Arrangement.spacedBy(10.dp),
+                        ) {
                             items(
-                                giveaways.value.data?:emptyList(),
+                                giveaways.value.data ?: emptyList(),
                                 key = { it.id }
                             ) {
                                 FreeGameItems(it) {
@@ -208,9 +203,7 @@ fun FreeGameItems(item: Giveaway, onClick: () -> Unit) {
             onClick.invoke()
         },
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 4.dp),
-        elevation = CardDefaults.cardElevation(4.dp)
+            .fillMaxWidth(),
     ) {
         Column(Modifier.fillMaxWidth()) {
             AsyncImage(

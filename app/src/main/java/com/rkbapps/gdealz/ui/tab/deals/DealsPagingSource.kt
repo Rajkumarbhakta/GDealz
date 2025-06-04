@@ -7,12 +7,11 @@ import com.rkbapps.gdealz.api.NetworkResponse
 import com.rkbapps.gdealz.api.safeApiCall
 import com.rkbapps.gdealz.models.Deals
 import com.rkbapps.gdealz.models.Filter
-import retrofit2.HttpException
 
 class DealsPagingSource(
     private val api: ApiInterface,
     private val filter: Filter
-):PagingSource<Int, Deals>() {
+) : PagingSource<Int, Deals>() {
     override fun getRefreshKey(state: PagingState<Int, Deals>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
             val anchorPage = state.closestPageToPosition(anchorPosition)
@@ -31,22 +30,26 @@ class DealsPagingSource(
                     upperPrice = filter.upperPrice,
                     lowerPrice = filter.lowerPrice,
                     pageNumber = position,
-                ) }
-            return when(response){
+                )
+            }
+            return when (response) {
                 is NetworkResponse.Error.HttpError -> {
                     LoadResult.Error(response.error)
                 }
+
                 NetworkResponse.Error.NetworkError -> {
                     LoadResult.Invalid()
                 }
-                NetworkResponse.Error.UnknownError ->{
+
+                NetworkResponse.Error.UnknownError -> {
                     LoadResult.Invalid()
                 }
+
                 is NetworkResponse.Success<List<Deals>> -> {
                     LoadResult.Page(
                         data = response.value,
                         prevKey = if (position == 0) null else (position - 1),
-                        nextKey = if (position == 5) null else position + 1,
+                        nextKey = if (response.value.isEmpty() || response.value.size < 20) null else position + 1,
                     )
                 }
             }
