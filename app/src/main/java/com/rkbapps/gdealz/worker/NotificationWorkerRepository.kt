@@ -1,7 +1,11 @@
 package com.rkbapps.gdealz.worker
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
 import android.graphics.drawable.BitmapDrawable
+import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresPermission
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -15,18 +19,17 @@ import com.rkbapps.gdealz.network.GamePowerApi
 import com.rkbapps.gdealz.network.NetworkResponse
 import com.rkbapps.gdealz.network.safeApiCall
 import com.rkbapps.gdealz.util.UiState
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 
 class NotificationWorkerRepository @Inject constructor(
-    @ApplicationContext private val context: Context,
     private val giveawaysDao: GiveawaysDao,
     private val gamePowerApi: GamePowerApi
 ) {
     suspend fun getGiveaways(): UiState<List<Giveaway>> {
+        Log.d("NotificationWorkerRepo", "Fetching giveaways from API")
         val response = safeApiCall { gamePowerApi.getGiveawayByFilter() }
         return when (response) {
             is NetworkResponse.Error.HttpError -> {
@@ -53,6 +56,7 @@ class NotificationWorkerRepository @Inject constructor(
     }
 
     suspend fun getSavedGiveaways(): UiState<List<Giveaway>> {
+        Log.d("NotificationWorkerRepo", "Fetching saved giveaways from database")
         return try {
             val giveaways = giveawaysDao.getAllGiveaways()
             if (giveaways.isNotEmpty()) {
@@ -69,6 +73,7 @@ class NotificationWorkerRepository @Inject constructor(
         giveaways: List<Giveaway>,
         savedGiveaways: List<Giveaway>
     ): UiState<List<Giveaway>> {
+        Log.d("NotificationWorkerRepo", "Comparing API giveaways with saved giveaways")
         val giveawayApiData = giveaways
         val giveawayDbData = savedGiveaways
         val newGiveaways = giveawayApiData.filter { apiGiveaway ->
@@ -83,16 +88,23 @@ class NotificationWorkerRepository @Inject constructor(
 
     @RequiresPermission(android.Manifest.permission.POST_NOTIFICATIONS)
     suspend fun sendNotificationForNewGiveaways(
-        context: Context = this.context,
+        context: Context,
         newGiveaways: List<Giveaway>
     ) {
+
+        Log.d("NotificationWorkerRepo", "Sending notifications for new giveaways ${newGiveaways.size}")
         val notificationManager = NotificationManagerCompat.from(context)
+
+        createNotificationChannel(notificationManager)
+
         newGiveaways.forEachIndexed { index, giveaway ->
+            Log.d("NotificationWorkerRepo", "Sending notification for giveaway: ${giveaway.title}")
             val notificationId = System.currentTimeMillis().toInt() + index
             val notification = NotificationCompat.Builder(context, "giveaway_channel_id")
                 .setSmallIcon(R.drawable.icon)
                 .setContentTitle("New Giveaway: ${giveaway.title}")
                 .setContentText("Check out this giveaway worth ${giveaway.worth}")
+                .setChannelId("giveaway_channel_id")
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setAutoCancel(true)
 
@@ -124,12 +136,31 @@ class NotificationWorkerRepository @Inject constructor(
         }
     }
 
+    private fun createNotificationChannel(notificationManager: NotificationManagerCompat) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(CHANNEL_ID, CHANNEL_NAME, IMPORTANCE).apply {
+                description = CHANNEL_DESCRIPTION
+            }
+            notificationManager.createNotificationChannel(channel)
+        }
+    }
+
+
 
     suspend fun saveGiveaways(giveaways: List<Giveaway>) {
         try {
+            Log.d("NotificationWorkerRepo", "Saving giveaways to database")
             giveawaysDao.replaceGiveaways(giveaways)
         }catch (_: Exception){
 
         }
+    }
+
+
+    companion object{
+        const val CHANNEL_ID = "giveaway_channel_id"
+        const val CHANNEL_NAME = "Giveaway Notifications"
+        const val CHANNEL_DESCRIPTION = "Notifies when new giveaways are available"
+        const val IMPORTANCE = NotificationManager.IMPORTANCE_HIGH
     }
 }

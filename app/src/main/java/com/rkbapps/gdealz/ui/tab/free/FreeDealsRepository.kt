@@ -1,5 +1,6 @@
 package com.rkbapps.gdealz.ui.tab.free
 
+import android.util.Log
 import com.rkbapps.gdealz.db.dao.GiveawaysDao
 import com.rkbapps.gdealz.models.Giveaway
 import com.rkbapps.gdealz.network.GamePowerApi
@@ -28,6 +29,7 @@ class FreeDealsRepository @Inject constructor(
             emptyList()
         }
         if (data.isNotEmpty()) {
+            _giveawaysState.value = UiState(data=data)
             return
         }
         when (val response = safeApiCall { api.getGiveawayByFilter(platform = platform) }) {
@@ -48,10 +50,13 @@ class FreeDealsRepository @Inject constructor(
 
             is NetworkResponse.Success<List<Giveaway>?> -> {
                 val data = response.value
+                Log.d("FreeDealsRepository", "Data from API: ${data?.size}")
                 if (data != null) {
                     val dataToSave = data.subList(3, data.size) // Skip first 3 items
-                    _giveawaysState.value = UiState(data = data)
+                    Log.d("FreeDealsRepository", "Data from API: ${dataToSave?.size}")
                     saveToDatabase(dataToSave)
+                    _giveawaysState.value = UiState(data = data)
+
                 } else {
                     _giveawaysState.value =
                         UiState(error = "No active giveaways available at the moment, please try again later.")
@@ -103,6 +108,6 @@ class FreeDealsRepository @Inject constructor(
 
 
     suspend fun saveToDatabase(giveaways: List<Giveaway>) {
-        giveawaysDao.insertGiveaways(giveaways)
+        giveawaysDao.replaceGiveaways(giveaways)
     }
 }

@@ -24,6 +24,9 @@ interface GiveawaysDao {
     @Query("SELECT * FROM giveaways")
     fun giveaways(): Flow<List<Giveaway>>
 
+    @Query("SELECT * FROM giveaways order by publishedDate DESC")
+    fun getGiveawaysByOrder(): Flow<List<Giveaway>>
+
     @Query("SELECT * FROM giveaways")
     suspend fun getAllGiveaways(): List<Giveaway>
 

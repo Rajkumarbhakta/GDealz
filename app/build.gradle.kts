@@ -76,6 +76,7 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.hilt.work)
     ksp(libs.dagger.hilt.android.compiler)
+    ksp("androidx.hilt:hilt-compiler:1.2.0")
     implementation(libs.androidx.hilt.navigation.compose)
 
     //retrofit
