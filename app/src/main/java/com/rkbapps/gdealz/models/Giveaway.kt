@@ -1,16 +1,23 @@
 package com.rkbapps.gdealz.models
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
 
 
+@Entity(tableName = "giveaways")
 data class Giveaway(
+
+    @PrimaryKey(autoGenerate = false)
+    val id: Int,
+
     val description: String,
     @SerializedName("end_date")
     val endDate: String,
     @SerializedName("gamerpower_url")
     val gamerPowerUrl: String,
-    val id: Int,
+
     val image: String,
     val instructions: String,
     @SerializedName("open_giveaway")

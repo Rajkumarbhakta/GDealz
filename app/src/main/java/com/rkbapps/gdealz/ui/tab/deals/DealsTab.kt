@@ -110,8 +110,7 @@ fun DealsTab(navController: NavHostController, viewModel: DealsTabViewModel = hi
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(horizontal = 16.dp)
-                , verticalArrangement = Arrangement.spacedBy(10.dp)
+                    .padding(horizontal = 16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
 
                 when (dealsPagingData.loadState.refresh) {
@@ -167,7 +166,12 @@ fun DealsTab(navController: NavHostController, viewModel: DealsTabViewModel = hi
 
                     is LoadState.Error -> {
                         item {
-                            ErrorScreen("Something went wrong!")
+                            Text(
+                                "Something went wrong!",
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(10.dp),
+                            )
                         }
                     }
 

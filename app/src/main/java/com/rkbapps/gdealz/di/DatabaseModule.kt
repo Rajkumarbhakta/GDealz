@@ -40,6 +40,10 @@ object DatabaseModule {
         return database.favDealsDao()
     }
 
+    @Provides
+    @Singleton
+    fun providesGiveawaysDao(database: GDatabase) = database.giveawaysDao()
+
 }
 
 

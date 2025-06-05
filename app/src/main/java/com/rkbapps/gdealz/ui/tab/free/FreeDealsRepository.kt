@@ -1,43 +1,59 @@
 package com.rkbapps.gdealz.ui.tab.free
 
+import com.rkbapps.gdealz.db.dao.GiveawaysDao
+import com.rkbapps.gdealz.models.Giveaway
 import com.rkbapps.gdealz.network.GamePowerApi
 import com.rkbapps.gdealz.network.GiveawayPlatforms
 import com.rkbapps.gdealz.network.NetworkResponse
 import com.rkbapps.gdealz.network.safeApiCall
-import com.rkbapps.gdealz.models.Giveaway
 import com.rkbapps.gdealz.util.UiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
-class FreeDealsRepository @Inject constructor(private val api: GamePowerApi) {
-    private val _giveaways = MutableStateFlow(UiState<List<Giveaway>>())
-    val giveaway = _giveaways.asStateFlow()
+class FreeDealsRepository @Inject constructor(
+    private val api: GamePowerApi,
+    private val giveawaysDao: GiveawaysDao
+) {
+
+    private val _giveawaysState = MutableStateFlow(UiState<List<Giveaway>>())
+    val giveawayState = _giveawaysState.asStateFlow()
 
 
     suspend fun getFreeGames(platform: String = GiveawayPlatforms.PC) {
-        _giveaways.value = UiState(isLoading = true)
+        _giveawaysState.value = UiState(isLoading = true)
+        val data = try {
+            giveawaysDao.getAllGiveaways()
+        } catch (e: Exception) {
+            emptyList()
+        }
+        if (data.isNotEmpty()) {
+            return
+        }
         when (val response = safeApiCall { api.getGiveawayByFilter(platform = platform) }) {
             is NetworkResponse.Error.HttpError -> {
-                _giveaways.value =
+                _giveawaysState.value =
                     UiState(error = "Code : ${response.errorCode} Error : ${response.error.localizedMessage}")
             }
 
             NetworkResponse.Error.NetworkError -> {
-                _giveaways.value =
+                _giveawaysState.value =
                     UiState(error = "Unable to connect please check your internet connection.")
             }
 
             NetworkResponse.Error.UnknownError -> {
-                _giveaways.value = UiState(error = "No active giveaways available at the moment, please try again later.")
+                _giveawaysState.value =
+                    UiState(error = "No active giveaways available at the moment, please try again later.")
             }
 
             is NetworkResponse.Success<List<Giveaway>?> -> {
                 val data = response.value
-                if (data!=null) {
-                    _giveaways.value = UiState(data = data)
+                if (data != null) {
+                    val dataToSave = data.subList(3, data.size) // Skip first 3 items
+                    _giveawaysState.value = UiState(data = data)
+                    saveToDatabase(dataToSave)
                 } else {
-                    _giveaways.value =
+                    _giveawaysState.value =
                         UiState(error = "No active giveaways available at the moment, please try again later.")
                 }
             }
@@ -45,7 +61,7 @@ class FreeDealsRepository @Inject constructor(private val api: GamePowerApi) {
     }
 
     suspend fun getFreeGamesByFilter(currentSelectedOption: Int) {
-        _giveaways.value = UiState(isLoading = true)
+        _giveawaysState.value = UiState(isLoading = true)
 
         val platform = when (currentSelectedOption) {
             FreeGameItemsPosition.PC -> GiveawayPlatforms.PC
@@ -58,29 +74,35 @@ class FreeDealsRepository @Inject constructor(private val api: GamePowerApi) {
 
         when (val response = safeApiCall { api.getGiveawayByFilter(platform = platform) }) {
             is NetworkResponse.Error.HttpError -> {
-                _giveaways.value =
+                _giveawaysState.value =
                     UiState(error = "Code : ${response.errorCode} Error : ${response.error.localizedMessage}")
             }
 
             NetworkResponse.Error.NetworkError -> {
-                _giveaways.value =
+                _giveawaysState.value =
                     UiState(error = "Unable to connect please check your internet connection.")
             }
 
             NetworkResponse.Error.UnknownError -> {
-                _giveaways.value = UiState(error = "No active giveaways available at the moment, please try again later.")
+                _giveawaysState.value =
+                    UiState(error = "No active giveaways available at the moment, please try again later.")
             }
 
             is NetworkResponse.Success<List<Giveaway>?> -> {
                 val data = response.value
-                if (data!=null) {
-                    _giveaways.value = UiState(data = data)
+                if (data != null) {
+                    _giveawaysState.value = UiState(data = data)
                 } else {
-                    _giveaways.value =
+                    _giveawaysState.value =
                         UiState(error = "No active giveaways available at the moment, please try again later.")
                 }
             }
         }
 
+    }
+
+
+    suspend fun saveToDatabase(giveaways: List<Giveaway>) {
+        giveawaysDao.insertGiveaways(giveaways)
     }
 }

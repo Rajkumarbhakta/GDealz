@@ -49,7 +49,9 @@ fun FreeDealsTab(
     viewModel: FreeDealsViewModel = hiltViewModel()
 ) {
 
-    val giveaways = viewModel.giveaway.collectAsStateWithLifecycle()
+    val giveaways = viewModel.giveaways.collectAsStateWithLifecycle()
+
+    val giveawayState = viewModel.giveawayState.collectAsStateWithLifecycle()
 
     val currentSelectedOption = rememberSaveable { mutableIntStateOf(FreeGameItemsPosition.PC) }
 
@@ -57,11 +59,15 @@ fun FreeDealsTab(
         topBar = { CommonTopBar(title = "Free") },
     ) { paddingValue ->
         Column(
-            modifier = Modifier.fillMaxSize().padding(paddingValue)
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValue)
         ) {
-            Spacer(modifier = Modifier.height(16.dp))
+            /*Spacer(modifier = Modifier.height(16.dp))
             Card(
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp,)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
             ) {
                 Row(
                     Modifier.fillMaxWidth(),
@@ -104,16 +110,18 @@ fun FreeDealsTab(
                         viewModel.getGiveaways(currentSelectedOption.intValue)
                     }
                 }
-            }
+            }*/
             Spacer(modifier = Modifier.height(10.dp))
 
             Column(
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
             ) {
                 Text(text = "Games")
                 Spacer(modifier = Modifier.height(10.dp))
                 when {
-                    giveaways.value.isLoading -> {
+                    giveawayState.value.isLoading -> {
                         LazyColumn {
                             items(count = 5, key = { key ->
                                 key.hashCode()
@@ -123,17 +131,17 @@ fun FreeDealsTab(
                         }
                     }
 
-                    giveaways.value.error != null -> {
-                        ErrorScreen(giveaways.value.error?:"Something went wrong")
+                    giveawayState.value.error != null -> {
+                        ErrorScreen(giveawayState.value.error ?: "Something went wrong")
                     }
 
-                    giveaways.value.data != null -> {
+                    giveaways.value.isNotEmpty() -> {
                         LazyColumn(
                             modifier = Modifier.fillMaxSize(),
                             verticalArrangement = Arrangement.spacedBy(10.dp),
                         ) {
                             items(
-                                giveaways.value.data ?: emptyList(),
+                                giveaways.value,
                                 key = { it.id }
                             ) {
                                 FreeGameItems(it) {
@@ -143,8 +151,11 @@ fun FreeDealsTab(
                             }
                         }
                     }
-                }
 
+                    else -> {
+                        ErrorScreen("No active giveaways available at the moment, please try again later.")
+                    }
+                }
             }
         }
 

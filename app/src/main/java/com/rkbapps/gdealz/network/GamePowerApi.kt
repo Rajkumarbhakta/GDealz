@@ -8,7 +8,7 @@ import retrofit2.http.Query
 interface GamePowerApi {
 
     @GET("giveaways")
-    suspend fun getAllGiveaways():Response<List<Giveaway>>
+    suspend fun getAllGiveaways():List<Giveaway>
 
     @GET("giveaways")
     suspend fun getGiveawaysByPlatform(@Query("platform") platform:String):Response<List<Giveaway>>

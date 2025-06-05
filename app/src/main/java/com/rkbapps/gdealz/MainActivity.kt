@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.rkbapps.gdealz.navigation.NavGraph
 import com.rkbapps.gdealz.ui.theme.GDealzTheme
+import com.rkbapps.gdealz.util.AppForegroundTracker
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -30,6 +31,17 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
+    override fun onStart() {
+        super.onStart()
+        AppForegroundTracker.setAppInForeground(true)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        AppForegroundTracker.setAppInForeground(false)
+    }
+
 }
 
 

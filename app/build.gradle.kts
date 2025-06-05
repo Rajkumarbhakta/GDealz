@@ -74,6 +74,7 @@ dependencies {
 
     //hilt
     implementation(libs.hilt.android)
+    implementation(libs.hilt.work)
     ksp(libs.dagger.hilt.android.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
 
@@ -103,5 +104,8 @@ dependencies {
     //paging 3
     implementation(libs.pagging.runtime)
     implementation(libs.pagging.compose)
+
+    //work manager
+    implementation(libs.work.runtime)
 
 }
