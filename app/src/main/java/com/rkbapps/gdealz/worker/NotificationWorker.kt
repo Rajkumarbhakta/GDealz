@@ -74,7 +74,7 @@ class NotificationWorker @AssistedInject constructor(
 
             WorkManager.getInstance(context).enqueueUniquePeriodicWork(
                 "GiveawayWorker",
-                ExistingPeriodicWorkPolicy.KEEP, // KEEP prevents duplicate workers
+                ExistingPeriodicWorkPolicy.CANCEL_AND_REENQUEUE, // KEEP prevents duplicate workers
                 workRequest
             )
         }
