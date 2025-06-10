@@ -1,11 +1,12 @@
 package com.rkbapps.gdealz.models
 
+import com.google.gson.annotations.SerializedName
+
 data class DealsInfo(
     val cheaperStores: List<CheaperStore>?,
     val cheapestPrice: CheapestPrice?,
     val gameInfo: GameInfo?
 )
-
 
 data class CheapestPrice(
     val date: Int?,
@@ -21,11 +22,13 @@ data class CheaperStore(
 
 data class GameInfo(
     val gameID: String?,
-    val metacriticLink: String?,
-    val metacriticScore: String?,
+    @SerializedName("metacriticLink")
+    val metaCriticPageUrl: String?,
+    @SerializedName("metacriticScore")
+    val metaCriticScore: String?,
     val name: String?,
     val publisher: String?,
-    val releaseDate: Int?,
+    val releaseDate: Long?,
     val retailPrice: String?,
     val salePrice: String?,
     val steamAppID: String?,

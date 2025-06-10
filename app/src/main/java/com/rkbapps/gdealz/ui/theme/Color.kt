@@ -66,3 +66,10 @@ val md_theme_dark_scrim = Color(0xFF000000)
 
 
 val seed = Color(0xFF8059EB)
+
+
+
+//custom colors
+val aquamarine = Color(0xFF00FFBF)
+val darkGreen = Color(0xFF1B5E20)
+val normalTextColor = Color(0xFF49454F)

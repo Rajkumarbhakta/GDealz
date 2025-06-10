@@ -1,20 +1,22 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
-    kotlin("kapt")
-    id("com.google.dagger.hilt.android")
+    alias(libs.plugins.hilt.android)
+    alias(libs.plugins.devtools.ksp)
+    alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.kotlinx.serialization)
 }
 
 android {
     namespace = "com.rkbapps.gdealz"
-    compileSdk = 34
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.rkbapps.gdealz"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 36
         versionCode = 1
-        versionName = "1.0"
+        versionName = "1.0.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -32,17 +34,15 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
     buildFeatures {
         compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        buildConfig = true
     }
     packaging {
         resources {
@@ -69,33 +69,44 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    //Voyager
-    implementation(libs.voyager.navigator)
-    implementation(libs.voyager.bottomSheetNavigator)
-    implementation(libs.voyager.transitions)
-    implementation(libs.voyager.tabNavigator)
-    implementation(libs.voyager.hilt)
-
-    //room
-    implementation(libs.androidx.room.runtime)
-    kapt(libs.room.compiler)
-    implementation(libs.androidx.room.ktx)
-    implementation(libs.androidx.room.paging)
+    //navigation
+    implementation(libs.androidx.navigation.compose)
 
     //hilt
     implementation(libs.hilt.android)
-    kapt(libs.dagger.hilt.android.compiler)
+    implementation(libs.hilt.work)
+    ksp(libs.dagger.hilt.android.compiler)
+    ksp("androidx.hilt:hilt-compiler:1.2.0")
     implementation(libs.androidx.hilt.navigation.compose)
 
     //retrofit
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
 
+    // okhttp logging
+    implementation(libs.okhttp.logging.intercepter)
+
+    //room
+    implementation(libs.androidx.room.runtime)
+    annotationProcessor(libs.room.compiler)
+    ksp(libs.room.compiler)
+    implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.room.paging)
+
     //coil
     implementation(libs.coil.compose)
 
-}
+    //pull refresh
+    implementation (libs.androidx.material)
 
-kapt {
-    correctErrorTypes = true
+    //lottie
+    implementation (libs.lottie.compose)
+
+    //paging 3
+    implementation(libs.pagging.runtime)
+    implementation(libs.pagging.compose)
+
+    //work manager
+    implementation(libs.work.runtime)
+
 }
