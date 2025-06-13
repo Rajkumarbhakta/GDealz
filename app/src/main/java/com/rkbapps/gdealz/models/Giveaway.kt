@@ -8,10 +8,8 @@ import com.google.gson.annotations.SerializedName
 
 @Entity(tableName = "giveaways")
 data class Giveaway(
-
     @PrimaryKey(autoGenerate = false)
     val id: Int,
-
     val description: String,
     @SerializedName("end_date")
     val endDate: String,
@@ -32,5 +30,5 @@ data class Giveaway(
     val type: String,
     val users: Int,
     val worth: String,
-    val isClaimed: Boolean = false
+    val isClaimed: Boolean = false,
 )

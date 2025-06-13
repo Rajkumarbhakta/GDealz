@@ -3,6 +3,7 @@ package com.rkbapps.gdealz.di
 import android.content.Context
 import androidx.room.Room
 import com.rkbapps.gdealz.db.GDatabase
+import com.rkbapps.gdealz.db.MIGRATION_1_2
 import com.rkbapps.gdealz.db.dao.FavDealsDao
 import com.rkbapps.gdealz.db.dao.StoreDao
 import dagger.Module
@@ -24,7 +25,9 @@ object DatabaseModule {
             context.applicationContext,
             GDatabase::class.java,
             "g-database"
-        ).build()
+        )
+            .addMigrations(MIGRATION_1_2)
+            .build()
     }
 
     @Provides

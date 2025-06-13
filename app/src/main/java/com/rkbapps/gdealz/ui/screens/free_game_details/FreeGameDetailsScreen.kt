@@ -52,12 +52,18 @@ fun FreeGameDetailsScreen(
                 Button(
                     modifier = Modifier.fillMaxWidth(),
                     onClick = {
-                        giveaway?.openGiveawayUrl?.let {
-                            uriHandler.openUri(it)
+                        if (giveaway?.isClaimed == true) {
+                            viewModel.markGiveawayAsUnClaimed(giveaway)
+                            navController.navigateUp()
+                        } else {
+                            giveaway?.let { viewModel.markGiveawayAsClaimed(it) }
+                            giveaway?.openGiveawayUrl?.let {
+                                uriHandler.openUri(it)
+                            }
                         }
                     }
                 ) {
-                    Text("Grab Deal")
+                    Text(if (giveaway?.isClaimed == true) "Mark as un claimed" else "Grab Deal")
                 }
             }
         }

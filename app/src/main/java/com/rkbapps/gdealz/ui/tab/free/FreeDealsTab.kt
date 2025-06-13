@@ -1,5 +1,6 @@
 package com.rkbapps.gdealz.ui.tab.free
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -22,8 +23,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableIntState
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,7 +44,17 @@ import com.rkbapps.gdealz.models.Giveaway
 import com.rkbapps.gdealz.navigation.Routes
 import com.rkbapps.gdealz.ui.composables.CommonTopBar
 import com.rkbapps.gdealz.ui.composables.ErrorScreen
+import com.rkbapps.gdealz.util.getStatusFromEndDate
 import com.rkbapps.gdealz.util.shimmerBrush
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+
+
+private val options = listOf(
+    "Un Claimed",
+    "Claimed"
+)
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -51,9 +65,14 @@ fun FreeDealsTab(
 
     val giveaways = viewModel.giveaways.collectAsStateWithLifecycle()
 
+    val unClaimedGiveaway = viewModel.unClaimedGiveaway.collectAsStateWithLifecycle()
+    val claimedGiveaway = viewModel.claimedGiveaway.collectAsStateWithLifecycle()
+
     val giveawayState = viewModel.giveawayState.collectAsStateWithLifecycle()
 
     val currentSelectedOption = rememberSaveable { mutableIntStateOf(FreeGameItemsPosition.PC) }
+
+    val selectedTab = rememberSaveable { mutableStateOf(options.first()) }
 
     Scaffold(
         topBar = { CommonTopBar(title = "Free") },
@@ -63,54 +82,22 @@ fun FreeDealsTab(
                 .fillMaxSize()
                 .padding(paddingValue)
         ) {
-            /*Spacer(modifier = Modifier.height(16.dp))
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-            ) {
-                Row(
-                    Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    FreeOption(
-                        title = "PC",
-                        position = FreeGameItemsPosition.PC,
-                        currentSelected = currentSelectedOption
-                    ) {
-                        viewModel.getGiveaways(currentSelectedOption.intValue)
-                    }
-                    FreeOption(
-                        title = "Xbox",
-                        position = FreeGameItemsPosition.XBOX,
-                        currentSelected = currentSelectedOption
-                    ) {
-                        viewModel.getGiveaways(currentSelectedOption.intValue)
-                    }
-                    FreeOption(
-                        title = "Ps4",
-                        position = FreeGameItemsPosition.PS4,
-                        currentSelected = currentSelectedOption
-                    ) {
-                        viewModel.getGiveaways(currentSelectedOption.intValue)
-                    }
-                    FreeOption(
-                        title = "Android",
-                        position = FreeGameItemsPosition.ANDROID,
-                        currentSelected = currentSelectedOption
-                    ) {
-                        viewModel.getGiveaways(currentSelectedOption.intValue)
-                    }
-                    FreeOption(
-                        title = "Ios",
-                        position = FreeGameItemsPosition.IOS,
-                        currentSelected = currentSelectedOption
-                    ) {
-                        viewModel.getGiveaways(currentSelectedOption.intValue)
+
+            if (!giveawayState.value.isLoading && giveawayState.value.error==null){
+                Row (
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 10.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ){
+                    options.forEach {
+                        Tabs(it,selectedTab.value==it) {
+                            selectedTab.value = it
+                        }
                     }
                 }
-            }*/
+            }
+
             Spacer(modifier = Modifier.height(10.dp))
 
             Column(
@@ -140,8 +127,16 @@ fun FreeDealsTab(
                             modifier = Modifier.fillMaxSize(),
                             verticalArrangement = Arrangement.spacedBy(10.dp),
                         ) {
+
+                            if (selectedTab.value == options.first() && unClaimedGiveaway.value.isEmpty()) {
+                                item { ErrorScreen("No active giveaways available at the moment, please try again later.") }
+                            }
+                            if (selectedTab.value != options.first() && claimedGiveaway.value.isEmpty()) {
+                                item { ErrorScreen("You have not claimed anything yet.") }
+                            }
+
                             items(
-                                giveaways.value,
+                                if (selectedTab.value == options.first()) unClaimedGiveaway.value else claimedGiveaway.value,
                                 key = { it.id }
                             ) {
                                 FreeGameItems(it) {
@@ -169,7 +164,8 @@ fun FreeDealsTab(
 @Composable
 fun RowScope.FreeOption(
     title: String, currentSelected: MutableIntState,
-    position: Int = FreeGameItemsPosition.PC, onClick: () -> Unit
+    position: Int = FreeGameItemsPosition.PC,
+    onClick: () -> Unit
 ) {
     Box(
         modifier =
@@ -194,14 +190,53 @@ fun RowScope.FreeOption(
             color = if (currentSelected.intValue == position) MaterialTheme.colorScheme.onPrimary else Color.Unspecified,
         )
     }
-
-
 }
+
+@Composable
+fun RowScope.Tabs(
+    title: String,
+    isSelected: Boolean,
+    onTabSelect: () -> Unit
+) {
+    Box(
+        modifier =
+            Modifier
+                .background(
+                    color = if (isSelected) MaterialTheme.colorScheme.primary else Color.Transparent,
+                    shape = RoundedCornerShape(8.dp)
+                )
+                .weight(1f)
+                .height(35.dp)
+                .clickable(onClick = onTabSelect),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = title,
+            style = MaterialTheme.typography.titleMedium,
+            color = if (isSelected) MaterialTheme.colorScheme.onPrimary else Color.Unspecified,
+        )
+    }
+}
+
+
+
+
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FreeGameItems(item: Giveaway, onClick: () -> Unit) {
+
+    val status = remember {
+        getStatusFromEndDate(item.endDate)
+    }
+
+    LaunchedEffect(Unit) {
+        withContext(Dispatchers.IO) {
+            Log.d("STATUS ","$status")
+        }
+    }
+
     Card(
         onClick = {
             onClick.invoke()
@@ -209,30 +244,49 @@ fun FreeGameItems(item: Giveaway, onClick: () -> Unit) {
         modifier = Modifier
             .fillMaxWidth(),
     ) {
-        Column(Modifier.fillMaxWidth()) {
-            AsyncImage(
-                model = item.image,
-                contentDescription = "giveaway poster",
-                contentScale = ContentScale.FillBounds,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(150.dp)
-            )
-            Column(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp), verticalArrangement = Arrangement.Center
-            ) {
-
-                Text(
-                    text = item.title,
-                    style = MaterialTheme.typography.titleMedium,
-                    textAlign = TextAlign.Center,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
+        Box {
+            Column(Modifier.fillMaxWidth()) {
+                AsyncImage(
+                    model = item.image,
+                    contentDescription = "giveaway poster",
+                    contentScale = ContentScale.FillBounds,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(150.dp)
                 )
+                Column(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp), verticalArrangement = Arrangement.Center
+                ) {
+
+                    Text(
+                        text = item.title,
+                        style = MaterialTheme.typography.titleMedium,
+                        textAlign = TextAlign.Center,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis
+                    )
 
 
+                }
+            }
+            status?.let {
+                Box(
+                    Modifier
+                        .background(
+                            color = if (it) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.errorContainer,
+                            shape = RoundedCornerShape(10.dp)
+                        )
+                        .padding(vertical = 10.dp, horizontal = 15.dp)
+                        .align(Alignment.TopEnd),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        if (it) "Active" else "Expired",
+                        color = if (it) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.error
+                    )
+                }
             }
         }
 

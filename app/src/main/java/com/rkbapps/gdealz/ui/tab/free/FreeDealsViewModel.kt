@@ -20,8 +20,18 @@ class FreeDealsViewModel @Inject constructor(
 
     val giveaways = giveawaysDao.getGiveawaysByOrder().stateIn(viewModelScope, SharingStarted.Lazily, emptyList(),)
 
-    val giveawayState = repository.giveawayState
+    val claimedGiveaway = giveawaysDao.getGiveawaysByClaimed(true).stateIn(
+        viewModelScope,
+        SharingStarted.Lazily,
+        emptyList()
+    )
+    val unClaimedGiveaway = giveawaysDao.getGiveawaysByClaimed(false).stateIn(
+        viewModelScope,
+        SharingStarted.Lazily,
+        emptyList()
+    )
 
+    val giveawayState = repository.giveawayState
 
     init {
         viewModelScope.launch {
