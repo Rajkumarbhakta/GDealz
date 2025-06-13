@@ -117,7 +117,7 @@ fun DealLookupScreen(
                             }
                         }
                     ) {
-                        Text(text = "Garb the deal")
+                        Text(text = "Grab the deal")
                     }
                 }
             }

@@ -17,7 +17,6 @@ data class Giveaway(
     val endDate: String,
     @SerializedName("gamerpower_url")
     val gamerPowerUrl: String,
-
     val image: String,
     val instructions: String,
     @SerializedName("open_giveaway")
@@ -33,4 +32,5 @@ data class Giveaway(
     val type: String,
     val users: Int,
     val worth: String,
+    val isClaimed: Boolean = false
 )
