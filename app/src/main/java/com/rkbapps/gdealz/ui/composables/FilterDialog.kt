@@ -31,9 +31,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.rkbapps.gdealz.network.ShortingOptions
 import com.rkbapps.gdealz.db.entity.Store
 import com.rkbapps.gdealz.models.Filter
+import com.rkbapps.gdealz.network.ShortingOptions
 
 
 val filterOptions = listOf(
@@ -81,7 +81,9 @@ fun FilterDialog(
                     .padding(horizontal = 8.dp)
                     .weight(1f),
             ) {
-                filterOptions.forEach {
+                var options = filterOptions
+
+                options.forEach {
                     if (selectFilter == it) {
                         OutlinedButton(
                             modifier = Modifier.fillMaxWidth(),

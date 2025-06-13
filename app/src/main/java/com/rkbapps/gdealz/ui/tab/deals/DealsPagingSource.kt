@@ -26,11 +26,12 @@ class DealsPagingSource(
                 api.getAllDeals(
                     storeId = filter.store,
                     shortBy = filter.sortBy.option,
-                    orderBy = filter.orderByDesc,
+                    orderBy = if (filter.orderByDesc) 1 else 0,
                     upperPrice = filter.upperPrice,
                     lowerPrice = filter.lowerPrice,
                     pageNumber = position,
                 )
+                //filter.orderByDesc
             }
             return when (response) {
                 is NetworkResponse.Error.HttpError -> {

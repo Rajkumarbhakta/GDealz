@@ -61,8 +61,8 @@ enum class ShortingOptions(val option: String) {
     Price(option = "Price"),
     Reviews(option = "Reviews"),
     Release(option = "Release"),
-    Store(option = "Store"),
-    Recent(option = "Recent")
+//    Store(option = "Store"),
+//    Recent(option = "Recent")
 }
 
 object GiveawayPlatforms {

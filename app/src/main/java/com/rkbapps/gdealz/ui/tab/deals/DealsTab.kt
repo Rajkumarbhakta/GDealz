@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -22,6 +24,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -33,6 +36,7 @@ import androidx.navigation.NavHostController
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.rkbapps.gdealz.R
+import com.rkbapps.gdealz.models.Filter
 import com.rkbapps.gdealz.navigation.Routes
 import com.rkbapps.gdealz.ui.composables.CommonTopBar
 import com.rkbapps.gdealz.ui.composables.ErrorScreen
@@ -51,9 +55,23 @@ fun DealsTab(navController: NavHostController, viewModel: DealsTabViewModel = hi
 
     val isFilterDialogVisible = remember { mutableStateOf(false) }
 
+    val defaultFilter = remember { Filter() }
+
     Scaffold(
         topBar = {
-            CommonTopBar(title = stringResource(R.string.app_name))
+            CommonTopBar(title = stringResource(R.string.app_name), actions = {
+                if (filter.value!= defaultFilter){
+                    Button(
+                        onClick = {viewModel.updateFilter(defaultFilter)},
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color.White.copy(alpha = 0.2f),
+                            contentColor = Color.White
+                        )
+                    ) {
+                        Text("Clear Filter")
+                    }
+                }
+            })
         },
         containerColor = MaterialTheme.colorScheme.background
     ) { innerPadding ->

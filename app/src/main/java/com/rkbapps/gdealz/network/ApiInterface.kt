@@ -23,7 +23,7 @@ interface ApiInterface {
         @Query("pageSize") pageSize: Int = 20,
         @Query("pageNumber") pageNumber: Int = 0,
         @Query("sortBy") shortBy: String = ShortingOptions.Rating.option,
-        @Query("desc") orderBy: Boolean = false,
+        @Query("desc") orderBy: Int = 1,
         @Query("lowerPrice") lowerPrice: Int = 0,
         @Query("upperPrice") upperPrice: Int = 50
     ): List<Deals>
