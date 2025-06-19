@@ -1,5 +1,6 @@
 package com.rkbapps.gdealz.ui.tab.deals
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -159,12 +160,23 @@ fun DealsTab(navController: NavHostController, viewModel: DealsTabViewModel = hi
                     val deal = dealsPagingData[position]
                     deal?.let {
                         DealsItem(it) {
-                            navController.navigate(
-                                Routes.DealsLookup(
-                                    dealId = it.dealID,
-                                    title = it.title
+                            if (it.steamAppID!=null){
+                                navController.navigate(
+                                    Routes.SteamGameDetails(
+                                        steamId = it.steamAppID,
+                                        dealId = it.dealID,
+                                        title = it.title
+                                    )
                                 )
-                            )
+                            }else{
+                                navController.navigate(
+                                    Routes.DealsLookup(
+                                        dealId = it.dealID,
+                                        title = it.title
+                                    )
+                                )
+                            }
+
                         }
                     }
                 }

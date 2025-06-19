@@ -76,7 +76,7 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.hilt.work)
     ksp(libs.dagger.hilt.android.compiler)
-    ksp("androidx.hilt:hilt-compiler:1.2.0")
+    ksp(libs.androidx.hilt.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
 
     //retrofit
@@ -108,5 +108,7 @@ dependencies {
 
     //work manager
     implementation(libs.work.runtime)
+
+    implementation(libs.kotlinx.serialization.json)
 
 }

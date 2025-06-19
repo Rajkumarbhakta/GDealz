@@ -5,7 +5,7 @@ coilCompose = "2.7.0"
 converterGson = "2.11.0"
 hiltAndroid = "2.56.2"
 hiltNavigationCompose = "1.2.0"
-hiltWork = "1.0.0"
+hiltWork = "1.2.0"
 kotlin = "2.1.20"
 ksp = "2.1.20-2.0.1"
 coreKtx = "1.16.0"
@@ -14,23 +14,24 @@ junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 lifecycleRuntimeKtx = "2.9.1"
 activityCompose = "1.10.1"
-composeBom = "2025.06.00"
+composeBom = "2025.06.01"
 lottieCompose = "6.6.2"
-material = "1.8.2"
+material = "1.8.3"
 navigationCompose = "2.9.0"
 retrofit = "2.11.0"
-roomCompiler = "2.7.1"
-roomRuntime = "2.7.1"
+roomCompiler = "2.7.2"
+roomRuntime = "2.7.2"
 
-workVersion = "2.10.1"
+workVersion = "2.10.2"
 
-kotlinxSerialization = "1.8.1"
+kotlinx-serialization = "1.8.1"
 loggingIntercepter = "4.12.0"
 pagingVersion = "3.3.6"
 
 [libraries]
 accompanist-swiperefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "accompanistSwiperefresh" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-hilt-compiler = { module = "androidx.hilt:hilt-compiler", version.ref = "hiltNavigationCompose" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
 androidx-material = { module = "androidx.compose.material:material", version.ref = "material" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
@@ -64,6 +65,9 @@ pagging-runtime = { module = "androidx.paging:paging-runtime", version.ref = "pa
 pagging-compose = { module = "androidx.paging:paging-compose", version.ref = "pagingVersion" }
 
 work-runtime = { module = "androidx.work:work-runtime-ktx", version.ref = "workVersion" }
+
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
+
 
 
 

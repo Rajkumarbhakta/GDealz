@@ -10,5 +10,5 @@ data class FavDeals (
     val dealID: String,
     val gameID: String,
     val thumb: String?,
-    val title: String?
+    val title: String?,
 )

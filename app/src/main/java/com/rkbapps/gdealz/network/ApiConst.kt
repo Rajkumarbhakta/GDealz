@@ -12,10 +12,11 @@ object ApiConst {
     const val BASE_URL_GAME_POWER = "https://www.gamerpower.com/api/"
     private const val REDIRECT_URL = "https://www.cheapshark.com/redirect"
     const val IMAGE_URL = "https://www.cheapshark.com"
+    const val  STEAM_URL = "https://store.steampowered.com/api/"
+
     fun redirect(dealId: String): String {
         return "$REDIRECT_URL?dealID=$dealId"
     }
-
     fun getFormattedDate(
         timestamp: Long?,
         format: String = "MMM dd, yyyy",
