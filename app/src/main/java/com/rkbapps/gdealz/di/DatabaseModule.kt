@@ -26,7 +26,7 @@ object DatabaseModule {
             GDatabase::class.java,
             "g-database"
         )
-            //.addMigrations(MIGRATION_1_2)
+            .addMigrations(MIGRATION_1_2)
             .build()
     }
 

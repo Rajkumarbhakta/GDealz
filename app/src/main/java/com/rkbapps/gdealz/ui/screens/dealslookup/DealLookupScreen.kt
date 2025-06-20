@@ -132,21 +132,6 @@ fun DealLookupScreen(
                             )
                         }
                     }
-                    Button(
-                        modifier = Modifier.weight(1f),
-                        onClick = {
-//                            navController.navigate(
-//                                Routes.DealsLookup(
-//                                    title = viewModel.title,
-//                                    dealId = dealsData.value.data.cheapestPrice.price,
-//                                    isCheapest = true
-//                                )
-//                            )
-                        }
-                    ) {
-                        Text(text = "Find Cheapest Deal")
-                    }
-
                 }
             }
         }
@@ -405,7 +390,7 @@ fun DealLookupScreen(
     }
 }
 
-private fun getTotalReviews(count: String): String {
+fun getTotalReviews(count: String): String {
     return try {
         if (count.toLong() > 1000) {
             "${count.toLong() / 1000}K"

@@ -28,6 +28,8 @@ data class Data(
     @SerializedName("capsule_imagev5") val capsuleImagev5: String? = null,
     @SerializedName("website") val website: String? = null,
     @SerializedName("pc_requirements") val pcRequirements: PcRequirements? = PcRequirements(),
+//    @SerializedName("mac_requirements") val macRequirements: PcRequirements? = PcRequirements(),
+//    @SerializedName("linux_requirements") val linuxRequirements: PcRequirements? = PcRequirements(),
     @SerializedName("developers") val developers: ArrayList<String> = arrayListOf(),
     @SerializedName("publishers") val publishers: ArrayList<String> = arrayListOf(),
     @SerializedName("platforms") val platforms: Platforms? = Platforms(),
