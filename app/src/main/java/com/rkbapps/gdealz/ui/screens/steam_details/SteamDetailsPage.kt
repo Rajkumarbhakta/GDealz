@@ -170,7 +170,7 @@ fun SteamDetailsPage(
                         dealId = viewModel.dealLookup.dealId,
                         title = viewModel.dealLookup.title
                     )
-                ){
+                ) {
                     navController.popBackStack()
                 }
                 //ErrorScreen(steamGameData.error)
@@ -189,22 +189,27 @@ fun SteamDetailsPage(
                                 modifier = Modifier.fillMaxWidth(),
                                 contentScale = ContentScale.FillWidth
                             )
-                            Row (
+                            Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .align(Alignment.BottomCenter)
                                     .padding(horizontal = 16.dp, vertical = 10.dp),
                                 verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement = Arrangement.spacedBy(10.dp)
-                            ){
+                            ) {
                                 OutlinedCard(
                                     shape = RoundedCornerShape(100.dp),
                                     colors = CardDefaults.outlinedCardColors(
-                                        containerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.2f),
-                                        contentColor =  Color.White
+                                        containerColor = MaterialTheme.colorScheme.primary.copy(
+                                            alpha = 0.2f
+                                        ),
+                                        contentColor = Color.White
                                     ),
                                     onClick = {
-                                        uriHandler.openUri(steamGameData.data.data?.metacritic?.url?:"https://www.metacritic.com/")
+                                        uriHandler.openUri(
+                                            steamGameData.data.data?.metacritic?.url
+                                                ?: "https://www.metacritic.com/"
+                                        )
                                     }
                                 ) {
                                     Row(
@@ -213,15 +218,20 @@ fun SteamDetailsPage(
                                         horizontalArrangement = Arrangement.spacedBy(10.dp)
                                     ) {
                                         Text(
-                                            " ${steamGameData.data.data?.metacritic?.score?:"-"}",
+                                            " ${steamGameData.data.data?.metacritic?.score ?: "-"}",
                                         )
-                                        Text("META CRITIC", style = MaterialTheme.typography.labelSmall)
+                                        Text(
+                                            "META CRITIC",
+                                            style = MaterialTheme.typography.labelSmall
+                                        )
                                     }
                                 }
                                 OutlinedCard(
                                     shape = RoundedCornerShape(100.dp),
                                     colors = CardDefaults.outlinedCardColors(
-                                        containerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.2f),
+                                        containerColor = MaterialTheme.colorScheme.primary.copy(
+                                            alpha = 0.2f
+                                        ),
                                         contentColor = Color.White
                                     )
                                 ) {
@@ -238,68 +248,90 @@ fun SteamDetailsPage(
                         Card(
                             shape = RoundedCornerShape(0.dp)
                         ) {
-                            Row (
+                            LazyRow(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(vertical = 10.dp, horizontal = 16.dp),
                                 verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.spacedBy(2.dp, alignment = Alignment.CenterHorizontally)
-                            ){
-                                val isFree = remember(
-                                    dealsData.value.data?.gameInfo?.salePrice
-                                ) { (dealsData.value.data?.gameInfo?.salePrice ?: "").contains("0.00") }
-
-                                val percentage = remember(dealsData.value.data?.gameInfo?.retailPrice) {
-                                    calculatePercentage(
-                                        dealsData.value.data?.gameInfo?.retailPrice ?: "",
-                                        dealsData.value.data?.gameInfo?.salePrice ?: ""
+                                horizontalArrangement = Arrangement.spacedBy(
+                                    10.dp,
+                                    alignment = Alignment.CenterHorizontally
+                                )
+                            ) {
+                                item {
+                                    OverviewRowItems(
+                                        title = "REVIEWS",
+                                        value = getTotalReviews(
+                                            count = dealsData.value.data?.gameInfo?.steamRatingCount
+                                                ?: "0"
+                                        ),
+                                        subTitle = "${dealsData.value.data?.gameInfo?.steamRatingPercent ?: 0}%",
+                                        subTitle1 = dealsData.value.data?.gameInfo?.steamRatingText
+                                            ?: "Unknown"
                                     )
                                 }
+                                item {
+                                    val isFree = remember(
+                                        dealsData.value.data?.gameInfo?.salePrice
+                                    ) {
+                                        (dealsData.value.data?.gameInfo?.salePrice
+                                            ?: "").contains("0.00")
+                                    }
 
-                                OverviewRowItems(
-                                    title = "REVIEWS",
-                                    value = getTotalReviews(
-                                        count = dealsData.value.data?.gameInfo?.steamRatingCount ?: "0"
-                                    ),
-                                    subTitle = "${dealsData.value.data?.gameInfo?.steamRatingPercent ?: 0}%",
-                                    subTitle1 = dealsData.value.data?.gameInfo?.steamRatingText
-                                        ?: "Unknown"
-                                )
-                                OverviewRowItems(
-                                    title = "DEAL",
-                                    value = "${percentage}% OFF",
-                                    subTitle = "$${dealsData.value.data?.gameInfo?.retailPrice}",
-                                    subTitle1 = if (isFree) "Free" else "$${dealsData.value.data?.gameInfo?.salePrice}",
-                                    isSubTitleLineThrough = true
-                                )
-                                OverviewRowItems(
-                                    title = "GENRE",
-                                    value = try {
-                                        steamGameData.data.data?.genres[0]?.description ?: "-"
-                                    } catch (_: Exception) {
-                                        "-"
-                                    },
-                                    subTitle = try {
-                                        steamGameData.data.data?.genres[1]?.description ?: "-"
-                                    } catch (_: Exception) {
-                                        "-"
-                                    },
-                                    subTitle1 = ""
-                                )
-                                if (steamGameData.data.data?.releaseDate?.comingSoon == true){
+                                    val percentage =
+                                        remember(dealsData.value.data?.gameInfo?.retailPrice) {
+                                            calculatePercentage(
+                                                dealsData.value.data?.gameInfo?.retailPrice ?: "",
+                                                dealsData.value.data?.gameInfo?.salePrice ?: ""
+                                            )
+                                        }
+
                                     OverviewRowItems(
-                                        title = "RELEASED",
-                                        value = "Coming",
-                                        subTitle = "Soon",
+                                        title = "DEAL",
+                                        value = "${percentage}% OFF",
+                                        subTitle = "$${dealsData.value.data?.gameInfo?.retailPrice}",
+                                        subTitle1 = if (isFree) "Free" else "$${dealsData.value.data?.gameInfo?.salePrice}",
+                                        isSubTitleLineThrough = true
+                                    )
+                                }
+                                item {
+                                    OverviewRowItems(
+                                        title = "GENRE",
+                                        value = try {
+                                            steamGameData.data.data?.genres[0]?.description ?: "-"
+                                        } catch (_: Exception) {
+                                            "-"
+                                        },
+                                        subTitle = try {
+                                            steamGameData.data.data?.genres[1]?.description ?: "-"
+                                        } catch (_: Exception) {
+                                            "-"
+                                        },
                                         subTitle1 = ""
                                     )
-                                }else{
-                                    OverviewRowItems(
-                                        title = "RELEASED",
-                                        value = getYear(steamGameData.data.data?.releaseDate?.date?:"")?:"-",
-                                        subTitle = getMonths(steamGameData.data.data?.releaseDate?.date?:"")?:"-",
-                                        subTitle1 = getDate(steamGameData.data.data?.releaseDate?.date?:"")?:"-"
-                                    )
+                                }
+                                item {
+                                    if (steamGameData.data.data?.releaseDate?.comingSoon == true) {
+                                        OverviewRowItems(
+                                            title = "RELEASED",
+                                            value = "Coming",
+                                            subTitle = "Soon",
+                                            subTitle1 = ""
+                                        )
+                                    } else {
+                                        OverviewRowItems(
+                                            title = "RELEASED",
+                                            value = getYear(
+                                                steamGameData.data.data?.releaseDate?.date ?: ""
+                                            ) ?: "-",
+                                            subTitle = getMonths(
+                                                steamGameData.data.data?.releaseDate?.date ?: ""
+                                            ) ?: "-",
+                                            subTitle1 = getDate(
+                                                steamGameData.data.data?.releaseDate?.date ?: ""
+                                            ) ?: "-"
+                                        )
+                                    }
                                 }
                             }
                         }
@@ -311,22 +343,27 @@ fun SteamDetailsPage(
                             horizontalArrangement = Arrangement.spacedBy(10.dp),
                             modifier = Modifier.padding(horizontal = 16.dp)
                         ) {
-                            Column(modifier = Modifier.weight(1f),
+                            Column(
+                                modifier = Modifier.weight(1f),
                                 verticalArrangement = Arrangement.spacedBy(8.dp)
-                                ) {
+                            ) {
                                 CommonCard(
                                     modifier = Modifier,
                                     title = "Developer",
                                     subtitle = try {
-                                        steamGameData.data.data?.developers?.first()?:"-"
-                                    }catch (_: Exception){"-"},
+                                        steamGameData.data.data?.developers?.first() ?: "-"
+                                    } catch (_: Exception) {
+                                        "-"
+                                    },
                                 )
                                 CommonCard(
                                     modifier = Modifier,
                                     title = "Publisher",
-                                    subtitle =try {
-                                        steamGameData.data.data?.publishers?.first()?:"-"
-                                    }catch (_: Exception){"-"}
+                                    subtitle = try {
+                                        steamGameData.data.data?.publishers?.first() ?: "-"
+                                    } catch (_: Exception) {
+                                        "-"
+                                    }
                                 )
                             }
                             if (storeData.value != null) {
@@ -391,14 +428,15 @@ fun SteamDetailsPage(
                     }
 
                     item {
-                        LazyRow(modifier = Modifier.fillMaxWidth(),
+                        LazyRow(
+                            modifier = Modifier.fillMaxWidth(),
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.spacedBy(10.dp)
-                        ){
+                        ) {
                             item {
                                 Spacer(Modifier.width(10.dp))
                             }
-                            items(steamGameData.data.data?.screenshots?:emptyList()) {
+                            items(steamGameData.data.data?.screenshots ?: emptyList()) {
                                 AsyncImage(
                                     model = it.pathFull,
                                     contentDescription = "",
@@ -428,9 +466,12 @@ fun SteamDetailsPage(
                             modifier = Modifier.padding(horizontal = 16.dp)
                         ) {
                             steamGameData.data.data?.categories?.let {
-                                it.forEach { category->
+                                it.forEach { category ->
                                     OutlinedCard {
-                                        Text(category.description?:"", modifier = Modifier.padding(10.dp))
+                                        Text(
+                                            category.description ?: "",
+                                            modifier = Modifier.padding(10.dp)
+                                        )
                                     }
                                 }
                             }
@@ -445,18 +486,25 @@ fun SteamDetailsPage(
                         )
                     }
                     item {
-                        Row(
-                            horizontalArrangement = Arrangement.spacedBy(10.dp),
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.spacedBy(10.dp),
                             modifier = Modifier.padding(horizontal = 16.dp)
-                        ){
+                        ) {
                             steamGameData.data.data?.pcRequirements?.minimum?.let {
-                                Card (modifier = Modifier.weight(1f)){
-                                    Text(AnnotatedString.fromHtml(it,),modifier = Modifier.padding(10.dp))
+                                Card(modifier = Modifier.fillMaxWidth()) {
+                                    Text(
+                                        AnnotatedString.fromHtml(it),
+                                        modifier = Modifier.padding(10.dp)
+                                    )
                                 }
                             }
                             steamGameData.data.data?.pcRequirements?.recommended?.let {
-                                Card (modifier = Modifier.weight(1f)){
-                                    Text(AnnotatedString.fromHtml(it,),modifier = Modifier.padding(10.dp))
+                                Card(modifier = Modifier.fillMaxWidth()) {
+                                    Text(
+                                        AnnotatedString.fromHtml(it),
+                                        modifier = Modifier.padding(10.dp)
+                                    )
                                 }
                             }
                         }
@@ -487,7 +535,10 @@ fun OverviewRowItems(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(title, style = MaterialTheme.typography.labelLarge, maxLines = 1)
-            Text(value, style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold))
+            Text(
+                value,
+                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
+            )
             Text(
                 subTitle,
                 style = MaterialTheme.typography.labelMedium.copy(
@@ -504,7 +555,7 @@ fun getDate(date: String): String? {
     try {
         val parts = date.split(" ", ", ")
         return parts[0]
-    }catch (_: Exception){
+    } catch (_: Exception) {
         return null
     }
 }
@@ -513,7 +564,7 @@ fun getMonths(date: String): String? {
     try {
         val parts = date.split(" ", ", ")
         return parts[1]
-    }catch (_: Exception){
+    } catch (_: Exception) {
         return null
     }
 }
@@ -522,7 +573,7 @@ fun getYear(date: String): String? {
     try {
         val parts = date.split(" ", ", ")
         return parts[2]
-    }catch (_: Exception){
+    } catch (_: Exception) {
         return null
     }
 }
