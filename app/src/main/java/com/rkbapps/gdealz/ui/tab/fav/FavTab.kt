@@ -125,12 +125,23 @@ fun FavTab(
                         FavItem(it, onDelete = {
                             deletableFav.value = it
                         }) {
-                            navController.navigate(
-                                Routes.DealsLookup(
-                                    title = it.title,
-                                    dealId = it.dealID
+
+                            if (it.steamAppId!=null){
+                                navController.navigate(
+                                    Routes.SteamGameDetails(
+                                        steamId = it.steamAppId,
+                                        dealId = it.dealID,
+                                        title = it.title
+                                    )
                                 )
-                            )
+                            }else{
+                                navController.navigate(
+                                    Routes.DealsLookup(
+                                        dealId = it.dealID,
+                                        title = it.title
+                                    )
+                                )
+                            }
                         }
                     }
                     item {

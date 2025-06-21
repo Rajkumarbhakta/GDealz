@@ -2,10 +2,12 @@ package com.rkbapps.gdealz.di
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.rkbapps.gdealz.network.ApiConst
 import com.rkbapps.gdealz.network.ApiConst.BASE_URL
 import com.rkbapps.gdealz.network.ApiConst.BASE_URL_GAME_POWER
 import com.rkbapps.gdealz.network.ApiInterface
 import com.rkbapps.gdealz.network.GamePowerApi
+import com.rkbapps.gdealz.network.SteamApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -27,7 +29,12 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideGson(): Gson = GsonBuilder().create()
+    fun provideGson(): Gson = GsonBuilder()
+        .setLenient()
+        .disableHtmlEscaping()
+        .enableComplexMapKeySerialization()
+        .serializeNulls()
+        .create()
 
     @Provides
     @Singleton
@@ -54,6 +61,17 @@ object NetworkModule {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(GamePowerApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSteamApi(): SteamApi {
+        return Retrofit.Builder()
+            .baseUrl(ApiConst.STEAM_URL)
+            .client(okHttpClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(SteamApi::class.java)
     }
 
 

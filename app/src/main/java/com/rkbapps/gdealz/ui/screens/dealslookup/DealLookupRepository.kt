@@ -104,7 +104,8 @@ class DealLookupRepository @Inject constructor(
                     dealID = dealId,
                     gameID = deal.gameInfo?.gameID!!,
                     thumb = deal.gameInfo.thumb,
-                    title = deal.gameInfo.name
+                    title = deal.gameInfo.name,
+                    steamAppId = deal.gameInfo.steamAppID
                 )
             )
             isFav.value = true

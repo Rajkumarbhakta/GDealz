@@ -54,7 +54,15 @@ class NotificationWorker @AssistedInject constructor(
         // If there are new giveaways, save them to the database and send notifications
         if (!newGiveaways.data.isNullOrEmpty()) {
             repository.sendNotificationForNewGiveaways(context,newGiveaways = newGiveaways.data)
-            repository.saveGiveaways(apiGiveaways)
+            // Filter out claimed giveaways from apiGiveaways
+            val claimedGiveawayIds = savedGiveawaysList
+                .filter { it.isClaimed == true } // Find all claimed giveaways in the saved list
+                .map { it.id } // Extract their IDs
+
+            val unClaimedGiveaways = apiGiveaways.filterNot { apiGiveaway ->
+                claimedGiveawayIds.contains(apiGiveaway.id) // Keep apiGiveaways whose IDs are not in the claimed list
+            }
+            repository.saveGiveaways(unClaimedGiveaways)
             return Result.success()
         } else {
             return Result.success()

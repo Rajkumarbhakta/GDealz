@@ -8,16 +8,13 @@ import com.google.gson.annotations.SerializedName
 
 @Entity(tableName = "giveaways")
 data class Giveaway(
-
     @PrimaryKey(autoGenerate = false)
     val id: Int,
-
     val description: String,
     @SerializedName("end_date")
     val endDate: String,
     @SerializedName("gamerpower_url")
     val gamerPowerUrl: String,
-
     val image: String,
     val instructions: String,
     @SerializedName("open_giveaway")
@@ -33,4 +30,5 @@ data class Giveaway(
     val type: String,
     val users: Int,
     val worth: String,
+    val isClaimed: Boolean = false,
 )

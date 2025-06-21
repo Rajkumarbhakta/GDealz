@@ -38,9 +38,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -52,6 +54,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.rkbapps.gdealz.R
+import com.rkbapps.gdealz.navigation.Routes
 import com.rkbapps.gdealz.network.ApiConst.IMAGE_URL
 import com.rkbapps.gdealz.network.ApiConst.getFormattedDate
 import com.rkbapps.gdealz.ui.composables.CommonCard
@@ -103,27 +106,39 @@ fun DealLookupScreen(
         },
         bottomBar = {
             AnimatedVisibility(dealsData.value.data != null) {
-                Box(
+                Row(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(10.dp),
-                    contentAlignment = Alignment.Center
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
                     Button(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier.weight(1f),
                         onClick = {
                             viewModel.redirectionUrl?.let { url ->
                                 uriHandler.openUri(url)
                             }
                         }
                     ) {
-                        Text(text = "Garb the deal")
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Spacer(Modifier.weight(1f))
+                            Text(text = "Grab the deal")
+                            Spacer(Modifier.weight(1f))
+                            Icon(
+                                imageVector = ImageVector.vectorResource(R.drawable.launch_link_open),
+                                contentDescription = "launch link open",
+                                modifier = Modifier.size(20.dp)
+                            )
+                        }
                     }
                 }
             }
         }
     ) {
-        Column(modifier = Modifier.fillMaxSize().padding(it)) {
+        Column(modifier = Modifier
+            .fillMaxSize()
+            .padding(it)) {
             when {
                 dealsData.value.isLoading -> {
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -153,18 +168,23 @@ fun DealLookupScreen(
                                     .background(
                                         color = MaterialTheme.colorScheme.primary.copy(alpha = 0.2f),
                                         shape = RoundedCornerShape(10.dp)
-                                    ).clip(RoundedCornerShape(10.dp)),
+                                    )
+                                    .clip(RoundedCornerShape(10.dp)),
                                 contentAlignment = Alignment.Center
                             ) {
                                 AsyncImage(
                                     model = dealsData.value.data?.gameInfo?.thumb,
                                     contentDescription = "game thumb",
-                                    modifier = Modifier.fillMaxSize().padding(8.dp),
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .padding(8.dp),
                                 )
                             }
                             Spacer(modifier = Modifier.width(10.dp))
                             Card(
-                                modifier = Modifier.weight(1f).height(80.dp),
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .height(80.dp),
                             ) {
                                 Column(
                                     modifier = Modifier
@@ -220,7 +240,8 @@ fun DealLookupScreen(
                                                 color =
                                                     if (isFree) darkGreen.copy(alpha = 0.2f) else
                                                         MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)
-                                            ).padding(horizontal = 10.dp, vertical = 4.dp)
+                                            )
+                                            .padding(horizontal = 10.dp, vertical = 4.dp)
                                     )
                                     Text(
                                         text = "$${dealsData.value.data?.gameInfo?.retailPrice}",
@@ -369,7 +390,7 @@ fun DealLookupScreen(
     }
 }
 
-private fun getTotalReviews(count: String): String {
+fun getTotalReviews(count: String): String {
     return try {
         if (count.toLong() > 1000) {
             "${count.toLong() / 1000}K"
@@ -385,7 +406,9 @@ private fun getTotalReviews(count: String): String {
 @Composable
 private fun RowScope.ReviewItems(title: String, value: Any) {
     Card(
-        modifier = Modifier.weight(1f).padding(4.dp)
+        modifier = Modifier
+            .weight(1f)
+            .padding(4.dp)
     ) {
         Column(
             modifier = Modifier

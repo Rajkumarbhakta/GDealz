@@ -1,5 +1,6 @@
 package com.rkbapps.gdealz.ui.tab.search
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -138,12 +139,24 @@ fun SearchTab(
                             it.hashCode()
                         }) { game ->
                             SearchItem(game = game) {
-                                navController.navigate(
-                                    Routes.DealsLookup(
-                                        title = game.external,
-                                        dealId = game.cheapestDealID
+                                Log.d("STEAM","${game.steamAppID}")
+                                if (game.steamAppID!=null){
+                                    navController.navigate(
+                                        Routes.SteamGameDetails(
+                                            steamId = game.steamAppID,
+                                            title = game.external,
+                                            dealId = game.cheapestDealID
+                                        )
                                     )
-                                )
+                                }else{
+                                    navController.navigate(
+                                        Routes.DealsLookup(
+                                            title = game.external,
+                                            dealId = game.cheapestDealID
+                                        )
+                                    )
+                                }
+
                             }
                         }
                         item {
