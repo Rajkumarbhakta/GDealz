@@ -32,8 +32,9 @@ An **ad-free, open-source Android app** to help gamers discover the best **PC ga
 
 ## 📥 Download
 
-📱 **Play Store:** [https://play.google.com/store/apps/details?id=com.rkbapps.gdealz] 
-💻 **Source code:** [https://github.com/Rajkumarbhakta/GDealz]
+📱 **[Play Store](https://play.google.com/store/apps/details?id=com.rkbapps.gdealz)**
+
+💻 **[Source code](https://github.com/Rajkumarbhakta/GDealz)**
 
 ---
 
@@ -43,8 +44,8 @@ An **ad-free, open-source Android app** to help gamers discover the best **PC ga
 |:----------------------------------------------:|-----------------------------------------------------|--------------------------------------------------|
 | <img height="500" src="screenshots\home.png"/> | <img height="500" src="screenshots\freeGames.png"/> | <img height="500" src="screenshots\search.png"/> |
 
-| Game Details                                          | Fav Deals                                          |
-|-------------------------------------------------------|----------------------------------------------------|
+|                     Game Details                      | Fav Deals                                          |
+|:-----------------------------------------------------:|----------------------------------------------------|
 | <img height="500" src="screenshots\gameDetails.png"/> | <img height="500" src="screenshots\favDeals.png"/> |
 
 ## 🔧 Building from Source
@@ -64,7 +65,7 @@ git clone https://github.com/yourusername/pc-game-deals-app.git
 * Open issues (bugs, feature requests)
 * Submit pull requests
 * Suggest ideas
-* Please check out the issues[https://github.com/Rajkumarbhakta/GDealz/issues] page or start a
+* Please check out the [issues](https://github.com/Rajkumarbhakta/GDealz/issues) page or start a
   discussion!
 
 ## 📃 License
