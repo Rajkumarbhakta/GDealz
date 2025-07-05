@@ -16,15 +16,23 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 
-    val okHttpClient = OkHttpClient.Builder()
-        .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
-        .build()
+    @Provides
+    @Singleton
+    fun provideOkHttpClient(): OkHttpClient {
+        return OkHttpClient.Builder()
+            .connectTimeout(10, TimeUnit.SECONDS)
+            .readTimeout(10, TimeUnit.SECONDS)
+            .writeTimeout(10, TimeUnit.SECONDS)
+            .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+            .build()
+    }
 
 
     @Provides
@@ -38,10 +46,10 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideRetrofit(): Retrofit {
+    fun provideRetrofit(client: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
-            .client(okHttpClient)
+            .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
@@ -54,10 +62,10 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideGamePowerApi():GamePowerApi{
+    fun provideGamePowerApi(client: OkHttpClient):GamePowerApi{
         return Retrofit.Builder()
             .baseUrl(BASE_URL_GAME_POWER)
-            .client(okHttpClient)
+            .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(GamePowerApi::class.java)
@@ -65,10 +73,10 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideSteamApi(): SteamApi {
+    fun provideSteamApi(client: OkHttpClient): SteamApi {
         return Retrofit.Builder()
             .baseUrl(ApiConst.STEAM_URL)
-            .client(okHttpClient)
+            .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(SteamApi::class.java)
