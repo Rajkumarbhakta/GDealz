@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import com.rkbapps.gdealz.ui.screens.MainScreen
 import com.rkbapps.gdealz.ui.screens.dealslookup.DealLookupScreen
 import com.rkbapps.gdealz.ui.screens.free_game_details.FreeGameDetailsScreen
+import com.rkbapps.gdealz.ui.screens.game_info.GameInfoScreen
 import com.rkbapps.gdealz.ui.screens.splash.SplashScreen
 import com.rkbapps.gdealz.ui.screens.steam_details.SteamDetailsPage
 import com.rkbapps.gdealz.ui.tab.fav.FavTab
@@ -68,6 +69,10 @@ fun NavGraphBuilder.destinations(navController: NavHostController) {
 
     composable<Routes.FreeGameDetails> {
         FreeGameDetailsScreen(navController)
+    }
+
+    composable<Routes.GameInfo> {
+        GameInfoScreen(navController)
     }
 
 

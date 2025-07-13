@@ -37,6 +37,7 @@ import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.rkbapps.gdealz.R
 import com.rkbapps.gdealz.models.Filter
+import com.rkbapps.gdealz.navigation.Routes
 import com.rkbapps.gdealz.ui.composables.CommonTopBar
 import com.rkbapps.gdealz.ui.composables.ErrorScreen
 import com.rkbapps.gdealz.ui.composables.FilterDialog
@@ -157,7 +158,14 @@ fun DealsTab(navController: NavHostController, viewModel: DealsTabViewModel = hi
 
                 items(count = isThereAnyDealPager.itemCount) { position ->
                     isThereAnyDealPager[position]?.let { deal ->
-                        IsThereAnyDealDealsItem(deal = deal) { }
+                        IsThereAnyDealDealsItem(deal = deal) {
+                            navController.navigate(
+                                Routes.GameInfo(
+                                    gameId = deal.id,
+                                    title = deal.title,
+                                )
+                            )
+                        }
                     }
                 }
                 when (isThereAnyDealPager.loadState.append) {

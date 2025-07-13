@@ -401,6 +401,17 @@ fun getTotalReviews(count: String): String {
         count
     }
 }
+fun getTotalReviews(count: Int): String {
+    return try {
+        if (count.toLong() > 1000) {
+            "${count.toLong() / 1000}K"
+        } else {
+            "$count"
+        }
+    } catch (_: Exception) {
+        "$count"
+    }
+}
 
 
 @Composable

@@ -1,6 +1,7 @@
 package com.rkbapps.gdealz.network.api
 
 import com.rkbapps.gdealz.models.deal.Deals
+import com.rkbapps.gdealz.models.game_info.GameInfo
 import com.rkbapps.gdealz.network.ApiConst
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -20,5 +21,11 @@ interface IsThereAnyDealApi {
         @Query("include_prices") includePrices: Boolean = true,
         @Query("key") apiKey: String = ApiConst.IS_THERE_ANY_DEAL_API_KEY
     ): Deals
+
+    @GET("/games/info/v2")
+    suspend fun getGameInfo(
+        @Query("id") gameId: String,
+        @Query("key") apiKey: String = ApiConst.IS_THERE_ANY_DEAL_API_KEY
+    ): GameInfo
 
 }
