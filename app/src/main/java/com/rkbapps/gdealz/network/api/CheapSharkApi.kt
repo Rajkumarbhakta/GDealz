@@ -1,15 +1,16 @@
-package com.rkbapps.gdealz.network
+package com.rkbapps.gdealz.network.api
 
 import com.rkbapps.gdealz.models.Deals
 import com.rkbapps.gdealz.models.DealsInfo
 import com.rkbapps.gdealz.models.Game
 import com.rkbapps.gdealz.models.GameLookUp
 import com.rkbapps.gdealz.models.Store
+import com.rkbapps.gdealz.network.ShortingOptions
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface ApiInterface {
+interface CheapSharkApi {
 
     @GET("deals")
     suspend fun getDeals(

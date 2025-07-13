@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rkbapps.gdealz.BuildConfig
-import com.rkbapps.gdealz.network.ApiInterface
+import com.rkbapps.gdealz.network.api.CheapSharkApi
 import com.rkbapps.gdealz.db.dao.StoreDao
 import com.rkbapps.gdealz.db.entity.Store
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,7 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SplashScreenViewModel @Inject constructor(
     private val storeDao: StoreDao,
-    private val apiInterface: ApiInterface
+    private val apiInterface: CheapSharkApi
 ) : ViewModel() {
 
     private val _isSuccess = mutableStateOf(false)

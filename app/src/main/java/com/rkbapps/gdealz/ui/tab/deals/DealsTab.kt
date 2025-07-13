@@ -1,6 +1,5 @@
 package com.rkbapps.gdealz.ui.tab.deals
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -38,21 +37,22 @@ import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.rkbapps.gdealz.R
 import com.rkbapps.gdealz.models.Filter
-import com.rkbapps.gdealz.navigation.Routes
 import com.rkbapps.gdealz.ui.composables.CommonTopBar
 import com.rkbapps.gdealz.ui.composables.ErrorScreen
 import com.rkbapps.gdealz.ui.composables.FilterDialog
-import com.rkbapps.gdealz.ui.tab.deals.composables.DealsItem
 import com.rkbapps.gdealz.ui.tab.deals.composables.DealsItemShimmer
+import com.rkbapps.gdealz.ui.tab.deals.composables.IsThereAnyDealDealsItem
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DealsTab(navController: NavHostController, viewModel: DealsTabViewModel = hiltViewModel()) {
 
-    val dealsPagingData = viewModel.dealsPagingData.collectAsLazyPagingItems()
+//    val dealsPagingData = viewModel.dealsPagingData.collectAsLazyPagingItems()
     val filter = viewModel.filter.collectAsStateWithLifecycle()
     val stores = viewModel.stores.collectAsStateWithLifecycle()
+
+    val isThereAnyDealPager = viewModel.isThereAnyDeals.collectAsLazyPagingItems()
 
     val isFilterDialogVisible = remember { mutableStateOf(false) }
 
@@ -61,9 +61,9 @@ fun DealsTab(navController: NavHostController, viewModel: DealsTabViewModel = hi
     Scaffold(
         topBar = {
             CommonTopBar(title = stringResource(R.string.app_name), actions = {
-                if (filter.value!= defaultFilter){
+                if (filter.value != defaultFilter) {
                     Button(
-                        onClick = {viewModel.updateFilter(defaultFilter)},
+                        onClick = { viewModel.updateFilter(defaultFilter) },
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color.White.copy(alpha = 0.2f),
                             contentColor = Color.White
@@ -126,13 +126,14 @@ fun DealsTab(navController: NavHostController, viewModel: DealsTabViewModel = hi
 
             Spacer(modifier = Modifier.height(10.dp))
 
+
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(horizontal = 16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
 
-                when (dealsPagingData.loadState.refresh) {
+                when (isThereAnyDealPager.loadState.refresh) {
                     is LoadState.Loading -> {
                         items(10) {
                             DealsItemShimmer()
@@ -148,40 +149,18 @@ fun DealsTab(navController: NavHostController, viewModel: DealsTabViewModel = hi
                     is LoadState.NotLoading -> {}
                 }
 
-                if (dealsPagingData.itemCount <= 0) {
+                if (isThereAnyDealPager.itemCount <= 0) {
                     item {
                         ErrorScreen("No Deals Found!")
                     }
                 }
 
-                items(
-                    count = dealsPagingData.itemCount,
-                ) { position ->
-                    val deal = dealsPagingData[position]
-                    deal?.let {
-                        DealsItem(it) {
-                            if (it.steamAppID!=null){
-                                navController.navigate(
-                                    Routes.SteamGameDetails(
-                                        steamId = it.steamAppID,
-                                        dealId = it.dealID,
-                                        title = it.title
-                                    )
-                                )
-                            }else{
-                                navController.navigate(
-                                    Routes.DealsLookup(
-                                        dealId = it.dealID,
-                                        title = it.title
-                                    )
-                                )
-                            }
-
-                        }
+                items(count = isThereAnyDealPager.itemCount) { position ->
+                    isThereAnyDealPager[position]?.let { deal ->
+                        IsThereAnyDealDealsItem(deal = deal) { }
                     }
                 }
-
-                when (dealsPagingData.loadState.append) {
+                when (isThereAnyDealPager.loadState.append) {
                     is LoadState.Loading -> {
                         item {
                             Box(
@@ -208,11 +187,97 @@ fun DealsTab(navController: NavHostController, viewModel: DealsTabViewModel = hi
                     is LoadState.NotLoading -> {}
                 }
 
-
-                item {
-                    Spacer(Modifier.height(10.dp))
-                }
             }
+
+            /*if (false) {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(horizontal = 16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+
+                    when (dealsPagingData.loadState.refresh) {
+                        is LoadState.Loading -> {
+                            items(10) {
+                                DealsItemShimmer()
+                            }
+                        }
+
+                        is LoadState.Error -> {
+                            item {
+                                ErrorScreen("Something went wrong...")
+                            }
+                        }
+
+                        is LoadState.NotLoading -> {}
+                    }
+
+                    if (dealsPagingData.itemCount <= 0) {
+                        item {
+                            ErrorScreen("No Deals Found!")
+                        }
+                    }
+
+                    items(
+                        count = dealsPagingData.itemCount,
+                    ) { position ->
+                        val deal = dealsPagingData[position]
+                        deal?.let {
+                            DealsItem(it) {
+                                if (it.steamAppID!=null){
+                                    navController.navigate(
+                                        Routes.SteamGameDetails(
+                                            steamId = it.steamAppID,
+                                            dealId = it.dealID,
+                                            title = it.title
+                                        )
+                                    )
+                                }else{
+                                    navController.navigate(
+                                        Routes.DealsLookup(
+                                            dealId = it.dealID,
+                                            title = it.title
+                                        )
+                                    )
+                                }
+
+                            }
+                        }
+                    }
+
+                    when (dealsPagingData.loadState.append) {
+                        is LoadState.Loading -> {
+                            item {
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(10.dp), contentAlignment = Alignment.Center
+                                ) {
+                                    CircularProgressIndicator()
+                                }
+                            }
+                        }
+
+                        is LoadState.Error -> {
+                            item {
+                                Text(
+                                    "Something went wrong!",
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(10.dp),
+                                )
+                            }
+                        }
+
+                        is LoadState.NotLoading -> {}
+                    }
+
+
+                    item {
+                        Spacer(Modifier.height(10.dp))
+                    }
+                }
+            }*/
         }
     }
 }

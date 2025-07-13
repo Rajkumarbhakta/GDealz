@@ -3,11 +3,12 @@ package com.rkbapps.gdealz.di
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.rkbapps.gdealz.network.ApiConst
-import com.rkbapps.gdealz.network.ApiConst.BASE_URL
+import com.rkbapps.gdealz.network.ApiConst.CHEAP_SHARK_BASE_URL
 import com.rkbapps.gdealz.network.ApiConst.BASE_URL_GAME_POWER
-import com.rkbapps.gdealz.network.ApiInterface
-import com.rkbapps.gdealz.network.GamePowerApi
-import com.rkbapps.gdealz.network.SteamApi
+import com.rkbapps.gdealz.network.api.CheapSharkApi
+import com.rkbapps.gdealz.network.api.GamePowerApi
+import com.rkbapps.gdealz.network.api.IsThereAnyDealApi
+import com.rkbapps.gdealz.network.api.SteamApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -48,7 +49,7 @@ object NetworkModule {
     @Singleton
     fun provideRetrofit(client: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(CHEAP_SHARK_BASE_URL)
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -56,8 +57,8 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideApiInterface(retrofit: Retrofit): ApiInterface {
-        return retrofit.create(ApiInterface::class.java)
+    fun provideApiInterface(retrofit: Retrofit): CheapSharkApi {
+        return retrofit.create(CheapSharkApi::class.java)
     }
 
     @Provides
@@ -80,6 +81,17 @@ object NetworkModule {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(SteamApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideIsThereAnyDealApi(client: OkHttpClient): IsThereAnyDealApi{
+        return Retrofit.Builder()
+            .baseUrl(ApiConst.IS_THERE_ANY_DEAL_BASE_URL)
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(IsThereAnyDealApi::class.java)
     }
 
 

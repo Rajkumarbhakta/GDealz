@@ -2,7 +2,7 @@ package com.rkbapps.gdealz.ui.screens.dealslookup
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import com.rkbapps.gdealz.network.ApiInterface
+import com.rkbapps.gdealz.network.api.CheapSharkApi
 import com.rkbapps.gdealz.network.NetworkResponse
 import com.rkbapps.gdealz.network.safeApiCall
 import com.rkbapps.gdealz.db.dao.FavDealsDao
@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 class DealLookupRepository @Inject constructor(
-    private val api: ApiInterface,
+    private val api: CheapSharkApi,
     private val storeDao: StoreDao,
     private val favDealsDao: FavDealsDao
 ) {

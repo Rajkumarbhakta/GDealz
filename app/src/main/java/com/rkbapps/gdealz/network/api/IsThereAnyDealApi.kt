@@ -1,0 +1,24 @@
+package com.rkbapps.gdealz.network.api
+
+import com.rkbapps.gdealz.models.deal.Deals
+import com.rkbapps.gdealz.network.ApiConst
+import retrofit2.http.GET
+import retrofit2.http.Query
+
+interface IsThereAnyDealApi {
+
+    @GET("/deals/v2")
+    suspend fun getDeals(
+        @Query("country") country: String = "US",
+        @Query("offset") offset: Int,
+        @Query("limit") limit: Int,
+        @Query("sort") sort: String,
+        @Query("filter") filter: String,
+        @Query("nondeals") nonDeals: Boolean = false,
+        @Query("mature") mature: Boolean = true,
+        @Query("shops") shops: Array<Int>,
+        @Query("include_prices") includePrices: Boolean = true,
+        @Query("key") apiKey: String = ApiConst.IS_THERE_ANY_DEAL_API_KEY
+    ): Deals
+
+}

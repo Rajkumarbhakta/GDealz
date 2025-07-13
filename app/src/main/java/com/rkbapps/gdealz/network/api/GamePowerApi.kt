@@ -1,6 +1,8 @@
-package com.rkbapps.gdealz.network
+package com.rkbapps.gdealz.network.api
 
 import com.rkbapps.gdealz.models.Giveaway
+import com.rkbapps.gdealz.network.GiveawayPlatforms
+import com.rkbapps.gdealz.network.GiveawaySortingOptions
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -11,7 +13,7 @@ interface GamePowerApi {
     suspend fun getAllGiveaways():List<Giveaway>
 
     @GET("giveaways")
-    suspend fun getGiveawaysByPlatform(@Query("platform") platform:String):Response<List<Giveaway>>
+    suspend fun getGiveawaysByPlatform(@Query("platform") platform:String): Response<List<Giveaway>>
 
     @GET("filter")
     suspend fun getGiveawayByFilter(

@@ -12,7 +12,7 @@ import com.rkbapps.gdealz.models.Data
 import com.rkbapps.gdealz.models.DealsInfo
 import com.rkbapps.gdealz.models.SteamGameData
 import com.rkbapps.gdealz.network.NetworkResponse
-import com.rkbapps.gdealz.network.SteamApi
+import com.rkbapps.gdealz.network.api.SteamApi
 import com.rkbapps.gdealz.network.safeApiCall
 import com.rkbapps.gdealz.ui.screens.dealslookup.FavDealsState
 import com.rkbapps.gdealz.util.UiState

@@ -1,5 +1,6 @@
 package com.rkbapps.gdealz.network
 
+import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
@@ -22,7 +23,8 @@ suspend fun <T> safeApiCall(apiCall: suspend () -> T): NetworkResponse<T> = with
         NetworkResponse.Error.HttpError(e.code(), e)
     } catch (_: UnknownHostException) {
         NetworkResponse.Error.NetworkError
-    } catch (_: Exception) {
+    } catch (e: Exception) {
+        Log.d("PagingSource", "UnknownError: ${e.message}")
         NetworkResponse.Error.UnknownError
     }
 }

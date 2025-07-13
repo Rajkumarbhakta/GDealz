@@ -1,16 +1,15 @@
 package com.rkbapps.gdealz.ui.tab.search
 
 import com.rkbapps.gdealz.models.Game
-import com.rkbapps.gdealz.network.ApiInterface
+import com.rkbapps.gdealz.network.api.CheapSharkApi
 import com.rkbapps.gdealz.network.NetworkResponse
 import com.rkbapps.gdealz.network.safeApiCall
 import com.rkbapps.gdealz.util.UiState
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
-class SearchRepository @Inject constructor(private val api: ApiInterface) {
+class SearchRepository @Inject constructor(private val api: CheapSharkApi) {
 
     private val _searchResult = MutableStateFlow(UiState<List<Game>>())
 

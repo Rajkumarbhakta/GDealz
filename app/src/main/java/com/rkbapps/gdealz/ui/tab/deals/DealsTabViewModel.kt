@@ -6,6 +6,7 @@ import androidx.paging.cachedIn
 import com.rkbapps.gdealz.models.Filter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -35,7 +36,9 @@ class DealsTabViewModel @Inject constructor(private val repository: DealsTabRepo
         }
     }
 
-    val dealsPagingData = repository.getDealsPager().cachedIn(viewModelScope)
+//    val dealsPagingData = repository.getDealsPager().cachedIn(viewModelScope)
+
+    val isThereAnyDeals = repository.getIsThereAnyDealPager.cachedIn(viewModelScope)
 
     fun updateFilter(filter: Filter) = repository.updateFilter(filter)
 
