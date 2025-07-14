@@ -17,11 +17,15 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,20 +33,20 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.rkbapps.gdealz.R
-import com.rkbapps.gdealz.models.Filter
+import com.rkbapps.gdealz.models.IsThereAnyDealFilters
 import com.rkbapps.gdealz.navigation.Routes
 import com.rkbapps.gdealz.ui.composables.CommonTopBar
 import com.rkbapps.gdealz.ui.composables.ErrorScreen
-import com.rkbapps.gdealz.ui.composables.FilterDialog
 import com.rkbapps.gdealz.ui.tab.deals.composables.DealsItemShimmer
+import com.rkbapps.gdealz.ui.tab.deals.composables.FilterBottomSheet
 import com.rkbapps.gdealz.ui.tab.deals.composables.IsThereAnyDealDealsItem
+import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -50,21 +54,28 @@ import com.rkbapps.gdealz.ui.tab.deals.composables.IsThereAnyDealDealsItem
 fun DealsTab(navController: NavHostController, viewModel: DealsTabViewModel = hiltViewModel()) {
 
 //    val dealsPagingData = viewModel.dealsPagingData.collectAsLazyPagingItems()
-    val filter = viewModel.filter.collectAsStateWithLifecycle()
-    val stores = viewModel.stores.collectAsStateWithLifecycle()
+    //val filter = viewModel.filter.collectAsStateWithLifecycle()
+//    val stores = viewModel.stores.collectAsStateWithLifecycle()
+
+    val filter by viewModel.isThereAnyDealFilter.collectAsStateWithLifecycle()
 
     val isThereAnyDealPager = viewModel.isThereAnyDeals.collectAsLazyPagingItems()
 
     val isFilterDialogVisible = remember { mutableStateOf(false) }
 
-    val defaultFilter = remember { Filter() }
+    val sheetState = rememberModalBottomSheetState()
+    val scope = rememberCoroutineScope()
+    val showBottomSheet = remember { mutableStateOf(false) }
+
+
+    val defaultFilter = remember { IsThereAnyDealFilters() }
 
     Scaffold(
         topBar = {
             CommonTopBar(title = stringResource(R.string.app_name), actions = {
-                if (filter.value != defaultFilter) {
+                if (filter != defaultFilter) {
                     Button(
-                        onClick = { viewModel.updateFilter(defaultFilter) },
+                        onClick = { viewModel.clearIsThereAnyDealFilter() },
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color.White.copy(alpha = 0.2f),
                             contentColor = Color.White
@@ -78,7 +89,7 @@ fun DealsTab(navController: NavHostController, viewModel: DealsTabViewModel = hi
         containerColor = MaterialTheme.colorScheme.background
     ) { innerPadding ->
 
-        if (isFilterDialogVisible.value) {
+        /*if (isFilterDialogVisible.value) {
             Dialog(onDismissRequest = {
                 isFilterDialogVisible.value = !isFilterDialogVisible.value
             }) {
@@ -91,8 +102,25 @@ fun DealsTab(navController: NavHostController, viewModel: DealsTabViewModel = hi
                     isFilterDialogVisible.value = false
                 }
             }
-        }
+        }*/
 
+        if (showBottomSheet.value) {
+            ModalBottomSheet(
+                onDismissRequest = { showBottomSheet.value = false },
+                sheetState = sheetState
+            ) {
+                FilterBottomSheet(
+                    appliedFilters = filter
+                ) {
+                    viewModel.updateIsThereAnyDealFilter(it)
+                    scope.launch { sheetState.hide() }.invokeOnCompletion {
+                        if (!sheetState.isVisible) {
+                            showBottomSheet.value = false
+                        }
+                    }
+                }
+            }
+        }
 
         Column(
             modifier = Modifier
@@ -117,6 +145,7 @@ fun DealsTab(navController: NavHostController, viewModel: DealsTabViewModel = hi
                 }
                 IconButton(onClick = {
                     isFilterDialogVisible.value = true
+                    showBottomSheet.value = true
                 }) {
                     Icon(
                         painter = painterResource(id = R.drawable.filter_list),

@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.google.gson.Gson
 import com.rkbapps.gdealz.models.Filter
+import com.rkbapps.gdealz.models.IsThereAnyDealFilters
 import com.rkbapps.gdealz.models.deal.Deal
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
@@ -21,11 +22,14 @@ class DealsTabViewModel @Inject constructor(
 
     val deals = repository.deals
     val filter = repository.filter
-    val stores = repository.storeFlow.stateIn(
-        viewModelScope,
-        SharingStarted.Lazily,
-        emptyList()
-    )
+    val isThereAnyDealFilter = repository.isThereAnyDealFilter
+
+
+//    val stores = repository.storeFlow.stateIn(
+//        viewModelScope,
+//        SharingStarted.Lazily,
+//        emptyList()
+//    )
 
 
     init {
@@ -50,5 +54,8 @@ class DealsTabViewModel @Inject constructor(
 
 
     fun updateFilter(filter: Filter) = repository.updateFilter(filter)
+
+    fun updateIsThereAnyDealFilter(filter: IsThereAnyDealFilters) = repository.updateIsThereAnyDealFilter(filter)
+    fun clearIsThereAnyDealFilter() = repository.updateIsThereAnyDealFilter(IsThereAnyDealFilters())
 
 }

@@ -17,10 +17,10 @@ interface IsThereAnyDealApi {
         @Query("offset") offset: Int,
         @Query("limit") limit: Int,
         @Query("sort") sort: String,
-        @Query("filter") filter: String,
+        @Query("filter", encoded = true) filter: String,
         @Query("nondeals") nonDeals: Boolean = false,
         @Query("mature") mature: Boolean = true,
-        @Query("shops") shops: Array<Int>,
+        @Query("shops") shops: String,
         @Query("include_prices") includePrices: Boolean = true,
         @Query("key") apiKey: String = ApiConst.IS_THERE_ANY_DEAL_API_KEY
     ): Deals

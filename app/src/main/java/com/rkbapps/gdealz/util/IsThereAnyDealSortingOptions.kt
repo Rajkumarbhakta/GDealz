@@ -17,8 +17,8 @@ import androidx.compose.runtime.key
 
  */
 enum class IsThereAnyDealSortingOptions(
-    value:String,
-    key:String
+    val value:String,
+    val key:String
 ) {
     TRENDING(value = "Trending", key="-trending"),
     NEWEST(value="Newest", key = "-time"),

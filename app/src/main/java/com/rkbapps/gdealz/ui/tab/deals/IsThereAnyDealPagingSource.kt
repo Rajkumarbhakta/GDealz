@@ -3,6 +3,7 @@ package com.rkbapps.gdealz.ui.tab.deals
 import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.rkbapps.gdealz.models.IsThereAnyDealFilters
 import com.rkbapps.gdealz.models.deal.DealItem
 import com.rkbapps.gdealz.models.deal.Deals
 import com.rkbapps.gdealz.network.ApiConst
@@ -15,7 +16,8 @@ import java.io.IOException
 private const val PAGE_SIZE = 20
 
 class IsThereAnyDealPagingSource(
-    private val api: IsThereAnyDealApi
+    private val api: IsThereAnyDealApi,
+    private val filter: IsThereAnyDealFilters
 ) : PagingSource<Int, DealItem>() {
     override fun getRefreshKey(state: PagingState<Int, DealItem>): Int? =
         state.anchorPosition?.let { pos ->
@@ -23,17 +25,22 @@ class IsThereAnyDealPagingSource(
                 page.prevKey?.plus(PAGE_SIZE) ?: page.nextKey?.minus(PAGE_SIZE)
             }
         }
+
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, DealItem> {
         try {
             val position = params.key ?: 0
+
+            val filterString = filter.generateFilter() ?: ""
+            Log.d("Filter", "generateDealFilter: $filterString")
+
             val response = safeApiCall {
                 api.getDeals(
                     country = ApiConst.COUNTRY,
                     offset = position,
                     limit = 20,
-                    sort = "price",
-                    filter = "",
-                    shops = arrayOf(),
+                    sort = filter.sort.key,
+                    filter = filterString,
+                    shops = filter.stores.joinToString(",") { it.toString() },
                 )
             }
             val result = when (response) {
