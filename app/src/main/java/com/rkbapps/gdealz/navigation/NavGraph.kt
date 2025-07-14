@@ -10,11 +10,13 @@ import com.rkbapps.gdealz.ui.screens.dealslookup.DealLookupScreen
 import com.rkbapps.gdealz.ui.screens.free_game_details.FreeGameDetailsScreen
 import com.rkbapps.gdealz.ui.screens.game_info.GameInfoScreen
 import com.rkbapps.gdealz.ui.screens.splash.SplashScreen
-import com.rkbapps.gdealz.ui.screens.steam_details.SteamDetailsPage
+import com.rkbapps.gdealz.ui.screens.steam_details.cheapshark.SteamDetailsPage
+import com.rkbapps.gdealz.ui.screens.steam_details.is_there_any_deal.IsThereAnyDealSteamDetailsPage
 import com.rkbapps.gdealz.ui.tab.fav.FavTab
 import com.rkbapps.gdealz.ui.tab.deals.DealsTab
 import com.rkbapps.gdealz.ui.tab.free.FreeDealsTab
 import com.rkbapps.gdealz.ui.tab.search.SearchTab
+import okhttp3.Route
 
 
 @Composable
@@ -73,6 +75,10 @@ fun NavGraphBuilder.destinations(navController: NavHostController) {
 
     composable<Routes.GameInfo> {
         GameInfoScreen(navController)
+    }
+
+    composable<Routes.IsThereAnyDealSteamGameDetails> {
+        IsThereAnyDealSteamDetailsPage(navController)
     }
 
 

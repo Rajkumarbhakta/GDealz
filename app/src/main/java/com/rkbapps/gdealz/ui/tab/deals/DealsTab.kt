@@ -161,7 +161,7 @@ fun DealsTab(navController: NavHostController, viewModel: DealsTabViewModel = hi
                         IsThereAnyDealDealsItem(deal = deal) {
                             deal.deal?.let {
                                 navController.navigate(
-                                    Routes.GameInfo(
+                                    Routes.IsThereAnyDealSteamGameDetails(
                                         gameId = deal.id,
                                         title = deal.title,
                                     )

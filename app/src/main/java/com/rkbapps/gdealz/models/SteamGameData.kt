@@ -22,7 +22,6 @@ data class Data(
     @SerializedName("detailed_description") val detailedDescription: String? = null,
     @SerializedName("about_the_game") val aboutTheGame: String? = null,
     @SerializedName("short_description") val shortDescription: String? = null,
-    @SerializedName("reviews") val reviews: String? = null,
     @SerializedName("header_image") val headerImage: String? = null,
     @SerializedName("capsule_image") val capsuleImage: String? = null,
     @SerializedName("capsule_imagev5") val capsuleImagev5: String? = null,

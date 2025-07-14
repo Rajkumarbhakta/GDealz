@@ -1,26 +1,14 @@
-package com.rkbapps.gdealz.ui.screens.steam_details
+package com.rkbapps.gdealz.ui.screens.steam_details.cheapshark
 
-import android.util.JsonReader
-import android.util.Log
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import com.google.gson.Gson
 import com.rkbapps.gdealz.db.dao.StoreDao
-import com.rkbapps.gdealz.db.entity.FavDeals
-import com.rkbapps.gdealz.db.entity.Store
-import com.rkbapps.gdealz.models.Data
-import com.rkbapps.gdealz.models.DealsInfo
 import com.rkbapps.gdealz.models.SteamGameData
 import com.rkbapps.gdealz.network.NetworkResponse
 import com.rkbapps.gdealz.network.api.SteamApi
 import com.rkbapps.gdealz.network.safeApiCall
-import com.rkbapps.gdealz.ui.screens.dealslookup.FavDealsState
 import com.rkbapps.gdealz.util.UiState
-import com.rkbapps.gdealz.util.json
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import java.io.StringReader
 import javax.inject.Inject
 
 class SteamDetailsRepository @Inject constructor(
