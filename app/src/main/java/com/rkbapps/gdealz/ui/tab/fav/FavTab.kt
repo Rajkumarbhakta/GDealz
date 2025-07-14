@@ -58,7 +58,7 @@ fun FavTab(
     Scaffold(
         topBar = {
             CommonTopBar("Fav", actions = {
-                if (favList.value.isNotEmpty()){
+                if (favList.value.isNotEmpty()) {
                     Button(
                         onClick = {
                             isDeleteAllAlertDialogOpen.value = true
@@ -75,7 +75,7 @@ fun FavTab(
             }
             )
         }
-    ) {
+    ) { innerPadding ->
 
         if (deletableFav.value != null) {
             DeleteAlertDialog(
@@ -107,7 +107,7 @@ fun FavTab(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(it),
+                .padding(innerPadding),
         ) {
             if (favList.value.isEmpty()) {
                 ErrorScreen("Nothing here..")
@@ -125,22 +125,40 @@ fun FavTab(
                         FavItem(it, onDelete = {
                             deletableFav.value = it
                         }) {
-
-                            if (it.steamAppId!=null){
-                                navController.navigate(
-                                    Routes.SteamGameDetails(
-                                        steamId = it.steamAppId,
-                                        dealId = it.dealID,
-                                        title = it.title
+                            try {
+                                val idInt = it.dealID[0].digitToInt()
+                                if (it.steamAppId != null) {
+                                    navController.navigate(
+                                        Routes.IsThereAnyDealSteamGameDetails(
+                                            gameId = it.dealID,
+                                            title = it.title
+                                        )
                                     )
-                                )
-                            }else{
-                                navController.navigate(
-                                    Routes.DealsLookup(
-                                        dealId = it.dealID,
-                                        title = it.title
+                                } else {
+                                    navController.navigate(
+                                        Routes.GameInfo(
+                                            gameId = it.dealID,
+                                            title = it.title
+                                        )
                                     )
-                                )
+                                }
+                            } catch (e: Exception) {
+                                if (it.steamAppId != null) {
+                                    navController.navigate(
+                                        Routes.SteamGameDetails(
+                                            steamId = it.steamAppId,
+                                            dealId = it.dealID,
+                                            title = it.title
+                                        )
+                                    )
+                                } else {
+                                    navController.navigate(
+                                        Routes.DealsLookup(
+                                            dealId = it.dealID,
+                                            title = it.title
+                                        )
+                                    )
+                                }
                             }
                         }
                     }
