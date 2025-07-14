@@ -3,7 +3,9 @@ package com.rkbapps.gdealz.ui.tab.deals
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
+import com.google.gson.Gson
 import com.rkbapps.gdealz.models.Filter
+import com.rkbapps.gdealz.models.deal.Deal
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.filter
@@ -12,23 +14,25 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class DealsTabViewModel @Inject constructor(private val repository: DealsTabRepository) :
-    ViewModel() {
+class DealsTabViewModel @Inject constructor(
+    private val repository: DealsTabRepository,
+    private val gson: Gson
+) : ViewModel() {
 
-        val deals  = repository.deals
+    val deals = repository.deals
+    val filter = repository.filter
+    val stores = repository.storeFlow.stateIn(
+        viewModelScope,
+        SharingStarted.Lazily,
+        emptyList()
+    )
 
-        val filter = repository.filter
 
-        val stores = repository.storeFlow.stateIn(
-            viewModelScope,
-            SharingStarted.Companion.WhileSubscribed(5_000), emptyList())
+    init {
+        viewModelScope.launch {
 
-
-        init {
-            viewModelScope.launch {
-
-            }
         }
+    }
 
     fun getDealsByFilter(storeId:Int,upperPrice:Int){
         viewModelScope.launch {
@@ -39,6 +43,11 @@ class DealsTabViewModel @Inject constructor(private val repository: DealsTabRepo
 //    val dealsPagingData = repository.getDealsPager().cachedIn(viewModelScope)
 
     val isThereAnyDeals = repository.getIsThereAnyDealPager.cachedIn(viewModelScope)
+
+    fun dealToJson(deal: Deal): String{
+        return gson.toJson(deal)
+    }
+
 
     fun updateFilter(filter: Filter) = repository.updateFilter(filter)
 

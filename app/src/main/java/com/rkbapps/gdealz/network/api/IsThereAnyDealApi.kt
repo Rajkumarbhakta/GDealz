@@ -2,8 +2,11 @@ package com.rkbapps.gdealz.network.api
 
 import com.rkbapps.gdealz.models.deal.Deals
 import com.rkbapps.gdealz.models.game_info.GameInfo
+import com.rkbapps.gdealz.models.price.PriceDetail
 import com.rkbapps.gdealz.network.ApiConst
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Query
 
 interface IsThereAnyDealApi {
@@ -27,5 +30,14 @@ interface IsThereAnyDealApi {
         @Query("id") gameId: String,
         @Query("key") apiKey: String = ApiConst.IS_THERE_ANY_DEAL_API_KEY
     ): GameInfo
+
+    @POST("/games/prices/v3")
+    suspend fun getPrices(
+        @Query("country") country:String = "US",
+        @Query("deals") deals: Boolean = true,
+        @Query("vouchers") vouchers: Boolean = true,
+        @Query("key") apiKey: String = ApiConst.IS_THERE_ANY_DEAL_API_KEY,
+        @Body gameIds: List<String> = emptyList()
+    ): List<PriceDetail>
 
 }

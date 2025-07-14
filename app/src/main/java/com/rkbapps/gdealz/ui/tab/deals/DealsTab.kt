@@ -159,12 +159,14 @@ fun DealsTab(navController: NavHostController, viewModel: DealsTabViewModel = hi
                 items(count = isThereAnyDealPager.itemCount) { position ->
                     isThereAnyDealPager[position]?.let { deal ->
                         IsThereAnyDealDealsItem(deal = deal) {
-                            navController.navigate(
-                                Routes.GameInfo(
-                                    gameId = deal.id,
-                                    title = deal.title,
+                            deal.deal?.let {
+                                navController.navigate(
+                                    Routes.GameInfo(
+                                        gameId = deal.id,
+                                        title = deal.title,
+                                    )
                                 )
-                            )
+                            }
                         }
                     }
                 }

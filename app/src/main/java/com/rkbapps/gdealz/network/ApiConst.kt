@@ -16,6 +16,8 @@ object ApiConst {
     const val IS_THERE_ANY_DEAL_BASE_URL = "https://api.isthereanydeal.com"
     const val IS_THERE_ANY_DEAL_API_KEY = BuildConfig.API_KEY
 
+    const val COUNTRY = "IN"
+
     fun redirect(dealId: String): String {
         return "$REDIRECT_URL?dealID=$dealId"
     }

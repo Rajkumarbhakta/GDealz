@@ -1,12 +1,15 @@
 package com.rkbapps.gdealz.ui.screens.game_info
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -18,7 +21,9 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
@@ -28,15 +33,22 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.rkbapps.gdealz.R
+import com.rkbapps.gdealz.models.deal.Price
+import com.rkbapps.gdealz.models.price.Deals
 import com.rkbapps.gdealz.ui.composables.CommonCard
 import com.rkbapps.gdealz.ui.composables.CommonTopBar
 import com.rkbapps.gdealz.ui.composables.ErrorScreen
@@ -45,6 +57,8 @@ import com.rkbapps.gdealz.ui.screens.steam_details.OverviewRowItems
 import com.rkbapps.gdealz.ui.screens.steam_details.getDate
 import com.rkbapps.gdealz.ui.screens.steam_details.getMonths
 import com.rkbapps.gdealz.ui.screens.steam_details.getYear
+import com.rkbapps.gdealz.util.CurrencyAndCountryUtil
+import com.rkbapps.gdealz.util.StoreUtil
 
 @Composable
 fun GameInfoScreen(
@@ -52,10 +66,11 @@ fun GameInfoScreen(
     viewModel: GameInfoViewModel = hiltViewModel()
 ) {
 
-    val gameInfo by viewModel.gameInfo.collectAsStateWithLifecycle()
-    val favStatus by viewModel.dealFavStatus.collectAsStateWithLifecycle()
-    val isFav by remember { viewModel.isFavDeal }
+    val uriHandler = LocalUriHandler.current
 
+    val gameInfo by viewModel.gameInfo.collectAsStateWithLifecycle()
+    val gamePriceInfo by viewModel.gamePriceInfo.collectAsStateWithLifecycle()
+    val isFav by remember { viewModel.isFavDeal }
 
     Scaffold(
         topBar = {
@@ -160,12 +175,21 @@ fun GameInfoScreen(
                                         )
                                     }
                                 }
+                                /*item {
+                                    OverviewRowItems(
+                                        title = "DEAL",
+                                        value = "${viewModel.deal.cut ?: 0}% OFF",
+                                        subTitle = "${viewModel.deal.regular?.amount ?: 0}",
+                                        subTitle1 = "${viewModel.deal.price?.amount ?: 0}",
+                                        isSubTitleLineThrough = true
+                                    )
+                                }*/
                                 item {
                                     OverviewRowItems(
                                         title = "RANK",
                                         value = getTotalReviews(gameInfo.data?.stats?.rank ?: 0),
-                                        subTitle = "",
-                                        subTitle1 = ""
+                                        subTitle = "-",
+                                        subTitle1 = "-"
                                     )
                                 }
                                 item {
@@ -215,6 +239,112 @@ fun GameInfoScreen(
                                     "-"
                                 }
                             )
+                            /*Column(
+                                modifier = Modifier.weight(1f),
+                                verticalArrangement = Arrangement.spacedBy(8.dp)
+                            ) {
+
+                            }*/
+
+                        }
+                    }
+                    item {
+                        Text(
+                            "Price History",
+                            modifier = Modifier.padding(horizontal = 16.dp),
+                            style = MaterialTheme.typography.headlineSmall
+                        )
+                    }
+                    item {
+                        when {
+                            gamePriceInfo.isLoading -> {
+                                LinearProgressIndicator(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(16.dp)
+                                )
+                            }
+
+                            gamePriceInfo.error != null -> {
+                                Text(
+                                    "${gamePriceInfo.error}",
+                                    textAlign = TextAlign.Center,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(16.dp)
+                                )
+                            }
+
+                            gamePriceInfo.data != null -> {
+                                Column(
+                                    modifier = Modifier.padding(horizontal = 16.dp),
+                                    verticalArrangement = Arrangement.spacedBy(10.dp)
+                                ) {
+                                    gamePriceInfo.data?.historyLow?.all?.let {
+                                        PriceHistoryCard(
+                                            title = "Lowest in history",
+                                            price = it
+                                        )
+                                    }
+                                    gamePriceInfo.data?.historyLow?.y1?.let {
+                                        PriceHistoryCard(
+                                            title = "Lowest in 1 year",
+                                            price = it
+                                        )
+                                    }
+                                    gamePriceInfo.data?.historyLow?.m3?.let {
+                                        PriceHistoryCard(
+                                            title = "Lowest in 3 months",
+                                            price = it
+                                        )
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+                    item {
+                        Text(
+                            "Deals",
+                            modifier = Modifier.padding(horizontal = 16.dp),
+                            style = MaterialTheme.typography.headlineSmall
+                        )
+                    }
+                    item {
+                        when {
+                            gamePriceInfo.isLoading -> {
+                                LinearProgressIndicator(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(16.dp)
+                                )
+                            }
+
+                            gamePriceInfo.error != null -> {
+                                Text(
+                                    "${gamePriceInfo.error}",
+                                    textAlign = TextAlign.Center,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(16.dp)
+                                )
+                            }
+
+                            gamePriceInfo.data != null -> {
+                                Column(
+                                    modifier = Modifier.padding(horizontal = 16.dp),
+                                    verticalArrangement = Arrangement.spacedBy(10.dp)
+                                ) {
+                                    gamePriceInfo.data?.deals?.forEach { deals ->
+                                        DealCard(deals = deals) {
+                                            deals.url?.let {
+                                                uriHandler.openUri(it)
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
                         }
                     }
                     item {
@@ -241,11 +371,96 @@ fun GameInfoScreen(
                             }
                         }
                     }
-
                 }
             }
+
         }
     }
 
 
+}
+
+@Composable
+fun PriceHistoryCard(
+    modifier: Modifier = Modifier,
+    title: String,
+    price: Price
+) {
+    Card {
+        Column(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(title, style = MaterialTheme.typography.titleMedium)
+            Text(CurrencyAndCountryUtil.getCurrencyAndAmount(price))
+        }
+    }
+}
+
+@Composable
+fun DealCard(modifier: Modifier = Modifier, deals: Deals, onClick: () -> Unit = {}) {
+
+    val store = remember { StoreUtil.getStore(deals.shop?.id ?: 0) }
+    val isFree = deals.cut == 100
+
+    Card(
+        onClick = onClick
+    ) {
+        Row(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
+
+            OutlinedCard(
+                colors = CardDefaults.outlinedCardColors(
+                    containerColor = Color.Black.copy(alpha = 0.5f)
+                )
+            ) {
+                AsyncImage(
+                    model = store?.image,
+                    contentDescription = store?.name,
+                    modifier = Modifier
+                        .size(80.dp)
+                        .padding(8.dp),
+                    contentScale = ContentScale.Fit
+                )
+            }
+            Column(modifier = Modifier.weight(1f)) {
+                deals.cut?.let {
+                    Text(
+                        text = (if (isFree) "Free" else "$it% OFF"),
+                        style = MaterialTheme.typography.labelMedium,
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(100.dp))
+                            .background(color = MaterialTheme.colorScheme.primary.copy(alpha = 0.2f))
+                            .padding(horizontal = 10.dp, vertical = 8.dp)
+                    )
+                }
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    Text(
+                        CurrencyAndCountryUtil.getCurrencyAndAmount(deals.regular),
+                        style = MaterialTheme.typography.labelMedium.copy(textDecoration = TextDecoration.LineThrough),
+                    )
+                    Text(CurrencyAndCountryUtil.getCurrencyAndAmount(deals.price))
+                }
+                Text(deals.shop?.name?.toString() ?: "-")
+            }
+            IconButton(
+                onClick = onClick
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.launch_link_open),
+                    contentDescription = "open the deal"
+                )
+            }
+        }
+    }
 }

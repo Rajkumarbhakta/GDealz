@@ -31,6 +31,7 @@ import com.rkbapps.gdealz.ui.theme.darkGreen
 import com.rkbapps.gdealz.ui.theme.normalTextColor
 import com.rkbapps.gdealz.util.calculatePercentage
 import com.rkbapps.gdealz.models.deal.DealItem
+import com.rkbapps.gdealz.util.CurrencyAndCountryUtil
 
 @Composable
 fun IsThereAnyDealDealsItem(modifier: Modifier = Modifier,deal:DealItem,onClick:()->Unit) {
@@ -89,12 +90,12 @@ fun IsThereAnyDealDealsItem(modifier: Modifier = Modifier,deal:DealItem,onClick:
                 ) {
 
                     Text(
-                        text = "$${deal.deal?.regular?.amount?:0}",
+                        text = "${CurrencyAndCountryUtil.currencySymbolMap[deal.deal?.regular?.currency]}${deal.deal?.regular?.amount?:0}",
                         color = normalTextColor,
                         style = MaterialTheme.typography.bodySmall.copy(textDecoration = TextDecoration.LineThrough),
                     )
                     Text(
-                        text = if (isFree) "Free" else "$${deal.deal?.price?.amount?:0}",
+                        text = if (isFree) "Free" else "${CurrencyAndCountryUtil.currencySymbolMap[deal.deal?.regular?.currency]}${deal.deal?.price?.amount?:0}",
                         style = MaterialTheme.typography.bodyLarge.copy(
                             color = if (isFree) darkGreen else MaterialTheme.colorScheme.primary
                         )
@@ -110,9 +111,7 @@ fun IsThereAnyDealDealsItem(modifier: Modifier = Modifier,deal:DealItem,onClick:
                 modifier = Modifier
                     .clip(RoundedCornerShape(100.dp))
                     .background(
-                        color =
-                            if (isFree) darkGreen.copy(alpha = 0.2f) else
-                                MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)
+                        color = if (isFree) darkGreen.copy(alpha = 0.2f) else MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)
                     ).padding(horizontal = 10.dp, vertical = 4.dp)
             )
             Spacer(modifier = Modifier.width(10.dp))

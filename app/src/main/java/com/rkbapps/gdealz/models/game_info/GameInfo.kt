@@ -5,8 +5,7 @@ import com.rkbapps.gdealz.models.deal.Assets
 
 
 data class GameInfo(
-
-    @SerializedName("id") val id: String? = null,
+    @SerializedName("id") val id: String,
     @SerializedName("slug") val slug: String? = null,
     @SerializedName("title") val title: String? = null,
     @SerializedName("type") val type: String? = null,

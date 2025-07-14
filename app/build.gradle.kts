@@ -120,6 +120,11 @@ dependencies {
     //work manager
     implementation(libs.work.runtime)
 
+    //swipe refresh
+    implementation(libs.accompanist.swiperefresh)
+
     implementation(libs.kotlinx.serialization.json)
+
+
 
 }

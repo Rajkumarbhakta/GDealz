@@ -158,7 +158,7 @@ fun SteamDetailsPage(
         }
     ) { innerPadding ->
         when {
-            steamGameData.isLoading == true -> {
+            steamGameData.isLoading -> {
                 Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     CircularProgressIndicator()
                 }

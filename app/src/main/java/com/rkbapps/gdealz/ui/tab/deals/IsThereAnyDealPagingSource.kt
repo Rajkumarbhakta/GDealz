@@ -5,6 +5,7 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.rkbapps.gdealz.models.deal.DealItem
 import com.rkbapps.gdealz.models.deal.Deals
+import com.rkbapps.gdealz.network.ApiConst
 import com.rkbapps.gdealz.network.NetworkResponse
 import com.rkbapps.gdealz.network.api.IsThereAnyDealApi
 import com.rkbapps.gdealz.network.safeApiCall
@@ -27,10 +28,10 @@ class IsThereAnyDealPagingSource(
             val position = params.key ?: 0
             val response = safeApiCall {
                 api.getDeals(
-                    country = "US",
+                    country = ApiConst.COUNTRY,
                     offset = position,
                     limit = 20,
-                    sort = "-cut",
+                    sort = "price",
                     filter = "",
                     shops = arrayOf(),
                 )

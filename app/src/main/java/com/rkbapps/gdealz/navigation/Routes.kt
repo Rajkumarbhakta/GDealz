@@ -34,7 +34,10 @@ sealed class Routes {
     data class FreeGameDetails(val giveaway: String) : Routes()
 
     @Serializable
-    data class GameInfo(val gameId: String,val title: String?) : Routes()
+    data class GameInfo(
+        val gameId: String,
+        val title: String?,
+    ) : Routes()
 
 
 }

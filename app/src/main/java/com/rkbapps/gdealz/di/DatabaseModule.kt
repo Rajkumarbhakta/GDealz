@@ -2,6 +2,8 @@ package com.rkbapps.gdealz.di
 
 import android.content.Context
 import androidx.room.Room
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.rkbapps.gdealz.db.GDatabase
 import com.rkbapps.gdealz.db.MIGRATION_1_2
 import com.rkbapps.gdealz.db.dao.FavDealsDao
@@ -16,7 +18,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object DatabaseModule {
-
 
     @Provides
     @Singleton

@@ -19,13 +19,10 @@ import javax.inject.Inject
 class DealsTabRepository @Inject constructor(
     private val api: CheapSharkApi,
     private val isThereAnyDealApi: IsThereAnyDealApi,
-    private val storeDb: StoreDao
+    storeDb: StoreDao
 ) {
-
-
     private val _deals = MutableStateFlow(UiState<List<Deals>>())
     val deals = _deals.asStateFlow()
-
     private val _filter = MutableStateFlow<Filter>(Filter())
     val filter = _filter.asStateFlow()
 
@@ -103,6 +100,5 @@ class DealsTabRepository @Inject constructor(
     }
 
     val storeFlow = storeDb.findAll()
-
 
 }

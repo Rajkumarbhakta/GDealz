@@ -4,6 +4,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import com.google.gson.Gson
+import com.rkbapps.gdealz.models.deal.Deal
 import com.rkbapps.gdealz.models.game_info.GameInfo
 import com.rkbapps.gdealz.navigation.Routes
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,10 +16,12 @@ import javax.inject.Inject
 @HiltViewModel
 class GameInfoViewModel @Inject constructor(
     private val repository: GameInfoRepository,
-    private val saveStateHandle: SavedStateHandle
+    gson: Gson,
+    saveStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     val gameInfo = repository.gameInfo
+    val gamePriceInfo =  repository.gamePriceInfo
     val isFavDeal = repository.isFavDeal
     val dealFavStatus = repository.dealFavStatus
 
@@ -27,6 +31,7 @@ class GameInfoViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             repository.getGameInfo(dealLookup.gameId)
+            repository.getGamePriceInfo(dealLookup.gameId)
             dealFavStatus(dealLookup.gameId)
         }
     }
@@ -37,18 +42,10 @@ class GameInfoViewModel @Inject constructor(
         }
     }
 
-    fun toggleFavDeal(deal: GameInfo){
+    fun toggleFavDeal(gameInfo: GameInfo){
         viewModelScope.launch(Dispatchers.IO){
-            dealLookup.gameId.let {
-                repository.markFavDeals(deal, it)
-            }
+            repository.markFavDeals(gameInfo = gameInfo,)
         }
     }
-
-
-
-
-
-
 
 }
