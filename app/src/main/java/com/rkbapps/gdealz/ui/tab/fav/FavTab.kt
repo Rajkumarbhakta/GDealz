@@ -25,6 +25,7 @@ import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -51,14 +52,14 @@ fun FavTab(
     viewModel: FavViewModel = hiltViewModel()
 ) {
 
-    val favList = viewModel.favList.collectAsStateWithLifecycle()
+    val favList by viewModel.favList.collectAsStateWithLifecycle()
     val deletableFav = remember { mutableStateOf<FavDeals?>(null) }
     val isDeleteAllAlertDialogOpen = remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
             CommonTopBar("Fav", actions = {
-                if (favList.value.isNotEmpty()) {
+                if (favList.isNotEmpty()) {
                     Button(
                         onClick = {
                             isDeleteAllAlertDialogOpen.value = true
@@ -109,7 +110,7 @@ fun FavTab(
                 .fillMaxSize()
                 .padding(innerPadding),
         ) {
-            if (favList.value.isEmpty()) {
+            if (favList.isEmpty()) {
                 ErrorScreen("Nothing here..")
             } else {
                 LazyColumn(
@@ -121,7 +122,7 @@ fun FavTab(
                     item {
                         Spacer(Modifier.height(10.dp))
                     }
-                    items(favList.value) {
+                    items(favList) {
                         FavItem(it, onDelete = {
                             deletableFav.value = it
                         }) {
