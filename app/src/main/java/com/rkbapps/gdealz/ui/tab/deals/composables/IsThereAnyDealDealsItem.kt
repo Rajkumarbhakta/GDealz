@@ -1,5 +1,6 @@
 package com.rkbapps.gdealz.ui.tab.deals.composables
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -22,11 +23,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import coil.compose.SubcomposeAsyncImage
+import com.rkbapps.gdealz.R
 import com.rkbapps.gdealz.ui.theme.darkGreen
 import com.rkbapps.gdealz.ui.theme.normalTextColor
 import com.rkbapps.gdealz.util.calculatePercentage
@@ -64,10 +68,24 @@ fun IsThereAnyDealDealsItem(modifier: Modifier = Modifier,deal:DealItem,onClick:
                     .clip(RoundedCornerShape(10.dp)),
                 contentAlignment = Alignment.Center
             ) {
-                AsyncImage(
+                SubcomposeAsyncImage(
                     model = deal.assets?.boxart,
                     contentDescription = "game thumb",
                     modifier = Modifier.fillMaxSize().padding(8.dp),
+                    error = {
+                        Image(
+                            painter = painterResource(R.drawable.console),
+                            contentDescription = null,
+                            modifier = Modifier.fillMaxSize(),
+                        )
+                    },
+                    loading = {
+                        Image(
+                            painter = painterResource(R.drawable.console),
+                            contentDescription = null,
+                            modifier = Modifier.fillMaxSize(),
+                        )
+                    }
                 )
             }
 

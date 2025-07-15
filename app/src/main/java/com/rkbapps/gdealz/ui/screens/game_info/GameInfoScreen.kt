@@ -1,5 +1,6 @@
 package com.rkbapps.gdealz.ui.screens.game_info
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -46,6 +47,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
+import coil.compose.SubcomposeAsyncImage
 import com.rkbapps.gdealz.R
 import com.rkbapps.gdealz.models.deal.Price
 import com.rkbapps.gdealz.models.price.Deals
@@ -115,11 +117,25 @@ fun GameInfoScreen(
                 ) {
                     item {
                         Box(Modifier.fillMaxWidth()) {
-                            AsyncImage(
+                            SubcomposeAsyncImage (
                                 model = gameInfo.data?.assets?.banner600,
                                 contentDescription = "Banner",
                                 modifier = Modifier.fillMaxWidth(),
-                                contentScale = ContentScale.FillWidth
+                                contentScale = ContentScale.FillWidth,
+                                error = {
+                                    Image(
+                                        painter = painterResource(R.drawable.console),
+                                        contentDescription = null,
+                                        modifier = Modifier.fillMaxWidth(),
+                                    )
+                                },
+                                loading = {
+                                    Image(
+                                        painter = painterResource(R.drawable.console),
+                                        contentDescription = null,
+                                        modifier = Modifier.fillMaxWidth(),
+                                    )
+                                }
                             )
                             Row(
                                 modifier = Modifier
@@ -420,13 +436,27 @@ fun DealCard(modifier: Modifier = Modifier, deals: Deals, onClick: () -> Unit = 
                     containerColor = Color.Black.copy(alpha = 0.5f)
                 )
             ) {
-                AsyncImage(
+                SubcomposeAsyncImage (
                     model = store?.image,
                     contentDescription = store?.name,
                     modifier = Modifier
                         .size(80.dp)
                         .padding(8.dp),
-                    contentScale = ContentScale.Fit
+                    contentScale = ContentScale.Fit,
+                    error = {
+                        Image(
+                            painter = painterResource(R.drawable.console),
+                            contentDescription = null,
+                            modifier = Modifier.size(80.dp),
+                        )
+                    },
+                    loading = {
+                        Image(
+                            painter = painterResource(R.drawable.console),
+                            contentDescription = null,
+                            modifier = Modifier.size(80.dp),
+                        )
+                    }
                 )
             }
             Column(modifier = Modifier.weight(1f)) {

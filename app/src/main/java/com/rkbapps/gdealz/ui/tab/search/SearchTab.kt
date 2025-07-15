@@ -1,6 +1,7 @@
 package com.rkbapps.gdealz.ui.tab.search
 
 import android.util.Log
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -47,6 +48,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
+import coil.compose.SubcomposeAsyncImage
 import com.rkbapps.gdealz.R
 import com.rkbapps.gdealz.models.Game
 import com.rkbapps.gdealz.models.search.SearchResult
@@ -193,12 +195,26 @@ fun SearchItem(game: Game, onClick: () -> Unit) {
                     .clip(RoundedCornerShape(10.dp)),
                 contentAlignment = Alignment.Center
             ) {
-                AsyncImage(
+                SubcomposeAsyncImage(
                     model = game.thumb,
                     contentDescription = "game thumb",
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(8.dp),
+                    error = {
+                        Image(
+                            painter = painterResource(R.drawable.console),
+                            contentDescription = null,
+                            modifier = Modifier.fillMaxSize(),
+                        )
+                    },
+                    loading = {
+                        Image(
+                            painter = painterResource(R.drawable.console),
+                            contentDescription = null,
+                            modifier = Modifier.fillMaxSize(),
+                        )
+                    }
                 )
             }
             Spacer(modifier = Modifier.width(10.dp))
@@ -245,12 +261,26 @@ fun SearchItem(game: SearchResult, onClick: () -> Unit) {
                     .clip(RoundedCornerShape(10.dp)),
                 contentAlignment = Alignment.Center
             ) {
-                AsyncImage(
+                SubcomposeAsyncImage(
                     model = game.assets?.boxart,
                     contentDescription = "game thumb",
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(8.dp),
+                    error = {
+                        Image(
+                            painter = painterResource(R.drawable.console),
+                            contentDescription = null,
+                            modifier = Modifier.fillMaxSize(),
+                        )
+                    },
+                    loading = {
+                        Image(
+                            painter = painterResource(R.drawable.console),
+                            contentDescription = null,
+                            modifier = Modifier.fillMaxSize(),
+                        )
+                    }
                 )
             }
             Spacer(modifier = Modifier.width(10.dp))

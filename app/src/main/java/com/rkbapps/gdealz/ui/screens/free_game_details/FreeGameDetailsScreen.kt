@@ -1,5 +1,6 @@
 package com.rkbapps.gdealz.ui.screens.free_game_details
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,11 +19,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
+import coil.compose.SubcomposeAsyncImage
+import com.rkbapps.gdealz.R
 import com.rkbapps.gdealz.network.ApiConst.getFormattedDate
 import com.rkbapps.gdealz.ui.composables.CommonCard
 import com.rkbapps.gdealz.ui.composables.CommonTopBar
@@ -75,10 +79,24 @@ fun FreeGameDetailsScreen(
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
 
-            AsyncImage(
+            SubcomposeAsyncImage(
                 model = giveaway?.thumbnail,
                 contentDescription = giveaway?.title,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                error = {
+                    Image(
+                        painter = painterResource(R.drawable.console),
+                        contentDescription = null,
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+                },
+                loading = {
+                    Image(
+                        painter = painterResource(R.drawable.console),
+                        contentDescription = null,
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+                }
             )
 
             Column(
