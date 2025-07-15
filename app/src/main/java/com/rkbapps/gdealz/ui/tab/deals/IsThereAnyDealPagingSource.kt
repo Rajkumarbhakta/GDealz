@@ -52,7 +52,7 @@ class IsThereAnyDealPagingSource(
                 NetworkResponse.Error.UnknownError -> LoadResult.Error(Exception("Unknown"))
                 is NetworkResponse.Success<Deals> -> {
                     Log.d("PagingSource", "load: ${response.value.list}")
-                    val data = response.value.list.filter { item -> item.type == "game" }
+                    val data = response.value.list.filter { item -> item.type != "dlc" }
                     val nextKey =
                         if (data.isNotEmpty() && response.value.hasMore == true) position + PAGE_SIZE
                         else null

@@ -31,6 +31,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -43,10 +44,12 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.rkbapps.gdealz.R
 import com.rkbapps.gdealz.models.Game
+import com.rkbapps.gdealz.models.search.SearchResult
 import com.rkbapps.gdealz.navigation.Routes
 import com.rkbapps.gdealz.ui.composables.CommonTopBar
 import com.rkbapps.gdealz.ui.composables.ErrorScreen
@@ -60,6 +63,8 @@ fun SearchTab(
 ) {
 
     val searchResult = viewModel.searchResult.collectAsState()
+    val searchQuery by viewModel.searchQuery.collectAsStateWithLifecycle()
+    val isThereAnyDealSearchResult by viewModel.isThereAnyDealSearchResult.collectAsStateWithLifecycle()
 
     val query = rememberSaveable { mutableStateOf("") }
 
@@ -67,15 +72,16 @@ fun SearchTab(
         topBar = {
             CommonTopBar(title = "Search")
         },
-    ) {
+    ) {innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(it),
+                .padding(innerPadding),
         ) {
             OutlinedTextField(
-                value = query.value, onValueChange = {
-                    query.value = it
+                value = searchQuery,  // query.value,
+                onValueChange = {
+                    viewModel.updateSearchQuery(it)
                 },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -95,24 +101,30 @@ fun SearchTab(
                 singleLine = true,
                 shape = RoundedCornerShape(50.dp),
                 trailingIcon = {
-                    if (query.value.isNotEmpty() && query.value.isNotBlank()) {
+                    if (searchQuery.isNotEmpty() && searchQuery.isNotBlank()) {
                         TextButton(
                             modifier = Modifier.padding(8.dp),
-                            onClick = { viewModel.search(query.value) }) {
+                            onClick = {
+                                viewModel.search()
+//                                viewModel.search(query.value)
+                            }) {
                             Text(text = "Search")
                         }
                     }
                 },
                 keyboardActions = KeyboardActions(onSearch = {
-                        if (query.value.isNotEmpty()&& query.value.isNotBlank()) {
-                            viewModel.search(query.value)
+                        if (searchQuery.isNotEmpty()&& searchQuery.isNotBlank()) {
+                            viewModel.search()
                         }
                     }),
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search)
             )
 
             when{
-                searchResult.value.isLoading ->{
+                (isThereAnyDealSearchResult.data==null && searchQuery.isEmpty())->{
+                    ErrorScreen("Try searching something...")
+                }
+                isThereAnyDealSearchResult.isLoading ->{
                     LazyColumn(
                         modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp),
                         verticalArrangement = Arrangement.spacedBy(10.dp)
@@ -124,10 +136,10 @@ fun SearchTab(
                         }
                     }
                 }
-                searchResult.value.error!=null->{
+                isThereAnyDealSearchResult.error!=null->{
                     ErrorScreen(searchResult.value.error ?: "An error occurred")
                 }
-                searchResult.value.data!=null->{
+                isThereAnyDealSearchResult.data!=null->{
                     LazyColumn(
                         modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp),
                         verticalArrangement = Arrangement.spacedBy(10.dp)
@@ -135,28 +147,14 @@ fun SearchTab(
                         item {
                             Spacer(Modifier.height(10.dp))
                         }
-                        items(searchResult.value.data?:emptyList(), key = {
+                        items(isThereAnyDealSearchResult.data?:emptyList(), key = {
                             it.hashCode()
                         }) { game ->
                             SearchItem(game = game) {
-                                Log.d("STEAM","${game.steamAppID}")
-                                if (game.steamAppID!=null){
-                                    navController.navigate(
-                                        Routes.SteamGameDetails(
-                                            steamId = game.steamAppID,
-                                            title = game.external,
-                                            dealId = game.cheapestDealID
-                                        )
-                                    )
-                                }else{
-                                    navController.navigate(
-                                        Routes.DealsLookup(
-                                            title = game.external,
-                                            dealId = game.cheapestDealID
-                                        )
-                                    )
-                                }
-
+                                navController.navigate(Routes.IsThereAnyDealSteamGameDetails(
+                                    gameId = game.id,
+                                    title = game.title
+                                ))
                             }
                         }
                         item {
@@ -212,6 +210,58 @@ fun SearchItem(game: Game, onClick: () -> Unit) {
             ) {
                 Text(
                     text = game.external ?: "",
+                    maxLines = 1,
+                    style = TextStyle(fontWeight = FontWeight.Bold),
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
+        }
+    }
+
+
+}
+
+@Composable
+fun SearchItem(game: SearchResult, onClick: () -> Unit) {
+    OutlinedCard(
+        onClick = {
+            onClick.invoke()
+        },
+        modifier = Modifier.fillMaxSize().height(90.dp)
+    ) {
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(10.dp)
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(68.dp)
+                    .background(
+                        color = MaterialTheme.colorScheme.primary.copy(alpha = 0.2f),
+                        shape = RoundedCornerShape(10.dp)
+                    )
+                    .clip(RoundedCornerShape(10.dp)),
+                contentAlignment = Alignment.Center
+            ) {
+                AsyncImage(
+                    model = game.assets?.boxart,
+                    contentDescription = "game thumb",
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(8.dp),
+                )
+            }
+            Spacer(modifier = Modifier.width(10.dp))
+            Column(
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .weight(0.8f)
+            ) {
+                Text(
+                    text = game.title ?: "",
                     maxLines = 1,
                     style = TextStyle(fontWeight = FontWeight.Bold),
                     overflow = TextOverflow.Ellipsis
