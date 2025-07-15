@@ -3,8 +3,8 @@ package com.rkbapps.gdealz.util
 import kotlin.math.pow
 
 object LZString {
-    private const val keyStrBase64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/="
-    private const val keyStrUriSafe = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+-\$"
+    private const val KEY_STRING_BASE_64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/="
+    private const val KEY_STRING_URI_SAFE = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+-\$"
     private val baseReverseDic = mutableMapOf<String, MutableMap<Char, Int>>()
 
     private fun getBaseValue(alphabet: String, character: Char): Int {
@@ -18,7 +18,7 @@ object LZString {
     }
 
     fun compressToBase64(input: String?): String? {
-        val res = compress(input, 6) { a -> keyStrBase64[a].toString() }
+        val res = compress(input, 6) { a -> KEY_STRING_BASE_64[a].toString() }
         if (res == null) return null
         return when (res.length % 4) {
             0 -> res
@@ -31,7 +31,7 @@ object LZString {
 
     fun decompressFromBase64(input: String?): String? {
         if (input.isNullOrEmpty()) return null
-        return decompress(input.length, 32) { index -> getBaseValue(keyStrBase64, input[index]) }
+        return decompress(input.length, 32) { index -> getBaseValue(KEY_STRING_BASE_64, input[index]) }
     }
 
     fun compressToUTF16(input: String?): String? {
@@ -69,11 +69,11 @@ object LZString {
     fun decompressFromEncodedURIComponent(input: String?): String? {
         if (input.isNullOrEmpty()) return null
         val processedInput = input.replace(" ", "+")
-        return decompress(processedInput.length, 32) { index -> getBaseValue(keyStrUriSafe, processedInput[index]) }
+        return decompress(processedInput.length, 32) { index -> getBaseValue(KEY_STRING_URI_SAFE, processedInput[index]) }
     }
 
     fun compressToEncodedURIComponent(input: String?): String? {
-        return compress(input, 6) { a -> keyStrUriSafe[a].toString() }
+        return compress(input, 6) { a -> KEY_STRING_URI_SAFE[a].toString() }
     }
 
     fun compress(uncompressed: String?): String? {

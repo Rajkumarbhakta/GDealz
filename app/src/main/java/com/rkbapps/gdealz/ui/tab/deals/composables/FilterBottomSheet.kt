@@ -58,7 +58,9 @@ fun FilterBottomSheet(
 ) {
 
     val defaultFilter = remember { IsThereAnyDealFilters() }
+
     var updatedFilters by remember { mutableStateOf(appliedFilters) }
+
     var selectFilterOption by remember { mutableStateOf("Store") }
 
     Column(
@@ -251,7 +253,6 @@ fun FilterBottomSheet(
                     }
 
                     "Discount" -> {
-
                         Column(
                             verticalArrangement = Arrangement.spacedBy(10.dp),
                             modifier = Modifier.verticalScroll(rememberScrollState())
@@ -271,7 +272,7 @@ fun FilterBottomSheet(
                                 RadioButton(
                                     selected = updatedFilters.discount != null,
                                     onClick = {
-                                        if (updatedFilters.lowerPrice == null) {
+                                        if (updatedFilters.discount == null) {
                                             updatedFilters = updatedFilters.copy(discount = 20)
                                         }
                                     }
