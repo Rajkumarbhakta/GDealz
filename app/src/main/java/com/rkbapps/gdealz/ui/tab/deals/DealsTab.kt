@@ -1,5 +1,6 @@
 package com.rkbapps.gdealz.ui.tab.deals
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
@@ -29,6 +31,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -49,13 +52,18 @@ import com.rkbapps.gdealz.ui.tab.deals.composables.IsThereAnyDealDealsItem
 import kotlinx.coroutines.launch
 
 
+@SuppressLint("ConfigurationScreenWidthHeight")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DealsTab(navController: NavHostController, viewModel: DealsTabViewModel = hiltViewModel()) {
 
-//    val dealsPagingData = viewModel.dealsPagingData.collectAsLazyPagingItems()
+    //val dealsPagingData = viewModel.dealsPagingData.collectAsLazyPagingItems()
     //val filter = viewModel.filter.collectAsStateWithLifecycle()
-//    val stores = viewModel.stores.collectAsStateWithLifecycle()
+    //val stores = viewModel.stores.collectAsStateWithLifecycle()
+
+    val configuration = LocalConfiguration.current
+    val minHeight = configuration.screenHeightDp * 0.5f // 50% of screen height
+    val maxHeight = configuration.screenHeightDp
 
     val filter by viewModel.isThereAnyDealFilter.collectAsStateWithLifecycle()
 
@@ -106,6 +114,9 @@ fun DealsTab(navController: NavHostController, viewModel: DealsTabViewModel = hi
 
         if (showBottomSheet.value) {
             ModalBottomSheet(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(min = minHeight.dp, max = maxHeight.dp),
                 onDismissRequest = { showBottomSheet.value = false },
                 sheetState = sheetState
             ) {
