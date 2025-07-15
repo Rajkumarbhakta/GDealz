@@ -125,9 +125,6 @@ dependencies {
 
     implementation(libs.kotlinx.serialization.json)
 
-    //lz string
-//    implementation("com.github.tommyettinger:blazingchain:1.4.4.6")
-
 
 
 }
