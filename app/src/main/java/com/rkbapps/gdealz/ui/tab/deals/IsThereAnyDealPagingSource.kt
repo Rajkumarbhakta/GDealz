@@ -17,7 +17,9 @@ private const val PAGE_SIZE = 20
 
 class IsThereAnyDealPagingSource(
     private val api: IsThereAnyDealApi,
-    private val filter: IsThereAnyDealFilters
+    private val filter: IsThereAnyDealFilters,
+    private val countryCode:String = ApiConst.COUNTRY,
+    private val isNsfw: Boolean = false
 ) : PagingSource<Int, DealItem>() {
     override fun getRefreshKey(state: PagingState<Int, DealItem>): Int? =
         state.anchorPosition?.let { pos ->
@@ -35,12 +37,13 @@ class IsThereAnyDealPagingSource(
 
             val response = safeApiCall {
                 api.getDeals(
-                    country = ApiConst.COUNTRY,
+                    country = countryCode,
                     offset = position,
                     limit = 20,
                     sort = filter.sort.key,
                     filter = filterString,
                     shops = filter.stores.joinToString(",") { it.toString() },
+                    mature = isNsfw
                 )
             }
             val result = when (response) {

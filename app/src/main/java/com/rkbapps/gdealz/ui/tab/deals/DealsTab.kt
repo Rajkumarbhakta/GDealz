@@ -28,6 +28,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -40,6 +41,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
@@ -48,12 +50,14 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.rkbapps.gdealz.R
 import com.rkbapps.gdealz.models.IsThereAnyDealFilters
 import com.rkbapps.gdealz.navigation.Routes
+import com.rkbapps.gdealz.ui.composables.ChooseCountryDialog
 import com.rkbapps.gdealz.ui.composables.CommonFilledIconButton
 import com.rkbapps.gdealz.ui.composables.CommonTopBar
 import com.rkbapps.gdealz.ui.composables.ErrorScreen
 import com.rkbapps.gdealz.ui.tab.deals.composables.DealsItemShimmer
 import com.rkbapps.gdealz.ui.tab.deals.composables.FilterBottomSheet
 import com.rkbapps.gdealz.ui.tab.deals.composables.IsThereAnyDealDealsItem
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import okhttp3.Route
 
@@ -72,6 +76,7 @@ fun DealsTab(navController: NavHostController, viewModel: DealsTabViewModel = hi
     val maxHeight = configuration.screenHeightDp
 
     val filter by viewModel.isThereAnyDealFilter.collectAsStateWithLifecycle()
+    val country by viewModel.country.collectAsStateWithLifecycle()
 
     val isThereAnyDealPager = viewModel.isThereAnyDeals.collectAsLazyPagingItems()
 
@@ -81,8 +86,17 @@ fun DealsTab(navController: NavHostController, viewModel: DealsTabViewModel = hi
     val scope = rememberCoroutineScope()
     val showBottomSheet = remember { mutableStateOf(false) }
 
+    val isChooseCountryDialogOpen = remember { mutableStateOf(false) }
+
 
     val defaultFilter = remember { IsThereAnyDealFilters() }
+
+    LaunchedEffect(country) {
+        delay(200)
+        if (country==null){
+            isChooseCountryDialogOpen.value = true
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -124,11 +138,18 @@ fun DealsTab(navController: NavHostController, viewModel: DealsTabViewModel = hi
             }
         }*/
 
+        if (isChooseCountryDialogOpen.value){
+            Dialog(onDismissRequest = {}) {
+                ChooseCountryDialog(modifier = Modifier.height(500.dp)) {
+                    viewModel.updateCountry(it.key)
+                    isChooseCountryDialogOpen.value = false
+                }
+            }
+        }
+
         if (showBottomSheet.value) {
             ModalBottomSheet(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .heightIn(min = minHeight.dp, max = maxHeight.dp),
+                modifier = Modifier.fillMaxWidth().heightIn(min = minHeight.dp, max = maxHeight.dp),
                 onDismissRequest = { showBottomSheet.value = false },
                 sheetState = sheetState
             ) {

@@ -2,6 +2,7 @@ package com.rkbapps.gdealz.ui.tab.deals
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
+import com.rkbapps.gdealz.db.PreferenceManager
 import com.rkbapps.gdealz.db.dao.StoreDao
 import com.rkbapps.gdealz.models.Deals
 import com.rkbapps.gdealz.models.Filter
@@ -14,13 +15,15 @@ import com.rkbapps.gdealz.util.UiState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import javax.inject.Inject
 
 class DealsTabRepository @Inject constructor(
     private val api: CheapSharkApi,
     private val isThereAnyDealApi: IsThereAnyDealApi,
-    storeDb: StoreDao
+    storeDb: StoreDao,
+    private val preferenceManager: PreferenceManager
 ) {
     private val _deals = MutableStateFlow(UiState<List<Deals>>())
     val deals = _deals.asStateFlow()
@@ -30,6 +33,13 @@ class DealsTabRepository @Inject constructor(
 
     private val _isThereAnyDealFilter = MutableStateFlow(IsThereAnyDealFilters())
     val isThereAnyDealFilter = _isThereAnyDealFilter.asStateFlow()
+
+    val currentCountry =
+        preferenceManager.getStringPreference(PreferenceManager.SELECTED_COUNTRY)
+    private val isNsfwAllow =
+        preferenceManager.getBooleanPreference(PreferenceManager.IS_NSFW_ALLOWED, false)
+
+
 
 
     suspend fun getAllDeals() {
@@ -91,17 +101,22 @@ class DealsTabRepository @Inject constructor(
         }
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    val getIsThereAnyDealPager = isThereAnyDealFilter.flatMapLatest {
-        Pager(
-            config = PagingConfig(pageSize = 20, maxSize = 100, initialLoadSize = 20),
-            pagingSourceFactory = {
-                IsThereAnyDealPagingSource(
-                    api = isThereAnyDealApi,
-                    it
-                )
-            }
-        ).flow
-    }
+    val getIsThereAnyDealPager =
+        combine(isThereAnyDealFilter, currentCountry, isNsfwAllow) { filter, country, nsfw ->
+            Triple(filter, country, nsfw)
+        }.flatMapLatest {
+            Pager(
+                config = PagingConfig(pageSize = 20, maxSize = 100, initialLoadSize = 20),
+                pagingSourceFactory = {
+                    IsThereAnyDealPagingSource(
+                        api = isThereAnyDealApi,
+                        filter = it.first,
+                        countryCode = it.second ?: "US",
+                        isNsfw = it.third
+                    )
+                }
+            ).flow
+        }
 
 
     fun updateFilter(filter: Filter) {
@@ -113,5 +128,8 @@ class DealsTabRepository @Inject constructor(
     }
 
     val storeFlow = storeDb.findAll()
+
+
+    suspend fun updateCountry(value: String) = preferenceManager.saveStringPreference(PreferenceManager.SELECTED_COUNTRY,value)
 
 }

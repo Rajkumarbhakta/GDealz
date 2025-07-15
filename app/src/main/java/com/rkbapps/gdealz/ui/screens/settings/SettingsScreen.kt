@@ -58,6 +58,7 @@ fun SettingsScreen(
         topBar = {
             CommonTopBar(
                 title = "Settings",
+                isNavigationBack = true,
                 onNavigateBack = { navController.navigateUp() }
             )
         }

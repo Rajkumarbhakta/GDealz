@@ -114,9 +114,21 @@ class PreferenceManager @Inject constructor(
         .map {
             it[key]?:defaultValue
         }
+
     suspend fun saveStringPreference(key:Preferences.Key<String>, value:String){
         context.dataStore.edit {preferences->
             preferences[key] = value
+        }
+    }
+
+    suspend fun getStringPreferenceSynchronous(
+        key: Preferences.Key<String>,
+        defaultValue: String? = null
+    ): String? {
+        return try {
+            context.dataStore.data.first()[key] ?: defaultValue
+        } catch (e: Exception) {
+            defaultValue
         }
     }
 

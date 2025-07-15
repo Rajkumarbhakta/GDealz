@@ -2,6 +2,7 @@ package com.rkbapps.gdealz.ui.screens.game_info
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import com.rkbapps.gdealz.db.PreferenceManager
 import com.rkbapps.gdealz.db.dao.FavDealsDao
 import com.rkbapps.gdealz.db.entity.FavDeals
 import com.rkbapps.gdealz.models.DealsInfo
@@ -22,6 +23,7 @@ import javax.inject.Inject
 class GameInfoRepository @Inject constructor (
     private val apiService: IsThereAnyDealApi,
     private val favDealsDao: FavDealsDao,
+    private val perfManager: PreferenceManager
 ) {
     
     private val _gameInfo = MutableStateFlow(UiState<GameInfo>())
@@ -58,8 +60,11 @@ class GameInfoRepository @Inject constructor (
 
     suspend fun getGamePriceInfo(gameId: String){
         _gamePriceInfo.value = UiState(isLoading = true)
+
+        val country = perfManager.getStringPreferenceSynchronous(PreferenceManager.SELECTED_COUNTRY,"US")?:"US"
+
         when(val response = safeApiCall { apiService.getPrices(
-            country = ApiConst.COUNTRY,
+            country = country,
             gameIds = listOf(gameId)) }){
             is NetworkResponse.Error.HttpError -> {
                 _gamePriceInfo.value = UiState(error = "Code : ${response.errorCode} Error : ${response.error.localizedMessage}")

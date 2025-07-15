@@ -24,6 +24,12 @@ class DealsTabViewModel @Inject constructor(
     val filter = repository.filter
     val isThereAnyDealFilter = repository.isThereAnyDealFilter
 
+    val country = repository.currentCountry.stateIn(
+        viewModelScope,
+        SharingStarted.Lazily,
+        null
+    )
+
 
 //    val stores = repository.storeFlow.stateIn(
 //        viewModelScope,
@@ -57,5 +63,9 @@ class DealsTabViewModel @Inject constructor(
 
     fun updateIsThereAnyDealFilter(filter: IsThereAnyDealFilters) = repository.updateIsThereAnyDealFilter(filter)
     fun clearIsThereAnyDealFilter() = repository.updateIsThereAnyDealFilter(IsThereAnyDealFilters())
+
+    fun updateCountry(value: String) = viewModelScope.launch {
+        repository.updateCountry(value)
+    }
 
 }
