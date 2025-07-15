@@ -4,23 +4,58 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
+import com.rkbapps.gdealz.db.PreferenceManager
 import com.rkbapps.gdealz.navigation.NavGraph
 import com.rkbapps.gdealz.ui.theme.GDealzTheme
 import com.rkbapps.gdealz.util.AppForegroundTracker
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.stateIn
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var preferenceManager: PreferenceManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        val isSystemTheme =
+            preferenceManager.getBooleanPreference(PreferenceManager.IS_USE_SYSTEM_THEME, true)
+                .stateIn(
+                    lifecycleScope,
+                    SharingStarted.Lazily,
+                    true
+                )
+
+        val isDarkTheme = preferenceManager.getBooleanPreference(PreferenceManager.IS_DARK_THEME, false)
+            .stateIn(
+                lifecycleScope,
+                SharingStarted.Lazily,
+                false
+            )
+
         setContent {
-            GDealzTheme {
+
+            val isSystemTheme by isSystemTheme.collectAsStateWithLifecycle()
+            val darkTheme by isDarkTheme.collectAsStateWithLifecycle()
+
+            GDealzTheme(
+                darkTheme = if(isSystemTheme) isSystemInDarkTheme() else darkTheme
+            ) {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background

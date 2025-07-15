@@ -9,6 +9,7 @@ import com.rkbapps.gdealz.ui.screens.MainScreen
 import com.rkbapps.gdealz.ui.screens.dealslookup.DealLookupScreen
 import com.rkbapps.gdealz.ui.screens.free_game_details.FreeGameDetailsScreen
 import com.rkbapps.gdealz.ui.screens.game_info.GameInfoScreen
+import com.rkbapps.gdealz.ui.screens.settings.SettingsScreen
 import com.rkbapps.gdealz.ui.screens.splash.SplashScreen
 import com.rkbapps.gdealz.ui.screens.steam_details.cheapshark.SteamDetailsPage
 import com.rkbapps.gdealz.ui.screens.steam_details.is_there_any_deal.IsThereAnyDealSteamDetailsPage
@@ -79,6 +80,10 @@ fun NavGraphBuilder.destinations(navController: NavHostController) {
 
     composable<Routes.IsThereAnyDealSteamGameDetails> {
         IsThereAnyDealSteamDetailsPage(navController)
+    }
+
+    composable<Routes.Settings> {
+        SettingsScreen(navController)
     }
 
 

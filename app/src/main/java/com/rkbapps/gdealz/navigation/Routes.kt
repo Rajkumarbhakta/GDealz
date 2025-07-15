@@ -42,5 +42,8 @@ sealed class Routes {
     @Serializable
     data class IsThereAnyDealSteamGameDetails(val gameId: String, val title: String?) : Routes()
 
+    @Serializable
+    data object Settings: Routes()
+
 
 }

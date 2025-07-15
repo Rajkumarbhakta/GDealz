@@ -28,6 +28,9 @@ kotlinx-serialization = "1.9.0"
 loggingIntercepter = "5.1.0"
 pagingVersion = "3.3.6"
 
+#data store ( for sharedpef)
+datastorePreferences = "1.1.7"
+
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-material = { module = "androidx.compose.material:material", version.ref = "material" }
@@ -71,6 +74,8 @@ pagging-compose = { module = "androidx.paging:paging-compose", version.ref = "pa
 #work manager
 work-runtime = { module = "androidx.work:work-runtime-ktx", version.ref = "workVersion" }
 hilt-work = { module = "androidx.hilt:hilt-work", version.ref = 'hiltWork' }
+#data-store
+androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
 #serialization
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 #testing

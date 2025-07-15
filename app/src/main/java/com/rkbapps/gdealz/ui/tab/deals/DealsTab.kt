@@ -12,12 +12,16 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
@@ -44,12 +48,14 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.rkbapps.gdealz.R
 import com.rkbapps.gdealz.models.IsThereAnyDealFilters
 import com.rkbapps.gdealz.navigation.Routes
+import com.rkbapps.gdealz.ui.composables.CommonFilledIconButton
 import com.rkbapps.gdealz.ui.composables.CommonTopBar
 import com.rkbapps.gdealz.ui.composables.ErrorScreen
 import com.rkbapps.gdealz.ui.tab.deals.composables.DealsItemShimmer
 import com.rkbapps.gdealz.ui.tab.deals.composables.FilterBottomSheet
 import com.rkbapps.gdealz.ui.tab.deals.composables.IsThereAnyDealDealsItem
 import kotlinx.coroutines.launch
+import okhttp3.Route
 
 
 @SuppressLint("ConfigurationScreenWidthHeight")
@@ -80,18 +86,24 @@ fun DealsTab(navController: NavHostController, viewModel: DealsTabViewModel = hi
 
     Scaffold(
         topBar = {
-            CommonTopBar(title = stringResource(R.string.app_name), actions = {
+            CommonTopBar(title = stringResource(R.string.app_name),
+                actions = {
                 if (filter != defaultFilter) {
                     Button(
                         onClick = { viewModel.clearIsThereAnyDealFilter() },
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color.White.copy(alpha = 0.2f),
-                            contentColor = Color.White
+                            contentColor = MaterialTheme.colorScheme.onPrimary
                         )
                     ) {
                         Text("Clear Filter")
                     }
                 }
+                    CommonFilledIconButton(
+                        icon = Icons.Default.Settings
+                    ) {
+                        navController.navigate(Routes.Settings)
+                    }
             })
         },
         containerColor = MaterialTheme.colorScheme.background

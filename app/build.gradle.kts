@@ -90,6 +90,9 @@ dependencies {
     ksp(libs.androidx.hilt.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
 
+    //data-store
+    implementation(libs.androidx.datastore.preferences)
+
     //retrofit
     implementation(libs.retrofit)
     implementation(libs.converter.gson)

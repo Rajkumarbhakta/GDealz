@@ -41,15 +41,11 @@ fun CommonTopBar(
         ),
         navigationIcon = {
             if (isNavigationBack){
-                FilledIconButton(
+                CommonFilledIconButton (
                     onClick = onNavigateBack,
-                    colors = IconButtonDefaults.filledIconButtonColors(
-                        containerColor = Color.White.copy(alpha = 0.2f),
-                        contentColor = Color.White
-                    )
-                ) {
-                    Icon(imageVector = Icons.AutoMirrored.Default.ArrowBack,"back")
-                }
+                    icon = Icons.AutoMirrored.Default.ArrowBack,
+                    contentDescription = "back"
+                )
             }
         },
         actions = actions

@@ -24,7 +24,7 @@ fun ErrorScreen(message: String = "") {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .fillMaxHeight(0.8f)
+            .fillMaxHeight(0.9f)
             .padding(horizontal = 16.dp, vertical = 8.dp), verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

@@ -48,6 +48,9 @@ object DatabaseModule {
     @Singleton
     fun providesGiveawaysDao(database: GDatabase) = database.giveawaysDao()
 
+
+
+
 }
 
 
