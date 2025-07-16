@@ -248,7 +248,6 @@ fun SettingsScreen(
                     uriHandler.openUri("https://sites.google.com/view/gdealz/home")
                 }
             }
-
             item {
                 Card(modifier = Modifier.fillMaxWidth()) {
                     Text(
@@ -258,11 +257,6 @@ fun SettingsScreen(
                     )
                 }
             }
-
-
-
-
-
         }
 
     }
