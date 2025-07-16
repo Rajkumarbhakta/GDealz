@@ -77,7 +77,7 @@ fun FavTab(
                             contentColor = MaterialTheme.colorScheme.onPrimary
                         )
                     ) {
-                        Icon(imageVector = Icons.Default.Delete, "back")
+                        Icon(painter = painterResource(R.drawable.delete), "back")
                         Text("Delete All")
                     }
                 }
@@ -244,7 +244,7 @@ fun FavItem(deals: FavDeals, onDelete: () -> Unit, onItemClick: () -> Unit) {
                     contentColor = MaterialTheme.colorScheme.onErrorContainer
                 )
             ) {
-                Icon(imageVector = Icons.Filled.Delete, "delete")
+                Icon(painter = painterResource(R.drawable.delete), "delete")
             }
 
         }

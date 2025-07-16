@@ -86,7 +86,8 @@ fun ChooseCountryDialog(
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent
             ),
-            shape = RoundedCornerShape(100.dp)
+            shape = RoundedCornerShape(100.dp),
+            singleLine = true
         )
 
         Spacer(modifier = Modifier.height(10.dp))

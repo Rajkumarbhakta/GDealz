@@ -177,7 +177,7 @@ fun SettingsScreen(
                                 contentColor = MaterialTheme.colorScheme.primary
                             )
                         ) {
-                            Row {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
                                 Icon(imageVector = Icons.Default.BugReport,"")
                                 Text("Raise a issue")
                             }
@@ -192,7 +192,7 @@ fun SettingsScreen(
                                 contentColor = MaterialTheme.colorScheme.primary
                             )
                         ) {
-                            Row {
+                            Row (verticalAlignment = Alignment.CenterVertically){
                                 Icon(imageVector = Icons.Default.Coffee,"")
                                 Text("Buy me a Coffee")
                             }
