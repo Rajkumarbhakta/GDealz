@@ -27,6 +27,7 @@ import androidx.compose.material.icons.filled.Mail
 import androidx.compose.material.icons.outlined.PrivacyTip
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -57,6 +58,7 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -141,7 +143,7 @@ fun SettingsScreen(
 
                         Text(stringResource(R.string.app_name),
                             style = MaterialTheme.typography.headlineLarge)
-                        Text("v1.0.1")
+                        Text("v${viewModel.appVersion}")
 
                         Row(modifier = Modifier.padding(vertical = 10.dp)) {
                             CommonFilledIconButton(
@@ -246,6 +248,19 @@ fun SettingsScreen(
                     uriHandler.openUri("https://sites.google.com/view/gdealz/home")
                 }
             }
+
+            item {
+                Card(modifier = Modifier.fillMaxWidth()) {
+                    Text(
+                        "Game and pricing information is sourced from CheapShark, IsThereAnyDeal.com, and Steam. G Dealz does not guarantee the accuracy, availability, or completeness of this information.",
+                        modifier = Modifier.padding(10.dp),
+                        textAlign = TextAlign.Justify
+                    )
+                }
+            }
+
+
+
 
 
         }

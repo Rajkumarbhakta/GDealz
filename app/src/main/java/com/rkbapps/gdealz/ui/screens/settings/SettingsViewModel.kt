@@ -2,6 +2,7 @@ package com.rkbapps.gdealz.ui.screens.settings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.rkbapps.gdealz.BuildConfig
 import com.rkbapps.gdealz.db.PreferenceManager
 import com.rkbapps.gdealz.util.Country
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -38,6 +39,7 @@ class SettingsViewModel @Inject constructor(
         false
     )
 
+    val appVersion = BuildConfig.VERSION_NAME
 
      fun updateIsSystemTheme(value: Boolean)=viewModelScope.launch {
         repository.updateIsSystemTheme(value)
