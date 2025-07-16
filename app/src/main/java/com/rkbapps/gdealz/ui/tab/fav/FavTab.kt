@@ -1,5 +1,6 @@
 package com.rkbapps.gdealz.ui.tab.fav
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -7,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -17,6 +19,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButtonDefaults
@@ -25,12 +28,15 @@ import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -39,43 +45,46 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
+import coil.compose.SubcomposeAsyncImage
+import com.rkbapps.gdealz.R
 import com.rkbapps.gdealz.db.entity.FavDeals
 import com.rkbapps.gdealz.navigation.Routes
 import com.rkbapps.gdealz.ui.composables.CommonTopBar
 import com.rkbapps.gdealz.ui.composables.DeleteAlertDialog
 import com.rkbapps.gdealz.ui.composables.ErrorScreen
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FavTab(
     navController: NavHostController,
     viewModel: FavViewModel = hiltViewModel()
 ) {
 
-    val favList = viewModel.favList.collectAsStateWithLifecycle()
+    val favList by viewModel.favList.collectAsStateWithLifecycle()
     val deletableFav = remember { mutableStateOf<FavDeals?>(null) }
     val isDeleteAllAlertDialogOpen = remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
             CommonTopBar("Fav", actions = {
-                if (favList.value.isNotEmpty()){
+                if (favList.isNotEmpty()) {
                     Button(
                         onClick = {
                             isDeleteAllAlertDialogOpen.value = true
                         },
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color.White.copy(alpha = 0.2f),
-                            contentColor = Color.White
+                            contentColor = MaterialTheme.colorScheme.onPrimary
                         )
                     ) {
-                        Icon(imageVector = Icons.Default.Delete, "back")
+                        Icon(painter = painterResource(R.drawable.delete), "back")
                         Text("Delete All")
                     }
                 }
             }
             )
         }
-    ) {
+    ) { innerPadding ->
 
         if (deletableFav.value != null) {
             DeleteAlertDialog(
@@ -107,9 +116,9 @@ fun FavTab(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(it),
+                .padding(innerPadding),
         ) {
-            if (favList.value.isEmpty()) {
+            if (favList.isEmpty()) {
                 ErrorScreen("Nothing here..")
             } else {
                 LazyColumn(
@@ -121,26 +130,44 @@ fun FavTab(
                     item {
                         Spacer(Modifier.height(10.dp))
                     }
-                    items(favList.value) {
+                    items(favList) {
                         FavItem(it, onDelete = {
                             deletableFav.value = it
                         }) {
-
-                            if (it.steamAppId!=null){
-                                navController.navigate(
-                                    Routes.SteamGameDetails(
-                                        steamId = it.steamAppId,
-                                        dealId = it.dealID,
-                                        title = it.title
+                            try {
+                                val idInt = it.dealID[0].digitToInt()
+                                if (it.steamAppId != null) {
+                                    navController.navigate(
+                                        Routes.IsThereAnyDealSteamGameDetails(
+                                            gameId = it.dealID,
+                                            title = it.title
+                                        )
                                     )
-                                )
-                            }else{
-                                navController.navigate(
-                                    Routes.DealsLookup(
-                                        dealId = it.dealID,
-                                        title = it.title
+                                } else {
+                                    navController.navigate(
+                                        Routes.GameInfo(
+                                            gameId = it.dealID,
+                                            title = it.title
+                                        )
                                     )
-                                )
+                                }
+                            } catch (e: Exception) {
+                                if (it.steamAppId != null) {
+                                    navController.navigate(
+                                        Routes.SteamGameDetails(
+                                            steamId = it.steamAppId,
+                                            dealId = it.dealID,
+                                            title = it.title
+                                        )
+                                    )
+                                } else {
+                                    navController.navigate(
+                                        Routes.DealsLookup(
+                                            dealId = it.dealID,
+                                            title = it.title
+                                        )
+                                    )
+                                }
                             }
                         }
                     }
@@ -172,7 +199,7 @@ fun FavItem(deals: FavDeals, onDelete: () -> Unit, onItemClick: () -> Unit) {
 
             Box(
                 modifier = Modifier
-                    .size(68.dp)
+                    .size(height = 78.dp, width = 50.dp)
                     .background(
                         color = MaterialTheme.colorScheme.primary.copy(alpha = 0.2f),
                         shape = RoundedCornerShape(10.dp)
@@ -180,12 +207,25 @@ fun FavItem(deals: FavDeals, onDelete: () -> Unit, onItemClick: () -> Unit) {
                     .clip(RoundedCornerShape(10.dp)),
                 contentAlignment = Alignment.Center
             ) {
-                AsyncImage(
+                SubcomposeAsyncImage(
                     model = deals.thumb,
                     contentDescription = "game thumb",
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(8.dp),
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Crop,
+                    error = {
+                        Image(
+                            painter = painterResource(R.drawable.console),
+                            contentDescription = null,
+                            modifier = Modifier.fillMaxSize(),
+                        )
+                    },
+                    loading = {
+                        Image(
+                            painter = painterResource(R.drawable.console),
+                            contentDescription = null,
+                            modifier = Modifier.fillMaxSize(),
+                        )
+                    }
                 )
             }
 
@@ -204,7 +244,7 @@ fun FavItem(deals: FavDeals, onDelete: () -> Unit, onItemClick: () -> Unit) {
                     contentColor = MaterialTheme.colorScheme.onErrorContainer
                 )
             ) {
-                Icon(imageVector = Icons.Filled.Delete, "delete")
+                Icon(painter = painterResource(R.drawable.delete), "delete")
             }
 
         }

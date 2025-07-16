@@ -1,22 +1,71 @@
 package com.rkbapps.gdealz.ui.tab.search
 
 import com.rkbapps.gdealz.models.Game
-import com.rkbapps.gdealz.network.ApiInterface
+import com.rkbapps.gdealz.models.search.SearchResult
+import com.rkbapps.gdealz.network.api.CheapSharkApi
 import com.rkbapps.gdealz.network.NetworkResponse
+import com.rkbapps.gdealz.network.api.IsThereAnyDealApi
 import com.rkbapps.gdealz.network.safeApiCall
 import com.rkbapps.gdealz.util.UiState
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
-class SearchRepository @Inject constructor(private val api: ApiInterface) {
+class SearchRepository @Inject constructor(
+    private val api: CheapSharkApi,
+    private val isThereAnyDealApi: IsThereAnyDealApi
+) {
 
     private val _searchResult = MutableStateFlow(UiState<List<Game>>())
-
     val searchResult = _searchResult.asStateFlow()
 
+
+    private val _isThereAnyDealSearchResult = MutableStateFlow(UiState<List<SearchResult>>())
+    val isThereAnyDealSearchResult =  _isThereAnyDealSearchResult.asStateFlow()
+
+
+    private val _searchQuery = MutableStateFlow("")
+    val searchQuery = _searchQuery.asStateFlow()
+
     private val regex = "^[a-zA-Z0-9]+(?: [a-zA-Z0-9]+)*$".toRegex()
+
+
+
+    suspend fun getSearchResult(){
+        _isThereAnyDealSearchResult.emit(UiState(isLoading = true))
+
+        if (regex.matches(searchQuery.value).not()) {
+            _searchResult.emit(UiState(error = "Invalid search query. Please use alphanumeric characters and spaces only."))
+            return
+        }
+
+        val response = safeApiCall { isThereAnyDealApi.getSearchResult(
+            searchQuery = searchQuery.value,
+            results = 100
+        ) }
+        when (response) {
+            is NetworkResponse.Error.HttpError -> {
+                _isThereAnyDealSearchResult.emit(UiState(error = "HTTP Error: ${response.errorCode}. Please try again later."))
+            }
+
+            NetworkResponse.Error.NetworkError -> {
+                _isThereAnyDealSearchResult.emit(UiState(error = "Network Error. Please check your connection."))
+            }
+
+            NetworkResponse.Error.UnknownError -> {
+                _isThereAnyDealSearchResult.emit(UiState(error = "Unknown Error. Please try again later."))
+            }
+
+            is NetworkResponse.Success<List<SearchResult>> -> {
+                val data = response.value
+                if (data.isNotEmpty()) {
+                    _isThereAnyDealSearchResult.emit(UiState(data = data))
+                } else {
+                    _isThereAnyDealSearchResult.emit(UiState(error = "No results found for '${searchQuery.value}'"))
+                }
+            }
+        }
+    }
 
 
     suspend fun getSearchResult(query: String) {
@@ -50,6 +99,11 @@ class SearchRepository @Inject constructor(private val api: ApiInterface) {
                 }
             }
         }
+    }
+
+
+    fun updateSearchQuery(value:String){
+        _searchQuery.value = value
     }
 
 

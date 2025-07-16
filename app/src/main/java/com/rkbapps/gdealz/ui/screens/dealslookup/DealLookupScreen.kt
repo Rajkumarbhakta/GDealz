@@ -1,6 +1,7 @@
 package com.rkbapps.gdealz.ui.screens.dealslookup
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -41,6 +42,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
@@ -53,6 +55,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
+import coil.compose.SubcomposeAsyncImage
 import com.rkbapps.gdealz.R
 import com.rkbapps.gdealz.navigation.Routes
 import com.rkbapps.gdealz.network.ApiConst.IMAGE_URL
@@ -172,12 +175,26 @@ fun DealLookupScreen(
                                     .clip(RoundedCornerShape(10.dp)),
                                 contentAlignment = Alignment.Center
                             ) {
-                                AsyncImage(
+                                SubcomposeAsyncImage(
                                     model = dealsData.value.data?.gameInfo?.thumb,
                                     contentDescription = "game thumb",
                                     modifier = Modifier
                                         .fillMaxSize()
                                         .padding(8.dp),
+                                    error = {
+                                        Image(
+                                            painter = painterResource(R.drawable.console),
+                                            contentDescription = null,
+                                            modifier = Modifier.fillMaxWidth(),
+                                        )
+                                    },
+                                    loading = {
+                                        Image(
+                                            painter = painterResource(R.drawable.console),
+                                            contentDescription = null,
+                                            modifier = Modifier.fillMaxWidth(),
+                                        )
+                                    }
                                 )
                             }
                             Spacer(modifier = Modifier.width(10.dp))
@@ -350,13 +367,25 @@ fun DealLookupScreen(
                                         )
                                         Spacer(modifier = Modifier.height(8.dp))
                                         Card(modifier = Modifier.size(50.dp)) {
-                                            AsyncImage(
+                                            SubcomposeAsyncImage(
                                                 model = IMAGE_URL + storeData.value?.banner,
                                                 contentDescription = "store logo",
-                                                modifier = Modifier
-                                                    .size(50.dp)
-                                                    .padding(8.dp),
-                                                contentScale = ContentScale.Fit
+                                                modifier = Modifier.size(50.dp).padding(8.dp),
+                                                contentScale = ContentScale.Fit,
+                                                error = {
+                                                    Image(
+                                                        painter = painterResource(R.drawable.console),
+                                                        contentDescription = null,
+                                                        modifier = Modifier.size(50.dp),
+                                                    )
+                                                },
+                                                loading = {
+                                                    Image(
+                                                        painter = painterResource(R.drawable.console),
+                                                        contentDescription = null,
+                                                        modifier = Modifier.size(50.dp),
+                                                    )
+                                                }
                                             )
                                         }
                                         Spacer(modifier = Modifier.height(8.dp))
@@ -399,6 +428,17 @@ fun getTotalReviews(count: String): String {
         }
     } catch (_: Exception) {
         count
+    }
+}
+fun getTotalReviews(count: Int): String {
+    return try {
+        if (count.toLong() > 1000) {
+            "${count.toLong() / 1000}K"
+        } else {
+            "$count"
+        }
+    } catch (_: Exception) {
+        "$count"
     }
 }
 

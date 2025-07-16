@@ -1,5 +1,8 @@
 package com.rkbapps.gdealz.network
 
+import android.util.Log
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import java.net.UnknownHostException
 
@@ -13,14 +16,15 @@ sealed class NetworkResponse<out T> {
 }
 
 
-suspend fun <T> safeApiCall(apiCall: suspend () -> T): NetworkResponse<T> {
-    return try {
+suspend fun <T> safeApiCall(apiCall: suspend () -> T): NetworkResponse<T> = withContext(Dispatchers.IO) {
+    return@withContext try {
         NetworkResponse.Success(apiCall())
     } catch (e: HttpException) {
         NetworkResponse.Error.HttpError(e.code(), e)
     } catch (_: UnknownHostException) {
         NetworkResponse.Error.NetworkError
-    } catch (_: Exception) {
+    } catch (e: Exception) {
+        Log.d("PagingSource", "UnknownError: ${e.message}")
         NetworkResponse.Error.UnknownError
     }
 }

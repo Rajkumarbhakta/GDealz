@@ -2,14 +2,14 @@ package com.rkbapps.gdealz.ui.screens.dealslookup
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import com.rkbapps.gdealz.network.ApiInterface
-import com.rkbapps.gdealz.network.NetworkResponse
-import com.rkbapps.gdealz.network.safeApiCall
 import com.rkbapps.gdealz.db.dao.FavDealsDao
 import com.rkbapps.gdealz.db.dao.StoreDao
 import com.rkbapps.gdealz.db.entity.FavDeals
 import com.rkbapps.gdealz.db.entity.Store
 import com.rkbapps.gdealz.models.DealsInfo
+import com.rkbapps.gdealz.network.NetworkResponse
+import com.rkbapps.gdealz.network.api.CheapSharkApi
+import com.rkbapps.gdealz.network.safeApiCall
 import com.rkbapps.gdealz.util.UiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,9 +17,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 class DealLookupRepository @Inject constructor(
-    private val api: ApiInterface,
+    private val api: CheapSharkApi,
     private val storeDao: StoreDao,
-    private val favDealsDao: FavDealsDao
+    private val favDealsDao: FavDealsDao,
 ) {
     private val _dealsData = MutableStateFlow(UiState<DealsInfo>())
     val dealsData = _dealsData.asStateFlow()

@@ -15,7 +15,7 @@ import coil.request.SuccessResult
 import com.rkbapps.gdealz.R
 import com.rkbapps.gdealz.db.dao.GiveawaysDao
 import com.rkbapps.gdealz.models.Giveaway
-import com.rkbapps.gdealz.network.GamePowerApi
+import com.rkbapps.gdealz.network.api.GamePowerApi
 import com.rkbapps.gdealz.network.NetworkResponse
 import com.rkbapps.gdealz.network.safeApiCall
 import com.rkbapps.gdealz.util.UiState

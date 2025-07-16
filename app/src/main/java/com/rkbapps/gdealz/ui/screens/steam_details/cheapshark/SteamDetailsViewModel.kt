@@ -1,4 +1,4 @@
-package com.rkbapps.gdealz.ui.screens.steam_details
+package com.rkbapps.gdealz.ui.screens.steam_details.cheapshark
 
 import androidx.compose.runtime.State
 import androidx.lifecycle.SavedStateHandle

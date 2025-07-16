@@ -8,7 +8,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(private val repository: SearchRepository) : ViewModel() {
+
     val searchResult = repository.searchResult
+
+    val searchQuery = repository.searchQuery
+    val isThereAnyDealSearchResult = repository.isThereAnyDealSearchResult
 
     init {
         viewModelScope.launch {
@@ -20,6 +24,16 @@ class SearchViewModel @Inject constructor(private val repository: SearchReposito
         viewModelScope.launch {
             repository.getSearchResult(query)
         }
+    }
+
+    fun search(){
+        viewModelScope.launch {
+            repository.getSearchResult()
+        }
+    }
+
+    fun updateSearchQuery(query: String) {
+        repository.updateSearchQuery(query)
     }
 
 }

@@ -1,4 +1,4 @@
-package com.rkbapps.gdealz.network
+package com.rkbapps.gdealz.network.api
 
 import retrofit2.http.GET
 import retrofit2.http.Query

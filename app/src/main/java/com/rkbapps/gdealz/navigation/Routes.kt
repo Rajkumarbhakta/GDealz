@@ -28,11 +28,22 @@ sealed class Routes {
     data class DealsLookup(val dealId: String?, val title: String?,val isCheapest: Boolean = false) : Routes()
 
     @Serializable
-    data class SteamGameDetails(val steamId: String, val dealId: String?, val title: String?) :
-        Routes()
+    data class SteamGameDetails(val steamId: String, val dealId: String?, val title: String?) : Routes()
 
     @Serializable
     data class FreeGameDetails(val giveaway: String) : Routes()
+
+    @Serializable
+    data class GameInfo(
+        val gameId: String,
+        val title: String?,
+    ) : Routes()
+
+    @Serializable
+    data class IsThereAnyDealSteamGameDetails(val gameId: String, val title: String?) : Routes()
+
+    @Serializable
+    data object Settings: Routes()
 
 
 }

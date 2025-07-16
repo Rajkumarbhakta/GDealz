@@ -1,6 +1,7 @@
 package com.rkbapps.gdealz.ui.tab.free
 
 import android.util.Log
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -33,6 +34,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -40,6 +42,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
+import coil.compose.SubcomposeAsyncImage
+import com.rkbapps.gdealz.R
 import com.rkbapps.gdealz.models.Giveaway
 import com.rkbapps.gdealz.navigation.Routes
 import com.rkbapps.gdealz.ui.composables.CommonTopBar
@@ -246,13 +250,25 @@ fun FreeGameItems(item: Giveaway, onClick: () -> Unit) {
     ) {
         Box {
             Column(Modifier.fillMaxWidth()) {
-                AsyncImage(
+                SubcomposeAsyncImage(
                     model = item.image,
                     contentDescription = "giveaway poster",
                     contentScale = ContentScale.FillBounds,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(150.dp)
+                    modifier = Modifier.fillMaxWidth().height(150.dp),
+                    error = {
+                        Image(
+                            painter = painterResource(R.drawable.console),
+                            contentDescription = null,
+                            modifier = Modifier.fillMaxWidth(),
+                        )
+                    },
+                    loading = {
+                        Image(
+                            painter = painterResource(R.drawable.console),
+                            contentDescription = null,
+                            modifier = Modifier.fillMaxWidth(),
+                        )
+                    }
                 )
                 Column(
                     Modifier

@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.konan.properties.Properties
+
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
@@ -5,6 +7,12 @@ plugins {
     alias(libs.plugins.devtools.ksp)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlinx.serialization)
+}
+
+val properties = Properties()
+val propertiesFile = rootProject.file("secret.properties")
+if (propertiesFile.exists()){
+    properties.load(propertiesFile.inputStream())
 }
 
 android {
@@ -17,6 +25,9 @@ android {
         targetSdk = 36
         versionCode = 2
         versionName = "1.0.1"
+
+        // build configs
+        buildConfigField("String", "API_KEY", properties.getProperty("API_KEY"))
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -79,6 +90,9 @@ dependencies {
     ksp(libs.androidx.hilt.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
 
+    //data-store
+    implementation(libs.androidx.datastore.preferences)
+
     //retrofit
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
@@ -97,10 +111,10 @@ dependencies {
     implementation(libs.coil.compose)
 
     //pull refresh
-    implementation (libs.androidx.material)
+    implementation(libs.androidx.material)
 
     //lottie
-    implementation (libs.lottie.compose)
+    implementation(libs.lottie.compose)
 
     //paging 3
     implementation(libs.pagging.runtime)
@@ -109,6 +123,13 @@ dependencies {
     //work manager
     implementation(libs.work.runtime)
 
+    //swipe refresh
+    implementation(libs.accompanist.swiperefresh)
+    // material icons
+    implementation(libs.androidx.material.icons.extended)
+
     implementation(libs.kotlinx.serialization.json)
+
+
 
 }

@@ -1,18 +1,22 @@
 package com.rkbapps.gdealz.network
 
-import android.icu.util.TimeZone
 import android.util.Log
-import java.lang.String.format
+import com.rkbapps.gdealz.BuildConfig
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
 object ApiConst {
-    const val BASE_URL = "https://www.cheapshark.com/api/1.0/"
+    const val CHEAP_SHARK_BASE_URL = "https://www.cheapshark.com/api/1.0/"
     const val BASE_URL_GAME_POWER = "https://www.gamerpower.com/api/"
     private const val REDIRECT_URL = "https://www.cheapshark.com/redirect"
     const val IMAGE_URL = "https://www.cheapshark.com"
     const val  STEAM_URL = "https://store.steampowered.com/api/"
+
+    const val IS_THERE_ANY_DEAL_BASE_URL = "https://api.isthereanydeal.com"
+    const val IS_THERE_ANY_DEAL_API_KEY = BuildConfig.API_KEY
+
+    const val COUNTRY = "IN"
 
     fun redirect(dealId: String): String {
         return "$REDIRECT_URL?dealID=$dealId"

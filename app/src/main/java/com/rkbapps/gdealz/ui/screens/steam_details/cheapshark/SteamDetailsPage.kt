@@ -1,14 +1,13 @@
-package com.rkbapps.gdealz.ui.screens.steam_details
+package com.rkbapps.gdealz.ui.screens.steam_details.cheapshark
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.background
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -19,7 +18,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Colors
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
@@ -27,6 +25,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButtonDefaults
@@ -34,7 +33,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -44,10 +42,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.fromHtml
 import androidx.compose.ui.text.style.TextAlign
@@ -56,16 +54,16 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
-import coil.compose.AsyncImage
+import coil.compose.SubcomposeAsyncImage
 import com.rkbapps.gdealz.R
 import com.rkbapps.gdealz.navigation.Routes
 import com.rkbapps.gdealz.network.ApiConst.IMAGE_URL
 import com.rkbapps.gdealz.ui.composables.CommonCard
 import com.rkbapps.gdealz.ui.composables.CommonTopBar
-import com.rkbapps.gdealz.ui.composables.ErrorScreen
 import com.rkbapps.gdealz.ui.screens.dealslookup.getTotalReviews
 import com.rkbapps.gdealz.util.calculatePercentage
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SteamDetailsPage(
     navController: NavHostController,
@@ -158,7 +156,7 @@ fun SteamDetailsPage(
         }
     ) { innerPadding ->
         when {
-            steamGameData.isLoading == true -> {
+            steamGameData.isLoading -> {
                 Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     CircularProgressIndicator()
                 }
@@ -183,11 +181,25 @@ fun SteamDetailsPage(
                 ) {
                     item {
                         Box(Modifier.fillMaxWidth()) {
-                            AsyncImage(
+                            SubcomposeAsyncImage(
                                 model = steamGameData.data.data?.headerImage,
                                 contentDescription = "Banner",
                                 modifier = Modifier.fillMaxWidth(),
-                                contentScale = ContentScale.FillWidth
+                                contentScale = ContentScale.FillWidth,
+                                error = {
+                                    Image(
+                                        painter = painterResource(R.drawable.console),
+                                        contentDescription = null,
+                                        modifier = Modifier.fillMaxWidth(),
+                                    )
+                                },
+                                loading = {
+                                    Image(
+                                        painter = painterResource(R.drawable.console),
+                                        contentDescription = null,
+                                        modifier = Modifier.fillMaxWidth(),
+                                    )
+                                }
                             )
                             Row(
                                 modifier = Modifier
@@ -383,13 +395,27 @@ fun SteamDetailsPage(
                                         )
                                         Spacer(modifier = Modifier.height(8.dp))
                                         Card(modifier = Modifier.size(50.dp)) {
-                                            AsyncImage(
+                                            SubcomposeAsyncImage(
                                                 model = IMAGE_URL + storeData.value?.banner,
                                                 contentDescription = "store logo",
                                                 modifier = Modifier
                                                     .size(50.dp)
                                                     .padding(8.dp),
-                                                contentScale = ContentScale.Fit
+                                                contentScale = ContentScale.Fit,
+                                                error = {
+                                                    Image(
+                                                        painter = painterResource(R.drawable.console),
+                                                        contentDescription = null,
+                                                        modifier = Modifier.size(50.dp),
+                                                    )
+                                                },
+                                                loading = {
+                                                    Image(
+                                                        painter = painterResource(R.drawable.console),
+                                                        contentDescription = null,
+                                                        modifier = Modifier.size(50.dp),
+                                                    )
+                                                }
                                             )
                                         }
                                         Spacer(modifier = Modifier.height(8.dp))
@@ -437,13 +463,27 @@ fun SteamDetailsPage(
                                 Spacer(Modifier.width(10.dp))
                             }
                             items(steamGameData.data.data?.screenshots ?: emptyList()) {
-                                AsyncImage(
+                                SubcomposeAsyncImage(
                                     model = it.pathFull,
                                     contentDescription = "",
                                     contentScale = ContentScale.FillHeight,
                                     modifier = Modifier
                                         .height(150.dp)
-                                        .clip(RoundedCornerShape(10.dp))
+                                        .clip(RoundedCornerShape(10.dp)),
+                                    error = {
+                                        Image(
+                                            painter = painterResource(R.drawable.console),
+                                            contentDescription = null,
+                                            modifier = Modifier.size(150.dp),
+                                        )
+                                    },
+                                    loading = {
+                                        Image(
+                                            painter = painterResource(R.drawable.console),
+                                            contentDescription = null,
+                                            modifier = Modifier.size(150.dp),
+                                        )
+                                    }
                                 )
                             }
                             item {
@@ -551,7 +591,7 @@ fun OverviewRowItems(
 }
 
 
-fun getDate(date: String): String? {
+private fun getDate(date: String): String? {
     try {
         val parts = date.split(" ", ", ")
         return parts[0]
@@ -560,7 +600,7 @@ fun getDate(date: String): String? {
     }
 }
 
-fun getMonths(date: String): String? {
+private fun getMonths(date: String): String? {
     try {
         val parts = date.split(" ", ", ")
         return parts[1]
@@ -569,7 +609,7 @@ fun getMonths(date: String): String? {
     }
 }
 
-fun getYear(date: String): String? {
+private fun getYear(date: String): String? {
     try {
         val parts = date.split(" ", ", ")
         return parts[2]

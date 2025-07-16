@@ -28,15 +28,16 @@ fun BottomNavigationBar(
     AnimatedVisibility(destination) {
         NavigationBar {
             items.forEachIndexed { _, bottomNavigationItem ->
+                val selected = currentDestination?.hierarchy?.any { it.hasRoute(route = bottomNavigationItem.route::class) } == true
                 NavigationBarItem(
                     icon = {
                         Icon(
-                            imageVector = ImageVector.vectorResource(bottomNavigationItem.icon),
+                            imageVector = if(selected) ImageVector.vectorResource(bottomNavigationItem.selectedIcon)  else ImageVector.vectorResource(bottomNavigationItem.icon),
                             contentDescription = bottomNavigationItem.title
                         )
                     },
                     label = { Text(bottomNavigationItem.title) },
-                    selected = currentDestination?.hierarchy?.any { it.hasRoute(route = bottomNavigationItem.route::class) } == true,
+                    selected = selected,
                     onClick = {
                         navController.navigate(bottomNavigationItem.route) {
                             popUpTo(navController.graph.findStartDestination().id) {

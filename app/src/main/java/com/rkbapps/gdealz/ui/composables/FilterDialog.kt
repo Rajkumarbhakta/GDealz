@@ -81,7 +81,7 @@ fun FilterDialog(
                     .padding(horizontal = 8.dp)
                     .weight(1f),
             ) {
-                var options = filterOptions
+                val options = filterOptions
 
                 options.forEach {
                     if (selectFilter == it) {

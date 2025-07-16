@@ -2,14 +2,15 @@ package com.rkbapps.gdealz.ui.tab.deals
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.rkbapps.gdealz.network.ApiInterface
+import com.rkbapps.gdealz.network.api.CheapSharkApi
 import com.rkbapps.gdealz.network.NetworkResponse
 import com.rkbapps.gdealz.network.safeApiCall
 import com.rkbapps.gdealz.models.Deals
 import com.rkbapps.gdealz.models.Filter
 
+
 class DealsPagingSource(
-    private val api: ApiInterface,
+    private val api: CheapSharkApi,
     private val filter: Filter
 ) : PagingSource<Int, Deals>() {
     override fun getRefreshKey(state: PagingState<Int, Deals>): Int? {
