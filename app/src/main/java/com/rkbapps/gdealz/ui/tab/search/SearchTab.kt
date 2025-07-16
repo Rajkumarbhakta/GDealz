@@ -38,6 +38,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -253,7 +254,7 @@ fun SearchItem(game: SearchResult, onClick: () -> Unit) {
         ) {
             Box(
                 modifier = Modifier
-                    .size(68.dp)
+                    .size(height = 78.dp, width = 50.dp)
                     .background(
                         color = MaterialTheme.colorScheme.primary.copy(alpha = 0.2f),
                         shape = RoundedCornerShape(10.dp)
@@ -264,9 +265,8 @@ fun SearchItem(game: SearchResult, onClick: () -> Unit) {
                 SubcomposeAsyncImage(
                     model = game.assets?.boxart,
                     contentDescription = "game thumb",
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(8.dp),
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Crop,
                     error = {
                         Image(
                             painter = painterResource(R.drawable.console),

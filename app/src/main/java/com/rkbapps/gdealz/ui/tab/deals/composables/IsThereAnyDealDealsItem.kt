@@ -23,6 +23,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
@@ -60,7 +61,7 @@ fun IsThereAnyDealDealsItem(modifier: Modifier = Modifier,deal:DealItem,onClick:
         ) {
             Box(
                 modifier = Modifier
-                    .size(68.dp)
+                    .size(height = 78.dp, width = 50.dp)
                     .background(
                         color = MaterialTheme.colorScheme.primary.copy(alpha = 0.2f),
                         shape = RoundedCornerShape(10.dp)
@@ -71,7 +72,8 @@ fun IsThereAnyDealDealsItem(modifier: Modifier = Modifier,deal:DealItem,onClick:
                 SubcomposeAsyncImage(
                     model = deal.assets?.boxart,
                     contentDescription = "game thumb",
-                    modifier = Modifier.fillMaxSize().padding(8.dp),
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Crop,
                     error = {
                         Image(
                             painter = painterResource(R.drawable.console),

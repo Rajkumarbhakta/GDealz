@@ -34,6 +34,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -71,7 +72,7 @@ fun FavTab(
                         },
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color.White.copy(alpha = 0.2f),
-                            contentColor = Color.White
+                            contentColor = MaterialTheme.colorScheme.onPrimary
                         )
                     ) {
                         Icon(imageVector = Icons.Default.Delete, "back")
@@ -196,7 +197,7 @@ fun FavItem(deals: FavDeals, onDelete: () -> Unit, onItemClick: () -> Unit) {
 
             Box(
                 modifier = Modifier
-                    .size(68.dp)
+                    .size(height = 78.dp, width = 50.dp)
                     .background(
                         color = MaterialTheme.colorScheme.primary.copy(alpha = 0.2f),
                         shape = RoundedCornerShape(10.dp)
@@ -207,7 +208,8 @@ fun FavItem(deals: FavDeals, onDelete: () -> Unit, onItemClick: () -> Unit) {
                 SubcomposeAsyncImage(
                     model = deals.thumb,
                     contentDescription = "game thumb",
-                    modifier = Modifier.fillMaxSize().padding(8.dp),
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Crop,
                     error = {
                         Image(
                             painter = painterResource(R.drawable.console),

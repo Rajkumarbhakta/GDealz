@@ -216,7 +216,8 @@ fun DealsTab(navController: NavHostController, viewModel: DealsTabViewModel = hi
 
                     is LoadState.Error -> {
                         item {
-                            ErrorScreen("Something went wrong...")
+                            val error = remember { isThereAnyDealPager.loadState.refresh as LoadState.Error }
+                            ErrorScreen(error.error.message?:"Something went wrong.")
                         }
                     }
 

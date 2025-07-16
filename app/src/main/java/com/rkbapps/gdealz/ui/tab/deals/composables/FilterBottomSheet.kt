@@ -24,6 +24,7 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -32,6 +33,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -168,10 +170,7 @@ fun FilterBottomSheet(
                                     RadioButton(
                                         selected = updatedFilters.lowerPrice == null && updatedFilters.upperPrice == null,
                                         onClick = {
-                                            updatedFilters = updatedFilters.copy(
-                                                upperPrice = null,
-                                                lowerPrice = null,
-                                            )
+                                            updatedFilters = updatedFilters.copy(upperPrice = null, lowerPrice = null)
                                         }
                                     )
                                     Text("Any")
@@ -180,7 +179,7 @@ fun FilterBottomSheet(
                             item {
                                 Row(verticalAlignment = Alignment.CenterVertically) {
                                     RadioButton(
-                                        selected = updatedFilters.lowerPrice != null || updatedFilters.upperPrice != null,
+                                        selected = updatedFilters.lowerPrice != null,
                                         onClick = {
                                             if (updatedFilters.lowerPrice == null) {
                                                 updatedFilters = updatedFilters.copy(lowerPrice = 0)
@@ -191,7 +190,7 @@ fun FilterBottomSheet(
                                 }
                             }
                             item {
-                                if (updatedFilters.lowerPrice != null || updatedFilters.upperPrice != null) {
+                                if (updatedFilters.lowerPrice != null) {
                                     Column(
                                         modifier = Modifier.fillMaxWidth(),
                                         horizontalAlignment = Alignment.CenterHorizontally,
@@ -207,28 +206,18 @@ fun FilterBottomSheet(
                                                 }
                                             },
                                             placeholder = {
-                                                Text("Enter upper price")
+                                                Text("Enter max price")
                                             },
                                             keyboardOptions = KeyboardOptions(
                                                 keyboardType = KeyboardType.Number
-                                            )
-                                        )
-                                        TextField(
-                                            value = updatedFilters.lowerPrice?.toString() ?: "",
-                                            onValueChange = {
-                                                val price = it.toIntOrNull()
-                                                price?.let {
-                                                    updatedFilters =
-                                                        updatedFilters.copy(lowerPrice = price)
-                                                }
-
-                                            },
-                                            placeholder = {
-                                                Text("Enter lower price")
-                                            },
-                                            keyboardOptions = KeyboardOptions(
-                                                keyboardType = KeyboardType.Number
-                                            )
+                                            ),
+                                            singleLine = true,
+                                            modifier = Modifier.fillMaxWidth(),
+                                            colors = TextFieldDefaults.colors(
+                                                focusedIndicatorColor = Color.Transparent,
+                                                unfocusedIndicatorColor = Color.Transparent,
+                                            ),
+                                            shape = RoundedCornerShape(100.dp)
                                         )
                                     }
                                 }
@@ -289,9 +278,9 @@ fun FilterBottomSheet(
                                     Slider(
                                         modifier = Modifier.fillMaxWidth(),
                                         value = (updatedFilters.discount?.toFloat() ?: 20f) / 100f,
+                                        valueRange = 0f..0.99f,
                                         onValueChange = {
-                                            updatedFilters =
-                                                updatedFilters.copy(discount = (it * 100).toInt())
+                                            updatedFilters = updatedFilters.copy(discount = (it * 100).toInt())
                                         }
                                     )
                                 }
