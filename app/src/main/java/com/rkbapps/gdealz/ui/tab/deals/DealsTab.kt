@@ -26,6 +26,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -36,6 +37,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -86,6 +88,8 @@ fun DealsTab(navController: NavHostController, viewModel: DealsTabViewModel = hi
     val scope = rememberCoroutineScope()
     val showBottomSheet = remember { mutableStateOf(false) }
 
+
+
     val isChooseCountryDialogOpen = remember { mutableStateOf(false) }
 
 
@@ -100,7 +104,8 @@ fun DealsTab(navController: NavHostController, viewModel: DealsTabViewModel = hi
 
     Scaffold(
         topBar = {
-            CommonTopBar(title = stringResource(R.string.app_name),
+            CommonTopBar(
+                title = stringResource(R.string.app_name),
                 actions = {
                 if (filter != defaultFilter) {
                     Button(
@@ -192,7 +197,7 @@ fun DealsTab(navController: NavHostController, viewModel: DealsTabViewModel = hi
                     showBottomSheet.value = true
                 }) {
                     Icon(
-                        painter = painterResource(id = R.drawable.filter_list),
+                        painter = painterResource(id = R.drawable.filter),
                         contentDescription = "filter deals"
                     )
                 }
@@ -204,7 +209,8 @@ fun DealsTab(navController: NavHostController, viewModel: DealsTabViewModel = hi
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(horizontal = 16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)
+                    .padding(horizontal = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
 
                 when (isThereAnyDealPager.loadState.refresh) {

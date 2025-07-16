@@ -25,6 +25,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButtonDefaults
@@ -67,6 +68,7 @@ import com.rkbapps.gdealz.ui.screens.game_info.PriceHistoryCard
 import com.rkbapps.gdealz.ui.screens.steam_details.cheapshark.OverviewRowItems
 import com.rkbapps.gdealz.util.calculatePercentage
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun IsThereAnyDealSteamDetailsPage(navController: NavHostController, viewModel: IsThereAnyDealSteamViewModel = hiltViewModel()) {
 

@@ -30,6 +30,8 @@ pagingVersion = "3.3.6"
 
 #data store ( for sharedpef)
 datastorePreferences = "1.1.7"
+#material icons
+materialIconsExtended = "1.7.8"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -74,6 +76,8 @@ pagging-compose = { module = "androidx.paging:paging-compose", version.ref = "pa
 #work manager
 work-runtime = { module = "androidx.work:work-runtime-ktx", version.ref = "workVersion" }
 hilt-work = { module = "androidx.hilt:hilt-work", version.ref = 'hiltWork' }
+#material icons
+androidx-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
 #data-store
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
 #serialization

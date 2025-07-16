@@ -125,6 +125,8 @@ dependencies {
 
     //swipe refresh
     implementation(libs.accompanist.swiperefresh)
+    // material icons
+    implementation(libs.androidx.material.icons.extended)
 
     implementation(libs.kotlinx.serialization.json)
 
