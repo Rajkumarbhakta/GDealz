@@ -31,6 +31,7 @@ import com.rkbapps.gdealz.R
 import com.rkbapps.gdealz.network.ApiConst.getFormattedDate
 import com.rkbapps.gdealz.ui.composables.CommonCard
 import com.rkbapps.gdealz.ui.composables.CommonTopBar
+import com.rkbapps.gdealz.ui.screens.free_game_details.composable.FreeGameDetailsBody
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -74,86 +75,10 @@ fun FreeGameDetailsScreen(
             }
         }
     ) { innerPadding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding),
-            verticalArrangement = Arrangement.spacedBy(10.dp)
-        ) {
 
-            SubcomposeAsyncImage(
-                model = giveaway?.thumbnail,
-                contentDescription = giveaway?.title,
-                modifier = Modifier.fillMaxWidth(),
-                error = {
-                    Image(
-                        painter = painterResource(R.drawable.console),
-                        contentDescription = null,
-                        modifier = Modifier.fillMaxWidth(),
-                    )
-                },
-                loading = {
-                    Image(
-                        painter = painterResource(R.drawable.console),
-                        contentDescription = null,
-                        modifier = Modifier.fillMaxWidth(),
-                    )
-                }
-            )
+        FreeGameDetailsBody(modifier = Modifier
+            .fillMaxSize()
+            .padding(innerPadding,), giveaway = giveaway)
 
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(vertical = 8.dp, horizontal = 16.dp)
-                    .verticalScroll(rememberScrollState()),
-                verticalArrangement = Arrangement.spacedBy(10.dp)
-            ) {
-                Text(giveaway?.title ?: "", style = MaterialTheme.typography.titleLarge)
-
-                Text(
-                    "Description",
-                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
-                )
-                Text(giveaway?.description ?: "")
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(10.dp)
-                ) {
-                    CommonCard(
-                        modifier = Modifier.weight(1f),
-                        title = "Platform",
-                        subtitle = giveaway?.platforms ?: ""
-                    )
-                    CommonCard(
-                        modifier = Modifier.weight(1f),
-                        title = "Type",
-                        subtitle = "${giveaway?.type}"
-                    )
-                }
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(10.dp)
-                ) {
-                    CommonCard(
-                        modifier = Modifier.weight(1f),
-                        title = "Published",
-                        subtitle = getFormattedDate(giveaway?.publishedDate ?: "") ?: ""
-                    )
-                    CommonCard(
-                        modifier = Modifier.weight(1f),
-                        title = "Offer Ending",
-                        subtitle = getFormattedDate(giveaway?.endDate ?: "") ?: ""
-                    )
-                }
-
-                Text(
-                    "Instruction",
-                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
-                )
-                Text(giveaway?.instructions ?: "")
-
-            }
-        }
     }
 }

@@ -1,4 +1,4 @@
-package com.rkbapps.gdealz
+package com.rkbapps.gdealz.activity
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -34,17 +33,17 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         val isSystemTheme =
-            preferenceManager.getBooleanPreference(PreferenceManager.IS_USE_SYSTEM_THEME, true)
+            preferenceManager.getBooleanPreference(PreferenceManager.Companion.IS_USE_SYSTEM_THEME, true)
                 .stateIn(
                     lifecycleScope,
-                    SharingStarted.Lazily,
+                    SharingStarted.Companion.Lazily,
                     true
                 )
 
-        val isDarkTheme = preferenceManager.getBooleanPreference(PreferenceManager.IS_DARK_THEME, false)
+        val isDarkTheme = preferenceManager.getBooleanPreference(PreferenceManager.Companion.IS_DARK_THEME, false)
             .stateIn(
                 lifecycleScope,
-                SharingStarted.Lazily,
+                SharingStarted.Companion.Lazily,
                 false
             )
 
@@ -54,13 +53,13 @@ class MainActivity : ComponentActivity() {
             val darkTheme by isDarkTheme.collectAsStateWithLifecycle()
 
             GDealzTheme(
-                darkTheme = if(isSystemTheme) isSystemInDarkTheme() else darkTheme
+                darkTheme = if (isSystemTheme) isSystemInDarkTheme() else darkTheme
             ) {
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier.Companion.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    val navController= rememberNavController()
+                    val navController = rememberNavController()
                     NavGraph(navController)
                 }
             }
@@ -78,6 +77,3 @@ class MainActivity : ComponentActivity() {
     }
 
 }
-
-
-

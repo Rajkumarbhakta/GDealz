@@ -1,11 +1,15 @@
 package com.rkbapps.gdealz.worker
 
+import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.graphics.drawable.BitmapDrawable
 import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.annotation.RequiresPermission
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -13,10 +17,12 @@ import coil.Coil.imageLoader
 import coil.request.ImageRequest
 import coil.request.SuccessResult
 import com.rkbapps.gdealz.R
+import com.rkbapps.gdealz.activity.FreeGameDetailsActivity
+import com.rkbapps.gdealz.activity.MainActivity
 import com.rkbapps.gdealz.db.dao.GiveawaysDao
 import com.rkbapps.gdealz.models.Giveaway
-import com.rkbapps.gdealz.network.api.GamePowerApi
 import com.rkbapps.gdealz.network.NetworkResponse
+import com.rkbapps.gdealz.network.api.GamePowerApi
 import com.rkbapps.gdealz.network.safeApiCall
 import com.rkbapps.gdealz.util.UiState
 import kotlinx.coroutines.Dispatchers
@@ -87,52 +93,22 @@ class NotificationWorkerRepository @Inject constructor(
     }
 
     @RequiresPermission(android.Manifest.permission.POST_NOTIFICATIONS)
-    suspend fun sendNotificationForNewGiveaways(
-        context: Context,
-        newGiveaways: List<Giveaway>
-    ) {
-
+    suspend fun sendNotificationForNewGiveaways(context: Context, newGiveaways: List<Giveaway>) {
         Log.d("NotificationWorkerRepo", "Sending notifications for new giveaways ${newGiveaways.size}")
         val notificationManager = NotificationManagerCompat.from(context)
 
         createNotificationChannel(notificationManager)
 
         newGiveaways.forEachIndexed { index, giveaway ->
+
             Log.d("NotificationWorkerRepo", "Sending notification for giveaway: ${giveaway.title}")
             val notificationId = System.currentTimeMillis().toInt() + index
-            val notification = NotificationCompat.Builder(context, "giveaway_channel_id")
-                .setSmallIcon(R.drawable.icon)
-                .setContentTitle("New Giveaway: ${giveaway.title}")
-                .setContentText("Check out this giveaway worth ${giveaway.worth}")
-                .setChannelId("giveaway_channel_id")
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setAutoCancel(true)
 
-            // Load network image into Bitmap using Coil
-            val bitmap = withContext(Dispatchers.IO) {
-                try {
-                    val request = ImageRequest.Builder(context)
-                        .data(giveaway.thumbnail)
-                        .allowHardware(false) // Needed to get Bitmap
-                        .build()
+            val notification = buildNotification(context,giveaway,index)
 
-                    val result = imageLoader(context).execute(request)
-                    if (result is SuccessResult) {
-                        (result.drawable as? BitmapDrawable)?.bitmap
-                    } else null
-                } catch (e: Exception) {
-                    null
-                }
+            with(notificationManager) {
+                notify(notificationId, notification)
             }
-
-            if (bitmap != null) {
-                notification.setStyle(
-                    NotificationCompat.BigPictureStyle()
-                        .bigPicture(bitmap)
-                )
-            }
-
-            notificationManager.notify(notificationId, notification.build())
         }
     }
 
@@ -144,6 +120,73 @@ class NotificationWorkerRepository @Inject constructor(
             notificationManager.createNotificationChannel(channel)
         }
     }
+
+
+    private fun createPendingIntent(context: Context): PendingIntent{
+        val intent = Intent(context, MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+        return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
+    }
+
+    private fun claimPendingIntent(context: Context, giveawayId: Int, code: Int): PendingIntent {
+        val detailsIntent = Intent(context, FreeGameDetailsActivity::class.java).apply {
+            putExtra(GAME_GIVEAWAY_ID, giveawayId)
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+        }
+        return PendingIntent.getActivity(context, code, detailsIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+    }
+
+    private suspend fun buildNotification(context: Context, giveaway: Giveaway,index:Int): Notification{
+
+        val pendingIntent = claimPendingIntent(context, giveaway.id, index) //createPendingIntent(context)
+
+        val notification = NotificationCompat.Builder(context, CHANNEL_ID)
+            .setSmallIcon(R.drawable.console)
+            .setContentTitle("New Giveaway: ${giveaway.title}")
+            .setContentText("Check out this giveaway worth ${giveaway.worth}")
+            .setChannelId(CHANNEL_ID)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setAutoCancel(true)
+            .setContentIntent(pendingIntent)
+
+
+        // Load network image into Bitmap using Coil
+        val bitmap = withContext(Dispatchers.IO) {
+            try {
+                val request = ImageRequest.Builder(context)
+                    .data(giveaway.thumbnail)
+                    .allowHardware(false) // Needed to get Bitmap
+                    .build()
+
+                val result = imageLoader(context).execute(request)
+                if (result is SuccessResult) {
+                    (result.drawable as? BitmapDrawable)?.bitmap
+                } else null
+            } catch (e: Exception) {
+                e.printStackTrace()
+                null
+            }
+        }
+
+        if (bitmap != null) {
+            notification.setStyle(
+                NotificationCompat.BigPictureStyle()
+                    .bigPicture(bitmap)
+            )
+        }
+
+       /* giveaway.openGiveawayUrl.let {giveawayUrl->
+            val claimPendingIntent = claimPendingIntent(context, giveaway.id, index)
+            notification.addAction(
+                R.drawable.console,
+                "Claim",
+                claimPendingIntent
+            )
+        }*/
+
+        return notification.build()
+    }
+
 
 
 
@@ -161,6 +204,11 @@ class NotificationWorkerRepository @Inject constructor(
         const val CHANNEL_ID = "giveaway_channel_id"
         const val CHANNEL_NAME = "Giveaway Notifications"
         const val CHANNEL_DESCRIPTION = "Notifies when new giveaways are available"
+
+        @RequiresApi(Build.VERSION_CODES.N)
         const val IMPORTANCE = NotificationManager.IMPORTANCE_HIGH
+
+        const val GAME_GIVEAWAY_ID = "giveawayId"
+
     }
 }

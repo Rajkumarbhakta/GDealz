@@ -44,6 +44,10 @@ interface GiveawaysDao {
     @Query("DELETE FROM giveaways WHERE isClaimed =:isClaimed")
     suspend fun deleteGiveawaysByClaimed(isClaimed: Boolean)
 
+
+    @Query("select * from giveaways where id=:id")
+    suspend fun getGiveawayById(id: Int): Giveaway?
+
     @Transaction
     suspend fun replaceGiveaways(giveaways: List<Giveaway>) {
         deleteGiveawaysByClaimed(false)
