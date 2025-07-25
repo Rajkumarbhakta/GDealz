@@ -40,8 +40,8 @@ class IsThereAnyDealSteamViewModel @Inject constructor(
         viewModelScope.launch {
             dealFavStatus(route.gameId)
             this.async { gameInfoRepository.getGameInfo(gameId = route.gameId) }.await()
+            steamDetailsRepository.getGameDetails(appId = gameInfo.value.data?.steamAppId?.toString())
             gameInfo.value.data?.steamAppId?.let {
-                steamDetailsRepository.getGameDetails(appId = "$it")
                 gameInfoRepository.getGamePriceInfo(route.gameId)
             }
 

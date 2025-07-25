@@ -20,7 +20,11 @@ class SteamDetailsRepository @Inject constructor(
     private val _steamGameData = MutableStateFlow(UiState<SteamGameData>())
     val steamGameData = _steamGameData.asStateFlow()
 
-    suspend fun getGameDetails(appId: String){
+    suspend fun getGameDetails(appId: String?){
+        if (appId==null){
+            _steamGameData.value = UiState(error = "Steam game Id not found")
+            return
+        }
         _steamGameData.value = UiState(isLoading = true)
         val response = safeApiCall { steamApi.getGameDetails(appId) }
         when(response){

@@ -147,12 +147,9 @@ fun IsThereAnyDealSteamDetailsPage(navController: NavHostController, viewModel: 
                     CircularProgressIndicator()
                 }
             }
-            steamGameData.error != null && gameData.error!=null -> {
+            steamGameData.error != null -> {
                 navController.navigate(
-                    Routes.GameInfo(
-                        gameId = viewModel.gameId,
-                        title = viewModel.title
-                    )
+                    Routes.GameInfo(gameId = viewModel.gameId, title = viewModel.title)
                 ) {
                     navController.popBackStack()
                 }
