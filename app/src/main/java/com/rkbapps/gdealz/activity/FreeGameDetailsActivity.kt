@@ -1,5 +1,6 @@
 package com.rkbapps.gdealz.activity
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -128,6 +129,13 @@ class FreeGameDetailsActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+
+        val gameId = intent.getIntExtra(NotificationWorkerRepository.GAME_GIVEAWAY_ID, 0)
+        viewModel.getGiveaway(gameId)
     }
 }
 
