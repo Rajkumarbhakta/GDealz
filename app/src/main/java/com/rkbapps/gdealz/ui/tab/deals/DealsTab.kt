@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -27,6 +28,7 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -74,7 +76,6 @@ fun DealsTab(navController: NavHostController, viewModel: DealsTabViewModel = hi
     //val stores = viewModel.stores.collectAsStateWithLifecycle()
 
     val configuration = LocalConfiguration.current
-    val minHeight = configuration.screenHeightDp * 0.5f // 50% of screen height
     val maxHeight = configuration.screenHeightDp
 
     val filter by viewModel.isThereAnyDealFilter.collectAsStateWithLifecycle()
@@ -84,10 +85,11 @@ fun DealsTab(navController: NavHostController, viewModel: DealsTabViewModel = hi
 
     val isFilterDialogVisible = remember { mutableStateOf(false) }
 
+
+    val scaffoldState = rememberBottomSheetScaffoldState()
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
     val showBottomSheet = remember { mutableStateOf(false) }
-
 
 
     val isChooseCountryDialogOpen = remember { mutableStateOf(false) }
@@ -97,35 +99,52 @@ fun DealsTab(navController: NavHostController, viewModel: DealsTabViewModel = hi
 
     LaunchedEffect(country) {
         delay(200)
-        if (country==null){
+        if (country == null) {
             isChooseCountryDialogOpen.value = true
         }
     }
 
-    Scaffold(
+    BottomSheetScaffold(
+        scaffoldState = scaffoldState,
         topBar = {
             CommonTopBar(
                 title = stringResource(R.string.app_name),
                 actions = {
-                if (filter != defaultFilter) {
-                    Button(
-                        onClick = { viewModel.clearIsThereAnyDealFilter() },
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Color.White.copy(alpha = 0.2f),
-                            contentColor = MaterialTheme.colorScheme.onPrimary
-                        )
-                    ) {
-                        Text("Clear Filter")
+                    if (filter != defaultFilter) {
+                        Button(
+                            onClick = { viewModel.clearIsThereAnyDealFilter() },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color.White.copy(alpha = 0.2f),
+                                contentColor = MaterialTheme.colorScheme.onPrimary
+                            )
+                        ) {
+                            Text("Clear Filter")
+                        }
                     }
-                }
                     CommonFilledIconButton(
                         icon = Icons.Default.Settings
                     ) {
                         navController.navigate(Routes.Settings)
                     }
-            })
+                })
         },
-        containerColor = MaterialTheme.colorScheme.background
+        containerColor = MaterialTheme.colorScheme.background,
+        sheetPeekHeight = 0.dp,
+        sheetContent = {
+            FilterBottomSheet(
+                appliedFilters = filter
+            ) {
+                viewModel.updateIsThereAnyDealFilter(it)
+                scope.launch {
+                    sheetState.hide()
+                    scaffoldState.bottomSheetState.hide()
+                }.invokeOnCompletion {
+                    if (!sheetState.isVisible) {
+                        showBottomSheet.value = false
+                    }
+                }
+            }
+        },
     ) { innerPadding ->
 
         /*if (isFilterDialogVisible.value) {
@@ -143,7 +162,7 @@ fun DealsTab(navController: NavHostController, viewModel: DealsTabViewModel = hi
             }
         }*/
 
-        if (isChooseCountryDialogOpen.value){
+        if (isChooseCountryDialogOpen.value) {
             Dialog(onDismissRequest = {}) {
                 ChooseCountryDialog(modifier = Modifier.height(500.dp)) {
                     viewModel.updateCountry(it.key)
@@ -152,24 +171,6 @@ fun DealsTab(navController: NavHostController, viewModel: DealsTabViewModel = hi
             }
         }
 
-        if (showBottomSheet.value) {
-            ModalBottomSheet(
-                modifier = Modifier.fillMaxWidth().heightIn(min = minHeight.dp, max = maxHeight.dp),
-                onDismissRequest = { showBottomSheet.value = false },
-                sheetState = sheetState
-            ) {
-                FilterBottomSheet(
-                    appliedFilters = filter
-                ) {
-                    viewModel.updateIsThereAnyDealFilter(it)
-                    scope.launch { sheetState.hide() }.invokeOnCompletion {
-                        if (!sheetState.isVisible) {
-                            showBottomSheet.value = false
-                        }
-                    }
-                }
-            }
-        }
 
         Column(
             modifier = Modifier
@@ -194,7 +195,9 @@ fun DealsTab(navController: NavHostController, viewModel: DealsTabViewModel = hi
                 }
                 IconButton(onClick = {
                     isFilterDialogVisible.value = true
-                    showBottomSheet.value = true
+                    scope.launch {
+                        scaffoldState.bottomSheetState.partialExpand()
+                    }
                 }) {
                     Icon(
                         painter = painterResource(id = R.drawable.filter),
@@ -222,8 +225,9 @@ fun DealsTab(navController: NavHostController, viewModel: DealsTabViewModel = hi
 
                     is LoadState.Error -> {
                         item {
-                            val error = remember { isThereAnyDealPager.loadState.refresh as LoadState.Error }
-                            ErrorScreen(error.error.message?:"Something went wrong.")
+                            val error =
+                                remember { isThereAnyDealPager.loadState.refresh as LoadState.Error }
+                            ErrorScreen(error.error.message ?: "Something went wrong.")
                         }
                     }
 
