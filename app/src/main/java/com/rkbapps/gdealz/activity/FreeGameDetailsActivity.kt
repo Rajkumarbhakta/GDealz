@@ -2,15 +2,20 @@ package com.rkbapps.gdealz.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeContentPadding
+import androidx.compose.foundation.layout.safeDrawingPadding
+import androidx.compose.foundation.layout.safeGesturesPadding
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -19,6 +24,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
@@ -98,12 +104,17 @@ class FreeGameDetailsActivity : ComponentActivity() {
                         topBar = {
                             CommonTopBar(
                                 title = giveaway?.title ?: "",
-                                isNavigationBack = false,
-                            )
+                                isNavigationBack = true,
+                            ){
+                                val intent = Intent(this@FreeGameDetailsActivity, MainActivity::class.java)
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                                startActivity(intent)
+                                finish()
+                            }
                         },
                         bottomBar = {
                             Box(
-                                modifier = Modifier.padding(10.dp),
+                                modifier = Modifier.safeContentPadding().background(color = Color.Transparent),
                                 contentAlignment = Alignment.Center
                             ) {
                                 Button(
@@ -121,9 +132,7 @@ class FreeGameDetailsActivity : ComponentActivity() {
                         }
                     ) { innerPadding ->
                         FreeGameDetailsBody(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .padding(innerPadding), giveaway = giveaway
+                            modifier = Modifier.fillMaxSize().padding(innerPadding), giveaway = giveaway
                         )
                     }
                 }
@@ -133,7 +142,6 @@ class FreeGameDetailsActivity : ComponentActivity() {
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
-
         val gameId = intent.getIntExtra(NotificationWorkerRepository.GAME_GIVEAWAY_ID, 0)
         viewModel.getGiveaway(gameId)
     }
@@ -150,9 +158,6 @@ class FreeGameDetailsViewModel @Inject constructor(
 
     fun getGiveaway(id: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            if (_giveaway.value != null) {
-                return@launch
-            }
             _giveaway.value = giveawaysDao.getGiveawayById(id)
         }
     }

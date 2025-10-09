@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -37,6 +39,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -82,9 +85,10 @@ fun FreeDealsTab(
         topBar = { CommonTopBar(title = "Free") },
     ) { paddingValue ->
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValue)
+            modifier = Modifier.fillMaxSize().padding(top = paddingValue.calculateTopPadding(),
+                start = paddingValue.calculateStartPadding(LayoutDirection.Ltr),
+                end = paddingValue.calculateEndPadding(LayoutDirection.Ltr)
+                )
         ) {
 
             if (!giveawayState.value.isLoading && giveawayState.value.error==null){
@@ -147,6 +151,9 @@ fun FreeDealsTab(
                                     val giveaway = viewModel.getGiveawayJson(it)
                                     navController.navigate(Routes.FreeGameDetails(giveaway))
                                 }
+                            }
+                            item {
+                                Spacer(modifier = Modifier.height(10.dp))
                             }
                         }
                     }
