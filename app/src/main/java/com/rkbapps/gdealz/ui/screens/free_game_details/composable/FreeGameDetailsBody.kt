@@ -28,7 +28,6 @@ fun FreeGameDetailsBody(modifier: Modifier = Modifier,giveaway: Giveaway?) {
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
-
         SubcomposeAsyncImage(
             model = giveaway?.thumbnail,
             contentDescription = giveaway?.title,
@@ -52,7 +51,7 @@ fun FreeGameDetailsBody(modifier: Modifier = Modifier,giveaway: Giveaway?) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(vertical = 8.dp, horizontal = 16.dp)
+                .padding( horizontal = 16.dp)
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
