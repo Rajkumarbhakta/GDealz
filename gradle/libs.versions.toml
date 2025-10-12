@@ -1,31 +1,31 @@
 [versions]
 accompanistSwiperefresh = "0.36.0"
-agp = "8.11.1"
+agp = "8.13.0"
 coilCompose = "2.7.0"
 hiltAndroid = "2.56.1"
-hiltNavigationCompose = "1.2.0"
-hiltWork = "1.2.0"
+hiltNavigationCompose = "1.3.0"
+hiltWork = "1.3.0"
 kotlin = "2.1.20"
 ksp = "2.1.20-2.0.1"
-coreKtx = "1.16.0"
+coreKtx = "1.17.0"
 junit = "4.13.2"
-junitVersion = "1.2.1"
-espressoCore = "3.6.1"
-lifecycleRuntimeKtx = "2.9.1"
-activityCompose = "1.10.1"
-composeBom = "2025.06.01"
-lottieCompose = "6.6.7"
-material = "1.8.3"
-navigationCompose = "2.9.1"
+junitVersion = "1.3.0"
+espressoCore = "3.7.0"
+lifecycleRuntimeKtx = "2.9.4"
+activityCompose = "1.11.0"
+composeBom = "2025.10.00"
+lottieCompose = "6.6.10"
+material = "1.9.3"
+navigationCompose = "2.9.5"
 
 retrofit = "3.0.0"
 
-room = "2.7.2"
+room = "2.8.2"
 
-workVersion = "2.10.2"
+workVersion = "2.10.5"
 
 kotlinx-serialization = "1.9.0"
-loggingIntercepter = "5.1.0"
+loggingIntercepter = "5.2.1"
 pagingVersion = "3.3.6"
 
 #data store ( for sharedpef)
@@ -33,8 +33,10 @@ datastorePreferences = "1.1.7"
 #material icons
 materialIconsExtended = "1.7.8"
 appcompat = "1.7.1"
-materialVersion = "1.12.0"
-activity = "1.10.1"
+materialVersion = "1.13.0"
+activity = "1.11.0"
+
+zoomable = "2.8.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -94,6 +96,8 @@ androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "materialVersion" }
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
+#image zoom
+zoomable = {group="net.engawapg.lib",name="zoomable",version.ref="zoomable"}
 
 
 

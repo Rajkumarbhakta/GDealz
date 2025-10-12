@@ -21,7 +21,7 @@ android {
 
     defaultConfig {
         applicationId = "com.rkbapps.gdealz"
-        minSdk = 21
+        minSdk = 23
         targetSdk = 36
         versionCode = 6
         versionName = "1.1.3"
@@ -132,6 +132,10 @@ dependencies {
     implementation(libs.androidx.material.icons.extended)
 
     implementation(libs.kotlinx.serialization.json)
+
+    //zoomable
+    implementation(libs.zoomable)
+
 
 
 
