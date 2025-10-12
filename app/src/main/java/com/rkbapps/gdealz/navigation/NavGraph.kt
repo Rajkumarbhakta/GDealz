@@ -5,10 +5,12 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.toRoute
 import com.rkbapps.gdealz.ui.screens.MainScreen
 import com.rkbapps.gdealz.ui.screens.dealslookup.DealLookupScreen
 import com.rkbapps.gdealz.ui.screens.free_game_details.FreeGameDetailsScreen
 import com.rkbapps.gdealz.ui.screens.game_info.GameInfoScreen
+import com.rkbapps.gdealz.ui.screens.image_preview.ImagePreviewScreen
 import com.rkbapps.gdealz.ui.screens.settings.SettingsScreen
 import com.rkbapps.gdealz.ui.screens.splash.SplashScreen
 import com.rkbapps.gdealz.ui.screens.steam_details.cheapshark.SteamDetailsPage
@@ -84,6 +86,14 @@ fun NavGraphBuilder.destinations(navController: NavHostController) {
 
     composable<Routes.Settings> {
         SettingsScreen(navController)
+    }
+
+    composable <Routes.ImagePreview>{
+        val imageUrl = it.toRoute<Routes.ImagePreview>().imageUrl
+        ImagePreviewScreen(
+            navController = navController,
+            imageUrl = imageUrl
+        )
     }
 
 

@@ -45,5 +45,8 @@ sealed class Routes {
     @Serializable
     data object Settings: Routes()
 
+    @Serializable
+    data class ImagePreview(val imageUrl: String) : Routes()
+
 
 }

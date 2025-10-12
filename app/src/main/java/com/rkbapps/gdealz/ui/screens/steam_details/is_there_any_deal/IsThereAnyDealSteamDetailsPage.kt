@@ -2,6 +2,7 @@ package com.rkbapps.gdealz.ui.screens.steam_details.is_there_any_deal
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -52,7 +53,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.fromHtml
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
@@ -382,7 +383,13 @@ fun IsThereAnyDealSteamDetailsPage(navController: NavHostController, viewModel: 
                                     contentScale = ContentScale.FillHeight,
                                     modifier = Modifier
                                         .height(150.dp)
-                                        .clip(RoundedCornerShape(10.dp)),
+                                        .clip(RoundedCornerShape(10.dp))
+                                        .clickable{
+                                            it.pathFull?.let { imageUri->
+                                                navController.navigate(Routes.ImagePreview(imageUri))
+                                            }
+                                        }
+                                    ,
                                     error = {
                                         Image(
                                             painter = painterResource(R.drawable.console),

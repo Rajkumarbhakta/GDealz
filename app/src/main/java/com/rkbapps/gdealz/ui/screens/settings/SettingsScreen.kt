@@ -62,7 +62,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -129,7 +129,7 @@ fun SettingsScreen(
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
 
-            item {
+            item(key=1) {
                 ElevatedCard (
                     modifier = Modifier.fillMaxWidth(),
                     colors = CardDefaults.elevatedCardColors(
@@ -202,13 +202,20 @@ fun SettingsScreen(
                 }
             }
 
-            item {
+            item(key=2) {
                 ChooseCountryItem(
                     selectedCountry = selectedCountryEnum
                 ) { isChooseCountryDialogOpen = true }
+
+
+//                Button(onClick = {
+//                    viewModel.sendNotification()
+//                }) {
+//                    Text("Send Notification")
+//                }
             }
 
-            item {
+            item(key=3) {
                 TextWithSwitch(
                     text = "Follow System Theme",
                     subText = "Use light or dark theme based on your system settings.",
@@ -218,7 +225,7 @@ fun SettingsScreen(
                     viewModel.updateIsSystemTheme(it)
                 }
             }
-            item {
+            item(key=4) {
                 AnimatedVisibility(!isSystemTheme) {
                     TextWithSwitch(
                         text = "Dark Theme",
@@ -229,7 +236,7 @@ fun SettingsScreen(
                     }
                 }
             }
-            item {
+            item(key=5) {
                 TextWithSwitch(
                     text = "NSFW content",
                     subText = "Displays adult or sensitive content when turned on.",
@@ -239,7 +246,7 @@ fun SettingsScreen(
                     viewModel.updateNsfwContentAllowance(it)
                 }
             }
-            item {
+            item(key=6) {
                 TextWithArrow(
                     text = "Privacy Policy",
                     subText = "Read the privacy policy",
@@ -248,7 +255,7 @@ fun SettingsScreen(
                     uriHandler.openUri("https://sites.google.com/view/gdealz/home")
                 }
             }
-            item {
+            item(key=7) {
                 Card(modifier = Modifier.fillMaxWidth()) {
                     Text(
                         "Game and pricing information is sourced from CheapShark, IsThereAnyDeal.com, and Steam. G Dealz does not guarantee the accuracy, availability, or completeness of this information.",
