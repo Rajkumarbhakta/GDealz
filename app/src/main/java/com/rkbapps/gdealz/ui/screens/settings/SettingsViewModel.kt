@@ -1,11 +1,13 @@
 package com.rkbapps.gdealz.ui.screens.settings
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rkbapps.gdealz.BuildConfig
 import com.rkbapps.gdealz.db.PreferenceManager
 import com.rkbapps.gdealz.util.Country
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -15,6 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
+    @ApplicationContext private val context: Context,
     private val repository: SettingsRepository
 ): ViewModel() {
 
@@ -49,5 +52,12 @@ class SettingsViewModel @Inject constructor(
      fun updateCountry(value:String) =viewModelScope.launch { repository.updateCountry(value) }
 
      fun updateNsfwContentAllowance(value:Boolean) =viewModelScope.launch{ repository.updateNsfwContentAllowance(value) }
+
+
+    fun sendNotification(){
+        viewModelScope.launch {
+            repository.sendNotification(context)
+        }
+    }
 
 }
