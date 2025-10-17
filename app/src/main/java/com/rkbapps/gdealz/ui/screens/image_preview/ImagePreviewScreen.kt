@@ -28,7 +28,9 @@ fun ImagePreviewScreen(navController: NavHostController, imageUrl: String) {
             TopAppBar(
                 title = { Text("Preview") },
                 navigationIcon = {
-                    IconButton(onClick = {}) { Icon(
+                    IconButton(onClick = {
+                        navController.navigateUp()
+                    }) { Icon(
                         imageVector = Icons.AutoMirrored.Default.ArrowBack,
                         null
                     ) }
