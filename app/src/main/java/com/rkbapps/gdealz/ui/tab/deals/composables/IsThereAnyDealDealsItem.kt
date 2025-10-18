@@ -14,7 +14,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
@@ -23,6 +25,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.BlendMode
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -31,6 +35,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.compose.SubcomposeAsyncImage
+import com.kyant.backdrop.backdrops.rememberLayerBackdrop
+import com.kyant.backdrop.drawBackdrop
+import com.kyant.backdrop.effects.blur
+import com.kyant.backdrop.effects.lens
+import com.kyant.backdrop.effects.vibrancy
 import com.rkbapps.gdealz.R
 import com.rkbapps.gdealz.ui.theme.darkGreen
 import com.rkbapps.gdealz.ui.theme.normalTextColor
@@ -43,6 +52,7 @@ fun IsThereAnyDealDealsItem(modifier: Modifier = Modifier,deal:DealItem,onClick:
 
     val percentage = remember { deal.deal?.cut ?: 0 }
     val isFree = remember { (deal.deal?.cut ?: 0) == 100 }
+    val backdrop = rememberLayerBackdrop ()
 
     OutlinedCard(
         onClick = {
@@ -50,7 +60,7 @@ fun IsThereAnyDealDealsItem(modifier: Modifier = Modifier,deal:DealItem,onClick:
         },
         modifier = Modifier
             .fillMaxWidth()
-            .height(90.dp)
+            .height(90.dp),
     ) {
         Row(
             horizontalArrangement = Arrangement.spacedBy(10.dp),
@@ -124,15 +134,40 @@ fun IsThereAnyDealDealsItem(modifier: Modifier = Modifier,deal:DealItem,onClick:
             }
 
 
+            val textColor = if (isFree) darkGreen.copy(alpha = 0.2f) else MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)
+
             Text(
                 text = if (isFree) "Free" else "${percentage}%",
                 color = if (isFree) darkGreen else
                     MaterialTheme.colorScheme.primary,
                 modifier = Modifier
-                    .clip(RoundedCornerShape(100.dp))
-                    .background(
-                        color = if (isFree) darkGreen.copy(alpha = 0.2f) else MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)
-                    ).padding(horizontal = 10.dp, vertical = 4.dp)
+
+//                    .clip(RoundedCornerShape(100.dp))
+//                    .background(
+//                        color = if (isFree) darkGreen.copy(alpha = 0.2f) else MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)
+//                    )
+                    .drawBackdrop(
+                        backdrop = backdrop,
+                        shape = { RoundedCornerShape(100.dp)},
+                        onDrawSurface = {
+                            drawRect(textColor,
+                                blendMode = BlendMode.Hue)                        },
+                        effects = {
+                            // vibrancy effect
+                            vibrancy()
+                            // blur effect
+                            blur(16f.dp.toPx())
+                            // lens effect
+                            lens(
+                                refractionHeight = 24f.dp.toPx(),
+                                refractionAmount = 48f.dp.toPx(),
+                                // ⚠️ Use `true` for large containers,
+                                // or `false` for small containers.
+                                depthEffect = true
+                            )
+                        }
+                    )
+                    .padding(horizontal = 10.dp, vertical = 4.dp)
             )
             Spacer(modifier = Modifier.width(10.dp))
         }

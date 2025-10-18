@@ -46,6 +46,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import coil.compose.SubcomposeAsyncImage
+import com.kyant.backdrop.backdrops.rememberLayerBackdrop
+import com.kyant.backdrop.drawBackdrop
+import com.kyant.backdrop.effects.blur
+import com.kyant.backdrop.effects.lens
+import com.kyant.backdrop.effects.vibrancy
 import com.rkbapps.gdealz.R
 import com.rkbapps.gdealz.db.entity.FavDeals
 import com.rkbapps.gdealz.navigation.Routes
@@ -64,16 +69,39 @@ fun FavTab(
     val deletableFav = remember { mutableStateOf<FavDeals?>(null) }
     val isDeleteAllAlertDialogOpen = remember { mutableStateOf(false) }
 
+    val backdrop = rememberLayerBackdrop()
+
+    val errorColor = MaterialTheme.colorScheme.errorContainer
+
     Scaffold(
         topBar = {
             CommonTopBar("Fav", actions = {
                 if (favList.isNotEmpty()) {
                     Button(
+                        modifier = Modifier.drawBackdrop(
+                            backdrop = backdrop,
+                            shape = { RoundedCornerShape(100.dp)},
+                            effects = {
+                                // vibrancy effect
+                                vibrancy()
+                                // blur effect
+                                blur(16f.dp.toPx())
+                                // lens effect
+                                lens(
+                                    refractionHeight = 24f.dp.toPx(),
+                                    refractionAmount = 48f.dp.toPx(),
+                                    // ⚠️ Use `true` for large containers,
+                                    // or `false` for small containers.
+                                    depthEffect = false
+                                )
+                            }
+                        )
+                        ,
                         onClick = {
                             isDeleteAllAlertDialogOpen.value = true
                         },
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = Color.White.copy(alpha = 0.2f),
+                            containerColor = Color.Transparent,
                             contentColor = MaterialTheme.colorScheme.onPrimary
                         )
                     ) {

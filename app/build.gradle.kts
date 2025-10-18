@@ -136,6 +136,8 @@ dependencies {
     //zoomable
     implementation(libs.zoomable)
 
+    implementation(libs.android.liquidglass)
+
 
 
 

@@ -16,6 +16,7 @@ activityCompose = "1.11.0"
 composeBom = "2025.10.00"
 lottieCompose = "6.6.10"
 material = "1.9.3"
+material3 = "1.5.0-alpha06"
 navigationCompose = "2.9.5"
 
 retrofit = "3.0.0"
@@ -37,6 +38,7 @@ materialVersion = "1.13.0"
 activity = "1.11.0"
 
 zoomable = "2.8.2"
+liquidGlass = "1.0.0-beta02"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -49,7 +51,7 @@ androidx-ui = { group = "androidx.compose.ui", name = "ui" }
 androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
-androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+androidx-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
 
 #coil
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
@@ -98,6 +100,9 @@ material = { group = "com.google.android.material", name = "material", version.r
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 #image zoom
 zoomable = {group="net.engawapg.lib",name="zoomable",version.ref="zoomable"}
+
+
+android-liquidglass = {group="com.github.Kyant0",name="AndroidLiquidGlass",version.ref="liquidGlass"}
 
 
 
