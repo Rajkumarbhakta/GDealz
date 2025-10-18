@@ -51,6 +51,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import coil.compose.SubcomposeAsyncImage
+import com.kyant.backdrop.backdrops.rememberLayerBackdrop
+import com.kyant.backdrop.drawBackdrop
+import com.kyant.backdrop.effects.blur
+import com.kyant.backdrop.effects.lens
+import com.kyant.backdrop.effects.vibrancy
 import com.rkbapps.gdealz.R
 import com.rkbapps.gdealz.models.deal.Price
 import com.rkbapps.gdealz.models.price.Deals
@@ -426,6 +431,8 @@ fun PriceHistoryCard(
 @Composable
 fun DealCard(modifier: Modifier = Modifier, deals: Deals, onClick: () -> Unit = {}) {
 
+    val backdrop = rememberLayerBackdrop()
+
     val store = remember { StoreUtil.getStore(deals.shop?.id ?: 0) }
     val isFree = deals.cut == 100
 
@@ -469,13 +476,38 @@ fun DealCard(modifier: Modifier = Modifier, deals: Deals, onClick: () -> Unit = 
                 )
             }
             Column(modifier = Modifier.weight(1f)) {
+                val textBackground = MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)
                 deals.cut?.let {
                     Text(
                         text = (if (isFree) "Free" else "$it% OFF"),
                         style = MaterialTheme.typography.labelMedium,
                         modifier = Modifier
                             .clip(RoundedCornerShape(100.dp))
-                            .background(color = MaterialTheme.colorScheme.primary.copy(alpha = 0.2f))
+                            .drawBackdrop(
+                                backdrop = backdrop,
+                                shape = { RoundedCornerShape(100.dp)},
+                                onDrawSurface = {
+                                    // draw a semi-transparent overlay
+                                    drawRect(
+                                        color = textBackground,
+                                        size = size
+                                    )
+                                },
+                                effects = {
+                                    // vibrancy effect
+                                    vibrancy()
+                                    // blur effect
+                                    blur(16f.dp.toPx())
+                                    // lens effect
+                                    lens(
+                                        refractionHeight = 24f.dp.toPx(),
+                                        refractionAmount = 48f.dp.toPx(),
+                                        // ⚠️ Use `true` for large containers,
+                                        // or `false` for small containers.
+                                        depthEffect = true
+                                    )
+                                }
+                            )
                             .padding(horizontal = 10.dp, vertical = 8.dp)
                     )
                 }
@@ -491,8 +523,29 @@ fun DealCard(modifier: Modifier = Modifier, deals: Deals, onClick: () -> Unit = 
                 }
                 Text(deals.shop?.name?.toString() ?: "-")
             }
-            IconButton(
-                onClick = onClick
+            FilledIconButton(
+                modifier = Modifier.drawBackdrop(
+                    backdrop = backdrop,
+                    shape = { RoundedCornerShape(100.dp)},
+                    effects = {
+                        // vibrancy effect
+                        vibrancy()
+                        // blur effect
+                        blur(16f.dp.toPx())
+                        // lens effect
+                        lens(
+                            refractionHeight = 24f.dp.toPx(),
+                            refractionAmount = 48f.dp.toPx(),
+                            // ⚠️ Use `true` for large containers,
+                            // or `false` for small containers.
+                            depthEffect = false
+                        )
+                    }
+                ),
+                onClick = onClick,
+                colors = IconButtonDefaults.filledIconButtonColors(
+                    containerColor = Color.Transparent
+                )
             ) {
                 Icon(
                     painter = painterResource(R.drawable.launch_link_open),

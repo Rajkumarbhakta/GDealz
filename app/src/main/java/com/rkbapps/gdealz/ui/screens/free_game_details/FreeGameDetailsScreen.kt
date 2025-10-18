@@ -1,6 +1,7 @@
 package com.rkbapps.gdealz.ui.screens.free_game_details
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -56,7 +58,10 @@ fun FreeGameDetailsScreen(
             }
         },
         bottomBar = {
-            Box(modifier = Modifier.safeContentPadding(), contentAlignment = Alignment.Center) {
+            Row (
+                modifier = Modifier.fillMaxWidth().safeContentPadding(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 Button(
                     modifier = Modifier.fillMaxWidth(),
                     onClick = {

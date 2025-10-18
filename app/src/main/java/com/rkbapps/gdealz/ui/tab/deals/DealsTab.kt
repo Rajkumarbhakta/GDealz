@@ -8,18 +8,24 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSize
+import androidx.compose.foundation.layout.safeContent
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.rememberBottomSheetState
+import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -49,6 +55,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -83,9 +90,6 @@ fun DealsTab(navController: NavHostController, viewModel: DealsTabViewModel = hi
     //val filter = viewModel.filter.collectAsStateWithLifecycle()
     //val stores = viewModel.stores.collectAsStateWithLifecycle()
 
-    val configuration = LocalConfiguration.current
-    val maxHeight = configuration.screenHeightDp
-
     val filter by viewModel.isThereAnyDealFilter.collectAsStateWithLifecycle()
     val country by viewModel.country.collectAsStateWithLifecycle()
 
@@ -94,9 +98,9 @@ fun DealsTab(navController: NavHostController, viewModel: DealsTabViewModel = hi
     val isFilterDialogVisible = remember { mutableStateOf(false) }
 
 
-    val scaffoldState = rememberBottomSheetScaffoldState()
+    val sheetState = rememberModalBottomSheetState(
 
-    val sheetState = rememberModalBottomSheetState()
+    )
     val scope = rememberCoroutineScope()
     val showBottomSheet = remember { mutableStateOf(false) }
 
@@ -113,8 +117,7 @@ fun DealsTab(navController: NavHostController, viewModel: DealsTabViewModel = hi
         }
     }
 
-        BottomSheetScaffold(
-            scaffoldState = scaffoldState,
+        Scaffold (
             topBar = {
                 CommonTopBar(
                     title = stringResource(R.string.app_name),
@@ -138,22 +141,6 @@ fun DealsTab(navController: NavHostController, viewModel: DealsTabViewModel = hi
                     })
             },
             containerColor = MaterialTheme.colorScheme.background,
-            sheetPeekHeight = 0.dp,
-            sheetContent = {
-                FilterBottomSheet(
-                    appliedFilters = filter,
-                ) {
-                    viewModel.updateIsThereAnyDealFilter(it)
-                    scope.launch {
-                        sheetState.hide()
-                        scaffoldState.bottomSheetState.hide()
-                    }.invokeOnCompletion {
-                        if (!sheetState.isVisible) {
-                            showBottomSheet.value = false
-                        }
-                    }
-                }
-            },
         ) { innerPadding ->
 
             /*if (isFilterDialogVisible.value) {
@@ -180,11 +167,41 @@ fun DealsTab(navController: NavHostController, viewModel: DealsTabViewModel = hi
                 }
             }
 
+            if (showBottomSheet.value) {
+                ModalBottomSheet(
+                    modifier = Modifier.fillMaxWidth().padding(
+                        top = innerPadding.calculateTopPadding()
+                    ),
+                    onDismissRequest = { showBottomSheet.value = false },
+                    sheetState = sheetState,
+                    contentWindowInsets = {
+                        WindowInsets(
+                            top = 0.dp
+                        )
+                    }
+                ) {
+                    FilterBottomSheet(
+                        appliedFilters = filter
+                    ) {
+                        viewModel.updateIsThereAnyDealFilter(it)
+                        scope.launch { sheetState.hide() }.invokeOnCompletion {
+                            if (!sheetState.isVisible) {
+                                showBottomSheet.value = false
+                            }
+                        }
+                    }
+                }
+            }
+
 
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(innerPadding),
+                    .padding(
+                        top = innerPadding.calculateTopPadding(),
+                        start = innerPadding.calculateStartPadding(LocalLayoutDirection.current),
+                        end = innerPadding.calculateEndPadding(LocalLayoutDirection.current)
+                    ),
             ) {
 
                 Row(
@@ -204,9 +221,7 @@ fun DealsTab(navController: NavHostController, viewModel: DealsTabViewModel = hi
                     }
                     IconButton(onClick = {
                         isFilterDialogVisible.value = true
-                        scope.launch {
-                            scaffoldState.bottomSheetState.expand()
-                        }
+                        showBottomSheet.value = true
                     }) {
                         Icon(
                             painter = painterResource(id = R.drawable.filter),
@@ -385,9 +400,3 @@ fun DealsTab(navController: NavHostController, viewModel: DealsTabViewModel = hi
         }
 
 }
-
-
-
-
-
-

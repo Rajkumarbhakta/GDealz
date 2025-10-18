@@ -27,10 +27,13 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.LinearWavyProgressIndicator
+import androidx.compose.material3.LoadingIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
@@ -41,6 +44,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
@@ -58,6 +62,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import coil.compose.SubcomposeAsyncImage
+import com.kyant.backdrop.backdrops.rememberLayerBackdrop
+import com.kyant.backdrop.drawBackdrop
+import com.kyant.backdrop.effects.blur
+import com.kyant.backdrop.effects.lens
+import com.kyant.backdrop.effects.vibrancy
 import com.rkbapps.gdealz.R
 import com.rkbapps.gdealz.navigation.Routes
 import com.rkbapps.gdealz.network.ApiConst.IMAGE_URL
@@ -69,7 +78,7 @@ import com.rkbapps.gdealz.ui.screens.game_info.PriceHistoryCard
 import com.rkbapps.gdealz.ui.screens.steam_details.cheapshark.OverviewRowItems
 import com.rkbapps.gdealz.util.calculatePercentage
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun IsThereAnyDealSteamDetailsPage(navController: NavHostController, viewModel: IsThereAnyDealSteamViewModel = hiltViewModel()) {
 
@@ -83,6 +92,9 @@ fun IsThereAnyDealSteamDetailsPage(navController: NavHostController, viewModel: 
     val isFav = remember { viewModel.isFavDeal }
 
 
+    val backdrop = rememberLayerBackdrop()
+
+
 
 
     Scaffold(
@@ -92,11 +104,29 @@ fun IsThereAnyDealSteamDetailsPage(navController: NavHostController, viewModel: 
                 isNavigationBack = true,
                 actions = {
                     FilledIconButton(
+                        modifier = Modifier.drawBackdrop(
+                            backdrop = backdrop,
+                            shape = { RoundedCornerShape(100.dp)},
+                            effects = {
+                                // vibrancy effect
+                                vibrancy()
+                                // blur effect
+                                blur(16f.dp.toPx())
+                                // lens effect
+                                lens(
+                                    refractionHeight = 24f.dp.toPx(),
+                                    refractionAmount = 48f.dp.toPx(),
+                                    // ⚠️ Use `true` for large containers,
+                                    // or `false` for small containers.
+                                    depthEffect = true
+                                )
+                            }
+                        ),
                         onClick = {
                             gameData.data?.let { viewModel.toggleFavDeal(it) }
                         },
                         colors = IconButtonDefaults.filledIconButtonColors(
-                            containerColor = Color.White.copy(alpha = 0.2f),
+                            containerColor = Color.Transparent,
                             contentColor = Color.White
                         )
                     ) {
@@ -145,7 +175,7 @@ fun IsThereAnyDealSteamDetailsPage(navController: NavHostController, viewModel: 
         when {
             steamGameData.isLoading || gameData.isLoading -> {
                 Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    CircularProgressIndicator()
+                    LoadingIndicator()
                 }
             }
             steamGameData.error != null -> {
@@ -191,12 +221,34 @@ fun IsThereAnyDealSteamDetailsPage(navController: NavHostController, viewModel: 
                                 verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement = Arrangement.spacedBy(10.dp)
                             ) {
-                                OutlinedCard(
+                                val color = MaterialTheme.colorScheme.primary.copy(
+                                    alpha = 0.2f
+                                )
+                                Card(
+                                    modifier = Modifier.drawBackdrop(
+                                        backdrop = backdrop,
+                                        shape = { RoundedCornerShape(100.dp)},
+                                        onDrawSurface = {
+                                            drawRect(color, blendMode = BlendMode.Hue)
+                                                        },
+                                        effects = {
+                                            // vibrancy effect
+                                            vibrancy()
+                                            // blur effect
+                                            blur(16f.dp.toPx())
+                                            // lens effect
+                                            lens(
+                                                refractionHeight = 24f.dp.toPx(),
+                                                refractionAmount = 48f.dp.toPx(),
+                                                // ⚠️ Use `true` for large containers,
+                                                // or `false` for small containers.
+                                                depthEffect = true
+                                            )
+                                        }
+                                    ),
                                     shape = RoundedCornerShape(100.dp),
                                     colors = CardDefaults.outlinedCardColors(
-                                        containerColor = MaterialTheme.colorScheme.primary.copy(
-                                            alpha = 0.2f
-                                        ),
+                                        containerColor = Color.Transparent,
                                         contentColor = Color.White
                                     ),
                                     onClick = {
@@ -220,12 +272,31 @@ fun IsThereAnyDealSteamDetailsPage(navController: NavHostController, viewModel: 
                                         )
                                     }
                                 }
-                                OutlinedCard(
+                                Card(
+                                    modifier = Modifier.drawBackdrop(
+                                        backdrop = backdrop,
+                                        shape = { RoundedCornerShape(100.dp)},
+                                        onDrawSurface = {
+                                            drawRect(color,
+                                                blendMode = BlendMode.Hue)                        },
+                                        effects = {
+                                            // vibrancy effect
+                                            vibrancy()
+                                            // blur effect
+                                            blur(16f.dp.toPx())
+                                            // lens effect
+                                            lens(
+                                                refractionHeight = 24f.dp.toPx(),
+                                                refractionAmount = 48f.dp.toPx(),
+                                                // ⚠️ Use `true` for large containers,
+                                                // or `false` for small containers.
+                                                depthEffect = true
+                                            )
+                                        }
+                                    ),
                                     shape = RoundedCornerShape(100.dp),
                                     colors = CardDefaults.outlinedCardColors(
-                                        containerColor = MaterialTheme.colorScheme.primary.copy(
-                                            alpha = 0.2f
-                                        ),
+                                        containerColor = Color.Transparent,
                                         contentColor = Color.White
                                     )
                                 ) {
@@ -422,11 +493,9 @@ fun IsThereAnyDealSteamDetailsPage(navController: NavHostController, viewModel: 
                     item {
                         when {
                             gamePriceInfo.isLoading -> {
-                                LinearProgressIndicator(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(16.dp)
-                                )
+                                LinearWavyProgressIndicator(modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(16.dp))
                             }
 
                             gamePriceInfo.error != null -> {
@@ -478,11 +547,9 @@ fun IsThereAnyDealSteamDetailsPage(navController: NavHostController, viewModel: 
                     item {
                         when {
                             gamePriceInfo.isLoading -> {
-                                LinearProgressIndicator(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(16.dp)
-                                )
+                                LinearWavyProgressIndicator(modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(16.dp))
                             }
 
                             gamePriceInfo.error != null -> {
