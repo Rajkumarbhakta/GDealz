@@ -1,5 +1,9 @@
 package com.rkbapps.gdealz.navigation
 
+import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -19,31 +23,39 @@ import com.rkbapps.gdealz.ui.tab.fav.FavTab
 import com.rkbapps.gdealz.ui.tab.deals.DealsTab
 import com.rkbapps.gdealz.ui.tab.free.FreeDealsTab
 import com.rkbapps.gdealz.ui.tab.search.SearchTab
-import okhttp3.Route
 
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun NavGraph(navController: NavHostController) {
-    NavHost(navController = navController, startDestination = Routes.Splash) {
-        destinations(navController)
+    SharedTransitionLayout {
+        NavHost(navController = navController, startDestination = Routes.Splash) {
+            destinations(navController, this@SharedTransitionLayout)
+        }
     }
-
 }
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun BottomNavigationNavGraph(
     navController: NavHostController,
 ) {
-    NavHost(
-        navController = navController,
-        startDestination = Routes.Deals,
-    ) {
-        destinations(navController)
+    SharedTransitionLayout {
+        NavHost(
+            navController = navController,
+            startDestination = Routes.Deals,
+        ) {
+            destinations(navController, this@SharedTransitionLayout)
+        }
     }
 }
 
 
-fun NavGraphBuilder.destinations(navController: NavHostController) {
+@OptIn(ExperimentalSharedTransitionApi::class)
+fun NavGraphBuilder.destinations(
+    navController: NavHostController,
+    sharedTransitionScope: SharedTransitionScope
+) {
     composable<Routes.Splash> {
         SplashScreen(navController)
     }
@@ -81,18 +93,24 @@ fun NavGraphBuilder.destinations(navController: NavHostController) {
     }
 
     composable<Routes.IsThereAnyDealSteamGameDetails> {
-        IsThereAnyDealSteamDetailsPage(navController)
+        IsThereAnyDealSteamDetailsPage(
+            navController = navController,
+            sharedTransitionScope = sharedTransitionScope,
+            animatedContentScope = this
+        )
     }
 
     composable<Routes.Settings> {
         SettingsScreen(navController)
     }
 
-    composable <Routes.ImagePreview>{
+    composable<Routes.ImagePreview> {
         val imageUrl = it.toRoute<Routes.ImagePreview>().imageUrl
         ImagePreviewScreen(
             navController = navController,
-            imageUrl = imageUrl
+            imageUrl = imageUrl,
+            sharedTransitionScope = sharedTransitionScope,
+            animatedContentScope = this
         )
     }
 

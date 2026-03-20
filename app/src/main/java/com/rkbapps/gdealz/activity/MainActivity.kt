@@ -32,8 +32,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        val isSystemTheme =
-            preferenceManager.getBooleanPreference(PreferenceManager.Companion.IS_USE_SYSTEM_THEME, true)
+        val isSystemTheme = preferenceManager.getBooleanPreference(PreferenceManager.Companion.IS_USE_SYSTEM_THEME, true)
                 .stateIn(
                     lifecycleScope,
                     SharingStarted.Companion.Lazily,
@@ -56,7 +55,7 @@ class MainActivity : ComponentActivity() {
                 darkTheme = if (isSystemTheme) isSystemInDarkTheme() else darkTheme
             ) {
                 Surface(
-                    modifier = Modifier.Companion.fillMaxSize(),
+                    modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val navController = rememberNavController()

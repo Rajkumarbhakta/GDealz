@@ -6,12 +6,14 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.BottomAppBarDefaults
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -58,30 +60,26 @@ fun FreeGameDetailsScreen(
             }
         },
         bottomBar = {
-            Row (
-                modifier = Modifier.fillMaxWidth().safeContentPadding(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Button(
-                    modifier = Modifier.fillMaxWidth(),
-                    onClick = {
-                        if (giveaway?.isClaimed == true) {
-                            viewModel.markGiveawayAsUnClaimed(giveaway)
-                            navController.navigateUp()
-                        } else {
-                            giveaway?.let { viewModel.markGiveawayAsClaimed(it) }
-                            giveaway?.openGiveawayUrl?.let {
-                                uriHandler.openUri(it)
-                            }
+            Button(
+                modifier = Modifier
+                    .padding(BottomAppBarDefaults.windowInsets.asPaddingValues())
+                    .fillMaxWidth().padding(horizontal = 16.dp),
+                onClick = {
+                    if (giveaway?.isClaimed == true) {
+                        viewModel.markGiveawayAsUnClaimed(giveaway)
+                        navController.navigateUp()
+                    } else {
+                        giveaway?.let { viewModel.markGiveawayAsClaimed(it) }
+                        giveaway?.openGiveawayUrl?.let {
+                            uriHandler.openUri(it)
                         }
                     }
-                ) {
-                    Text(if (giveaway?.isClaimed == true) "Mark as un claimed" else "Grab Deal")
                 }
+            ) {
+                Text(if (giveaway?.isClaimed == true) "Mark as un claimed" else "Grab Deal")
             }
         }
     ) { innerPadding ->
-
         FreeGameDetailsBody(modifier = Modifier
             .fillMaxSize()
             .padding(innerPadding,), giveaway = giveaway)

@@ -60,7 +60,7 @@ fun MainScreen(navController: NavHostController){
         }
     ) {
         Column(
-            modifier = Modifier.fillMaxSize().padding(bottom = it.calculateBottomPadding(),
+            modifier = Modifier.fillMaxSize().padding(
                 start = it.calculateStartPadding(LayoutDirection.Ltr),
                 end = it.calculateStartPadding(LayoutDirection.Ltr)
             ),

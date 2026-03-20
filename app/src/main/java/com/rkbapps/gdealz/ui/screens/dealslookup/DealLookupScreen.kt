@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -19,9 +20,11 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.BottomNavigationDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material3.BottomAppBarDefaults
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
@@ -109,15 +112,21 @@ fun DealLookupScreen(
         },
         bottomBar = {
             AnimatedVisibility(dealsData.value.data != null) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(10.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(10.dp)
-                ) {
+
+//                Row(
+//                    modifier = Modifier
+//                        .fillMaxWidth()
+//                        .padding(10.dp),
+//                    verticalAlignment = Alignment.CenterVertically,
+//                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+//                ) {
                     Button(
-                        modifier = Modifier.weight(1f),
+                        modifier = Modifier.fillMaxWidth()
+                            .padding(10.dp)
+                            .padding(
+                                BottomAppBarDefaults.windowInsets.asPaddingValues()
+                            )
+                        ,
                         onClick = {
                             viewModel.redirectionUrl?.let { url ->
                                 uriHandler.openUri(url)
@@ -135,7 +144,7 @@ fun DealLookupScreen(
                             )
                         }
                     }
-                }
+//                }
             }
         }
     ) {

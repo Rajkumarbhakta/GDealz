@@ -16,7 +16,7 @@ object StoreUtil {
 data class Store(
     val id:Int,
     val name:String,
-    @DrawableRes
+    @param:DrawableRes
     val image: Int
 )
 

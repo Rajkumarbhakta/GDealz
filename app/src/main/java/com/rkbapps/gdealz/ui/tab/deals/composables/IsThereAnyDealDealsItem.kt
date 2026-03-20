@@ -86,7 +86,7 @@ fun IsThereAnyDealDealsItem(modifier: Modifier = Modifier,deal:DealItem,onClick:
                     contentScale = ContentScale.Crop,
                     error = {
                         Image(
-                            painter = painterResource(R.drawable.console),
+                            painter = painterResource(R.drawable.warning),
                             contentDescription = null,
                             modifier = Modifier.fillMaxSize(),
                         )
@@ -95,7 +95,7 @@ fun IsThereAnyDealDealsItem(modifier: Modifier = Modifier,deal:DealItem,onClick:
                         Image(
                             painter = painterResource(R.drawable.console),
                             contentDescription = null,
-                            modifier = Modifier.fillMaxSize(),
+                            modifier = Modifier.fillMaxSize().padding(10.dp),
                         )
                     }
                 )
@@ -113,7 +113,6 @@ fun IsThereAnyDealDealsItem(modifier: Modifier = Modifier,deal:DealItem,onClick:
                     style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                     overflow = TextOverflow.Ellipsis
                 )
-                //Text("⭐ ${deals.dealRating ?: 0.0}", color = normalTextColor)
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(10.dp),
@@ -141,11 +140,6 @@ fun IsThereAnyDealDealsItem(modifier: Modifier = Modifier,deal:DealItem,onClick:
                 color = if (isFree) darkGreen else
                     MaterialTheme.colorScheme.primary,
                 modifier = Modifier
-
-//                    .clip(RoundedCornerShape(100.dp))
-//                    .background(
-//                        color = if (isFree) darkGreen.copy(alpha = 0.2f) else MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)
-//                    )
                     .drawBackdrop(
                         backdrop = backdrop,
                         shape = { RoundedCornerShape(100.dp)},
@@ -161,9 +155,7 @@ fun IsThereAnyDealDealsItem(modifier: Modifier = Modifier,deal:DealItem,onClick:
                             lens(
                                 refractionHeight = 24f.dp.toPx(),
                                 refractionAmount = 48f.dp.toPx(),
-                                // ⚠️ Use `true` for large containers,
-                                // or `false` for small containers.
-                                depthEffect = true
+                                depthEffect = false
                             )
                         }
                     )
