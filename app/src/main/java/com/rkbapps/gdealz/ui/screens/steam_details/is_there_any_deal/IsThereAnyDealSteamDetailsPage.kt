@@ -1,6 +1,9 @@
 package com.rkbapps.gdealz.ui.screens.steam_details.is_there_any_deal
 
+import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -9,6 +12,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -22,6 +26,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material3.BottomAppBarDefaults
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -78,9 +83,15 @@ import com.rkbapps.gdealz.ui.screens.game_info.PriceHistoryCard
 import com.rkbapps.gdealz.ui.screens.steam_details.cheapshark.OverviewRowItems
 import com.rkbapps.gdealz.util.calculatePercentage
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
+
+@OptIn(ExperimentalSharedTransitionApi::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-fun IsThereAnyDealSteamDetailsPage(navController: NavHostController, viewModel: IsThereAnyDealSteamViewModel = hiltViewModel()) {
+fun IsThereAnyDealSteamDetailsPage(
+    navController: NavHostController,
+    viewModel: IsThereAnyDealSteamViewModel = hiltViewModel(),
+    sharedTransitionScope: SharedTransitionScope,
+    animatedContentScope: AnimatedContentScope
+) {
 
     val uriHandler = LocalUriHandler.current
 
@@ -142,31 +153,26 @@ fun IsThereAnyDealSteamDetailsPage(navController: NavHostController, viewModel: 
         },
         bottomBar = {
             AnimatedVisibility(steamGameData.data != null) {
-                Row(
+                Button(
                     modifier = Modifier
+                        .padding(BottomAppBarDefaults.windowInsets.asPaddingValues())
                         .fillMaxWidth()
                         .padding(10.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                    onClick = {
+                        steamGameData.data?.data?.website?.let {
+                            uriHandler.openUri(it)
+                        }
+                    }
                 ) {
-                    Button(
-                        modifier = Modifier.weight(1f),
-                        onClick = {
-                            steamGameData.data?.data?.website?.let {
-                                uriHandler.openUri(it)
-                            }
-                        }
-                    ) {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Spacer(Modifier.weight(1f))
-                            Text(text = "Go official website")
-                            Spacer(Modifier.weight(1f))
-                            Icon(
-                                imageVector = ImageVector.vectorResource(R.drawable.launch_link_open),
-                                contentDescription = "launch link open",
-                                modifier = Modifier.size(20.dp)
-                            )
-                        }
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Spacer(Modifier.weight(1f))
+                        Text(text = "Go official website")
+                        Spacer(Modifier.weight(1f))
+                        Icon(
+                            imageVector = ImageVector.vectorResource(R.drawable.launch_link_open),
+                            contentDescription = "launch link open",
+                            modifier = Modifier.size(20.dp)
+                        )
                     }
                 }
             }
@@ -448,34 +454,43 @@ fun IsThereAnyDealSteamDetailsPage(navController: NavHostController, viewModel: 
                                 Spacer(Modifier.width(10.dp))
                             }
                             items(steamGameData.data?.data?.screenshots ?: emptyList()) {
-                                SubcomposeAsyncImage(
-                                    model = it.pathFull,
-                                    contentDescription = "",
-                                    contentScale = ContentScale.FillHeight,
-                                    modifier = Modifier
-                                        .height(150.dp)
-                                        .clip(RoundedCornerShape(10.dp))
-                                        .clickable{
-                                            it.pathFull?.let { imageUri->
-                                                navController.navigate(Routes.ImagePreview(imageUri))
-                                            }
+                                with(sharedTransitionScope) {
+                                    SubcomposeAsyncImage(
+                                        model = it.pathFull,
+                                        contentDescription = "",
+                                        contentScale = ContentScale.FillHeight,
+                                        modifier = Modifier
+                                            .height(150.dp)
+                                            .clip(RoundedCornerShape(10.dp))
+                                            .sharedElement(
+                                                rememberSharedContentState(key = it.pathFull ?: ""),
+                                                animatedVisibilityScope = animatedContentScope
+                                            )
+                                            .clickable {
+                                                it.pathFull?.let { imageUri ->
+                                                    navController.navigate(
+                                                        Routes.ImagePreview(
+                                                            imageUri
+                                                        )
+                                                    )
+                                                }
+                                            },
+                                        error = {
+                                            Image(
+                                                painter = painterResource(R.drawable.console),
+                                                contentDescription = null,
+                                                modifier = Modifier.size(150.dp),
+                                            )
+                                        },
+                                        loading = {
+                                            Image(
+                                                painter = painterResource(R.drawable.console),
+                                                contentDescription = null,
+                                                modifier = Modifier.size(150.dp),
+                                            )
                                         }
-                                    ,
-                                    error = {
-                                        Image(
-                                            painter = painterResource(R.drawable.console),
-                                            contentDescription = null,
-                                            modifier = Modifier.size(150.dp),
-                                        )
-                                    },
-                                    loading = {
-                                        Image(
-                                            painter = painterResource(R.drawable.console),
-                                            contentDescription = null,
-                                            modifier = Modifier.size(150.dp),
-                                        )
-                                    }
-                                )
+                                    )
+                                }
                             }
                             item {
                                 Spacer(Modifier.width(10.dp))

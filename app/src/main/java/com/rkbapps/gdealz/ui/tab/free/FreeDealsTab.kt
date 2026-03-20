@@ -49,6 +49,7 @@ import coil.compose.SubcomposeAsyncImage
 import com.rkbapps.gdealz.R
 import com.rkbapps.gdealz.models.Giveaway
 import com.rkbapps.gdealz.navigation.Routes
+import com.rkbapps.gdealz.ui.composables.CommonTabs
 import com.rkbapps.gdealz.ui.composables.CommonTopBar
 import com.rkbapps.gdealz.ui.composables.ErrorScreen
 import com.rkbapps.gdealz.util.getStatusFromEndDate
@@ -85,7 +86,8 @@ fun FreeDealsTab(
         topBar = { CommonTopBar(title = "Free") },
     ) { paddingValue ->
         Column(
-            modifier = Modifier.fillMaxSize().padding(top = paddingValue.calculateTopPadding(),
+            modifier = Modifier.fillMaxSize().padding(
+                top = paddingValue.calculateTopPadding(),
                 start = paddingValue.calculateStartPadding(LayoutDirection.Ltr),
                 end = paddingValue.calculateEndPadding(LayoutDirection.Ltr)
                 )
@@ -99,7 +101,7 @@ fun FreeDealsTab(
                     verticalAlignment = Alignment.CenterVertically
                 ){
                     options.forEach {
-                        Tabs(it,selectedTab.value==it) {
+                        CommonTabs(it,selectedTab.value==it) {
                             selectedTab.value = it
                         }
                     }
@@ -203,31 +205,7 @@ fun RowScope.FreeOption(
     }
 }
 
-@Composable
-fun RowScope.Tabs(
-    title: String,
-    isSelected: Boolean,
-    onTabSelect: () -> Unit
-) {
-    Box(
-        modifier =
-            Modifier
-                .background(
-                    color = if (isSelected) MaterialTheme.colorScheme.primary else Color.Transparent,
-                    shape = RoundedCornerShape(8.dp)
-                )
-                .weight(1f)
-                .height(35.dp)
-                .clickable(onClick = onTabSelect),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = title,
-            style = MaterialTheme.typography.titleMedium,
-            color = if (isSelected) MaterialTheme.colorScheme.onPrimary else Color.Unspecified,
-        )
-    }
-}
+
 
 
 

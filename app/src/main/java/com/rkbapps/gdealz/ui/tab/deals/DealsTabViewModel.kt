@@ -26,7 +26,13 @@ class DealsTabViewModel @Inject constructor(
 
     val country = repository.currentCountry.stateIn(
         viewModelScope,
-        SharingStarted.Lazily,
+        SharingStarted.WhileSubscribed(5000),
+        null
+    )
+
+    val favStoreIds = repository.favStoreList.stateIn(
+        viewModelScope,
+        SharingStarted.WhileSubscribed(5000),
         null
     )
 

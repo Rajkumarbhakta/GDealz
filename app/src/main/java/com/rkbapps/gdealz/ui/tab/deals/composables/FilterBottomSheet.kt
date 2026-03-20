@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -14,6 +15,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ScaffoldDefaults
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.HorizontalDivider
@@ -56,14 +58,15 @@ val filterOptions = listOf(
 fun FilterBottomSheet(
     modifier: Modifier = Modifier,
     appliedFilters: IsThereAnyDealFilters = IsThereAnyDealFilters(),
+    favStoreIds: List<Int>?=null,
     onApplyFilters: (IsThereAnyDealFilters) -> Unit
 ) {
 
     val defaultFilter = remember { IsThereAnyDealFilters() }
-
     var updatedFilters by remember { mutableStateOf(appliedFilters) }
-
     var selectFilterOption by remember { mutableStateOf("Store") }
+    val favStores by remember (favStoreIds){ mutableStateOf(StoreUtil.filterFavStores(favStoreIds?:emptyList())) }
+    val remainingStores =  StoreUtil.getStores().filter { !favStores.contains(it) }
 
     Column(
         modifier = modifier
@@ -135,9 +138,33 @@ fun FilterBottomSheet(
                         Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                             Text(text = "Select Stores")
                             LazyColumn(
+                                contentPadding = ScaffoldDefaults.contentWindowInsets.asPaddingValues(),
                                 verticalArrangement = Arrangement.spacedBy(8.dp),
                             ) {
-                                items(StoreUtil.getStores()) { store ->
+                                if (favStores.isNotEmpty()){
+                                    items(favStores, key = {it.id}) { store ->
+                                        Row(
+                                            modifier = Modifier.fillMaxWidth(),
+                                            verticalAlignment = Alignment.CenterVertically
+                                        ) {
+                                            Checkbox(
+                                                checked = updatedFilters.stores.contains(store.id),
+                                                onCheckedChange = {
+                                                    updatedFilters = if (it) {
+                                                        updatedFilters.copy(stores = updatedFilters.stores + store.id)
+                                                    } else {
+                                                        updatedFilters.copy(stores = updatedFilters.stores - store.id)
+                                                    }
+                                                }
+                                            )
+                                            Text(store.name)
+                                        }
+                                    }
+                                    item {
+                                        HorizontalDivider()
+                                    }
+                                }
+                                items(remainingStores, key = {it.id}) { store ->
                                     Row(
                                         modifier = Modifier.fillMaxWidth(),
                                         verticalAlignment = Alignment.CenterVertically

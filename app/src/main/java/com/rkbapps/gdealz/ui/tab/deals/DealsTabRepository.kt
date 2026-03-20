@@ -11,6 +11,7 @@ import com.rkbapps.gdealz.network.NetworkResponse
 import com.rkbapps.gdealz.network.api.CheapSharkApi
 import com.rkbapps.gdealz.network.api.IsThereAnyDealApi
 import com.rkbapps.gdealz.network.safeApiCall
+import com.rkbapps.gdealz.util.FavStoreIds
 import com.rkbapps.gdealz.util.UiState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -34,10 +35,11 @@ class DealsTabRepository @Inject constructor(
     private val _isThereAnyDealFilter = MutableStateFlow(IsThereAnyDealFilters())
     val isThereAnyDealFilter = _isThereAnyDealFilter.asStateFlow()
 
-    val currentCountry =
-        preferenceManager.getStringPreference(PreferenceManager.SELECTED_COUNTRY)
-    private val isNsfwAllow =
-        preferenceManager.getBooleanPreference(PreferenceManager.IS_NSFW_ALLOWED, false)
+    val currentCountry = preferenceManager.getStringPreference(PreferenceManager.SELECTED_COUNTRY)
+
+    val favStoreList = preferenceManager.getObject(PreferenceManager.FAV_STORE_IDS,FavStoreIds::class.java)
+
+    private val isNsfwAllow = preferenceManager.getBooleanPreference(PreferenceManager.IS_NSFW_ALLOWED, false)
 
 
 

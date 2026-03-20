@@ -521,7 +521,7 @@ fun DealCard(modifier: Modifier = Modifier, deals: Deals, onClick: () -> Unit = 
                     )
                     Text(CurrencyAndCountryUtil.getCurrencyAndAmount(deals.price))
                 }
-                Text(deals.shop?.name?.toString() ?: "-")
+                Text(deals.shop?.name ?: "-")
             }
             FilledIconButton(
                 modifier = Modifier.drawBackdrop(

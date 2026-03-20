@@ -207,7 +207,6 @@ fun SettingsScreen(
                     selectedCountry = selectedCountryEnum
                 ) { isChooseCountryDialogOpen = true }
 
-
 //                Button(onClick = {
 //                    viewModel.sendNotification()
 //                }) {
@@ -246,7 +245,8 @@ fun SettingsScreen(
                     viewModel.updateNsfwContentAllowance(it)
                 }
             }
-            item(key=6) {
+
+            item(key=7) {
                 TextWithArrow(
                     text = "Privacy Policy",
                     subText = "Read the privacy policy",
@@ -255,7 +255,7 @@ fun SettingsScreen(
                     uriHandler.openUri("https://sites.google.com/view/gdealz/home")
                 }
             }
-            item(key=7) {
+            item(key=8) {
                 Card(modifier = Modifier.fillMaxWidth()) {
                     Text(
                         "Game and pricing information is sourced from CheapShark, IsThereAnyDeal.com, and Steam. G Dealz does not guarantee the accuracy, availability, or completeness of this information.",

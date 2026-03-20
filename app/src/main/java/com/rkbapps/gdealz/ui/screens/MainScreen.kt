@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,12 +15,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.LayoutDirection
+import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
+import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.rkbapps.gdealz.navigation.BottomNavigationItem
 import com.rkbapps.gdealz.navigation.BottomNavigationNavGraph
@@ -50,19 +55,31 @@ fun MainScreen(navController: NavHostController){
     )
 
 
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = navBackStackEntry?.destination
+    val destination = navigationItems.any { currentDestination?.hasRoute(route = it.route::class)==true }
+
+
     LaunchedEffect(Unit) {
         askPermission(context, launcher)
     }
 
     Scaffold(
         bottomBar = {
-            BottomNavigationBar(items = navigationItems, navController = navController)
+            AnimatedVisibility(destination) {
+                BottomNavigationBar(
+                    items = navigationItems,
+                    navController = navController,
+                    currentDestination = currentDestination
+                )
+            }
         }
     ) {
         Column(
-            modifier = Modifier.fillMaxSize().padding(bottom = it.calculateBottomPadding(),
+            modifier = Modifier.fillMaxSize().padding(
                 start = it.calculateStartPadding(LayoutDirection.Ltr),
-                end = it.calculateStartPadding(LayoutDirection.Ltr)
+                end = it.calculateStartPadding(LayoutDirection.Ltr),
+                bottom = if (destination) it.calculateBottomPadding() else 0.dp
             ),
         ) {
             BottomNavigationNavGraph(
