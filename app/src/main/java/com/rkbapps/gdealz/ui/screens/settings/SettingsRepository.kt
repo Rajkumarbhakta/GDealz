@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import com.rkbapps.gdealz.db.PreferenceManager
 import com.rkbapps.gdealz.db.dao.GiveawaysDao
+import com.rkbapps.gdealz.util.FavStoreIds
 import com.rkbapps.gdealz.worker.NotificationWorkerRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -23,10 +24,11 @@ class SettingsRepository @Inject constructor(
 
     suspend fun updateIsSystemTheme(value: Boolean)=prefManager.saveBooleanPreference(PreferenceManager.IS_USE_SYSTEM_THEME,value)
     suspend fun updateTheme(value:Boolean) = prefManager.saveBooleanPreference(PreferenceManager.IS_DARK_THEME,value)
-
     suspend fun updateCountry(value:String) = prefManager.saveStringPreference(PreferenceManager.SELECTED_COUNTRY,value)
-
     suspend fun updateNsfwContentAllowance(value:Boolean) = prefManager.saveBooleanPreference(PreferenceManager.IS_NSFW_ALLOWED,value)
+
+
+
 
 
 

@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
+import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -20,35 +21,33 @@ import com.rkbapps.gdealz.navigation.BottomNavigationItem
 fun BottomNavigationBar(
     items: List<BottomNavigationItem>,
     navController: NavHostController,
+    currentDestination: NavDestination?
 ) {
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentDestination = navBackStackEntry?.destination
-    val destination = items.any { currentDestination?.hasRoute(route = it.route::class)==true }
-
-    AnimatedVisibility(destination) {
-        NavigationBar {
-            items.forEachIndexed { _, bottomNavigationItem ->
-                val selected = currentDestination?.hierarchy?.any { it.hasRoute(route = bottomNavigationItem.route::class) } == true
-                NavigationBarItem(
-                    icon = {
-                        Icon(
-                            imageVector = if(selected) ImageVector.vectorResource(bottomNavigationItem.selectedIcon)  else ImageVector.vectorResource(bottomNavigationItem.icon),
-                            contentDescription = bottomNavigationItem.title
-                        )
-                    },
-                    label = { Text(bottomNavigationItem.title) },
-                    selected = selected,
-                    onClick = {
-                        navController.navigate(bottomNavigationItem.route) {
-                            popUpTo(navController.graph.findStartDestination().id) {
-                                saveState = true
-                            }
-                            launchSingleTop = true
-                            restoreState = true
+    NavigationBar {
+        items.forEachIndexed { _, bottomNavigationItem ->
+            val selected =
+                currentDestination?.hierarchy?.any { it.hasRoute(route = bottomNavigationItem.route::class) } == true
+            NavigationBarItem(
+                icon = {
+                    Icon(
+                        imageVector = if (selected) ImageVector.vectorResource(bottomNavigationItem.selectedIcon) else ImageVector.vectorResource(
+                            bottomNavigationItem.icon
+                        ),
+                        contentDescription = bottomNavigationItem.title
+                    )
+                },
+                label = { Text(bottomNavigationItem.title) },
+                selected = selected,
+                onClick = {
+                    navController.navigate(bottomNavigationItem.route) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
                         }
+                        launchSingleTop = true
+                        restoreState = true
                     }
-                )
-            }
+                }
+            )
         }
     }
 }

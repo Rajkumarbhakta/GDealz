@@ -16,9 +16,20 @@ class FavViewModel @Inject constructor(
 
     val favList = repository.favList.stateIn(
         viewModelScope,
-        SharingStarted.Lazily,
+        SharingStarted.WhileSubscribed(5000),
         emptyList(),
     )
+
+
+
+    val favStoreIds = repository.favStoreList.stateIn(
+        viewModelScope,
+        SharingStarted.WhileSubscribed(5000),
+        null
+    )
+
+
+
 
     fun deleteAFav(favDeal: FavDeals){
         viewModelScope.launch {
@@ -31,5 +42,11 @@ class FavViewModel @Inject constructor(
             repository.deleteAllFav()
         }
     }
+
+    fun markStoreAsFav(storeId: Int) = viewModelScope.launch {
+        repository.markStoreAsFav(storeId)
+    }
+
+
 
 }

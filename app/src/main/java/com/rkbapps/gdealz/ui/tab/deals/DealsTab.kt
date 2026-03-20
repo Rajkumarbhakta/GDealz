@@ -72,6 +72,7 @@ fun DealsTab(navController: NavHostController, viewModel: DealsTabViewModel = hi
 
     val filter by viewModel.isThereAnyDealFilter.collectAsStateWithLifecycle()
     val country by viewModel.country.collectAsStateWithLifecycle()
+    val favStoreIds by viewModel.favStoreIds.collectAsStateWithLifecycle()
 
     val isThereAnyDealPager = viewModel.isThereAnyDeals.collectAsLazyPagingItems()
 
@@ -153,7 +154,8 @@ fun DealsTab(navController: NavHostController, viewModel: DealsTabViewModel = hi
                     contentWindowInsets = { WindowInsets(top = 0.dp) }
                 ) {
                     FilterBottomSheet(
-                        appliedFilters = filter
+                        appliedFilters = filter,
+                        favStoreIds = favStoreIds?.ids
                     ) {
                         viewModel.updateIsThereAnyDealFilter(it)
                         scope.launch { sheetState.hide() }.invokeOnCompletion {
