@@ -1,16 +1,12 @@
-package com.rkbapps.gdealz.ui.screens.settings
+package com.rkbapps.gdealz.ui.tab.settings
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rkbapps.gdealz.BuildConfig
-import com.rkbapps.gdealz.db.PreferenceManager
-import com.rkbapps.gdealz.util.Country
-import com.rkbapps.gdealz.util.FavStoreIds
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
