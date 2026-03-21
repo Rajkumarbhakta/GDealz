@@ -38,6 +38,11 @@ class SettingsViewModel @Inject constructor(
         SharingStarted.WhileSubscribed(5000),
         false
     )
+    val isDynamicTheme = repository.isDynamicTheme.stateIn(
+        viewModelScope,
+        SharingStarted.WhileSubscribed(5000),
+        true
+    )
 
 
 
@@ -52,6 +57,9 @@ class SettingsViewModel @Inject constructor(
 
     fun updateNsfwContentAllowance(value: Boolean) =
         viewModelScope.launch { repository.updateNsfwContentAllowance(value) }
+
+    fun updateDynamicTheme(value: Boolean) =
+        viewModelScope.launch { repository.updateIsDynamicTheme(value) }
 
 
 

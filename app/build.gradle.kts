@@ -15,7 +15,7 @@ plugins {
 val properties = Properties()
 val propertiesFile: File? = rootProject.file("secret.properties")
 if (propertiesFile?.exists()==true){
-    properties.load(propertiesFile.inputStream())
+    propertiesFile.inputStream().use { properties.load(it) }
 }
 
 android {
@@ -26,8 +26,8 @@ android {
         applicationId = "com.rkbapps.gdealz"
         minSdk = 23
         targetSdk = 36
-        versionCode = 8
-        versionName = "1.1.5"
+        versionCode = 9
+        versionName = "1.2.0"
 
         // build configs
         buildConfigField("String", "API_KEY", properties.getProperty("API_KEY"))

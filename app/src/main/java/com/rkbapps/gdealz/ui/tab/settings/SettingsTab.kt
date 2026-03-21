@@ -1,5 +1,6 @@
 package com.rkbapps.gdealz.ui.tab.settings
 
+import android.os.Build
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -79,6 +80,7 @@ fun SettingsScreen(
     val isDarkTheme by viewModel.isDarkTheme.collectAsStateWithLifecycle()
     val selectedCountry by viewModel.selectedCountry.collectAsStateWithLifecycle()
     val isNsfw by viewModel.isNsfw.collectAsStateWithLifecycle()
+    val isDynamicColor by viewModel.isDynamicTheme.collectAsStateWithLifecycle()
 
     val selectedCountryEnum = remember(selectedCountry) {
         if (selectedCountry == null) Country.US else Country.valueOf(selectedCountry!!)
@@ -99,7 +101,7 @@ fun SettingsScreen(
 
         if (isChooseCountryDialogOpen){
             Dialog(
-                onDismissRequest = {isChooseCountryDialogOpen=false}
+                onDismissRequest = { isChooseCountryDialogOpen=false }
             ) {
                 ChooseCountryDialog(
                     modifier = Modifier.height(500.dp),
@@ -227,6 +229,18 @@ fun SettingsScreen(
                 }
             }
             item(key=5) {
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    TextWithSwitch(
+                        text = "Dynamic Color",
+                        subText = "Enable dynamic colors for a more personalized experience.",
+                        checked = isDynamicColor,
+                        icon = ImageVector.vectorResource(R.drawable.palette)
+                    ) {
+                        viewModel.updateDynamicTheme(it)
+                    }
+                }
+            }
+            item(key=6) {
                 TextWithSwitch(
                     text = "NSFW content",
                     subText = "Displays adult or sensitive content when turned on.",
