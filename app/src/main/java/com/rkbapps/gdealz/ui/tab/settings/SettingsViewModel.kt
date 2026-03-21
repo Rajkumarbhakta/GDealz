@@ -59,7 +59,7 @@ class SettingsViewModel @Inject constructor(
         viewModelScope.launch { repository.updateNsfwContentAllowance(value) }
 
     fun updateDynamicTheme(value: Boolean) =
-        viewModelScope.launch { repository.isDynamicTheme(value) }
+        viewModelScope.launch { repository.updateIsDynamicTheme(value) }
 
 
 

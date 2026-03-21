@@ -240,7 +240,7 @@ fun SettingsScreen(
                     }
                 }
             }
-            item(key=5) {
+            item(key=6) {
                 TextWithSwitch(
                     text = "NSFW content",
                     subText = "Displays adult or sensitive content when turned on.",
