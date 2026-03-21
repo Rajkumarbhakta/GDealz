@@ -18,5 +18,5 @@ sealed class BottomNavigationItem(
 
     data object Fav : BottomNavigationItem(Routes.Fav, title = "Fav", icon = R.drawable.fav_outlined,R.drawable.fav_filled)
 
-    data object Settings : BottomNavigationItem(Routes.Settings, title = "Setting", icon = R.drawable.settings_outline,R.drawable.settings_filled)
+    data object Settings : BottomNavigationItem(Routes.Settings, title = "Settings", icon = R.drawable.settings_outline, selectedIcon = R.drawable.settings_filled)
 }
