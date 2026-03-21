@@ -30,6 +30,7 @@ class PreferenceManager @Inject constructor(
         val IS_DARK_THEME = booleanPreferencesKey("is_use_dark_theme")
         val SELECTED_COUNTRY = stringPreferencesKey("selected_country")
         val IS_NSFW_ALLOWED = booleanPreferencesKey("is_nsfw_allowed")
+        val IS_DYNAMIC_THEME = booleanPreferencesKey("is_dynamic_theme")
         val FAV_STORE_IDS = stringPreferencesKey("fav_store_ids")
     }
 

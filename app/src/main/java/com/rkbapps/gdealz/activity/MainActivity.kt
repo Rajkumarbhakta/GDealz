@@ -19,6 +19,7 @@ import com.rkbapps.gdealz.ui.theme.GDealzTheme
 import com.rkbapps.gdealz.util.AppForegroundTracker
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.WhileSubscribed
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
@@ -32,27 +33,35 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        val isSystemTheme = preferenceManager.getBooleanPreference(PreferenceManager.Companion.IS_USE_SYSTEM_THEME, true)
+        val isSystemTheme = preferenceManager.getBooleanPreference(PreferenceManager.IS_USE_SYSTEM_THEME, true)
                 .stateIn(
                     lifecycleScope,
-                    SharingStarted.Companion.Lazily,
+                    SharingStarted.WhileSubscribed(5000),
                     true
                 )
 
-        val isDarkTheme = preferenceManager.getBooleanPreference(PreferenceManager.Companion.IS_DARK_THEME, false)
+        val isDarkTheme = preferenceManager.getBooleanPreference(PreferenceManager.IS_DARK_THEME, false)
             .stateIn(
                 lifecycleScope,
-                SharingStarted.Companion.Lazily,
+                SharingStarted.WhileSubscribed(5000),
                 false
+            )
+        val isDynamicColor = preferenceManager.getBooleanPreference(PreferenceManager.IS_DYNAMIC_THEME, true)
+            .stateIn(
+                lifecycleScope,
+                SharingStarted.WhileSubscribed(5000),
+                true
             )
 
         setContent {
 
             val isSystemTheme by isSystemTheme.collectAsStateWithLifecycle()
             val darkTheme by isDarkTheme.collectAsStateWithLifecycle()
+            val isDynamicColor by isDynamicColor.collectAsStateWithLifecycle()
 
             GDealzTheme(
-                darkTheme = if (isSystemTheme) isSystemInDarkTheme() else darkTheme
+                darkTheme = if (isSystemTheme) isSystemInDarkTheme() else darkTheme,
+                dynamicColor = isDynamicColor
             ) {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
