@@ -1,4 +1,4 @@
-package com.rkbapps.gdealz.ui.screens.settings
+package com.rkbapps.gdealz.ui.tab.settings
 
 import android.annotation.SuppressLint
 import android.content.Context

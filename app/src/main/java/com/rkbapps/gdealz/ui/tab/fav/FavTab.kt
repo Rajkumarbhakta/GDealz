@@ -1,5 +1,6 @@
 package com.rkbapps.gdealz.ui.tab.fav
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -104,7 +105,7 @@ fun FavTab(
     Scaffold(
         topBar = {
             CommonTopBar("Fav", actions = {
-                if (favList.isNotEmpty()) {
+                AnimatedVisibility(favList.isNotEmpty() && pagerState.currentPage == 0 ) {
                     Button(
                         modifier = Modifier.drawBackdrop(
                             backdrop = backdrop,

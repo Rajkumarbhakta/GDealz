@@ -37,7 +37,8 @@ fun MainScreen(navController: NavHostController){
             BottomNavigationItem.Deals,
             BottomNavigationItem.Free,
             BottomNavigationItem.Search,
-            BottomNavigationItem.Fav
+            BottomNavigationItem.Fav,
+            BottomNavigationItem.Settings
         ) }
     val context = LocalContext.current
 

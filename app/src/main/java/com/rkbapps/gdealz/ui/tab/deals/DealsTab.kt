@@ -90,7 +90,7 @@ fun DealsTab(navController: NavHostController, viewModel: DealsTabViewModel = hi
     val defaultFilter = remember { IsThereAnyDealFilters() }
 
     LaunchedEffect(country) {
-        delay(200)
+        delay(500)
         if (country == null) {
             isChooseCountryDialogOpen.value = true
         }
@@ -111,11 +111,6 @@ fun DealsTab(navController: NavHostController, viewModel: DealsTabViewModel = hi
                             ) {
                                 Text("Clear Filter")
                             }
-                        }
-                        CommonFilledIconButton(
-                            icon = Icons.Default.Settings
-                        ) {
-                            navController.navigate(Routes.Settings)
                         }
                     })
             },
