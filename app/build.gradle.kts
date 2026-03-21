@@ -15,7 +15,7 @@ plugins {
 val properties = Properties()
 val propertiesFile: File? = rootProject.file("secret.properties")
 if (propertiesFile?.exists()==true){
-    properties.load(propertiesFile.inputStream())
+    propertiesFile.inputStream().use { properties.load(it) }
 }
 
 android {
