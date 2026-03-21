@@ -25,7 +25,7 @@ class SettingsRepository @Inject constructor(
 
     suspend fun updateIsSystemTheme(value: Boolean)=prefManager.saveBooleanPreference(PreferenceManager.IS_USE_SYSTEM_THEME,value)
     suspend fun updateTheme(value:Boolean) = prefManager.saveBooleanPreference(PreferenceManager.IS_DARK_THEME,value)
-    suspend fun isDynamicTheme(value:Boolean) = prefManager.saveBooleanPreference(PreferenceManager.IS_DYNAMIC_THEME,value)
+    suspend fun updateIsDynamicTheme(value:Boolean) = prefManager.saveBooleanPreference(PreferenceManager.IS_DYNAMIC_THEME,value)
     suspend fun updateCountry(value:String) = prefManager.saveStringPreference(PreferenceManager.SELECTED_COUNTRY,value)
     suspend fun updateNsfwContentAllowance(value:Boolean) = prefManager.saveBooleanPreference(PreferenceManager.IS_NSFW_ALLOWED,value)
 
