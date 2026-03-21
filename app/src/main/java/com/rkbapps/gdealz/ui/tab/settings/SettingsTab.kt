@@ -228,7 +228,7 @@ fun SettingsScreen(
                     }
                 }
             }
-            item(key=6) {
+            item(key=5) {
                 if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                     TextWithSwitch(
                         text = "Dynamic Color",
