@@ -18,6 +18,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -31,6 +33,7 @@ import androidx.compose.runtime.MutableIntState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -55,6 +58,7 @@ import com.rkbapps.gdealz.ui.composables.ErrorScreen
 import com.rkbapps.gdealz.util.getStatusFromEndDate
 import com.rkbapps.gdealz.util.shimmerBrush
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
@@ -72,15 +76,14 @@ fun FreeDealsTab(
 ) {
 
     val giveaways = viewModel.giveaways.collectAsStateWithLifecycle()
-
     val unClaimedGiveaway = viewModel.unClaimedGiveaway.collectAsStateWithLifecycle()
     val claimedGiveaway = viewModel.claimedGiveaway.collectAsStateWithLifecycle()
-
     val giveawayState = viewModel.giveawayState.collectAsStateWithLifecycle()
 
-    val currentSelectedOption = rememberSaveable { mutableIntStateOf(FreeGameItemsPosition.PC) }
-
-    val selectedTab = rememberSaveable { mutableStateOf(options.first()) }
+    val pagerState = rememberPagerState(
+        initialPage = 0
+    ) { options.count() }
+    val scope = rememberCoroutineScope()
 
     Scaffold(
         topBar = { CommonTopBar(title = "Free") },
@@ -100,9 +103,11 @@ fun FreeDealsTab(
                         .padding(horizontal = 16.dp, vertical = 10.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ){
-                    options.forEach {
-                        CommonTabs(it,selectedTab.value==it) {
-                            selectedTab.value = it
+                    options.forEachIndexed { index, name ->
+                        CommonTabs(title = name, isSelected = pagerState.currentPage == index) {
+                            scope.launch {
+                                pagerState.animateScrollToPage(index)
+                            }
                         }
                     }
                 }
@@ -133,31 +138,53 @@ fun FreeDealsTab(
                     }
 
                     giveaways.value.isNotEmpty() -> {
-                        LazyColumn(
-                            modifier = Modifier.fillMaxSize(),
-                            verticalArrangement = Arrangement.spacedBy(10.dp),
-                        ) {
 
-                            if (selectedTab.value == options.first() && unClaimedGiveaway.value.isEmpty()) {
-                                item { ErrorScreen("No active giveaways available at the moment, please try again later.") }
-                            }
-                            if (selectedTab.value != options.first() && claimedGiveaway.value.isEmpty()) {
-                                item { ErrorScreen("You have not claimed anything yet.") }
-                            }
-
-                            items(
-                                if (selectedTab.value == options.first()) unClaimedGiveaway.value else claimedGiveaway.value,
-                                key = { it.id }
+                        HorizontalPager(
+                            state = pagerState
+                        ) {currentPage->
+                            LazyColumn(
+                                modifier = Modifier.fillMaxSize(),
+                                verticalArrangement = Arrangement.spacedBy(10.dp),
                             ) {
-                                FreeGameItems(it) {
-                                    val giveaway = viewModel.getGiveawayJson(it)
-                                    navController.navigate(Routes.FreeGameDetails(giveaway))
+                                when(currentPage){
+                                    0->{
+                                        if (unClaimedGiveaway.value.isEmpty()) {
+                                            item { ErrorScreen("No active giveaways available at the moment, please try again later.") }
+                                        }
+                                        items(
+                                            unClaimedGiveaway.value,
+                                            key = { it.id }
+                                        ) {
+                                            FreeGameItems(it) {
+                                                val giveaway = viewModel.getGiveawayJson(it)
+                                                navController.navigate(Routes.FreeGameDetails(giveaway))
+                                            }
+                                        }
+                                    }
+                                    1->{
+                                        if (claimedGiveaway.value.isEmpty()) {
+                                            item { ErrorScreen("You have not claimed anything yet.") }
+                                        }
+                                        items(
+                                            claimedGiveaway.value,
+                                            key = { it.id }
+                                        ) {
+                                            FreeGameItems(it) {
+                                                val giveaway = viewModel.getGiveawayJson(it)
+                                                navController.navigate(Routes.FreeGameDetails(giveaway))
+                                            }
+                                        }
+                                    }
+                                }
+
+
+                                item {
+                                    Spacer(modifier = Modifier.height(10.dp))
                                 }
                             }
-                            item {
-                                Spacer(modifier = Modifier.height(10.dp))
-                            }
                         }
+
+
                     }
 
                     else -> {
@@ -166,42 +193,6 @@ fun FreeDealsTab(
                 }
             }
         }
-
-
-    }
-
-
-}
-
-
-@Composable
-fun RowScope.FreeOption(
-    title: String, currentSelected: MutableIntState,
-    position: Int = FreeGameItemsPosition.PC,
-    onClick: () -> Unit
-) {
-    Box(
-        modifier =
-            Modifier
-                .background(
-                    color = if (currentSelected.intValue == position) MaterialTheme.colorScheme.primary
-                    else
-                        Color.Transparent,
-                    shape = RoundedCornerShape(8.dp)
-                )
-                .weight(1f)
-                .height(35.dp)
-                .clickable {
-                    currentSelected.intValue = position
-                    onClick.invoke()
-                },
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = title,
-            style = MaterialTheme.typography.titleMedium,
-            color = if (currentSelected.intValue == position) MaterialTheme.colorScheme.onPrimary else Color.Unspecified,
-        )
     }
 }
 

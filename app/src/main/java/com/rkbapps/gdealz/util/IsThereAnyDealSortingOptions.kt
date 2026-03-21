@@ -13,8 +13,6 @@ import androidx.compose.runtime.key
   SortDealsBy.steamreviews: '-steam-reviews',
   SortDealsBy.metacritic: '-metacritic',
   SortDealsBy.metacriticuser: '-metacritic-user',
-
-
  */
 enum class IsThereAnyDealSortingOptions(
     val value:String,
