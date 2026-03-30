@@ -119,12 +119,12 @@ fun IsThereAnyDealDealsItem(modifier: Modifier = Modifier,deal:DealItem,onClick:
                 ) {
 
                     Text(
-                        text = "${CurrencyAndCountryUtil.currencySymbolMap[deal.deal?.regular?.currency]}${deal.deal?.regular?.amount?:0}",
+                        text = "${CurrencyAndCountryUtil.currencySymbolMap[deal.deal?.regular?.currency]}${CurrencyAndCountryUtil.formatAmount(deal.deal?.regular?.amount)}",
                         color = normalTextColor,
                         style = MaterialTheme.typography.bodySmall.copy(textDecoration = TextDecoration.LineThrough),
                     )
                     Text(
-                        text = if (isFree) "Free" else "${CurrencyAndCountryUtil.currencySymbolMap[deal.deal?.regular?.currency]}${deal.deal?.price?.amount?:0}",
+                        text = if (isFree) "Free" else "${CurrencyAndCountryUtil.currencySymbolMap[deal.deal?.regular?.currency]}${CurrencyAndCountryUtil.formatAmount(deal.deal?.price?.amount)}",
                         style = MaterialTheme.typography.bodyLarge.copy(
                             color = if (isFree) darkGreen else MaterialTheme.colorScheme.primary
                         )
