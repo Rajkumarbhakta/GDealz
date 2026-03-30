@@ -1,7 +1,7 @@
 package com.rkbapps.gdealz.util
 
 import com.rkbapps.gdealz.models.deal.Price
-import java.text.DecimalFormat
+import java.util.Locale
 
 object CurrencyAndCountryUtil {
 
@@ -178,17 +178,15 @@ object CurrencyAndCountryUtil {
         "ZWL" to "ZWL",
     )
 
-    private val decimalFormat = DecimalFormat("#,##0.00")
-
     fun formatAmount(amount: Double?): String {
         if (amount == null) return "N/A"
-        return decimalFormat.format(amount)
+        return "%,.2f".format(Locale.US, amount)
     }
 
     fun formatPrice(price: String?): String {
         if (price == null) return "N/A"
         val amount = price.toDoubleOrNull() ?: return price
-        return decimalFormat.format(amount)
+        return "%,.2f".format(Locale.US, amount)
     }
 
     fun getCurrencyAndAmount(price: Price?): String {
