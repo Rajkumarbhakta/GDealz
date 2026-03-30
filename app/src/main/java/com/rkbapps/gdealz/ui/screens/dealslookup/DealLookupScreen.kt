@@ -68,6 +68,7 @@ import com.rkbapps.gdealz.ui.composables.CommonTopBar
 import com.rkbapps.gdealz.ui.composables.ErrorScreen
 import com.rkbapps.gdealz.ui.theme.darkGreen
 import com.rkbapps.gdealz.ui.theme.normalTextColor
+import com.rkbapps.gdealz.util.CurrencyAndCountryUtil
 import com.rkbapps.gdealz.util.calculatePercentage
 
 
@@ -270,13 +271,13 @@ fun DealLookupScreen(
                                             .padding(horizontal = 10.dp, vertical = 4.dp)
                                     )
                                     Text(
-                                        text = "$${dealsData.value.data?.gameInfo?.retailPrice}",
+                                        text = "$${CurrencyAndCountryUtil.formatPrice(dealsData.value.data?.gameInfo?.retailPrice)}",
                                         color = normalTextColor,
                                         style = MaterialTheme.typography.bodySmall.copy(textDecoration = TextDecoration.LineThrough),
                                     )
 
                                     Text(
-                                        text = if (isFree) "Free" else "$${dealsData.value.data?.gameInfo?.salePrice}",
+                                        text = if (isFree) "Free" else "$${CurrencyAndCountryUtil.formatPrice(dealsData.value.data?.gameInfo?.salePrice)}",
                                         color = if (isFree) darkGreen else MaterialTheme.colorScheme.primary,
                                         style = MaterialTheme.typography.headlineMedium
                                     )
