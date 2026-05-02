@@ -35,6 +35,7 @@ import com.rkbapps.gdealz.R
 import com.rkbapps.gdealz.models.Deals
 import com.rkbapps.gdealz.ui.theme.darkGreen
 import com.rkbapps.gdealz.ui.theme.normalTextColor
+import com.rkbapps.gdealz.util.CurrencyAndCountryUtil
 import com.rkbapps.gdealz.util.calculatePercentage
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -112,12 +113,12 @@ fun DealsItem(deals: Deals, onClick: () -> Unit) {
                 ) {
 
                     Text(
-                        text = "$${deals.normalPrice}",
+                        text = "$${CurrencyAndCountryUtil.formatPrice(deals.normalPrice)}",
                         color = normalTextColor,
                         style = MaterialTheme.typography.bodySmall.copy(textDecoration = TextDecoration.LineThrough),
                     )
                     Text(
-                        text = if (isFree) "Free" else "$${deals.salePrice}",
+                        text = if (isFree) "Free" else "$${CurrencyAndCountryUtil.formatPrice(deals.salePrice)}",
                         style = MaterialTheme.typography.bodyLarge.copy(
                             color = if (isFree) darkGreen else MaterialTheme.colorScheme.primary
                         )

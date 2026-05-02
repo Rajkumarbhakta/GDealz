@@ -62,6 +62,7 @@ import com.rkbapps.gdealz.network.ApiConst.IMAGE_URL
 import com.rkbapps.gdealz.ui.composables.CommonCard
 import com.rkbapps.gdealz.ui.composables.CommonTopBar
 import com.rkbapps.gdealz.ui.screens.dealslookup.getTotalReviews
+import com.rkbapps.gdealz.util.CurrencyAndCountryUtil
 import com.rkbapps.gdealz.util.calculatePercentage
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -302,8 +303,8 @@ fun SteamDetailsPage(
                                     OverviewRowItems(
                                         title = "DEAL",
                                         value = "${percentage}% OFF",
-                                        subTitle = "$${dealsData.value.data?.gameInfo?.retailPrice}",
-                                        subTitle1 = if (isFree) "Free" else "$${dealsData.value.data?.gameInfo?.salePrice}",
+                                        subTitle = "$${CurrencyAndCountryUtil.formatPrice(dealsData.value.data?.gameInfo?.retailPrice)}",
+                                        subTitle1 = if (isFree) "Free" else "$${CurrencyAndCountryUtil.formatPrice(dealsData.value.data?.gameInfo?.salePrice)}",
                                         isSubTitleLineThrough = true
                                     )
                                 }

@@ -1,6 +1,7 @@
 package com.rkbapps.gdealz.util
 
 import com.rkbapps.gdealz.models.deal.Price
+import java.util.Locale
 
 object CurrencyAndCountryUtil {
 
@@ -177,11 +178,21 @@ object CurrencyAndCountryUtil {
         "ZWL" to "ZWL",
     )
 
-    fun getCurrencyAndAmount(price: Price?):String{
-        val currency = currencySymbolMap[price?.currency]?:"-"
-        val price = price?.amount?.toString()?:"N/A"
-        return "$currency$price"
+    fun formatAmount(amount: Double?): String {
+        if (amount == null) return "N/A"
+        return "%,.2f".format(Locale.US, amount)
     }
 
+    fun formatPrice(price: String?): String {
+        if (price == null) return "N/A"
+        val amount = price.toDoubleOrNull() ?: return price
+        return "%,.2f".format(Locale.US, amount)
+    }
+
+    fun getCurrencyAndAmount(price: Price?): String {
+        val currency = currencySymbolMap[price?.currency] ?: "-"
+        val formatted = formatAmount(price?.amount)
+        return "$currency$formatted"
+    }
 
 }
