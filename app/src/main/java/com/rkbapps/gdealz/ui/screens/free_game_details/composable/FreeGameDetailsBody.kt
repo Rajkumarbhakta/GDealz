@@ -70,12 +70,12 @@ fun FreeGameDetailsBody(modifier: Modifier = Modifier,giveaway: Giveaway?) {
             ) {
                 CommonCard(
                     modifier = Modifier.weight(1f),
-                    title = "Platform",
+                    title = stringResource(R.string.platform),
                     subtitle = giveaway?.platforms ?: ""
                 )
                 CommonCard(
                     modifier = Modifier.weight(1f),
-                    title = "Type",
+                    title = stringResource(R.string.type),
                     subtitle = "${giveaway?.type}"
                 )
             }
@@ -90,7 +90,7 @@ fun FreeGameDetailsBody(modifier: Modifier = Modifier,giveaway: Giveaway?) {
                 )
                 CommonCard(
                     modifier = Modifier.weight(1f),
-                    title = "Offer Ending",
+                    title = stringResource(R.string.offer_ending),
                     subtitle = getFormattedDate(giveaway?.endDate ?: "") ?: ""
                 )
             }

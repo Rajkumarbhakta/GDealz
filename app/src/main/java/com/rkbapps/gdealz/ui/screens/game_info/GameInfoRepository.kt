@@ -47,13 +47,13 @@ class GameInfoRepository @Inject constructor (
         _gameInfo.value = UiState(isLoading = true)
         when(val response = safeApiCall { apiService.getGameInfo(gameId = gameId) }){
             is NetworkResponse.Error.HttpError -> {
-                _gameInfo.value = UiState(error = "Code : ${response.errorCode} Error : ${response.error.localizedMessage}")
+                _gameInfo.value = UiState(error = context.getString(R.string.error_code_message, response.errorCode, response.error.localizedMessage))
             }
             NetworkResponse.Error.NetworkError -> {
                 _gameInfo.value = UiState(error = context.getString(R.string.unable_to_connect))
             }
             NetworkResponse.Error.UnknownError -> {
-                _gameInfo.value = UiState(error = "Something went wrong! Try again later.")
+                _gameInfo.value = UiState(error = context.getString(R.string.something_went_wrong_try_again))
             }
             is NetworkResponse.Success<GameInfo> -> {
                 _gameInfo.value = UiState(data = response.value)
@@ -71,20 +71,20 @@ class GameInfoRepository @Inject constructor (
             country = country,
             gameIds = listOf(gameId)) }){
             is NetworkResponse.Error.HttpError -> {
-                _gamePriceInfo.value = UiState(error = "Code : ${response.errorCode} Error : ${response.error.localizedMessage}")
+                _gamePriceInfo.value = UiState(error = context.getString(R.string.error_code_message, response.errorCode, response.error.localizedMessage))
             }
             NetworkResponse.Error.NetworkError -> {
                 _gamePriceInfo.value = UiState(error = context.getString(R.string.unable_to_connect))
             }
             NetworkResponse.Error.UnknownError -> {
-                _gamePriceInfo.value = UiState(error = "Something went wrong! Try again later.")
+                _gamePriceInfo.value = UiState(error = context.getString(R.string.something_went_wrong_try_again))
             }
             is NetworkResponse.Success<List<PriceDetail>> -> {
                 val data = response.value
                 if (data.isNotEmpty()){
                     _gamePriceInfo.value = UiState(data = data.first())
                 }else{
-                    _gamePriceInfo.value = UiState(error = "No data found")
+                    _gamePriceInfo.value = UiState(error = context.getString(R.string.no_data_found))
                 }
             }
         }

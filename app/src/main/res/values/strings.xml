@@ -58,6 +58,7 @@
     <string name="free">Free</string>
     <string name="off">OFF</string>
     <string name="rating_and_review">Rating &amp; Review</string>
+    <string name="reviews">Reviews</string>
     <string name="meta_critic">Meta Critic</string>
     <string name="total_rating">Total Rating</string>
     <string name="rate">Rate</string>
@@ -68,7 +69,7 @@
     <string name="fresh_deals">Fresh Deals</string>
     <string name="no_deals_found">No Deals Found!</string>
     <string name="filter_discount">Discount</string>
-    <string name="try_searching">Try searching something...</string>
+    <string name="try_searching">Try searching something …</string>
     <string name="error_occurred">An error occurred</string>
     <string name="tab_stores">Stores</string>
     <string name="tab_fav">Fav</string>
@@ -116,4 +117,37 @@
     <string name="tab_deals">Deals</string>
     <string name="error_code_message">Code : %1$d Error : %2$s</string>
     <string name="unable_to_get_game_details">Unable to get game details.</string>
+    <string name="platform">Platform</string>
+    <string name="type">Type</string>
+    <string name="offer_ending">Offer Ending</string>
+    <string name="favorite_icon">Favorite icon</string>
+    <string name="banner">Banner</string>
+    <string name="rank">Rank</string>
+    <string name="released">Released</string>
+    <string name="coming">Coming</string>
+    <string name="soon">Soon</string>
+    <string name="developer">Developer</string>
+    <string name="open_deal">Open the deal</string>
+    <string name="not_available">-</string>
+    <string name="score_percent_format">%1$d%%</string>
+    <string name="discount_percent_format">%1$d%% %2$s</string>
+    <string-array name="months">
+        <item>Jan</item>
+        <item>Feb</item>
+        <item>Mar</item>
+        <item>Apr</item>
+        <item>May</item>
+        <item>Jun</item>
+        <item>Jul</item>
+        <item>Aug</item>
+        <item>Sep</item>
+        <item>Oct</item>
+        <item>Nov</item>
+        <item>Dec</item>
+    </string-array>
+        <string name="genre">Genre</string>
+    <string name="age_limit_format">%1$s+</string>
+    <string name="deal_label">DEAL</string>
+    <string name="price_format">$%1$s</string>
+    <string name="store_logo">store logo</string>
 </resources>

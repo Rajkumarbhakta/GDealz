@@ -212,12 +212,6 @@ fun FreeGameItems(item: Giveaway, onClick: () -> Unit) {
         getStatusFromEndDate(item.endDate)
     }
 
-    LaunchedEffect(Unit) {
-        withContext(Dispatchers.IO) {
-            Log.d("STATUS ","$status")
-        }
-    }
-
     Card(
         onClick = {
             onClick.invoke()

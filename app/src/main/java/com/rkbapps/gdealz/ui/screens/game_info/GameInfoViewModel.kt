@@ -16,7 +16,6 @@ import javax.inject.Inject
 @HiltViewModel
 class GameInfoViewModel @Inject constructor(
     private val repository: GameInfoRepository,
-    gson: Gson,
     saveStateHandle: SavedStateHandle
 ) : ViewModel() {
 

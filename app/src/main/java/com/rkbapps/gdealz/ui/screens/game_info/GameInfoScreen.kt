@@ -40,6 +40,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -77,15 +78,13 @@ fun GameInfoScreen(
 ) {
 
     val uriHandler = LocalUriHandler.current
+    val context = LocalContext.current
+
+    val months = context.resources.getStringArray(R.array.months).toList()
 
     val gameInfo by viewModel.gameInfo.collectAsStateWithLifecycle()
     val gamePriceInfo by viewModel.gamePriceInfo.collectAsStateWithLifecycle()
     val isFav by remember { viewModel.isFavDeal }
-
-
-    LaunchedEffect(gameInfo) {
-        Log.d("GameInfo","$gameInfo")
-    }
 
     Scaffold(
         topBar = {
@@ -104,7 +103,7 @@ fun GameInfoScreen(
                     ) {
                         Icon(
                             imageVector = if (isFav) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
-                            "is fav"
+                            stringResource(R.string.favorite_icon)
                         )
                     }
                 }
@@ -121,7 +120,7 @@ fun GameInfoScreen(
             }
 
             gameInfo.error != null -> {
-                ErrorScreen(gameInfo.error ?: "An error occurred.")
+                ErrorScreen(gameInfo.error ?: stringResource(R.string.error_occurred))
             }
 
             gameInfo.data != null -> {
@@ -133,7 +132,7 @@ fun GameInfoScreen(
                         Box(Modifier.fillMaxWidth()) {
                             SubcomposeAsyncImage (
                                 model = gameInfo.data?.assets?.banner600,
-                                contentDescription = "Banner",
+                                contentDescription = stringResource(R.string.banner),
                                 modifier = Modifier.fillMaxWidth(),
                                 contentScale = ContentScale.FillWidth,
                                 error = {
@@ -194,11 +193,14 @@ fun GameInfoScreen(
                                 item {
                                     if (!gameInfo.data?.reviews.isNullOrEmpty()) {
                                         OverviewRowItems(
-                                            title = "REVIEWS",
+                                            title = stringResource(R.string.reviews).uppercase(),
                                             value = getTotalReviews(
                                                 count = gameInfo.data?.reviews?.first()?.count ?: 0
                                             ),
-                                            subTitle = "${gameInfo.data?.reviews?.first()?.score ?: 0}%",
+                                            subTitle = stringResource(
+                                                R.string.score_percent_format,
+                                                gameInfo.data?.reviews?.first()?.score ?: 0
+                                            ),
                                             subTitle1 = gameInfo.data?.reviews?.first()?.source
                                                 ?: stringResource(R.string.unknown)
                                         )
@@ -215,29 +217,29 @@ fun GameInfoScreen(
                                 }*/
                                 item {
                                     OverviewRowItems(
-                                        title = "RANK",
+                                        title = stringResource(R.string.rank).uppercase(),
                                         value = getTotalReviews(gameInfo.data?.stats?.rank ?: 0),
-                                        subTitle = "-",
-                                        subTitle1 = "-"
+                                        subTitle = stringResource(R.string.not_available),
+                                        subTitle1 = stringResource(R.string.not_available)
                                     )
                                 }
                                 item {
                                     if (gameInfo.data?.earlyAccess == true) {
                                         OverviewRowItems(
-                                            title = "RELEASED",
-                                            value = "Coming",
-                                            subTitle = "Soon",
+                                            title = stringResource(R.string.released).uppercase(),
+                                            value = stringResource(R.string.coming),
+                                            subTitle = stringResource(R.string.soon),
                                             subTitle1 = ""
                                         )
                                     } else {
                                         OverviewRowItems(
-                                            title = "RELEASED",
+                                            title = stringResource(R.string.released).uppercase(),
                                             value = getYear(gameInfo.data?.releaseDate ?: "")
-                                                ?: "-",
-                                            subTitle = getMonths(gameInfo.data?.releaseDate ?: "")
-                                                ?: "-",
+                                                ?: stringResource(R.string.not_available),
+                                            subTitle = getMonths(gameInfo.data?.releaseDate ?: "", months)
+                                                ?: stringResource(R.string.not_available),
                                             subTitle1 = getDate(gameInfo.data?.releaseDate ?: "")
-                                                ?: "-"
+                                                ?: stringResource(R.string.not_available)
                                         )
                                     }
                                 }
@@ -252,21 +254,13 @@ fun GameInfoScreen(
                         ) {
                             CommonCard(
                                 modifier = Modifier.weight(1f),
-                                title = "Developer",
-                                subtitle = try {
-                                    gameInfo.data?.developers?.first()?.name ?: "-"
-                                } catch (_: Exception) {
-                                    "-"
-                                },
+                                title = stringResource(R.string.developer),
+                                subtitle = gameInfo.data?.developers?.firstOrNull()?.name ?: stringResource(R.string.not_available),
                             )
                             CommonCard(
                                 modifier = Modifier.weight(1f),
                                 title = stringResource(R.string.publisher),
-                                subtitle = try {
-                                    gameInfo.data?.publishers?.first()?.name ?: "-"
-                                } catch (_: Exception) {
-                                    "-"
-                                }
+                                subtitle = gameInfo.data?.publishers?.firstOrNull()?.name ?: stringResource(R.string.not_available)
                             )
                             /*Column(
                                 modifier = Modifier.weight(1f),
@@ -479,7 +473,7 @@ fun DealCard(modifier: Modifier = Modifier, deals: Deals, onClick: () -> Unit = 
                 val textBackground = MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)
                 deals.cut?.let {
                     Text(
-                        text = (if (isFree) stringResource(R.string.free) else "$it% ${stringResource(R.string.off)}"),
+                        text = (if (isFree) stringResource(R.string.free) else stringResource(R.string.discount_percent_format, it, stringResource(R.string.off))),
                         style = MaterialTheme.typography.labelMedium,
                         modifier = Modifier
                             .clip(RoundedCornerShape(100.dp))
@@ -521,7 +515,7 @@ fun DealCard(modifier: Modifier = Modifier, deals: Deals, onClick: () -> Unit = 
                     )
                     Text(CurrencyAndCountryUtil.getCurrencyAndAmount(deals.price))
                 }
-                Text(deals.shop?.name ?: "-")
+                Text(deals.shop?.name ?: stringResource(R.string.not_available))
             }
             FilledIconButton(
                 modifier = Modifier.drawBackdrop(
@@ -549,7 +543,7 @@ fun DealCard(modifier: Modifier = Modifier, deals: Deals, onClick: () -> Unit = 
             ) {
                 Icon(
                     painter = painterResource(R.drawable.launch_link_open),
-                    contentDescription = "open the deal"
+                    contentDescription = stringResource(R.string.open_deal)
                 )
             }
         }
@@ -563,11 +557,7 @@ fun getYear(dateString: String): String? {
     return dateString.split("-").getOrNull(0)
 }
 
-fun getMonths(dateString: String): String? {
-    val months = listOf(
-        "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
-    )
+fun getMonths(dateString: String, months: List<String>): String? {
     val monthPart = dateString.split("-").getOrNull(1)
     return try {
         monthPart?.toIntOrNull()?.let {

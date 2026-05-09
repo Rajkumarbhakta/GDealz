@@ -116,4 +116,37 @@
     <string name="tab_deals">Скидки</string>
     <string name="error_code_message">Код: %1$d Ошибка: %2$s</string>
     <string name="unable_to_get_game_details">Не удалось получить информацию об игре.</string>
+    <string name="platform">Платформа</string>
+    <string name="type">Тип</string>
+    <string name="offer_ending">Предложение заканчивается</string>
+    <string name="favorite_icon">Иконка избранного</string>
+    <string name="banner">Баннер</string>
+    <string name="rank">Ранг</string>
+    <string name="released">Выпущено</string>
+    <string name="coming">Ожидается</string>
+    <string name="soon">Скоро</string>
+    <string name="developer">Разработчик</string>
+    <string name="open_deal">Открыть предложение</string>
+    <string name="not_available">-</string>
+    <string name="score_percent_format">%1$d%%</string>
+    <string name="discount_percent_format">%1$d%% %2$s</string>
+    <string-array name="months">
+        <item>Янв</item>
+        <item>Фев</item>
+        <item>Мар</item>
+        <item>Апр</item>
+        <item>Май</item>
+        <item>Июн</item>
+        <item>Июл</item>
+        <item>Авг</item>
+        <item>Сен</item>
+        <item>Окт</item>
+        <item>Ноя</item>
+        <item>Дек</item>
+    </string-array>
+    <string name="genre">Жанр</string>
+    <string name="age_limit_format">%1$s+</string>
+    <string name="deal_label">СКИДКА</string>
+    <string name="price_format">$%1$s</string>
+    <string name="store_logo">логотип магазина</string>
 </resources>
