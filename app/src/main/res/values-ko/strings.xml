@@ -1,0 +1,160 @@
+<resources>
+    <string name="app_name">G Dealz</string>
+    <string name="search_country">국가 검색</string>
+    <string name="confirm">확인</string>
+    <string name="delete_confirm_title">삭제하시겠습니까?</string>
+    <string name="delete">삭제</string>
+    <string name="cancel">취소</string>
+    <string name="apply_filter">필터 적용</string>
+    <string name="all">전체</string>
+    <string name="ascending">오름차순</string>
+    <string name="descending">내림차순</string>
+    <string name="grab_the_deal">딜 잡기</string>
+    <string name="grab_deal">딜 확인</string>
+    <string name="mark_as_unclaimed">미수령으로 표시</string>
+    <string name="go_official_website">공식 웹사이트 이동</string>
+    <string name="clear_filter">필터 초기화</string>
+    <string name="hot_deals_subtitle">매일 업데이트되는 핫한 게임 딜</string>
+    <string name="apply_filters">필터 적용</string>
+    <string name="select_stores">스토어 선택</string>
+    <string name="choose_price_range">가격 범위 선택</string>
+    <string name="any">모두</string>
+    <string name="range">범위</string>
+    <string name="enter_max_price">최대 가격 입력</string>
+    <string name="discount_selected">선택됨 : %1$s%%</string>
+    <string name="delete_all">모두 삭제</string>
+    <string name="games">게임</string>
+    <string name="search_here">여기에 검색…</string>
+    <string name="search">검색</string>
+    <string name="raise_a_issue">문제 신고</string>
+    <string name="buy_me_a_coffee">커피 한 잔 사주기</string>
+    <string name="notifications_enabled">알림 활성화됨</string>
+    <string name="notifications_disabled">알림 비활성화됨</string>
+    <string name="check_out_giveaway">%1$s 상당의 이 기브어웨이를 확인하세요</string>
+    <string name="language">언어</string>
+    <string name="select_language">언어 선택</string>
+    <string name="language_description">애플리케이션에서 선호하는 언어를 선택하여 해당 언어로 콘텐츠를 확인하세요. 게임 콘텐츠가 사용자의 언어를 지원하지 않는 경우 기본적으로 영어(en)로 표시됩니다.</string>
+    <string name="english">영어</string>
+    <string name="russian">러시아어</string>
+    <string name="hindi">힌디어</string>
+    <string name="german">독일어</string>
+    <string name="french">프랑스어</string>
+    <string name="japanese">일본어</string>
+    <string name="korean">한국어</string>
+    <string name="bengali">뱅골어</string>
+    <string name="settings">설정</string>
+    <string name="follow_system_theme">시스템 테마 따르기</string>
+    <string name="follow_system_theme_desc">시스템 설정에 따라 라이트 또는 다크 테마를 사용합니다.</string>
+    <string name="dark_theme">다크 테마</string>
+    <string name="dynamic_color">다이내믹 컬러</string>
+    <string name="dynamic_color_desc">더 개인화된 경험을 위해 다이내믹 컬러를 활성화합니다.</string>
+    <string name="nsfw_content">성인용 콘텐츠</string>
+    <string name="nsfw_content_desc">켜져 있을 때 성인용 또는 민감한 콘텐츠를 표시합니다.</string>
+    <string name="privacy_policy">개인정보 처리방침</string>
+    <string name="privacy_policy_desc">개인정보 처리방침 읽기</string>
+    <string name="disclaimer">게임 및 가격 정보는 CheapShark, IsThereAnyDeal.com 및 Steam에서 가져옵니다. G Dealz는 이 정보의 정확성, 가용성 또는 완전성을 보장하지 않습니다.</string>
+    <string name="country">국가</string>
+    <string name="country_desc">현지 통화로 딜을 보려면 국가를 변경하세요. 해당 통화로 된 딜 데이터가 없는 경우 기본적으로 미국 달러($)로 표시됩니다.</string>
+    <string name="choose_country">국가 선택</string>
+    <string name="filters">필터</string>
+    <string name="filter_store">스토어</string>
+    <string name="filter_price">가격</string>
+    <string name="filter_sorting">정렬</string>
+    <string name="filter_order">순서</string>
+    <string name="special_deal">특별 딜</string>
+    <string name="free">무료</string>
+    <string name="off">할인</string>
+    <string name="rating_and_review">평점 및 리뷰</string>
+    <string name="reviews">리뷰</string>
+    <string name="meta_critic">메타 크리틱</string>
+    <string name="total_rating">총 평점</string>
+    <string name="rate">평가하기</string>
+    <string name="overall_rating">전체 평점</string>
+    <string name="unknown">알 수 없음</string>
+    <string name="available_on">이용 가능 :</string>
+    <string name="release_info">출시 정보</string>
+    <string name="fresh_deals">신규 딜</string>
+    <string name="no_deals_found">딜을 찾을 수 없습니다!</string>
+    <string name="filter_discount">할인율</string>
+    <string name="try_searching">검색해 보세요…</string>
+    <string name="error_occurred">오류가 발생했습니다</string>
+    <string name="tab_stores">스토어</string>
+    <string name="tab_fav">즐겨찾기</string>
+    <string name="nothing_here">비어 있습니다..</string>
+    <string name="no_stores_found">스토어를 찾을 수 없습니다</string>
+    <string name="delete_single_fav_warning">%1$s을(를) 삭제하시겠습니까?</string>
+    <string name="delete_all_fav_warning">즐겨찾기를 모두 삭제하시겠습니까?</string>
+    <string name="tab_games">게임</string>
+    <string name="un_claimed">미수령</string>
+    <string name="claimed">수령함</string>
+    <string name="free_title">무료</string>
+    <string name="active">활성</string>
+    <string name="expired">만료됨</string>
+    <string name="no_active_giveaways">현재 활성화된 기브어웨이가 없습니다. 나중에 다시 시도해 주세요.</string>
+    <string name="nothing_claimed_yet">아직 수령한 내역이 없습니다.</string>
+    <string name="description">설명</string>
+    <string name="published">게시됨</string>
+    <string name="instruction">방법</string>
+    <string name="publisher">퍼블리셔</string>
+    <string name="price_history">가격 기록</string>
+    <string name="lowest_in_history">역대 최저가</string>
+    <string name="lowest_in_1_year">최근 1년 최저가</string>
+    <string name="lowest_in_3_months">최근 3개월 최저가</string>
+    <string name="features">특징</string>
+    <string name="about_this_game">게임 정보</string>
+    <string name="screenshots">스크린샷</string>
+    <string name="system_requirements">시스템 사양</string>
+    <string name="mature_18_plus">18+</string>
+    <string name="mature_all">전체 이용가</string>
+    <string name="added_to_favourites">즐겨찾기에 추가됨</string>
+    <string name="failed_to_add_to_favourites">즐겨찾기 추가 실패</string>
+    <string name="removed_from_favourites">즐겨찾기에서 삭제됨</string>
+    <string name="failed_to_remove_from_favourites">즐겨찾기 삭제 실패</string>
+    <string name="unable_to_connect">연결할 수 없습니다. 인터넷 연결을 확인해 주세요.</string>
+    <string name="new_giveaway">새로운 기브어웨이: %1$s</string>
+    <string name="claim">받기</string>
+    <string name="something_went_wrong">문제가 발생했습니다</string>
+    <string name="something_went_wrong_try_again">문제가 발생했습니다! 나중에 다시 시도해 주세요.</string>
+    <string name="no_data_found">데이터를 찾을 수 없습니다</string>
+    <string name="steam_game_id_not_found">Steam 게임 ID를 찾을 수 없습니다</string>
+    <string name="invalid_search_query">잘못된 검색 쿼리입니다. 영숫자와 공백만 사용해 주세요.</string>
+    <string name="http_error">HTTP 오류: %1$d. 나중에 다시 시도해 주세요.</string>
+    <string name="network_error">네트워크 오류. 연결을 확인해 주세요.</string>
+    <string name="no_results_found">\'%1$s\'에 대한 결과를 찾을 수 없습니다.</string>
+    <string name="tab_deals">딜</string>
+    <string name="error_code_message">코드 : %1$d 오류 : %2$s</string>
+    <string name="unable_to_get_game_details">게임 상세 정보를 가져올 수 없습니다.</string>
+    <string name="platform">플랫폼</string>
+    <string name="type">유형</string>
+    <string name="offer_ending">종료 임박</string>
+    <string name="favorite_icon">즐겨찾기 아이콘</string>
+    <string name="banner">배너</string>
+    <string name="rank">순위</string>
+    <string name="released">출시일</string>
+    <string name="coming">출시 예정</string>
+    <string name="soon">곧 출시</string>
+    <string name="developer">개발사</string>
+    <string name="open_deal">딜 열기</string>
+    <string name="not_available">-</string>
+    <string name="score_percent_format">%1$d%%</string>
+    <string name="discount_percent_format">%1$d%% %2$s</string>
+    <string-array name="months">
+        <item>1월</item>
+        <item>2월</item>
+        <item>3월</item>
+        <item>4월</item>
+        <item>5월</item>
+        <item>6월</item>
+        <item>7월</item>
+        <item>8월</item>
+        <item>9월</item>
+        <item>10월</item>
+        <item>11월</item>
+        <item>12월</item>
+    </string-array>
+    <string name="genre">장르</string>
+    <string name="age_limit_format">%1$s세 이상</string>
+    <string name="deal_label">딜</string>
+    <string name="price_format">₩%1$s</string>
+    <string name="store_logo">스토어 로고</string>
+</resources>

@@ -53,6 +53,7 @@ import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -94,6 +95,8 @@ fun IsThereAnyDealSteamDetailsPage(
 ) {
 
     val uriHandler = LocalUriHandler.current
+    val context = LocalContext.current
+    val months = remember { context.resources.getStringArray(R.array.months).toList() }
 
     val gameData by viewModel.gameInfo.collectAsStateWithLifecycle()
     val gamePriceInfo by viewModel.gamePriceInfo.collectAsStateWithLifecycle()
@@ -143,7 +146,7 @@ fun IsThereAnyDealSteamDetailsPage(
                     ) {
                         Icon(
                             imageVector = if (isFav.value) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
-                            "back"
+                            stringResource(R.string.favorite_icon)
                         )
                     }
                 }
@@ -166,11 +169,11 @@ fun IsThereAnyDealSteamDetailsPage(
                 ) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Spacer(Modifier.weight(1f))
-                        Text(text = "Go official website")
+                        Text(text = stringResource(R.string.go_official_website))
                         Spacer(Modifier.weight(1f))
                         Icon(
                             imageVector = ImageVector.vectorResource(R.drawable.launch_link_open),
-                            contentDescription = "launch link open",
+                            contentDescription = stringResource(R.string.open_deal),
                             modifier = Modifier.size(20.dp)
                         )
                     }
@@ -201,7 +204,7 @@ fun IsThereAnyDealSteamDetailsPage(
                         Box(Modifier.fillMaxWidth()) {
                             SubcomposeAsyncImage(
                                 model = steamGameData.data?.data?.headerImage,
-                                contentDescription = "Banner",
+                                contentDescription = stringResource(R.string.banner),
                                 modifier = Modifier.fillMaxWidth(),
                                 contentScale = ContentScale.FillWidth,
                                 error = {
@@ -270,10 +273,10 @@ fun IsThereAnyDealSteamDetailsPage(
                                         horizontalArrangement = Arrangement.spacedBy(10.dp)
                                     ) {
                                         Text(
-                                            " ${steamGameData.data?.data?.metacritic?.score ?: "-"}",
+                                            " ${steamGameData.data?.data?.metacritic?.score ?: stringResource(R.string.not_available)}",
                                         )
                                         Text(
-                                            "META CRITIC",
+                                            stringResource(R.string.meta_critic),
                                             style = MaterialTheme.typography.labelSmall
                                         )
                                     }
@@ -307,7 +310,7 @@ fun IsThereAnyDealSteamDetailsPage(
                                     )
                                 ) {
                                     Text(
-                                        " ${steamGameData.data?.data?.requiredAge}+",
+                                        stringResource(R.string.age_limit_format, steamGameData.data?.data?.requiredAge ?: 0),
                                         modifier = Modifier.padding(10.dp)
                                     )
                                 }
@@ -332,53 +335,46 @@ fun IsThereAnyDealSteamDetailsPage(
                                 item {
                                     if (!gameData.data?.reviews.isNullOrEmpty()) {
                                         OverviewRowItems(
-                                            title = "REVIEWS",
+                                            title = stringResource(R.string.rating_and_review),
                                             value = getTotalReviews(
                                                 count = gameData.data?.reviews?.first()?.count ?: 0
                                             ),
-                                            subTitle = "${gameData.data?.reviews?.first()?.score ?: 0}%",
+                                            subTitle = stringResource(R.string.score_percent_format, gameData.data?.reviews?.first()?.score ?: 0),
                                             subTitle1 = gameData.data?.reviews?.first()?.source
-                                                ?: "-"
+                                                ?: stringResource(R.string.unknown)
                                         )
                                     }
                                 }
 
                                 item {
                                     OverviewRowItems(
-                                        title = "GENRE",
-                                        value = try {
-                                            steamGameData.data?.data?.genres[0]?.description ?: "-"
-                                        } catch (_: Exception) {
-                                            "-"
-                                        },
-                                        subTitle = try {
-                                            steamGameData.data?.data?.genres[1]?.description ?: "-"
-                                        } catch (_: Exception) {
-                                            "-"
-                                        },
+                                        title = stringResource(R.string.genre).uppercase(),
+                                        value = steamGameData.data?.data?.genres?.firstOrNull()?.description ?: stringResource(R.string.not_available),
+                                        subTitle = steamGameData.data?.data?.genres?.getOrNull(1)?.description ?: stringResource(R.string.not_available),
                                         subTitle1 = ""
                                     )
                                 }
                                 item {
                                     if (steamGameData.data?.data?.releaseDate?.comingSoon == true) {
                                         OverviewRowItems(
-                                            title = "RELEASED",
-                                            value = "Coming",
-                                            subTitle = "Soon",
+                                            title = stringResource(R.string.released).uppercase(),
+                                            value = stringResource(R.string.coming),
+                                            subTitle = stringResource(R.string.soon),
                                             subTitle1 = ""
                                         )
                                     } else {
                                         OverviewRowItems(
-                                            title = "RELEASED",
+                                            title = stringResource(R.string.released).uppercase(),
                                             value = getYear(
                                                 steamGameData.data?.data?.releaseDate?.date ?: ""
-                                            ) ?: "-",
+                                            ) ?: stringResource(R.string.not_available),
                                             subTitle = getMonths(
-                                                steamGameData.data?.data?.releaseDate?.date ?: ""
-                                            ) ?: "-",
+                                                steamGameData.data?.data?.releaseDate?.date ?: "",
+                                                months
+                                            ) ?: stringResource(R.string.not_available),
                                             subTitle1 = getDate(
                                                 steamGameData.data?.data?.releaseDate?.date ?: ""
-                                            ) ?: "-"
+                                            ) ?: stringResource(R.string.not_available)
                                         )
                                     }
                                 }
@@ -395,22 +391,14 @@ fun IsThereAnyDealSteamDetailsPage(
 
                             CommonCard(
                                 modifier = Modifier.weight(1f),
-                                title = "Developer",
-                                subtitle = try {
-                                    steamGameData.data?.data?.developers?.first() ?: "-"
-                                } catch (_: Exception) {
-                                    "-"
-                                },
+                                title = stringResource(R.string.developer),
+                                subtitle = steamGameData.data?.data?.developers?.firstOrNull() ?: stringResource(R.string.not_available),
                             )
 
                             CommonCard(
                                 modifier = Modifier.weight(1f),
-                                title = "Publisher",
-                                subtitle = try {
-                                    steamGameData.data?.data?.publishers?.first() ?: "-"
-                                } catch (_: Exception) {
-                                    "-"
-                                }
+                                title = stringResource(R.string.publisher),
+                                subtitle =  steamGameData.data?.data?.publishers?.firstOrNull() ?: stringResource(R.string.not_available)
                             )
 
                             /*Column(
@@ -425,21 +413,21 @@ fun IsThereAnyDealSteamDetailsPage(
                     //about the game
                     item {
                         Text(
-                            "About this Game",
+                            stringResource(R.string.about_this_game),
                             modifier = Modifier.padding(horizontal = 16.dp),
                             style = MaterialTheme.typography.headlineSmall
                         )
                     }
                     item {
                         Text(
-                            steamGameData.data?.data?.shortDescription ?: "Nothing available",
+                            steamGameData.data?.data?.shortDescription ?: stringResource(R.string.nothing_here),
                             modifier = Modifier.padding(horizontal = 16.dp),
                         )
                     }
                     // screenshots
                     item {
                         Text(
-                            "Screenshots",
+                            stringResource(R.string.screenshots),
                             modifier = Modifier.padding(horizontal = 16.dp),
                             style = MaterialTheme.typography.headlineSmall
                         )
@@ -500,7 +488,7 @@ fun IsThereAnyDealSteamDetailsPage(
                     //price history
                     item {
                         Text(
-                            "Price History",
+                            stringResource(R.string.price_history),
                             modifier = Modifier.padding(horizontal = 16.dp),
                             style = MaterialTheme.typography.headlineSmall
                         )
@@ -530,19 +518,19 @@ fun IsThereAnyDealSteamDetailsPage(
                                 ) {
                                     gamePriceInfo.data?.historyLow?.all?.let {
                                         PriceHistoryCard(
-                                            title = "Lowest in history",
+                                            title = stringResource(R.string.lowest_in_history),
                                             price = it
                                         )
                                     }
                                     gamePriceInfo.data?.historyLow?.y1?.let {
                                         PriceHistoryCard(
-                                            title = "Lowest in 1 year",
+                                            title = stringResource(R.string.lowest_in_1_year),
                                             price = it
                                         )
                                     }
                                     gamePriceInfo.data?.historyLow?.m3?.let {
                                         PriceHistoryCard(
-                                            title = "Lowest in 3 months",
+                                            title = stringResource(R.string.lowest_in_3_months),
                                             price = it
                                         )
                                     }
@@ -554,7 +542,7 @@ fun IsThereAnyDealSteamDetailsPage(
                     //Deals
                     item {
                         Text(
-                            "Deals",
+                            stringResource(R.string.special_deal),
                             modifier = Modifier.padding(horizontal = 16.dp),
                             style = MaterialTheme.typography.headlineSmall
                         )
@@ -597,7 +585,7 @@ fun IsThereAnyDealSteamDetailsPage(
                     //Features
                     item {
                         Text(
-                            "Features",
+                            stringResource(R.string.features),
                             modifier = Modifier.padding(horizontal = 16.dp),
                             style = MaterialTheme.typography.headlineSmall
                         )
@@ -623,7 +611,7 @@ fun IsThereAnyDealSteamDetailsPage(
                     // system requirement
                     item {
                         Text(
-                            "System Requirements",
+                            stringResource(R.string.system_requirements),
                             modifier = Modifier.padding(horizontal = 16.dp),
                             style = MaterialTheme.typography.headlineSmall
                         )
@@ -674,10 +662,16 @@ private fun getDate(date: String): String? {
     }
 }
 
-private fun getMonths(date: String): String? {
+private fun getMonths(date: String, months: List<String>): String? {
+    val englishMonths = listOf(
+        "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+    )
     try {
         val parts = date.split(" ", ", ")
-        return parts[1]
+        val monthPart = parts[1]
+        val index = englishMonths.indexOf(monthPart)
+        return if (index != -1) months[index] else monthPart
     } catch (_: Exception) {
         return null
     }

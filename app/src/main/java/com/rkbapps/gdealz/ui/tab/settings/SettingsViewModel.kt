@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rkbapps.gdealz.BuildConfig
+import com.rkbapps.gdealz.util.AppLocaleManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.SharingStarted
@@ -60,6 +61,11 @@ class SettingsViewModel @Inject constructor(
 
     fun updateDynamicTheme(value: Boolean) =
         viewModelScope.launch { repository.updateIsDynamicTheme(value) }
+
+    fun changeLanguage(languageCode: String) {
+        AppLocaleManager.changeLanguage(context,languageCode)
+    }
+
 
 
 

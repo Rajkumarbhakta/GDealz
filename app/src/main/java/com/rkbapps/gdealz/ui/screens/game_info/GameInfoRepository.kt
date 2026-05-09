@@ -1,7 +1,9 @@
 package com.rkbapps.gdealz.ui.screens.game_info
 
+import android.content.Context
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import com.rkbapps.gdealz.R
 import com.rkbapps.gdealz.db.PreferenceManager
 import com.rkbapps.gdealz.db.dao.FavDealsDao
 import com.rkbapps.gdealz.db.entity.FavDeals
@@ -15,12 +17,14 @@ import com.rkbapps.gdealz.network.api.IsThereAnyDealApi
 import com.rkbapps.gdealz.network.safeApiCall
 import com.rkbapps.gdealz.ui.screens.dealslookup.FavDealsState
 import com.rkbapps.gdealz.util.UiState
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 class GameInfoRepository @Inject constructor (
+    @ApplicationContext private val context: Context,
     private val apiService: IsThereAnyDealApi,
     private val favDealsDao: FavDealsDao,
     private val perfManager: PreferenceManager
@@ -43,13 +47,13 @@ class GameInfoRepository @Inject constructor (
         _gameInfo.value = UiState(isLoading = true)
         when(val response = safeApiCall { apiService.getGameInfo(gameId = gameId) }){
             is NetworkResponse.Error.HttpError -> {
-                _gameInfo.value = UiState(error = "Code : ${response.errorCode} Error : ${response.error.localizedMessage}")
+                _gameInfo.value = UiState(error = context.getString(R.string.error_code_message, response.errorCode, response.error.localizedMessage))
             }
             NetworkResponse.Error.NetworkError -> {
-                _gameInfo.value = UiState(error = "Unable to connect please check your internet connection.")
+                _gameInfo.value = UiState(error = context.getString(R.string.unable_to_connect))
             }
             NetworkResponse.Error.UnknownError -> {
-                _gameInfo.value = UiState(error = "Something went wrong! Try again later.")
+                _gameInfo.value = UiState(error = context.getString(R.string.something_went_wrong_try_again))
             }
             is NetworkResponse.Success<GameInfo> -> {
                 _gameInfo.value = UiState(data = response.value)
@@ -67,20 +71,20 @@ class GameInfoRepository @Inject constructor (
             country = country,
             gameIds = listOf(gameId)) }){
             is NetworkResponse.Error.HttpError -> {
-                _gamePriceInfo.value = UiState(error = "Code : ${response.errorCode} Error : ${response.error.localizedMessage}")
+                _gamePriceInfo.value = UiState(error = context.getString(R.string.error_code_message, response.errorCode, response.error.localizedMessage))
             }
             NetworkResponse.Error.NetworkError -> {
-                _gamePriceInfo.value = UiState(error = "Unable to connect please check your internet connection.")
+                _gamePriceInfo.value = UiState(error = context.getString(R.string.unable_to_connect))
             }
             NetworkResponse.Error.UnknownError -> {
-                _gamePriceInfo.value = UiState(error = "Something went wrong! Try again later.")
+                _gamePriceInfo.value = UiState(error = context.getString(R.string.something_went_wrong_try_again))
             }
             is NetworkResponse.Success<List<PriceDetail>> -> {
                 val data = response.value
                 if (data.isNotEmpty()){
                     _gamePriceInfo.value = UiState(data = data.first())
                 }else{
-                    _gamePriceInfo.value = UiState(error = "No data found")
+                    _gamePriceInfo.value = UiState(error = context.getString(R.string.no_data_found))
                 }
             }
         }
@@ -123,9 +127,9 @@ class GameInfoRepository @Inject constructor (
                 )
             )
             isFav.value = true
-            _dealFavStatus.emit(FavDealsState(true, "Added to Favourites"))
+            _dealFavStatus.emit(FavDealsState(true, context.getString(R.string.added_to_favourites)))
         } catch (e: Exception) {
-            _dealFavStatus.emit(FavDealsState(false, "Failed to add to Favourites"))
+            _dealFavStatus.emit(FavDealsState(false, context.getString(R.string.failed_to_add_to_favourites)))
             e.printStackTrace()
         }
 
@@ -136,9 +140,9 @@ class GameInfoRepository @Inject constructor (
             val deal = favDealsDao.findByDealID(dealID = dealId)
             favDealsDao.deleteFavDeals(deal)
             isFav.value = false
-            _dealFavStatus.emit(FavDealsState(false, "Removed from Favourites"))
+            _dealFavStatus.emit(FavDealsState(false, context.getString(R.string.removed_from_favourites)))
         } catch (e: Exception) {
-            _dealFavStatus.emit(FavDealsState(false, "Failed to remove from Favourites"))
+            _dealFavStatus.emit(FavDealsState(false, context.getString(R.string.failed_to_remove_from_favourites)))
             e.printStackTrace()
         }
     }

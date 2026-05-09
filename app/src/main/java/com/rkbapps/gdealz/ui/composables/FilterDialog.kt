@@ -29,18 +29,20 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.rkbapps.gdealz.R
 import com.rkbapps.gdealz.db.entity.Store
 import com.rkbapps.gdealz.models.Filter
 import com.rkbapps.gdealz.network.ShortingOptions
 
 
-val filterOptions = listOf(
-    "Store",
-    "Price",
-    "Sorting",
-    "Order",
+val filterOptionsMap = mapOf(
+    "Store" to R.string.filter_store,
+    "Price" to R.string.filter_price,
+    "Sorting" to R.string.filter_sorting,
+    "Order" to R.string.filter_order,
 )
 
 
@@ -67,7 +69,7 @@ fun FilterDialog(
             .padding(10.dp)
     ) {
         Text(
-            "Filters",
+            stringResource(R.string.filters),
             style = MaterialTheme.typography.titleLarge,
             modifier = Modifier.fillMaxWidth()
         )
@@ -81,26 +83,26 @@ fun FilterDialog(
                     .padding(horizontal = 8.dp)
                     .weight(1f),
             ) {
-                val options = filterOptions
 
-                options.forEach {
-                    if (selectFilter == it) {
+                filterOptionsMap.forEach { (key, resId) ->
+                    val label = stringResource(resId)
+                    if (selectFilter == key) {
                         OutlinedButton(
                             modifier = Modifier.fillMaxWidth(),
                             onClick = {
-                                selectFilter = it
+                                selectFilter = key
                             },
                             shape = RoundedCornerShape(10.dp)
                         ) {
-                            Text(it)
+                            Text(label)
                         }
                     } else {
                         TextButton(
                             modifier = Modifier.fillMaxWidth(),
                             onClick = {
-                                selectFilter = it
+                                selectFilter = key
                             }) {
-                            Text(it)
+                            Text(label)
                         }
                     }
                 }
@@ -168,14 +170,14 @@ fun FilterDialog(
             Button(
                 onClick = onCancel
             ) {
-                Text("Cancel")
+                Text(stringResource(R.string.cancel))
             }
             Button(
                 onClick = {
                     onApplyFilter(updatedFilter)
                 }
             ) {
-                Text("Apply Filter")
+                Text(stringResource(R.string.apply_filter))
             }
 
         }
@@ -200,7 +202,7 @@ fun StoreFilter(
                         selectionChange(null)
                     }
                 )
-                Text("All")
+                Text(stringResource(R.string.all))
             }
         }
         items(stores) {
@@ -309,7 +311,7 @@ fun OrderFilter(
                         selectionChange(false)
                     }
                 )
-                Text("Ascending")
+                Text(stringResource(R.string.ascending))
             }
         }
         item {
@@ -320,11 +322,12 @@ fun OrderFilter(
                         selectionChange(true)
                     }
                 )
-                Text("Descending")
+                Text(stringResource(R.string.descending))
             }
         }
     }
 }
+
 
 
 

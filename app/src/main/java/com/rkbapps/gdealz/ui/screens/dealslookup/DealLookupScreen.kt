@@ -20,7 +20,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.BottomNavigationDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
@@ -48,7 +47,6 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
@@ -57,10 +55,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
-import coil.compose.AsyncImage
 import coil.compose.SubcomposeAsyncImage
 import com.rkbapps.gdealz.R
-import com.rkbapps.gdealz.navigation.Routes
 import com.rkbapps.gdealz.network.ApiConst.IMAGE_URL
 import com.rkbapps.gdealz.network.ApiConst.getFormattedDate
 import com.rkbapps.gdealz.ui.composables.CommonCard
@@ -103,7 +99,7 @@ fun DealLookupScreen(
                     ) {
                         Icon(
                             imageVector = if (isFav.value) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
-                            "back"
+                            contentDescription = null
                         )
                     }
                 }
@@ -136,11 +132,11 @@ fun DealLookupScreen(
                     ) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Spacer(Modifier.weight(1f))
-                            Text(text = "Grab the deal")
+                            Text(text = stringResource(R.string.grab_the_deal))
                             Spacer(Modifier.weight(1f))
                             Icon(
                                 imageVector = ImageVector.vectorResource(R.drawable.launch_link_open),
-                                contentDescription = "launch link open",
+                                contentDescription = null,
                                 modifier = Modifier.size(20.dp)
                             )
                         }
@@ -160,7 +156,7 @@ fun DealLookupScreen(
                 }
 
                 dealsData.value.error != null -> {
-                    ErrorScreen(dealsData.value.error ?: "Something went wrong!")
+                    ErrorScreen(dealsData.value.error ?: stringResource(R.string.unknown))
                 }
 
                 dealsData.value.data != null -> {
@@ -187,7 +183,7 @@ fun DealLookupScreen(
                             ) {
                                 SubcomposeAsyncImage(
                                     model = dealsData.value.data?.gameInfo?.thumb,
-                                    contentDescription = "game thumb",
+                                    contentDescription = null,
                                     modifier = Modifier
                                         .fillMaxSize()
                                         .padding(8.dp),
@@ -240,7 +236,7 @@ fun DealLookupScreen(
                                 modifier = Modifier.padding(10.dp)
                             ) {
                                 Text(
-                                    text = "Special Deal",
+                                    text = stringResource(R.string.special_deal),
                                     modifier = Modifier.fillMaxWidth(),
                                     style = MaterialTheme.typography.titleLarge,
                                     textAlign = TextAlign.Center
@@ -258,7 +254,7 @@ fun DealLookupScreen(
                                     val isFree = remember { (dealsData.value.data?.gameInfo?.salePrice ?: "").contains("0.00") }
 
                                     Text(
-                                        text = if (isFree) "Free" else "${percentage}% OFF",
+                                        text = if (isFree) stringResource(R.string.free) else "${percentage}% ${stringResource(R.string.off)}",
                                         color = if (isFree) darkGreen else
                                             MaterialTheme.colorScheme.primary,
                                         modifier = Modifier
@@ -277,7 +273,7 @@ fun DealLookupScreen(
                                     )
 
                                     Text(
-                                        text = if (isFree) "Free" else "$${CurrencyAndCountryUtil.formatPrice(dealsData.value.data?.gameInfo?.salePrice)}",
+                                        text = if (isFree) stringResource(R.string.free) else "$${CurrencyAndCountryUtil.formatPrice(dealsData.value.data?.gameInfo?.salePrice)}",
                                         color = if (isFree) darkGreen else MaterialTheme.colorScheme.primary,
                                         style = MaterialTheme.typography.headlineMedium
                                     )
@@ -292,7 +288,7 @@ fun DealLookupScreen(
                             Column(modifier = Modifier.padding(10.dp)
                             ) {
                                 Text(
-                                    text = "Ratting & Review",
+                                    text = stringResource(R.string.rating_and_review),
                                     modifier = Modifier.fillMaxWidth(),
                                     style = MaterialTheme.typography.titleLarge,
                                     textAlign = TextAlign.Center
@@ -306,13 +302,13 @@ fun DealLookupScreen(
 
                                 ) {
                                     ReviewItems(
-                                        title = "Meta Critic", value = " ${
+                                        title = stringResource(R.string.meta_critic), value = " ${
                                             dealsData.value.data?.gameInfo?.metaCriticScore ?: 0
                                         }"
                                     )
 
                                     ReviewItems(
-                                        title = "Total Rating",
+                                        title = stringResource(R.string.total_rating),
                                         value = getTotalReviews(
                                             count = dealsData.value.data?.gameInfo?.steamRatingCount
                                                 ?: "0"
@@ -320,7 +316,7 @@ fun DealLookupScreen(
                                     )
 
                                     ReviewItems(
-                                        title = "Rate", value = "${
+                                        title = stringResource(R.string.rate), value = "${
                                             dealsData.value.data?.gameInfo?.steamRatingPercent ?: 0
                                         }%"
                                     )
@@ -330,7 +326,7 @@ fun DealLookupScreen(
                                 Card {
                                     Column(modifier = Modifier.padding(8.dp)) {
                                         Text(
-                                            text = "Overall Ratting",
+                                            text = stringResource(R.string.overall_rating),
                                             modifier = Modifier.fillMaxWidth(),
                                             textAlign = TextAlign.Center,
                                             style = MaterialTheme.typography.titleMedium,
@@ -340,7 +336,7 @@ fun DealLookupScreen(
 
                                         Text(
                                             text = dealsData.value.data?.gameInfo?.steamRatingText
-                                                ?: "Unknown",
+                                                ?: stringResource(R.string.unknown),
                                             modifier = Modifier.fillMaxWidth(),
                                             textAlign = TextAlign.Center,
                                             style = MaterialTheme.typography.titleSmall,
@@ -371,7 +367,7 @@ fun DealLookupScreen(
                                         horizontalAlignment = Alignment.CenterHorizontally
                                     ) {
                                         Text(
-                                            text = "Available On",
+                                            text = stringResource(R.string.available_on),
                                             fontWeight = FontWeight.Bold,
                                             textAlign = TextAlign.Center
                                         )
@@ -379,7 +375,7 @@ fun DealLookupScreen(
                                         Card(modifier = Modifier.size(50.dp)) {
                                             SubcomposeAsyncImage(
                                                 model = IMAGE_URL + storeData.value?.banner,
-                                                contentDescription = "store logo",
+                                                contentDescription = null,
                                                 modifier = Modifier.size(50.dp).padding(8.dp),
                                                 contentScale = ContentScale.Fit,
                                                 error = {
@@ -400,7 +396,7 @@ fun DealLookupScreen(
                                         }
                                         Spacer(modifier = Modifier.height(8.dp))
                                         Text(
-                                            text = storeData.value?.storeName ?: "Unknown",
+                                            text = storeData.value?.storeName ?: stringResource(R.string.unknown),
                                             textAlign = TextAlign.Center
                                         )
 
@@ -417,8 +413,8 @@ fun DealLookupScreen(
                                     .height(130.dp)
                                     .weight(1f)
                                     .align(Alignment.CenterVertically),
-                                title = "Release Info",
-                                subtitle = releaseDate ?: "Unknown"
+                                title = stringResource(R.string.release_info),
+                                subtitle = releaseDate ?: stringResource(R.string.unknown)
                             )
 
                         }

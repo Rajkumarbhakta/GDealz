@@ -25,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
@@ -73,7 +74,7 @@ fun DealsItem(deals: Deals, onClick: () -> Unit) {
             ) {
                 SubcomposeAsyncImage(
                     model = deals.thumb,
-                    contentDescription = "game thumb",
+                    contentDescription = null,
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(8.dp),
@@ -118,7 +119,7 @@ fun DealsItem(deals: Deals, onClick: () -> Unit) {
                         style = MaterialTheme.typography.bodySmall.copy(textDecoration = TextDecoration.LineThrough),
                     )
                     Text(
-                        text = if (isFree) "Free" else "$${CurrencyAndCountryUtil.formatPrice(deals.salePrice)}",
+                        text = if (isFree) stringResource(R.string.free) else "$${CurrencyAndCountryUtil.formatPrice(deals.salePrice)}",
                         style = MaterialTheme.typography.bodyLarge.copy(
                             color = if (isFree) darkGreen else MaterialTheme.colorScheme.primary
                         )
@@ -128,7 +129,7 @@ fun DealsItem(deals: Deals, onClick: () -> Unit) {
 
 
             Text(
-                text = if (isFree) "Free" else "${percentage}%",
+                text = if (isFree) stringResource(R.string.free) else "${percentage}%",
                 color = if (isFree) darkGreen else
                     MaterialTheme.colorScheme.primary,
                 modifier = Modifier

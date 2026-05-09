@@ -48,7 +48,7 @@ class IsThereAnyDealPagingSource(
             }
             val result = when (response) {
                 is NetworkResponse.Error.HttpError -> {
-                    if (response.errorCode>399 && response.errorCode<=499){
+                    if (response.errorCode in 400..499){
                         LoadResult.Error(Exception("${response.errorCode}:No game found"))
                     }else{
                         LoadResult.Error(response.error)

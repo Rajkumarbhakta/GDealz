@@ -5,6 +5,6 @@ import retrofit2.http.Query
 
 interface SteamApi {
     @GET("appdetails")
-    suspend fun getGameDetails(@Query("appids") appId: String): Map<String, Any>
+    suspend fun getGameDetails(@Query("appids") appId: String,@Query("l") language: String): Map<String, Any>
 
 }

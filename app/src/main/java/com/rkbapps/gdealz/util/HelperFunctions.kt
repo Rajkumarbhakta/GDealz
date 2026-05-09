@@ -1,5 +1,6 @@
 package com.rkbapps.gdealz.util
 
+import android.app.Activity
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
@@ -48,7 +49,6 @@ fun Context.hasNetwork(): Boolean? {
         isConnected = true
     return isConnected
 }
-
 
 
 fun calculatePercentage(actualPrice: String, discountPrice: String): Int {

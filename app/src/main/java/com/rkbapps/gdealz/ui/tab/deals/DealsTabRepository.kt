@@ -1,7 +1,6 @@
 package com.rkbapps.gdealz.ui.tab.deals
 
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
+import com.rkbapps.gdealz.R
 import com.rkbapps.gdealz.db.PreferenceManager
 import com.rkbapps.gdealz.db.dao.StoreDao
 import com.rkbapps.gdealz.models.Deals
@@ -13,6 +12,10 @@ import com.rkbapps.gdealz.network.api.IsThereAnyDealApi
 import com.rkbapps.gdealz.network.safeApiCall
 import com.rkbapps.gdealz.util.FavStoreIds
 import com.rkbapps.gdealz.util.UiState
+import android.content.Context
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -24,7 +27,8 @@ class DealsTabRepository @Inject constructor(
     private val api: CheapSharkApi,
     private val isThereAnyDealApi: IsThereAnyDealApi,
     storeDb: StoreDao,
-    private val preferenceManager: PreferenceManager
+    private val preferenceManager: PreferenceManager,
+    @ApplicationContext private val context: Context
 ) {
     private val _deals = MutableStateFlow(UiState<List<Deals>>())
     val deals = _deals.asStateFlow()
@@ -50,16 +54,16 @@ class DealsTabRepository @Inject constructor(
         when (response) {
             is NetworkResponse.Error.HttpError -> {
                 _deals.value =
-                    UiState(error = "Code : ${response.errorCode} Error : ${response.error.localizedMessage}")
+                    UiState(error = context.getString(R.string.error_code_message, response.errorCode, response.error.localizedMessage))
             }
 
             NetworkResponse.Error.NetworkError -> {
                 _deals.value =
-                    UiState(error = "Unable to connect please check your internet connection.")
+                    UiState(error = context.getString(R.string.unable_to_connect))
             }
 
             NetworkResponse.Error.UnknownError -> {
-                _deals.value = UiState(error = "Something went wrong")
+                _deals.value = UiState(error = context.getString(R.string.something_went_wrong))
             }
 
             is NetworkResponse.Success<List<Deals>> -> {
@@ -74,16 +78,16 @@ class DealsTabRepository @Inject constructor(
         when (response) {
             is NetworkResponse.Error.HttpError -> {
                 _deals.value =
-                    UiState(error = "Code : ${response.errorCode} Error : ${response.error.localizedMessage}")
+                    UiState(error = context.getString(R.string.error_code_message, response.errorCode, response.error.localizedMessage))
             }
 
             NetworkResponse.Error.NetworkError -> {
                 _deals.value =
-                    UiState(error = "Unable to connect please check your internet connection.")
+                    UiState(error = context.getString(R.string.unable_to_connect))
             }
 
             NetworkResponse.Error.UnknownError -> {
-                _deals.value = UiState(error = "Something went wrong")
+                _deals.value = UiState(error = context.getString(R.string.something_went_wrong))
             }
 
             is NetworkResponse.Success<List<Deals>> -> {
@@ -94,8 +98,7 @@ class DealsTabRepository @Inject constructor(
 
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    fun getDealsPager() = _filter
-        .flatMapLatest {
+    fun getDealsPager() = _filter.flatMapLatest {
             Pager(
                 config = PagingConfig(pageSize = 20, maxSize = 100, initialLoadSize = 20),
                 pagingSourceFactory = { DealsPagingSource(api, it) }

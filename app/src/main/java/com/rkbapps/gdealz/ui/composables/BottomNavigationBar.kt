@@ -8,6 +8,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
@@ -33,10 +34,11 @@ fun BottomNavigationBar(
                         imageVector = if (selected) ImageVector.vectorResource(bottomNavigationItem.selectedIcon) else ImageVector.vectorResource(
                             bottomNavigationItem.icon
                         ),
-                        contentDescription = bottomNavigationItem.title
+                        contentDescription = stringResource(id = bottomNavigationItem.title)
                     )
                 },
-                label = { Text(bottomNavigationItem.title) },
+                label = { Text(stringResource(id = bottomNavigationItem.title)) },
+
                 selected = selected,
                 onClick = {
                     navController.navigate(bottomNavigationItem.route) {
