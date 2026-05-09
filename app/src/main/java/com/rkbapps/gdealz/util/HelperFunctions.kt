@@ -50,14 +50,6 @@ fun Context.hasNetwork(): Boolean? {
     return isConnected
 }
 
-fun Activity.updateLocale(languageCode: String){
-    val locale = Locale(languageCode)
-    Locale.setDefault(locale)
-    val config = resources.configuration
-    config.setLocale(locale)
-}
-
-
 
 fun calculatePercentage(actualPrice: String, discountPrice: String): Int {
     return try {

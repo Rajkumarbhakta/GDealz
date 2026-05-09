@@ -39,14 +39,18 @@ object AppLocaleManager {
     }
 
     fun getLanguageCode(context: Context,): String {
-        val locale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            context.getSystemService(LocaleManager::class.java)
-                ?.applicationLocales
-                ?.get(0)
-        } else {
-            AppCompatDelegate.getApplicationLocales().get(0)
+        return try {
+            val locale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                context.getSystemService(LocaleManager::class.java)
+                    ?.applicationLocales
+                    ?.get(0)
+            } else {
+                AppCompatDelegate.getApplicationLocales().get(0)
+            }
+            locale?.language ?: getDefaultLanguageCode()
+        }catch (e: Exception){
+            getDefaultLanguageCode()
         }
-        return locale?.language ?: getDefaultLanguageCode()
     }
 
     fun getLanguageFromCode(languageCode: String): Language {
