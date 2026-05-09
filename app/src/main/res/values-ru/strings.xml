@@ -35,6 +35,7 @@
     <string name="select_language">Выберите язык</string>
     <string name="english">Английский</string>
     <string name="russian">Русский</string>
+    <string name="hindi">Хинди</string>
     <string name="settings">Настройки</string>
     <string name="follow_system_theme">Следовать системной теме</string>
     <string name="follow_system_theme_desc">Использовать светлую или темную тему на основе системных настроек.</string>
@@ -58,6 +59,7 @@
     <string name="free">Бесплатно</string>
     <string name="off">СКИДКА</string>
     <string name="rating_and_review">Рейтинги и отзывы</string>
+    <string name="reviews">Отзывы</string>
     <string name="meta_critic">Meta Critic</string>
     <string name="total_rating">Всего отзывов</string>
     <string name="rate">Оценка</string>
