@@ -170,7 +170,7 @@ fun GameInfoScreen(
                                     )
                                 ) {
                                     Text(
-                                        text = (if (gameInfo.data?.mature == true) "18+" else "ALL"),
+                                        text = (if (gameInfo.data?.mature == true) stringResource(R.string.mature_18_plus) else stringResource(R.string.mature_all)),
                                         modifier = Modifier.padding(10.dp)
                                     )
                                 }
@@ -200,7 +200,7 @@ fun GameInfoScreen(
                                             ),
                                             subTitle = "${gameInfo.data?.reviews?.first()?.score ?: 0}%",
                                             subTitle1 = gameInfo.data?.reviews?.first()?.source
-                                                ?: "Unknown"
+                                                ?: stringResource(R.string.unknown)
                                         )
                                     }
                                 }
@@ -261,7 +261,7 @@ fun GameInfoScreen(
                             )
                             CommonCard(
                                 modifier = Modifier.weight(1f),
-                                title = "Publisher",
+                                title = stringResource(R.string.publisher),
                                 subtitle = try {
                                     gameInfo.data?.publishers?.first()?.name ?: "-"
                                 } catch (_: Exception) {
@@ -279,7 +279,7 @@ fun GameInfoScreen(
                     }
                     item {
                         Text(
-                            "Price History",
+                            stringResource(R.string.price_history),
                             modifier = Modifier.padding(horizontal = 16.dp),
                             style = MaterialTheme.typography.headlineSmall
                         )
@@ -311,19 +311,19 @@ fun GameInfoScreen(
                                 ) {
                                     gamePriceInfo.data?.historyLow?.all?.let {
                                         PriceHistoryCard(
-                                            title = "Lowest in history",
+                                            title = stringResource(R.string.lowest_in_history),
                                             price = it
                                         )
                                     }
                                     gamePriceInfo.data?.historyLow?.y1?.let {
                                         PriceHistoryCard(
-                                            title = "Lowest in 1 year",
+                                            title = stringResource(R.string.lowest_in_1_year),
                                             price = it
                                         )
                                     }
                                     gamePriceInfo.data?.historyLow?.m3?.let {
                                         PriceHistoryCard(
-                                            title = "Lowest in 3 months",
+                                            title = stringResource(R.string.lowest_in_3_months),
                                             price = it
                                         )
                                     }
@@ -334,7 +334,7 @@ fun GameInfoScreen(
                     }
                     item {
                         Text(
-                            "Deals",
+                            stringResource(R.string.tab_deals),
                             modifier = Modifier.padding(horizontal = 16.dp),
                             style = MaterialTheme.typography.headlineSmall
                         )
@@ -378,7 +378,7 @@ fun GameInfoScreen(
                     }
                     item {
                         Text(
-                            "Features",
+                            stringResource(R.string.features),
                             modifier = Modifier.padding(horizontal = 16.dp),
                             style = MaterialTheme.typography.headlineSmall
                         )
@@ -479,7 +479,7 @@ fun DealCard(modifier: Modifier = Modifier, deals: Deals, onClick: () -> Unit = 
                 val textBackground = MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)
                 deals.cut?.let {
                     Text(
-                        text = (if (isFree) "Free" else "$it% OFF"),
+                        text = (if (isFree) stringResource(R.string.free) else "$it% ${stringResource(R.string.off)}"),
                         style = MaterialTheme.typography.labelMedium,
                         modifier = Modifier
                             .clip(RoundedCornerShape(100.dp))

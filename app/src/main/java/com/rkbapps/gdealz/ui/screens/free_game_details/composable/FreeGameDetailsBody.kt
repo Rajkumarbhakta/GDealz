@@ -14,6 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
@@ -58,7 +59,7 @@ fun FreeGameDetailsBody(modifier: Modifier = Modifier,giveaway: Giveaway?) {
             Text(giveaway?.title ?: "", style = MaterialTheme.typography.titleLarge)
 
             Text(
-                "Description",
+                stringResource(R.string.description),
                 style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
             )
             Text(giveaway?.description ?: "")
@@ -84,7 +85,7 @@ fun FreeGameDetailsBody(modifier: Modifier = Modifier,giveaway: Giveaway?) {
             ) {
                 CommonCard(
                     modifier = Modifier.weight(1f),
-                    title = "Published",
+                    title = stringResource(R.string.published),
                     subtitle = getFormattedDate(giveaway?.publishedDate ?: "") ?: ""
                 )
                 CommonCard(
@@ -95,7 +96,7 @@ fun FreeGameDetailsBody(modifier: Modifier = Modifier,giveaway: Giveaway?) {
             }
 
             Text(
-                "Instruction",
+                stringResource(R.string.instruction),
                 style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
             )
             Text(giveaway?.instructions ?: "")

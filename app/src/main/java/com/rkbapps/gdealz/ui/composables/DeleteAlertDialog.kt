@@ -6,6 +6,9 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 
+import androidx.compose.ui.res.stringResource
+import com.rkbapps.gdealz.R
+
 @Composable
 fun DeleteAlertDialog(
     warningText:String,
@@ -15,21 +18,21 @@ fun DeleteAlertDialog(
     AlertDialog(
         onDismissRequest = onDismiss,
         title = {
-            Text("Delete?")
+            Text(stringResource(R.string.delete_confirm_title))
         },
         text = { Text(warningText) },
         confirmButton = {
             OutlinedButton(
                 onClick = onDelete
             ) {
-                Text("Delete")
+                Text(stringResource(R.string.delete))
             }
         },
         dismissButton = {
             Button(
                 onClick = onDismiss
             ) {
-                Text("Cancel")
+                Text(stringResource(R.string.cancel))
             }
         }
     )

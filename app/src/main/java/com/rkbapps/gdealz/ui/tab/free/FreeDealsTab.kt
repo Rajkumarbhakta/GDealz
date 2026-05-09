@@ -62,11 +62,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
-private val options = listOf(
-    "Un Claimed",
-    "Claimed"
-)
-
+import androidx.compose.ui.res.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -74,6 +70,11 @@ fun FreeDealsTab(
     navController: NavHostController,
     viewModel: FreeDealsViewModel = hiltViewModel()
 ) {
+
+    val options = listOf(
+        stringResource(R.string.un_claimed),
+        stringResource(R.string.claimed)
+    )
 
     val giveaways = viewModel.giveaways.collectAsStateWithLifecycle()
     val unClaimedGiveaway = viewModel.unClaimedGiveaway.collectAsStateWithLifecycle()
@@ -86,7 +87,7 @@ fun FreeDealsTab(
     val scope = rememberCoroutineScope()
 
     Scaffold(
-        topBar = { CommonTopBar(title = "Free") },
+        topBar = { CommonTopBar(title = stringResource(R.string.free_title)) },
     ) { paddingValue ->
         Column(
             modifier = Modifier.fillMaxSize().padding(
@@ -120,7 +121,7 @@ fun FreeDealsTab(
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp)
             ) {
-                Text(text = "Games")
+                Text(text = stringResource(R.string.tab_games))
                 Spacer(modifier = Modifier.height(10.dp))
                 when {
                     giveawayState.value.isLoading -> {
@@ -134,7 +135,7 @@ fun FreeDealsTab(
                     }
 
                     giveawayState.value.error != null -> {
-                        ErrorScreen(giveawayState.value.error ?: "Something went wrong")
+                        ErrorScreen(giveawayState.value.error ?: stringResource(R.string.unknown))
                     }
 
                     giveaways.value.isNotEmpty() -> {
@@ -149,7 +150,7 @@ fun FreeDealsTab(
                                 when(currentPage){
                                     0->{
                                         if (unClaimedGiveaway.value.isEmpty()) {
-                                            item { ErrorScreen("No active giveaways available at the moment, please try again later.") }
+                                            item { ErrorScreen(stringResource(R.string.no_active_giveaways)) }
                                         }
                                         items(
                                             unClaimedGiveaway.value,
@@ -163,7 +164,7 @@ fun FreeDealsTab(
                                     }
                                     1->{
                                         if (claimedGiveaway.value.isEmpty()) {
-                                            item { ErrorScreen("You have not claimed anything yet.") }
+                                            item { ErrorScreen(stringResource(R.string.nothing_claimed_yet)) }
                                         }
                                         items(
                                             claimedGiveaway.value,
@@ -188,7 +189,7 @@ fun FreeDealsTab(
                     }
 
                     else -> {
-                        ErrorScreen("No active giveaways available at the moment, please try again later.")
+                        ErrorScreen(stringResource(R.string.no_active_giveaways))
                     }
                 }
             }
@@ -275,7 +276,7 @@ fun FreeGameItems(item: Giveaway, onClick: () -> Unit) {
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        if (it) "Active" else "Expired",
+                        if (it) stringResource(R.string.active) else stringResource(R.string.expired),
                         color = if (it) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.error
                     )
                 }

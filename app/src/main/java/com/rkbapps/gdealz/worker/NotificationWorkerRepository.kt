@@ -25,6 +25,7 @@ import com.rkbapps.gdealz.network.NetworkResponse
 import com.rkbapps.gdealz.network.api.GamePowerApi
 import com.rkbapps.gdealz.network.safeApiCall
 import com.rkbapps.gdealz.util.UiState
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -32,7 +33,8 @@ import javax.inject.Inject
 
 class NotificationWorkerRepository @Inject constructor(
     private val giveawaysDao: GiveawaysDao,
-    private val gamePowerApi: GamePowerApi
+    private val gamePowerApi: GamePowerApi,
+    @ApplicationContext private val context: Context
 ) {
     suspend fun getGiveaways(): UiState<List<Giveaway>> {
         Log.d("NotificationWorkerRepo", "Fetching giveaways from API")
@@ -43,11 +45,11 @@ class NotificationWorkerRepository @Inject constructor(
             }
 
             NetworkResponse.Error.NetworkError -> {
-                UiState(error = "Unable to connect please check your internet connection.")
+                UiState(error = context.getString(R.string.unable_to_connect))
             }
 
             NetworkResponse.Error.UnknownError -> {
-                UiState(error = "No active giveaways available at the moment, please try again later.")
+                UiState(error = context.getString(R.string.no_active_giveaways))
             }
 
             is NetworkResponse.Success<List<Giveaway>?> -> {
@@ -55,7 +57,7 @@ class NotificationWorkerRepository @Inject constructor(
                 if (!data.isNullOrEmpty()) {
                     UiState(data = data)
                 } else {
-                    UiState(error = "No active giveaways available at the moment, please try again later.")
+                    UiState(error = context.getString(R.string.no_active_giveaways))
                 }
             }
         }
@@ -142,8 +144,8 @@ class NotificationWorkerRepository @Inject constructor(
 
         val notification = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(R.drawable.console)
-            .setContentTitle("New Giveaway: ${giveaway.title}")
-            .setContentText("Check out this giveaway worth ${giveaway.worth}")
+            .setContentTitle(context.getString(R.string.new_giveaway, giveaway.title))
+            .setContentText(context.getString(R.string.check_out_giveaway, giveaway.worth))
             .setChannelId(CHANNEL_ID)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setAutoCancel(true)

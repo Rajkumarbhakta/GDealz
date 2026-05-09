@@ -1,6 +1,9 @@
 package com.rkbapps.gdealz.ui.tab.settings
 
 import android.os.Build
+import android.util.Log
+import androidx.activity.compose.LocalActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -49,6 +52,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -56,6 +60,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.core.os.LocaleListCompat
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
@@ -65,7 +70,10 @@ import com.rkbapps.gdealz.ui.composables.ChooseCountryDialog
 import com.rkbapps.gdealz.ui.composables.CommonFilledIconButton
 import com.rkbapps.gdealz.ui.composables.CommonTopBar
 import com.rkbapps.gdealz.ui.theme.GDealzTheme
+import com.rkbapps.gdealz.util.AppLocaleManager
 import com.rkbapps.gdealz.util.Country
+import com.rkbapps.gdealz.util.appLanguages
+import com.rkbapps.gdealz.util.updateLocale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -75,6 +83,7 @@ fun SettingsScreen(
 ) {
 
     val uriHandler = LocalUriHandler.current
+    val context = LocalContext.current
 
     val isSystemTheme by viewModel.isSystemTheme.collectAsStateWithLifecycle()
     val isDarkTheme by viewModel.isDarkTheme.collectAsStateWithLifecycle()
@@ -87,13 +96,15 @@ fun SettingsScreen(
     }
 
     var isChooseCountryDialogOpen by remember { mutableStateOf(false) }
+    var isLanguageDialogOpen by remember { mutableStateOf(false) }
 
+    val currentLanguageCode = AppLocaleManager.getLanguageCode(context = context)
 
 
     Scaffold(
         topBar = {
             CommonTopBar(
-                title = "Settings",
+                title = stringResource(R.string.settings),
             )
         }
     ) { innerPadding ->
@@ -111,6 +122,16 @@ fun SettingsScreen(
                     isChooseCountryDialogOpen=false
                 }
             }
+        }
+
+        if (isLanguageDialogOpen) {
+            LanguageSelectionDialog(
+                onDismissRequest = { isLanguageDialogOpen = false },
+                onLanguageSelected = { languageCode ->
+                    viewModel.changeLanguage(languageCode)
+                    isLanguageDialogOpen = false
+                }
+            )
         }
 
 
@@ -172,7 +193,7 @@ fun SettingsScreen(
                         ) {
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 Icon(imageVector = Icons.Default.BugReport,"")
-                                Text("Raise a issue")
+                                Text(stringResource(R.string.raise_a_issue))
                             }
                         }
 
@@ -187,7 +208,7 @@ fun SettingsScreen(
                         ) {
                             Row (verticalAlignment = Alignment.CenterVertically){
                                 Icon(imageVector = Icons.Default.Coffee,"")
-                                Text("Buy me a Coffee")
+                                Text(stringResource(R.string.buy_me_a_coffee))
                             }
                         }
 
@@ -199,18 +220,20 @@ fun SettingsScreen(
                 ChooseCountryItem(
                     selectedCountry = selectedCountryEnum
                 ) { isChooseCountryDialogOpen = true }
+            }
 
-//                Button(onClick = {
-//                    viewModel.sendNotification()
-//                }) {
-//                    Text("Send Notification")
-//                }
+            item(key="lang") {
+                LanguageItem(
+                    currentLanguageCode = currentLanguageCode
+                ) {
+                    isLanguageDialogOpen = true
+                }
             }
 
             item(key=3) {
                 TextWithSwitch(
-                    text = "Follow System Theme",
-                    subText = "Use light or dark theme based on your system settings.",
+                    text = stringResource(R.string.follow_system_theme),
+                    subText = stringResource(R.string.follow_system_theme_desc),
                     checked = isSystemTheme,
                     icon = Icons.Default.BrightnessAuto
                 ) {
@@ -220,7 +243,7 @@ fun SettingsScreen(
             item(key=4) {
                 AnimatedVisibility(!isSystemTheme) {
                     TextWithSwitch(
-                        text = "Dark Theme",
+                        text = stringResource(R.string.dark_theme),
                         checked = isDarkTheme,
                         icon = if (isDarkTheme) Icons.Default.DarkMode else Icons.Default.LightMode
                     ) {
@@ -231,8 +254,8 @@ fun SettingsScreen(
             item(key=5) {
                 if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                     TextWithSwitch(
-                        text = "Dynamic Color",
-                        subText = "Enable dynamic colors for a more personalized experience.",
+                        text = stringResource(R.string.dynamic_color),
+                        subText = stringResource(R.string.dynamic_color_desc),
                         checked = isDynamicColor,
                         icon = ImageVector.vectorResource(R.drawable.palette)
                     ) {
@@ -242,8 +265,8 @@ fun SettingsScreen(
             }
             item(key=6) {
                 TextWithSwitch(
-                    text = "NSFW content",
-                    subText = "Displays adult or sensitive content when turned on.",
+                    text = stringResource(R.string.nsfw_content),
+                    subText = stringResource(R.string.nsfw_content_desc),
                     checked = isNsfw,
                     icon = Icons.Default.Block
                 ) {
@@ -253,8 +276,8 @@ fun SettingsScreen(
 
             item(key=7) {
                 TextWithArrow(
-                    text = "Privacy Policy",
-                    subText = "Read the privacy policy",
+                    text = stringResource(R.string.privacy_policy),
+                    subText = stringResource(R.string.privacy_policy_desc),
                     icon = Icons.Outlined.PrivacyTip
                 ) {
                     uriHandler.openUri("https://sites.google.com/view/gdealz/home")
@@ -263,7 +286,7 @@ fun SettingsScreen(
             item(key=8) {
                 Card(modifier = Modifier.fillMaxWidth()) {
                     Text(
-                        "Game and pricing information is sourced from CheapShark, IsThereAnyDeal.com, and Steam. G Dealz does not guarantee the accuracy, availability, or completeness of this information.",
+                        stringResource(R.string.disclaimer),
                         modifier = Modifier.padding(10.dp),
                         textAlign = TextAlign.Justify
                     )
@@ -367,15 +390,17 @@ fun ChooseCountryItem(
         Icon(
             imageVector = Icons.Default.Language,
             "country",
-            modifier = Modifier.align(Alignment.Top).padding(top = 8.dp)
+            modifier = Modifier
+                .align(Alignment.Top)
+                .padding(top = 8.dp)
         )
         Column(modifier = Modifier.weight(1f)) {
             Text(
-                "Country",
+                stringResource(R.string.country),
                 style = MaterialTheme.typography.titleLarge,
             )
             Text(
-                "Change your country to see deals in your local currency. If deal data is not available in your currency, it will default to US Dollars ($).",
+                stringResource(R.string.country_desc),
                 style = MaterialTheme.typography.labelSmall
             )
 
@@ -399,6 +424,106 @@ fun ChooseCountryItem(
         }
 
     }
+}
+
+@Composable
+fun LanguageItem(
+    modifier: Modifier = Modifier,
+    currentLanguageCode: String,
+    onClick: () -> Unit
+) {
+    val languageName = when (currentLanguageCode) {
+        "en" -> stringResource(R.string.english)
+        "ru" -> stringResource(R.string.russian)
+        else -> stringResource(R.string.english)
+    }
+
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        Icon(
+            imageVector = Icons.Default.Language,
+            "language",
+            modifier = Modifier
+                .align(Alignment.Top)
+                .padding(top = 8.dp)
+        )
+        Column(modifier = Modifier.weight(1f)) {
+            Text(
+                stringResource(R.string.language),
+                style = MaterialTheme.typography.titleLarge,
+            )
+            Text(
+                stringResource(R.string.select_language),
+                style = MaterialTheme.typography.labelSmall
+            )
+
+        }
+        Box(
+            modifier = Modifier
+                .clip(RoundedCornerShape(10.dp))
+                .border(
+                    width = 2.dp,
+                    color = MaterialTheme.colorScheme.primary,
+                    shape = RoundedCornerShape(10.dp)
+                )
+                .clickable {
+                    onClick()
+                }
+        ) {
+            Text(
+                "$languageName \uD83D\uDD3D",
+                modifier = Modifier.padding(8.dp)
+            )
+        }
+
+    }
+}
+
+@Composable
+fun LanguageSelectionDialog(
+    onDismissRequest: () -> Unit,
+    onLanguageSelected: (String) -> Unit
+) {
+    Dialog(onDismissRequest = onDismissRequest) {
+        Card(
+            shape = RoundedCornerShape(16.dp),
+        ) {
+            Column(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Text(
+                    stringResource(R.string.select_language),
+                    style = MaterialTheme.typography.titleLarge,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+
+                appLanguages.forEach {
+                    LanguageOption(
+                        name = it.displayLanguage,
+                        onClick = { onLanguageSelected(it.code) }
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun LanguageOption(name: String, onClick: () -> Unit) {
+    Text(
+        text = name,
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onClick() }
+            .padding(vertical = 12.dp, horizontal = 8.dp),
+        style = MaterialTheme.typography.bodyLarge
+    )
 }
 
 

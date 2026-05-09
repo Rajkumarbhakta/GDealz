@@ -29,6 +29,7 @@ import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
@@ -81,7 +82,7 @@ fun IsThereAnyDealDealsItem(modifier: Modifier = Modifier,deal:DealItem,onClick:
             ) {
                 SubcomposeAsyncImage(
                     model = deal.assets?.boxart,
-                    contentDescription = "game thumb",
+                    contentDescription = null,
                     modifier = Modifier.fillMaxSize(),
                     contentScale = ContentScale.Crop,
                     error = {
@@ -124,7 +125,7 @@ fun IsThereAnyDealDealsItem(modifier: Modifier = Modifier,deal:DealItem,onClick:
                         style = MaterialTheme.typography.bodySmall.copy(textDecoration = TextDecoration.LineThrough),
                     )
                     Text(
-                        text = if (isFree) "Free" else "${CurrencyAndCountryUtil.currencySymbolMap[deal.deal?.regular?.currency] ?: "-"}${CurrencyAndCountryUtil.formatAmount(deal.deal?.price?.amount)}",
+                        text = if (isFree) stringResource(R.string.free) else "${CurrencyAndCountryUtil.currencySymbolMap[deal.deal?.regular?.currency] ?: "-"}${CurrencyAndCountryUtil.formatAmount(deal.deal?.price?.amount)}",
                         style = MaterialTheme.typography.bodyLarge.copy(
                             color = if (isFree) darkGreen else MaterialTheme.colorScheme.primary
                         )
@@ -136,7 +137,7 @@ fun IsThereAnyDealDealsItem(modifier: Modifier = Modifier,deal:DealItem,onClick:
             val textColor = if (isFree) darkGreen.copy(alpha = 0.2f) else MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)
 
             Text(
-                text = if (isFree) "Free" else "${percentage}%",
+                text = if (isFree) stringResource(R.string.free) else "${percentage}%",
                 color = if (isFree) darkGreen else
                     MaterialTheme.colorScheme.primary,
                 modifier = Modifier

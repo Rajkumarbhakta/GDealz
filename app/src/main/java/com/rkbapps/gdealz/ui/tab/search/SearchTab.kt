@@ -43,6 +43,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -76,7 +77,7 @@ fun SearchTab(
 
     Scaffold(
         topBar = {
-            CommonTopBar(title = "Search")
+            CommonTopBar(title = stringResource(R.string.search))
         },
     ) {innerPadding ->
         Column(
@@ -97,7 +98,7 @@ fun SearchTab(
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp, vertical = 8.dp),
                 placeholder = {
-                    Text(text = "Search here...")
+                    Text(text = stringResource(R.string.search_here))
                 },
                 leadingIcon = {
                     Icon(
@@ -118,7 +119,7 @@ fun SearchTab(
                                 viewModel.search()
 //                                viewModel.search(query.value)
                             }) {
-                            Text(text = "Search")
+                            Text(text = stringResource(R.string.search))
                         }
                     }
                 },
@@ -132,7 +133,7 @@ fun SearchTab(
 
             when{
                 (isThereAnyDealSearchResult.data==null && searchQuery.isEmpty())->{
-                    ErrorScreen("Try searching something...")
+                    ErrorScreen(stringResource(R.string.try_searching))
                 }
                 isThereAnyDealSearchResult.isLoading ->{
                     LazyColumn(
@@ -147,7 +148,7 @@ fun SearchTab(
                     }
                 }
                 isThereAnyDealSearchResult.error!=null->{
-                    ErrorScreen(searchResult.value.error ?: "An error occurred")
+                    ErrorScreen(searchResult.value.error ?: stringResource(R.string.error_occurred))
                 }
                 isThereAnyDealSearchResult.data!=null->{
                     LazyColumn(

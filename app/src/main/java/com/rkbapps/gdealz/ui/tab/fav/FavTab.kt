@@ -82,7 +82,7 @@ import com.rkbapps.gdealz.util.StoreUtil
 import kotlinx.coroutines.launch
 
 
-private val pages = listOf("Games", "Stores")
+import androidx.compose.ui.res.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -90,6 +90,7 @@ fun FavTab(
     navController: NavHostController,
     viewModel: FavViewModel = hiltViewModel()
 ) {
+    val pages = listOf(stringResource(R.string.tab_games), stringResource(R.string.tab_stores))
 
     val favList by viewModel.favList.collectAsStateWithLifecycle()
     val favStoreIds by viewModel.favStoreIds.collectAsStateWithLifecycle()
@@ -104,7 +105,7 @@ fun FavTab(
 
     Scaffold(
         topBar = {
-            CommonTopBar("Fav", actions = {
+            CommonTopBar(stringResource(R.string.tab_fav), actions = {
                 AnimatedVisibility(favList.isNotEmpty() && pagerState.currentPage == 0 ) {
                     Button(
                         modifier = Modifier.drawBackdrop(
@@ -134,7 +135,7 @@ fun FavTab(
                         )
                     ) {
                         Icon(painter = painterResource(R.drawable.delete), "back")
-                        Text("Delete All")
+                        Text(stringResource(R.string.delete_all))
                     }
                 }
             })
@@ -143,7 +144,7 @@ fun FavTab(
 
         if (deletableFav.value != null) {
             DeleteAlertDialog(
-                warningText = "Are you sure you want to delete ${deletableFav.value?.title}?",
+                warningText = stringResource(R.string.delete_single_fav_warning, deletableFav.value?.title ?: ""),
                 onDismiss = {
                     deletableFav.value = null
                 },
@@ -157,7 +158,7 @@ fun FavTab(
 
         if (isDeleteAllAlertDialogOpen.value) {
             DeleteAlertDialog(
-                warningText = "Are you sure you want to delete all favorites?",
+                warningText = stringResource(R.string.delete_all_fav_warning),
                 onDismiss = {
                     isDeleteAllAlertDialogOpen.value = false
                 },
@@ -233,7 +234,7 @@ fun FavGameListUi(
     onDelete: (FavDeals) -> Unit
 ) {
     if (favList.isEmpty()) {
-        ErrorScreen("Nothing here..")
+        ErrorScreen(stringResource(R.string.nothing_here))
     } else {
         LazyColumn(
             modifier
@@ -301,7 +302,7 @@ fun FavStoreListUi(
     onStoreClick: (Int) -> Unit
 ) {
     if (stores.isNullOrEmpty()) {
-        ErrorScreen("No stores found")
+        ErrorScreen(stringResource(R.string.no_stores_found))
     } else {
         LazyColumn(
             modifier

@@ -1,5 +1,6 @@
 package com.rkbapps.gdealz.util
 
+import android.app.Activity
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
@@ -47,6 +48,13 @@ fun Context.hasNetwork(): Boolean? {
     if (activeNetwork != null && activeNetwork.isConnected)
         isConnected = true
     return isConnected
+}
+
+fun Activity.updateLocale(languageCode: String){
+    val locale = Locale(languageCode)
+    Locale.setDefault(locale)
+    val config = resources.configuration
+    config.setLocale(locale)
 }
 
 

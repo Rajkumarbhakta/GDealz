@@ -109,7 +109,7 @@ fun DealsTab(navController: NavHostController, viewModel: DealsTabViewModel = hi
                                     contentColor = MaterialTheme.colorScheme.onPrimary
                                 )
                             ) {
-                                Text("Clear Filter")
+                                Text(stringResource(R.string.clear_filter))
                             }
                         }
                     })
@@ -182,11 +182,11 @@ fun DealsTab(navController: NavHostController, viewModel: DealsTabViewModel = hi
                 ) {
                     Column {
                         Text(
-                            text = "Fresh Deals",
+                            text = stringResource(R.string.fresh_deals),
                             style = MaterialTheme.typography.headlineMedium,
                             fontWeight = FontWeight.W400,
                         )
-                        Text("Hot gaming deals updated daily")
+                        Text(stringResource(R.string.hot_deals_subtitle))
                     }
                     IconButton(onClick = {
                         isFilterDialogVisible.value = true
@@ -220,7 +220,7 @@ fun DealsTab(navController: NavHostController, viewModel: DealsTabViewModel = hi
                             item {
                                 val error =
                                     remember { isThereAnyDealPager.loadState.refresh as LoadState.Error }
-                                ErrorScreen(error.error.message ?: "Something went wrong.")
+                                ErrorScreen(error.error.message ?: stringResource(R.string.error_occurred))
                             }
                         }
 
@@ -229,7 +229,7 @@ fun DealsTab(navController: NavHostController, viewModel: DealsTabViewModel = hi
 
                     if (isThereAnyDealPager.itemCount <= 0) {
                         item {
-                            ErrorScreen("No Deals Found!")
+                            ErrorScreen(stringResource(R.string.no_deals_found))
                         }
                     }
 
@@ -263,7 +263,7 @@ fun DealsTab(navController: NavHostController, viewModel: DealsTabViewModel = hi
                         is LoadState.Error -> {
                             item {
                                 Text(
-                                    "Something went wrong!",
+                                    stringResource(R.string.error_occurred),
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .padding(10.dp),

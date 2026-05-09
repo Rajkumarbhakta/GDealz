@@ -36,20 +36,22 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.rkbapps.gdealz.R
 import com.rkbapps.gdealz.models.IsThereAnyDealFilters
 import com.rkbapps.gdealz.ui.theme.GDealzTheme
 import com.rkbapps.gdealz.util.IsThereAnyDealSortingOptions
 import com.rkbapps.gdealz.util.StoreUtil
 
 
-val filterOptions = listOf(
-    "Store",
-    "Price",
-    "Sorting",
-    "Discount",
+val filterOptionsMap = mapOf(
+    "Store" to R.string.filter_store,
+    "Price" to R.string.filter_price,
+    "Sorting" to R.string.filter_sorting,
+    "Discount" to R.string.filter_discount,
 )
 
 
@@ -82,7 +84,7 @@ fun FilterBottomSheet(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                "Filters",
+                stringResource(R.string.filters),
                 style = MaterialTheme.typography.titleLarge,
             )
             AnimatedVisibility(defaultFilter != updatedFilters) {
@@ -91,7 +93,7 @@ fun FilterBottomSheet(
                         onApplyFilters(updatedFilters)
                     }
                 ) {
-                    Text("Apply Filters")
+                    Text(stringResource(R.string.apply_filters))
                 }
             }
         }
@@ -104,24 +106,25 @@ fun FilterBottomSheet(
                     .padding(horizontal = 8.dp)
                     .weight(1f),
             ) {
-                filterOptions.forEach {
-                    if (selectFilterOption == it) {
+                filterOptionsMap.forEach { (key, resId) ->
+                    val label = stringResource(resId)
+                    if (selectFilterOption == key) {
                         OutlinedButton(
                             modifier = Modifier.fillMaxWidth(),
                             onClick = {
-                                selectFilterOption = it
+                                selectFilterOption = key
                             },
                             shape = RoundedCornerShape(10.dp)
                         ) {
-                            Text(it)
+                            Text(label)
                         }
                     } else {
                         TextButton(
                             modifier = Modifier.fillMaxWidth(),
                             onClick = {
-                                selectFilterOption = it
+                                selectFilterOption = key
                             }) {
-                            Text(it)
+                            Text(label)
                         }
                     }
                 }
@@ -136,7 +139,7 @@ fun FilterBottomSheet(
                 when (selectFilterOption) {
                     "Store" -> {
                         Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                            Text(text = "Select Stores")
+                            Text(text = stringResource(R.string.select_stores))
                             LazyColumn(
                                 contentPadding = ScaffoldDefaults.contentWindowInsets.asPaddingValues(),
                                 verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -190,7 +193,7 @@ fun FilterBottomSheet(
                     "Price" -> {
                         LazyColumn(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                             item {
-                                Text(text = "Choose Price Range")
+                                Text(text = stringResource(R.string.choose_price_range))
                             }
                             item {
                                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -200,7 +203,7 @@ fun FilterBottomSheet(
                                             updatedFilters = updatedFilters.copy(upperPrice = null, lowerPrice = null)
                                         }
                                     )
-                                    Text("Any")
+                                    Text(stringResource(R.string.any))
                                 }
                             }
                             item {
@@ -213,7 +216,7 @@ fun FilterBottomSheet(
                                             }
                                         }
                                     )
-                                    Text("Range")
+                                    Text(stringResource(R.string.range))
                                 }
                             }
                             item {
@@ -233,7 +236,7 @@ fun FilterBottomSheet(
                                                 }
                                             },
                                             placeholder = {
-                                                Text("Enter max price")
+                                                Text(stringResource(R.string.enter_max_price))
                                             },
                                             keyboardOptions = KeyboardOptions(
                                                 keyboardType = KeyboardType.Number
@@ -273,7 +276,7 @@ fun FilterBottomSheet(
                             verticalArrangement = Arrangement.spacedBy(10.dp),
                             modifier = Modifier.verticalScroll(rememberScrollState())
                         ) {
-                            Text(text = "Choose Price Range")
+                            Text(text = stringResource(R.string.choose_price_range))
 
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 RadioButton(
@@ -282,7 +285,7 @@ fun FilterBottomSheet(
                                         updatedFilters = updatedFilters.copy(discount = null)
                                     }
                                 )
-                                Text("Any")
+                                Text(stringResource(R.string.any))
                             }
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 RadioButton(
@@ -293,7 +296,7 @@ fun FilterBottomSheet(
                                         }
                                     }
                                 )
-                                Text("Range")
+                                Text(stringResource(R.string.range))
                             }
 
                             AnimatedVisibility(updatedFilters.discount != null) {
@@ -301,7 +304,7 @@ fun FilterBottomSheet(
                                     modifier = Modifier.fillMaxWidth(),
                                     verticalArrangement = Arrangement.spacedBy(10.dp)
                                 ) {
-                                    Text("Selected : ${updatedFilters.discount ?: "20"}%")
+                                    Text(stringResource(R.string.discount_selected, updatedFilters.discount ?: "20"))
                                     Slider(
                                         modifier = Modifier.fillMaxWidth(),
                                         value = (updatedFilters.discount?.toFloat() ?: 20f) / 100f,

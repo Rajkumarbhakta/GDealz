@@ -166,7 +166,7 @@ fun IsThereAnyDealSteamDetailsPage(
                 ) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Spacer(Modifier.weight(1f))
-                        Text(text = "Go official website")
+                        Text(text = stringResource(R.string.go_official_website))
                         Spacer(Modifier.weight(1f))
                         Icon(
                             imageVector = ImageVector.vectorResource(R.drawable.launch_link_open),
@@ -273,7 +273,7 @@ fun IsThereAnyDealSteamDetailsPage(
                                             " ${steamGameData.data?.data?.metacritic?.score ?: "-"}",
                                         )
                                         Text(
-                                            "META CRITIC",
+                                            stringResource(R.string.meta_critic),
                                             style = MaterialTheme.typography.labelSmall
                                         )
                                     }
@@ -332,13 +332,13 @@ fun IsThereAnyDealSteamDetailsPage(
                                 item {
                                     if (!gameData.data?.reviews.isNullOrEmpty()) {
                                         OverviewRowItems(
-                                            title = "REVIEWS",
+                                            title = stringResource(R.string.rating_and_review),
                                             value = getTotalReviews(
                                                 count = gameData.data?.reviews?.first()?.count ?: 0
                                             ),
                                             subTitle = "${gameData.data?.reviews?.first()?.score ?: 0}%",
                                             subTitle1 = gameData.data?.reviews?.first()?.source
-                                                ?: "-"
+                                                ?: stringResource(R.string.unknown)
                                         )
                                     }
                                 }
@@ -405,7 +405,7 @@ fun IsThereAnyDealSteamDetailsPage(
 
                             CommonCard(
                                 modifier = Modifier.weight(1f),
-                                title = "Publisher",
+                                title = stringResource(R.string.publisher),
                                 subtitle = try {
                                     steamGameData.data?.data?.publishers?.first() ?: "-"
                                 } catch (_: Exception) {
@@ -425,21 +425,21 @@ fun IsThereAnyDealSteamDetailsPage(
                     //about the game
                     item {
                         Text(
-                            "About this Game",
+                            stringResource(R.string.about_this_game),
                             modifier = Modifier.padding(horizontal = 16.dp),
                             style = MaterialTheme.typography.headlineSmall
                         )
                     }
                     item {
                         Text(
-                            steamGameData.data?.data?.shortDescription ?: "Nothing available",
+                            steamGameData.data?.data?.shortDescription ?: stringResource(R.string.nothing_here),
                             modifier = Modifier.padding(horizontal = 16.dp),
                         )
                     }
                     // screenshots
                     item {
                         Text(
-                            "Screenshots",
+                            stringResource(R.string.screenshots),
                             modifier = Modifier.padding(horizontal = 16.dp),
                             style = MaterialTheme.typography.headlineSmall
                         )
@@ -500,7 +500,7 @@ fun IsThereAnyDealSteamDetailsPage(
                     //price history
                     item {
                         Text(
-                            "Price History",
+                            stringResource(R.string.price_history),
                             modifier = Modifier.padding(horizontal = 16.dp),
                             style = MaterialTheme.typography.headlineSmall
                         )
@@ -530,19 +530,19 @@ fun IsThereAnyDealSteamDetailsPage(
                                 ) {
                                     gamePriceInfo.data?.historyLow?.all?.let {
                                         PriceHistoryCard(
-                                            title = "Lowest in history",
+                                            title = stringResource(R.string.lowest_in_history),
                                             price = it
                                         )
                                     }
                                     gamePriceInfo.data?.historyLow?.y1?.let {
                                         PriceHistoryCard(
-                                            title = "Lowest in 1 year",
+                                            title = stringResource(R.string.lowest_in_1_year),
                                             price = it
                                         )
                                     }
                                     gamePriceInfo.data?.historyLow?.m3?.let {
                                         PriceHistoryCard(
-                                            title = "Lowest in 3 months",
+                                            title = stringResource(R.string.lowest_in_3_months),
                                             price = it
                                         )
                                     }
@@ -554,7 +554,7 @@ fun IsThereAnyDealSteamDetailsPage(
                     //Deals
                     item {
                         Text(
-                            "Deals",
+                            stringResource(R.string.special_deal),
                             modifier = Modifier.padding(horizontal = 16.dp),
                             style = MaterialTheme.typography.headlineSmall
                         )
@@ -597,7 +597,7 @@ fun IsThereAnyDealSteamDetailsPage(
                     //Features
                     item {
                         Text(
-                            "Features",
+                            stringResource(R.string.features),
                             modifier = Modifier.padding(horizontal = 16.dp),
                             style = MaterialTheme.typography.headlineSmall
                         )
@@ -623,7 +623,7 @@ fun IsThereAnyDealSteamDetailsPage(
                     // system requirement
                     item {
                         Text(
-                            "System Requirements",
+                            stringResource(R.string.system_requirements),
                             modifier = Modifier.padding(horizontal = 16.dp),
                             style = MaterialTheme.typography.headlineSmall
                         )

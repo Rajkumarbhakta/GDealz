@@ -1,7 +1,9 @@
 package com.rkbapps.gdealz.ui.screens.dealslookup
 
+import android.content.Context
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import com.rkbapps.gdealz.R
 import com.rkbapps.gdealz.db.dao.FavDealsDao
 import com.rkbapps.gdealz.db.dao.StoreDao
 import com.rkbapps.gdealz.db.entity.FavDeals
@@ -11,6 +13,7 @@ import com.rkbapps.gdealz.network.NetworkResponse
 import com.rkbapps.gdealz.network.api.CheapSharkApi
 import com.rkbapps.gdealz.network.safeApiCall
 import com.rkbapps.gdealz.util.UiState
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -20,6 +23,7 @@ class DealLookupRepository @Inject constructor(
     private val api: CheapSharkApi,
     private val storeDao: StoreDao,
     private val favDealsDao: FavDealsDao,
+    @ApplicationContext private val context: Context
 ) {
     private val _dealsData = MutableStateFlow(UiState<DealsInfo>())
     val dealsData = _dealsData.asStateFlow()
@@ -44,11 +48,11 @@ class DealLookupRepository @Inject constructor(
 
             NetworkResponse.Error.NetworkError -> {
                 _dealsData.value =
-                    UiState(error = "Unable to connect please check your internet connection.")
+                    UiState(error = context.getString(R.string.unable_to_connect))
             }
 
             NetworkResponse.Error.UnknownError -> {
-                _dealsData.value = UiState(error = "Something went wrong")
+                _dealsData.value = UiState(error = context.getString(R.string.something_went_wrong))
             }
 
             is NetworkResponse.Success<DealsInfo> -> {
@@ -109,9 +113,9 @@ class DealLookupRepository @Inject constructor(
                 )
             )
             isFav.value = true
-            _dealFavStatus.emit(FavDealsState(true, "Added to Favourites"))
+            _dealFavStatus.emit(FavDealsState(true, context.getString(R.string.added_to_favourites)))
         } catch (e: Exception) {
-            _dealFavStatus.emit(FavDealsState(false, "Failed to add to Favourites"))
+            _dealFavStatus.emit(FavDealsState(false, context.getString(R.string.failed_to_add_to_favourites)))
             e.printStackTrace()
         }
 
@@ -122,9 +126,9 @@ class DealLookupRepository @Inject constructor(
             val deal = favDealsDao.findByDealID(dealID = dealId)
             favDealsDao.deleteFavDeals(deal)
             isFav.value = false
-            _dealFavStatus.emit(FavDealsState(false, "Removed from Favourites"))
+            _dealFavStatus.emit(FavDealsState(false, context.getString(R.string.removed_from_favourites)))
         } catch (e: Exception) {
-            _dealFavStatus.emit(FavDealsState(false, "Failed to remove from Favourites"))
+            _dealFavStatus.emit(FavDealsState(false, context.getString(R.string.failed_to_remove_from_favourites)))
             e.printStackTrace()
         }
     }

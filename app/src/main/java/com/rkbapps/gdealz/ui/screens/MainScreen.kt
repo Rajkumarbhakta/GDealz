@@ -19,6 +19,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
@@ -30,6 +31,8 @@ import com.rkbapps.gdealz.navigation.BottomNavigationItem
 import com.rkbapps.gdealz.navigation.BottomNavigationNavGraph
 import com.rkbapps.gdealz.ui.composables.BottomNavigationBar
 
+
+import com.rkbapps.gdealz.R
 
 @Composable
 fun MainScreen(navController: NavHostController){
@@ -44,13 +47,16 @@ fun MainScreen(navController: NavHostController){
 
     val navController = rememberNavController()
 
+    val notificationEnabledMsg = stringResource(R.string.notifications_enabled)
+    val notificationDisabledMsg = stringResource(R.string.notifications_disabled)
+
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission(),
         onResult = { isGranted ->
             if (isGranted) {
-                Toast.makeText(context, "Notifications enabled", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, notificationEnabledMsg, Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(context, "Notifications disabled", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, notificationDisabledMsg, Toast.LENGTH_SHORT).show()
             }
         }
     )

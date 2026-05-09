@@ -124,7 +124,7 @@ fun SteamDetailsPage(
                     ) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Spacer(Modifier.weight(1f))
-                            Text(text = "Grab the deal")
+                            Text(text = stringResource(R.string.grab_the_deal))
                             Spacer(Modifier.weight(1f))
                             Icon(
                                 imageVector = ImageVector.vectorResource(R.drawable.launch_link_open),
@@ -143,7 +143,7 @@ fun SteamDetailsPage(
                     ) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Spacer(Modifier.weight(1f))
-                            Text(text = "Go official website")
+                            Text(text = stringResource(R.string.go_official_website))
                             Spacer(Modifier.weight(1f))
                             Icon(
                                 imageVector = ImageVector.vectorResource(R.drawable.launch_link_open),
@@ -235,7 +235,7 @@ fun SteamDetailsPage(
                                             " ${steamGameData.data.data?.metacritic?.score ?: "-"}",
                                         )
                                         Text(
-                                            "META CRITIC",
+                                            stringResource(R.string.meta_critic),
                                             style = MaterialTheme.typography.labelSmall
                                         )
                                     }
@@ -274,14 +274,14 @@ fun SteamDetailsPage(
                             ) {
                                 item {
                                     OverviewRowItems(
-                                        title = "REVIEWS",
+                                        title = stringResource(R.string.rating_and_review),
                                         value = getTotalReviews(
                                             count = dealsData.value.data?.gameInfo?.steamRatingCount
                                                 ?: "0"
                                         ),
                                         subTitle = "${dealsData.value.data?.gameInfo?.steamRatingPercent ?: 0}%",
                                         subTitle1 = dealsData.value.data?.gameInfo?.steamRatingText
-                                            ?: "Unknown"
+                                            ?: stringResource(R.string.unknown)
                                     )
                                 }
                                 item {
@@ -302,9 +302,9 @@ fun SteamDetailsPage(
 
                                     OverviewRowItems(
                                         title = "DEAL",
-                                        value = "${percentage}% OFF",
+                                        value = "${percentage}% ${stringResource(R.string.off)}",
                                         subTitle = "$${CurrencyAndCountryUtil.formatPrice(dealsData.value.data?.gameInfo?.retailPrice)}",
-                                        subTitle1 = if (isFree) "Free" else "$${CurrencyAndCountryUtil.formatPrice(dealsData.value.data?.gameInfo?.salePrice)}",
+                                        subTitle1 = if (isFree) stringResource(R.string.free) else "$${CurrencyAndCountryUtil.formatPrice(dealsData.value.data?.gameInfo?.salePrice)}",
                                         isSubTitleLineThrough = true
                                     )
                                 }
@@ -372,7 +372,7 @@ fun SteamDetailsPage(
                                 )
                                 CommonCard(
                                     modifier = Modifier,
-                                    title = "Publisher",
+                                    title = stringResource(R.string.publisher),
                                     subtitle = try {
                                         steamGameData.data.data?.publishers?.first() ?: "-"
                                     } catch (_: Exception) {
@@ -391,7 +391,7 @@ fun SteamDetailsPage(
                                         horizontalAlignment = Alignment.CenterHorizontally
                                     ) {
                                         Text(
-                                            text = "Available On",
+                                            text = stringResource(R.string.available_on),
                                             fontWeight = FontWeight.Bold,
                                             textAlign = TextAlign.Center
                                         )
@@ -422,7 +422,7 @@ fun SteamDetailsPage(
                                         }
                                         Spacer(modifier = Modifier.height(8.dp))
                                         Text(
-                                            text = storeData.value?.storeName ?: "Unknown",
+                                            text = storeData.value?.storeName ?: stringResource(R.string.unknown),
                                             textAlign = TextAlign.Center
                                         )
 
@@ -435,21 +435,21 @@ fun SteamDetailsPage(
 
                     item {
                         Text(
-                            "About this Game",
+                            stringResource(R.string.about_this_game),
                             modifier = Modifier.padding(horizontal = 16.dp),
                             style = MaterialTheme.typography.headlineSmall
                         )
                     }
                     item {
                         Text(
-                            steamGameData.data.data?.shortDescription ?: "Nothing available",
+                            steamGameData.data.data?.shortDescription ?: stringResource(R.string.nothing_here),
                             modifier = Modifier.padding(horizontal = 16.dp),
                         )
                     }
 
                     item {
                         Text(
-                            "Screenshots",
+                            stringResource(R.string.screenshots),
                             modifier = Modifier.padding(horizontal = 16.dp),
                             style = MaterialTheme.typography.headlineSmall
                         )
@@ -502,7 +502,7 @@ fun SteamDetailsPage(
 
                     item {
                         Text(
-                            "Features",
+                            stringResource(R.string.features),
                             modifier = Modifier.padding(horizontal = 16.dp),
                             style = MaterialTheme.typography.headlineSmall
                         )
@@ -528,7 +528,7 @@ fun SteamDetailsPage(
 
                     item {
                         Text(
-                            "System Requirements",
+                            stringResource(R.string.system_requirements),
                             modifier = Modifier.padding(horizontal = 16.dp),
                             style = MaterialTheme.typography.headlineSmall
                         )

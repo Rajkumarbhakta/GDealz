@@ -1,5 +1,6 @@
 package com.rkbapps.gdealz.ui.tab.free
 
+import com.rkbapps.gdealz.R
 import com.rkbapps.gdealz.db.dao.GiveawaysDao
 import com.rkbapps.gdealz.models.Giveaway
 import com.rkbapps.gdealz.network.api.GamePowerApi
@@ -7,13 +8,16 @@ import com.rkbapps.gdealz.network.GiveawayPlatforms
 import com.rkbapps.gdealz.network.NetworkResponse
 import com.rkbapps.gdealz.network.safeApiCall
 import com.rkbapps.gdealz.util.UiState
+import android.content.Context
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 class FreeDealsRepository @Inject constructor(
     private val api: GamePowerApi,
-    private val giveawaysDao: GiveawaysDao
+    private val giveawaysDao: GiveawaysDao,
+    @ApplicationContext private val context: Context
 ) {
 
     private val _giveawaysState = MutableStateFlow(UiState<List<Giveaway>>())
@@ -34,17 +38,17 @@ class FreeDealsRepository @Inject constructor(
         when (val response = safeApiCall { api.getGiveawayByFilter(platform = platform) }) {
             is NetworkResponse.Error.HttpError -> {
                 _giveawaysState.value =
-                    UiState(error = "Code : ${response.errorCode} Error : ${response.error.localizedMessage}")
+                    UiState(error = context.getString(R.string.error_code_message, response.errorCode, response.error.localizedMessage))
             }
 
             NetworkResponse.Error.NetworkError -> {
                 _giveawaysState.value =
-                    UiState(error = "Unable to connect please check your internet connection.")
+                    UiState(error = context.getString(R.string.unable_to_connect))
             }
 
             NetworkResponse.Error.UnknownError -> {
                 _giveawaysState.value =
-                    UiState(error = "No active giveaways available at the moment, please try again later.")
+                    UiState(error = context.getString(R.string.no_active_giveaways))
             }
 
             is NetworkResponse.Success<List<Giveaway>?> -> {
@@ -54,7 +58,7 @@ class FreeDealsRepository @Inject constructor(
                     _giveawaysState.value = UiState(data = data)
                 } else {
                     _giveawaysState.value =
-                        UiState(error = "No active giveaways available at the moment, please try again later.")
+                        UiState(error = context.getString(R.string.no_active_giveaways))
                 }
             }
         }
@@ -75,17 +79,17 @@ class FreeDealsRepository @Inject constructor(
         when (val response = safeApiCall { api.getGiveawayByFilter(platform = platform) }) {
             is NetworkResponse.Error.HttpError -> {
                 _giveawaysState.value =
-                    UiState(error = "Code : ${response.errorCode} Error : ${response.error.localizedMessage}")
+                    UiState(error = context.getString(R.string.error_code_message, response.errorCode, response.error.localizedMessage))
             }
 
             NetworkResponse.Error.NetworkError -> {
                 _giveawaysState.value =
-                    UiState(error = "Unable to connect please check your internet connection.")
+                    UiState(error = context.getString(R.string.unable_to_connect))
             }
 
             NetworkResponse.Error.UnknownError -> {
                 _giveawaysState.value =
-                    UiState(error = "No active giveaways available at the moment, please try again later.")
+                    UiState(error = context.getString(R.string.no_active_giveaways))
             }
 
             is NetworkResponse.Success<List<Giveaway>?> -> {
@@ -94,7 +98,7 @@ class FreeDealsRepository @Inject constructor(
                     _giveawaysState.value = UiState(data = data)
                 } else {
                     _giveawaysState.value =
-                        UiState(error = "No active giveaways available at the moment, please try again later.")
+                        UiState(error = context.getString(R.string.no_active_giveaways))
                 }
             }
         }

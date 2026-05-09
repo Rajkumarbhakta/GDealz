@@ -30,8 +30,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.rkbapps.gdealz.R
 import com.rkbapps.gdealz.util.Country
 
 
@@ -65,7 +67,7 @@ fun ChooseCountryDialog(
             .padding(10.dp)
     ) {
         Text(
-            "Choose Country",
+            stringResource(R.string.choose_country),
             style = MaterialTheme.typography.titleLarge,
             modifier = Modifier.fillMaxWidth()
         )
@@ -80,7 +82,7 @@ fun ChooseCountryDialog(
                 searchQuery = it
             },
             placeholder = {
-                Text("Search country")
+                Text(stringResource(R.string.search_country))
             },
             colors = TextFieldDefaults.colors(
                 focusedIndicatorColor = Color.Transparent,
@@ -111,7 +113,7 @@ fun ChooseCountryDialog(
                 onSelect(selectedCountry)
             }
         ) {
-            Text("Confirm")
+            Text(stringResource(R.string.confirm))
         }
 
     }
