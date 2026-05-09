@@ -33,6 +33,7 @@
     <string name="check_out_giveaway">%1$s 相当のこのギブアウェイをチェック</string>
     <string name="language">言語</string>
     <string name="select_language">言語を選択</string>
+    <string name="language_description">アプリケーションで使用する優先言語を選択して、コンテンツをその言語で表示します。ゲームのコンテンツが選択した言語をサポートしていない場合は、デフォルトで英語 (en) が使用されます。</string>
     <string name="english">英語</string>
     <string name="russian">ロシア語</string>
     <string name="hindi">ヒンディー語</string>

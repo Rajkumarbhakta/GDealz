@@ -33,9 +33,15 @@
     <string name="check_out_giveaway">Посмотрите этот розыгрыш стоимостью %1$s</string>
     <string name="language">Язык</string>
     <string name="select_language">Выберите язык</string>
+    <string name="language_description">Выберите предпочтительный язык для приложения, чтобы просматривать контент на вашем языке. Если игровой контент не поддерживает ваш язык, по умолчанию будет использоваться английский (en).</string>
     <string name="english">Английский</string>
     <string name="russian">Русский</string>
     <string name="hindi">Хинди</string>
+    <string name="german">Немецкий</string>
+    <string name="french">Французский</string>
+    <string name="japanese">Японский</string>
+    <string name="korean">Корейский</string>
+    <string name="bengali">Бенгальский</string>
     <string name="settings">Настройки</string>
     <string name="follow_system_theme">Следовать системной теме</string>
     <string name="follow_system_theme_desc">Использовать светлую или темную тему на основе системных настроек.</string>

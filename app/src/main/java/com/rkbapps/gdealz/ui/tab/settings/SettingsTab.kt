@@ -154,7 +154,7 @@ fun SettingsScreen(
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
 
-            item(key=1) {
+            item(key="top header") {
                 ElevatedCard (
                     modifier = Modifier.fillMaxWidth(),
                     colors = CardDefaults.elevatedCardColors(
@@ -227,7 +227,7 @@ fun SettingsScreen(
                 }
             }
 
-            item(key=2) {
+            item(key="country") {
                 ChooseCountryItem(
                     selectedCountry = selectedCountryEnum
                 ) { isChooseCountryDialogOpen = true }
@@ -241,7 +241,7 @@ fun SettingsScreen(
                 }
             }
 
-            item(key=3) {
+            item(key="theme") {
                 TextWithSwitch(
                     text = stringResource(R.string.follow_system_theme),
                     subText = stringResource(R.string.follow_system_theme_desc),
@@ -251,7 +251,7 @@ fun SettingsScreen(
                     viewModel.updateIsSystemTheme(it)
                 }
             }
-            item(key=4) {
+            item(key="dark theme") {
                 AnimatedVisibility(!isSystemTheme) {
                     TextWithSwitch(
                         text = stringResource(R.string.dark_theme),
@@ -262,7 +262,7 @@ fun SettingsScreen(
                     }
                 }
             }
-            item(key=5) {
+            item(key="dynamic color") {
                 if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                     TextWithSwitch(
                         text = stringResource(R.string.dynamic_color),
@@ -274,7 +274,7 @@ fun SettingsScreen(
                     }
                 }
             }
-            item(key=6) {
+            item(key="nsfw content") {
                 TextWithSwitch(
                     text = stringResource(R.string.nsfw_content),
                     subText = stringResource(R.string.nsfw_content_desc),
@@ -285,7 +285,7 @@ fun SettingsScreen(
                 }
             }
 
-            item(key=7) {
+            item(key="privacy policy") {
                 TextWithArrow(
                     text = stringResource(R.string.privacy_policy),
                     subText = stringResource(R.string.privacy_policy_desc),
@@ -294,7 +294,7 @@ fun SettingsScreen(
                     uriHandler.openUri("https://sites.google.com/view/gdealz/home")
                 }
             }
-            item(key=8) {
+            item(key="disclaimer") {
                 Card(modifier = Modifier.fillMaxWidth()) {
                     Text(
                         stringResource(R.string.disclaimer),
@@ -473,7 +473,7 @@ fun LanguageItem(
                 style = MaterialTheme.typography.titleLarge,
             )
             Text(
-                stringResource(R.string.select_language),
+                stringResource(R.string.language_description),
                 style = MaterialTheme.typography.labelSmall
             )
 

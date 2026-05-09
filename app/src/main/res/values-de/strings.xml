@@ -33,6 +33,7 @@
     <string name="check_out_giveaway">Schau dir dieses Gewinnspiel im Wert von %1$s an</string>
     <string name="language">Sprache</string>
     <string name="select_language">Sprache auswählen</string>
+    <string name="language_description">Wählen Sie Ihre bevorzugte Sprache für die Anwendung, um Inhalte in Ihrer Sprache zu sehen. Wenn ein Spielinhalt Ihre Sprache nicht unterstützt, wird standardmäßig Englisch (en) verwendet.</string>
     <string name="english">Englisch</string>
     <string name="russian">Russisch</string>
     <string name="hindi">Hindi</string>

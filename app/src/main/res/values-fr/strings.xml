@@ -33,6 +33,7 @@
     <string name="check_out_giveaway">Découvrez ce cadeau d\'une valeur de %1$s</string>
     <string name="language">Langue</string>
     <string name="select_language">Sélectionner la langue</string>
+    <string name="language_description">Choisissez votre langue préférée pour l\'application afin de voir le contenu dans votre langue. Si un contenu de jeu n\'est pas disponible dans votre langue, il sera affiché en anglais (en) par défaut.</string>
     <string name="english">Anglais</string>
     <string name="russian">Russe</string>
     <string name="hindi">Hindi</string>

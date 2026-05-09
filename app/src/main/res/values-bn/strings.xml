@@ -33,6 +33,7 @@
     <string name="check_out_giveaway">%1$s মূল্যের এই গিভঅ্যাওয়েটি দেখুন</string>
     <string name="language">ভাষা</string>
     <string name="select_language">ভাষা নির্বাচন করুন</string>
+    <string name="language_description">অ্যাপ্লিকেশনের জন্য আপনার পছন্দসই ভাষা চয়ন করুন যাতে আপনি আপনার ভাষায় বিষয়বস্তু দেখতে পারেন। যদি কোনো গেমের বিষয়বস্তু আপনার ভাষায় সমর্থন না করে তবে এটি ডিফল্টভাবে ইংরেজিতে (en) দেখাবে।</string>
     <string name="english">ইংরেজি</string>
     <string name="russian">রাশিয়ান</string>
     <string name="hindi">হিন্দি</string>

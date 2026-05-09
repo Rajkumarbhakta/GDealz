@@ -34,9 +34,15 @@
     <string name="check_out_giveaway">%1$s मूल्य के इस गिवअवे को देखें</string>
     <string name="language">भाषा</string>
     <string name="select_language">भाषा चुनें</string>
+    <string name="language_description">एप्लिकेशन के लिए अपनी पसंदीदा भाषा चुनें ताकि आप अपनी भाषा में सामग्री देख सकें। यदि किसी गेम की सामग्री आपकी भाषा में समर्थित नहीं है, तो यह डिफ़ॉल्ट रूप से अंग्रेजी (en) में होगी।</string>
     <string name="english">अंग्रेज़ी</string>
     <string name="russian">रूसी</string>
     <string name="hindi">हिन्दी</string>
+    <string name="german">जर्मन</string>
+    <string name="french">फ्रेंच</string>
+    <string name="japanese">जापानी</string>
+    <string name="korean">कोरियाई</string>
+    <string name="bengali">बंगाली</string>
     <string name="settings">सेटिंग्स</string>
     <string name="follow_system_theme">सिस्टम थीम का पालन करें</string>
     <string name="follow_system_theme_desc">आपकी सिस्टम सेटिंग्स के आधार पर लाइट या डार्क थीम का उपयोग करें।</string>

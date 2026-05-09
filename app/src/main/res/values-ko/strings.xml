@@ -33,6 +33,7 @@
     <string name="check_out_giveaway">%1$s 상당의 이 기브어웨이를 확인하세요</string>
     <string name="language">언어</string>
     <string name="select_language">언어 선택</string>
+    <string name="language_description">애플리케이션에서 선호하는 언어를 선택하여 해당 언어로 콘텐츠를 확인하세요. 게임 콘텐츠가 사용자의 언어를 지원하지 않는 경우 기본적으로 영어(en)로 표시됩니다.</string>
     <string name="english">영어</string>
     <string name="russian">러시아어</string>
     <string name="hindi">힌디어</string>

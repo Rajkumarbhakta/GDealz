@@ -33,6 +33,7 @@
     <string name="check_out_giveaway">Check out this giveaway worth %1$s</string>
     <string name="language">Language</string>
     <string name="select_language">Select Language</string>
+    <string name="language_description">Choose your preferred language for the application to see content in your language. If any game content does not have support for your language, it will default to English (en).</string>
     <string name="english">English</string>
     <string name="russian">Russian</string>
     <string name="hindi">Hindi</string>
