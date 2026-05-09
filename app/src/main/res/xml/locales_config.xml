@@ -3,4 +3,9 @@
    <locale android:name="en"/>
    <locale android:name="ru"/>
    <locale android:name="hi"/>
+   <locale android:name="de"/>
+   <locale android:name="fr"/>
+   <locale android:name="ja"/>
+   <locale android:name="ko"/>
+   <locale android:name="bn"/>
 </locale-config>

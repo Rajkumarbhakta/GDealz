@@ -1,0 +1,159 @@
+<resources>
+    <string name="app_name">G Dealz</string>
+    <string name="search_country">国を検索</string>
+    <string name="confirm">確認</string>
+    <string name="delete_confirm_title">削除しますか？</string>
+    <string name="delete">削除</string>
+    <string name="cancel">キャンセル</string>
+    <string name="apply_filter">フィルターを適用</string>
+    <string name="all">すべて</string>
+    <string name="ascending">昇順</string>
+    <string name="descending">降順</string>
+    <string name="grab_the_deal">お得な情報を手に入れる</string>
+    <string name="grab_deal">セール情報を取得</string>
+    <string name="mark_as_unclaimed">未受取としてマーク</string>
+    <string name="go_official_website">公式サイトへ</string>
+    <string name="clear_filter">フィルターをクリア</string>
+    <string name="hot_deals_subtitle">毎日更新される注目のゲームセール情報</string>
+    <string name="apply_filters">フィルターを適用</string>
+    <string name="select_stores">ストアを選択</string>
+    <string name="choose_price_range">価格帯を選択</string>
+    <string name="any">任意</string>
+    <string name="range">範囲</string>
+    <string name="enter_max_price">最高価格を入力</string>
+    <string name="discount_selected">選択済み : %1$s%%</string>
+    <string name="delete_all">すべて削除</string>
+    <string name="games">ゲーム</string>
+    <string name="search_here">ここで検索…</string>
+    <string name="search">検索</string>
+    <string name="raise_a_issue">問題を報告</string>
+    <string name="buy_me_a_coffee">コーヒーをおごる</string>
+    <string name="notifications_enabled">通知が有効です</string>
+    <string name="notifications_disabled">通知が無効です</string>
+    <string name="check_out_giveaway">%1$s 相当のこのギブアウェイをチェック</string>
+    <string name="language">言語</string>
+    <string name="select_language">言語を選択</string>
+    <string name="english">英語</string>
+    <string name="russian">ロシア語</string>
+    <string name="hindi">ヒンディー語</string>
+    <string name="german">ドイツ語</string>
+    <string name="french">フランス語</string>
+    <string name="japanese">日本語</string>
+    <string name="korean">韓国語</string>
+    <string name="bengali">ベンガル語</string>
+    <string name="settings">設定</string>
+    <string name="follow_system_theme">システムのテーマに従う</string>
+    <string name="follow_system_theme_desc">システムの設定に基づいてライトまたはダークテーマを使用します。</string>
+    <string name="dark_theme">ダークテーマ</string>
+    <string name="dynamic_color">ダイナミックカラー</string>
+    <string name="dynamic_color_desc">よりパーソナライズされた体験のためにダイナミックカラーを有効にします。</string>
+    <string name="nsfw_content">NSFWコンテンツ</string>
+    <string name="nsfw_content_desc">オンにすると、成人向けまたは機密性の高いコンテンツを表示します。</string>
+    <string name="privacy_policy">プライバシーポリシー</string>
+    <string name="privacy_policy_desc">プライバシーポリシーを読む</string>
+    <string name="disclaimer">ゲームおよび価格情報は CheapShark、IsThereAnyDeal.com、および Steam から取得しています。G Dealz は、この情報の正確性、可用性、または完全性を保証しません。</string>
+    <string name="country">国</string>
+    <string name="country_desc">国を変更して、現地の通貨でセール情報を表示します。現地の通貨でのセールデータが利用できない場合は、デフォルトで米ドル ($) になります。</string>
+    <string name="choose_country">国を選択</string>
+    <string name="filters">フィルター</string>
+    <string name="filter_store">ストア</string>
+    <string name="filter_price">価格</string>
+    <string name="filter_sorting">並べ替え</string>
+    <string name="filter_order">順序</string>
+    <string name="special_deal">特別セール</string>
+    <string name="free">無料</string>
+    <string name="off">オフ</string>
+    <string name="rating_and_review">評価とレビュー</string>
+    <string name="reviews">レビュー</string>
+    <string name="meta_critic">Meta Critic</string>
+    <string name="total_rating">総評価数</string>
+    <string name="rate">評価する</string>
+    <string name="overall_rating">総合評価</string>
+    <string name="unknown">不明</string>
+    <string name="available_on">利用可能 :</string>
+    <string name="release_info">リリース情報</string>
+    <string name="fresh_deals">最新のセール情報</string>
+    <string name="no_deals_found">セール情報が見つかりません！</string>
+    <string name="filter_discount">割引率</string>
+    <string name="try_searching">何か検索してみてください…</string>
+    <string name="error_occurred">エラーが発生しました</string>
+    <string name="tab_stores">ストア</string>
+    <string name="tab_fav">お気に入り</string>
+    <string name="nothing_here">ここには何もありません..</string>
+    <string name="no_stores_found">ストアが見つかりません</string>
+    <string name="delete_single_fav_warning">%1$s を削除してもよろしいですか？</string>
+    <string name="delete_all_fav_warning">すべてのお気に入りを削除してもよろしいですか？</string>
+    <string name="tab_games">ゲーム</string>
+    <string name="un_claimed">未受取</string>
+    <string name="claimed">受取済み</string>
+    <string name="free_title">無料</string>
+    <string name="active">アクティブ</string>
+    <string name="expired">期限切れ</string>
+    <string name="no_active_giveaways">現在、有効なギブアウェイはありません。後でもう一度お試しください。</string>
+    <string name="nothing_claimed_yet">まだ何も受け取っていません。</string>
+    <string name="description">説明</string>
+    <string name="published">公開日</string>
+    <string name="instruction">手順</string>
+    <string name="publisher">パブリッシャー</string>
+    <string name="price_history">価格履歴</string>
+    <string name="lowest_in_history">過去最安値</string>
+    <string name="lowest_in_1_year">過去1年間の最安値</string>
+    <string name="lowest_in_3_months">過去3ヶ月間の最安値</string>
+    <string name="features">特徴</string>
+    <string name="about_this_game">このゲームについて</string>
+    <string name="screenshots">スクリーンショット</string>
+    <string name="system_requirements">システム要件</string>
+    <string name="mature_18_plus">18+</string>
+    <string name="mature_all">すべて</string>
+    <string name="added_to_favourites">お気に入りに追加しました</string>
+    <string name="failed_to_add_to_favourites">お気に入りへの追加に失敗しました</string>
+    <string name="removed_from_favourites">お気に入りから削除しました</string>
+    <string name="failed_to_remove_from_favourites">お気に入りからの削除に失敗しました</string>
+    <string name="unable_to_connect">接続できません。インターネット接続を確認してください。</string>
+    <string name="new_giveaway">新しいギブアウェイ: %1$s</string>
+    <string name="claim">受け取る</string>
+    <string name="something_went_wrong">問題が発生しました</string>
+    <string name="something_went_wrong_try_again">問題が発生しました。後でもう一度お試しください。</string>
+    <string name="no_data_found">データが見つかりません</string>
+    <string name="steam_game_id_not_found">SteamゲームIDが見つかりません</string>
+    <string name="invalid_search_query">無効な検索クエリです。英数字とスペースのみを使用してください。</string>
+    <string name="http_error">HTTPエラー: %1$d。後でもう一度お試しください。</string>
+    <string name="network_error">ネットワークエラー。接続を確認してください。</string>
+    <string name="no_results_found">\'%1$s\' の結果が見つかりませんでした。</string>
+    <string name="tab_deals">セール</string>
+    <string name="error_code_message">コード : %1$d エラー : %2$s</string>
+    <string name="unable_to_get_game_details">ゲームの詳細を取得できません。</string>
+    <string name="platform">プラットフォーム</string>
+    <string name="type">タイプ</string>
+    <string name="offer_ending">終了まで</string>
+    <string name="favorite_icon">お気に入りアイコン</string>
+    <string name="banner">バナー</string>
+    <string name="rank">ランク</string>
+    <string name="released">リリース済み</string>
+    <string name="coming">配信予定</string>
+    <string name="soon">近日公開</string>
+    <string name="developer">開発元</string>
+    <string name="open_deal">セールを開く</string>
+    <string name="not_available">-</string>
+    <string name="score_percent_format">%1$d%%</string>
+    <string name="discount_percent_format">%1$d%% %2$s</string>
+    <string-array name="months">
+        <item>1月</item>
+        <item>2月</item>
+        <item>3月</item>
+        <item>4月</item>
+        <item>5月</item>
+        <item>6月</item>
+        <item>7月</item>
+        <item>8月</item>
+        <item>9月</item>
+        <item>10月</item>
+        <item>11月</item>
+        <item>12月</item>
+    </string-array>
+    <string name="genre">ジャンル</string>
+    <string name="age_limit_format">%1$s+</string>
+    <string name="deal_label">セール</string>
+    <string name="price_format">¥%1$s</string>
+    <string name="store_logo">ストアロゴ</string>
+</resources>

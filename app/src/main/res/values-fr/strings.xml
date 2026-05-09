@@ -1,0 +1,159 @@
+<resources>
+    <string name="app_name">G Dealz</string>
+    <string name="search_country">Chercher un pays</string>
+    <string name="confirm">Confirmer</string>
+    <string name="delete_confirm_title">Supprimer ?</string>
+    <string name="delete">Supprimer</string>
+    <string name="cancel">Annuler</string>
+    <string name="apply_filter">Appliquer le filtre</string>
+    <string name="all">Tout</string>
+    <string name="ascending">Croissant</string>
+    <string name="descending">Décroissant</string>
+    <string name="grab_the_deal">Saisir l\'offre</string>
+    <string name="grab_deal">Saisir l\'offre</string>
+    <string name="mark_as_unclaimed">Marquer comme non réclamé</string>
+    <string name="go_official_website">Aller sur le site officiel</string>
+    <string name="clear_filter">Effacer le filtre</string>
+    <string name="hot_deals_subtitle">Offres de jeux brûlantes mises à jour quotidiennement</string>
+    <string name="apply_filters">Appliquer les filtres</string>
+    <string name="select_stores">Sélectionner les magasins</string>
+    <string name="choose_price_range">Choisir une fourchette de prix</string>
+    <string name="any">N\'importe quel</string>
+    <string name="range">Plage</string>
+    <string name="enter_max_price">Entrer le prix max</string>
+    <string name="discount_selected">Sélectionné : %1$s%%</string>
+    <string name="delete_all">Tout supprimer</string>
+    <string name="games">Jeux</string>
+    <string name="search_here">Chercher ici…</string>
+    <string name="search">Rechercher</string>
+    <string name="raise_a_issue">Signaler un problème</string>
+    <string name="buy_me_a_coffee">Achetez-moi un café</string>
+    <string name="notifications_enabled">Notifications activées</string>
+    <string name="notifications_disabled">Notifications désactivées</string>
+    <string name="check_out_giveaway">Découvrez ce cadeau d\'une valeur de %1$s</string>
+    <string name="language">Langue</string>
+    <string name="select_language">Sélectionner la langue</string>
+    <string name="english">Anglais</string>
+    <string name="russian">Russe</string>
+    <string name="hindi">Hindi</string>
+    <string name="german">Allemand</string>
+    <string name="french">Français</string>
+    <string name="japanese">Japonais</string>
+    <string name="korean">Coréen</string>
+    <string name="bengali">Bengali</string>
+    <string name="settings">Paramètres</string>
+    <string name="follow_system_theme">Suivre le thème du système</string>
+    <string name="follow_system_theme_desc">Utiliser le thème clair ou sombre en fonction des paramètres de votre système.</string>
+    <string name="dark_theme">Thème sombre</string>
+    <string name="dynamic_color">Couleur dynamique</string>
+    <string name="dynamic_color_desc">Activer les couleurs dynamiques pour une expérience plus personnalisée.</string>
+    <string name="nsfw_content">Contenu NSFW</string>
+    <string name="nsfw_content_desc">Affiche le contenu pour adultes ou sensible lorsqu\'il est activé.</string>
+    <string name="privacy_policy">Politique de confidentialité</string>
+    <string name="privacy_policy_desc">Lire la politique de confidentialité</string>
+    <string name="disclaimer">Les informations sur les jeux et les prix proviennent de CheapShark, IsThereAnyDeal.com et Steam. G Dealz ne garantit pas l\'exactitude, la disponibilité ou l\'exhaustivité de ces informations.</string>
+    <string name="country">Pays</string>
+    <string name="country_desc">Changez de pays pour voir les offres dans votre devise locale. Si les données de l\'offre ne sont pas disponibles dans votre devise, elles seront affichées par défaut en dollars américains ($).</string>
+    <string name="choose_country">Choisir le pays</string>
+    <string name="filters">Filtres</string>
+    <string name="filter_store">Magasin</string>
+    <string name="filter_price">Prix</string>
+    <string name="filter_sorting">Tri</string>
+    <string name="filter_order">Ordre</string>
+    <string name="special_deal">Offre spéciale</string>
+    <string name="free">Gratuit</string>
+    <string name="off">DE RÉDUCTION</string>
+    <string name="rating_and_review">Évaluation et avis</string>
+    <string name="reviews">Avis</string>
+    <string name="meta_critic">Meta Critic</string>
+    <string name="total_rating">Évaluation totale</string>
+    <string name="rate">Évaluer</string>
+    <string name="overall_rating">Évaluation globale</string>
+    <string name="unknown">Inconnu</string>
+    <string name="available_on">Disponible sur</string>
+    <string name="release_info">Info de sortie</string>
+    <string name="fresh_deals">Nouvelles offres</string>
+    <string name="no_deals_found">Aucune offre trouvée !</string>
+    <string name="filter_discount">Remise</string>
+    <string name="try_searching">Essayez de chercher quelque chose…</string>
+    <string name="error_occurred">Une erreur est survenue</string>
+    <string name="tab_stores">Magasins</string>
+    <string name="tab_fav">Fav</string>
+    <string name="nothing_here">Rien ici..</string>
+    <string name="no_stores_found">Aucun magasin trouvé</string>
+    <string name="delete_single_fav_warning">Êtes-vous sûr de vouloir supprimer %1$s ?</string>
+    <string name="delete_all_fav_warning">Êtes-vous sûr de vouloir supprimer tous les favoris ?</string>
+    <string name="tab_games">Jeux</string>
+    <string name="un_claimed">Non réclamé</string>
+    <string name="claimed">Réclamé</string>
+    <string name="free_title">Gratuit</string>
+    <string name="active">Actif</string>
+    <string name="expired">Expiré</string>
+    <string name="no_active_giveaways">Aucun cadeau actif disponible pour le moment, veuillez réessayer plus tard.</string>
+    <string name="nothing_claimed_yet">Vous n\'avez encore rien réclamé.</string>
+    <string name="description">Description</string>
+    <string name="published">Publié</string>
+    <string name="instruction">Instruction</string>
+    <string name="publisher">Éditeur</string>
+    <string name="price_history">Historique des prix</string>
+    <string name="lowest_in_history">Plus bas historique</string>
+    <string name="lowest_in_1_year">Plus bas en 1 an</string>
+    <string name="lowest_in_3_months">Plus bas en 3 mois</string>
+    <string name="features">Fonctionnalités</string>
+    <string name="about_this_game">À propos de ce jeu</string>
+    <string name="screenshots">Captures d\'écran</string>
+    <string name="system_requirements">Configuration requise</string>
+    <string name="mature_18_plus">18+</string>
+    <string name="mature_all">TOUT</string>
+    <string name="added_to_favourites">Ajouté aux favoris</string>
+    <string name="failed_to_add_to_favourites">Échec de l\'ajout aux favoris</string>
+    <string name="removed_from_favourites">Retiré des favoris</string>
+    <string name="failed_to_remove_from_favourites">Échec du retrait des favoris</string>
+    <string name="unable_to_connect">Impossible de se connecter, veuillez vérifier votre connexion Internet.</string>
+    <string name="new_giveaway">Nouveau cadeau : %1$s</string>
+    <string name="claim">Réclamer</string>
+    <string name="something_went_wrong">Quelque chose s\'est mal passé</string>
+    <string name="something_went_wrong_try_again">Quelque chose s\'est mal passé ! Veuillez réessayer plus tard.</string>
+    <string name="no_data_found">Aucune donnée trouvée</string>
+    <string name="steam_game_id_not_found">ID de jeu Steam introuvable</string>
+    <string name="invalid_search_query">Requête de recherche invalide. Veuillez utiliser uniquement des caractères alphanumériques et des espaces.</string>
+    <string name="http_error">Erreur HTTP : %1$d. Veuillez réessayer plus tard.</string>
+    <string name="network_error">Erreur réseau. Veuillez vérifier votre connexion.</string>
+    <string name="no_results_found">Aucun résultat trouvé pour \'%1$s\'.</string>
+    <string name="tab_deals">Offres</string>
+    <string name="error_code_message">Code : %1$d Erreur : %2$s</string>
+    <string name="unable_to_get_game_details">Impossible d\'obtenir les détails du jeu.</string>
+    <string name="platform">Plateforme</string>
+    <string name="type">Type</string>
+    <string name="offer_ending">Fin de l\'offre</string>
+    <string name="favorite_icon">Icône de favori</string>
+    <string name="banner">Bannière</string>
+    <string name="rank">Rang</string>
+    <string name="released">Sorti</string>
+    <string name="coming">Arrive</string>
+    <string name="soon">Bientôt</string>
+    <string name="developer">Développeur</string>
+    <string name="open_deal">Ouvrir l\'offre</string>
+    <string name="not_available">-</string>
+    <string name="score_percent_format">%1$d%%</string>
+    <string name="discount_percent_format">%1$d%% %2$s</string>
+    <string-array name="months">
+        <item>Jan</item>
+        <item>Fév</item>
+        <item>Mar</item>
+        <item>Avr</item>
+        <item>Mai</item>
+        <item>Juin</item>
+        <item>Juil</item>
+        <item>Août</item>
+        <item>Sep</item>
+        <item>Oct</item>
+        <item>Nov</item>
+        <item>Déc</item>
+    </string-array>
+    <string name="genre">Genre</string>
+    <string name="age_limit_format">%1$s+</string>
+    <string name="deal_label">OFFRE</string>
+    <string name="price_format">%1$s $</string>
+    <string name="store_logo">Logo du magasin</string>
+</resources>

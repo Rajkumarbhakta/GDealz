@@ -1,0 +1,159 @@
+<resources>
+    <string name="app_name">G Dealz</string>
+    <string name="search_country">দেশ খুঁজুন</string>
+    <string name="confirm">নিশ্চিত করুন</string>
+    <string name="delete_confirm_title">মুছে ফেলবেন?</string>
+    <string name="delete">মুছে ফেলুন</string>
+    <string name="cancel">বাতিল</string>
+    <string name="apply_filter">ফিল্টার প্রয়োগ করুন</string>
+    <string name="all">সব</string>
+    <string name="ascending">আরোহী</string>
+    <string name="descending">অবরোহী</string>
+    <string name="grab_the_deal">ডিলটি নিন</string>
+    <string name="grab_deal">ডিল নিন</string>
+    <string name="mark_as_unclaimed">দাবিহীন হিসেবে চিহ্নিত করুন</string>
+    <string name="go_official_website">অফিসিয়াল ওয়েবসাইটে যান</string>
+    <string name="clear_filter">ফিল্টার মুছে ফেলুন</string>
+    <string name="hot_deals_subtitle">প্রতিদিন আপডেট হওয়া হট গেমিং ডিল</string>
+    <string name="apply_filters">ফিল্টার প্রয়োগ করুন</string>
+    <string name="select_stores">স্টোর নির্বাচন করুন</string>
+    <string name="choose_price_range">মূল্যের পরিসর বেছে নিন</string>
+    <string name="any">যেকোনো</string>
+    <string name="range">পরিসর</string>
+    <string name="enter_max_price">সর্বোচ্চ মূল্য লিখুন</string>
+    <string name="discount_selected">নির্বাচিত : %1$s%%</string>
+    <string name="delete_all">সব মুছে ফেলুন</string>
+    <string name="games">গেমস</string>
+    <string name="search_here">এখানে খুঁজুন…</string>
+    <string name="search">অনুসন্ধান</string>
+    <string name="raise_a_issue">সমস্যা রিপোর্ট করুন</string>
+    <string name="buy_me_a_coffee">আমাকে একটি কফি খাওয়ান</string>
+    <string name="notifications_enabled">নোটিফিকেশন চালু আছে</string>
+    <string name="notifications_disabled">নোটিফিকেশন বন্ধ আছে</string>
+    <string name="check_out_giveaway">%1$s মূল্যের এই গিভঅ্যাওয়েটি দেখুন</string>
+    <string name="language">ভাষা</string>
+    <string name="select_language">ভাষা নির্বাচন করুন</string>
+    <string name="english">ইংরেজি</string>
+    <string name="russian">রাশিয়ান</string>
+    <string name="hindi">হিন্দি</string>
+    <string name="german">জার্মান</string>
+    <string name="french">ফরাসি</string>
+    <string name="japanese">জাপানি</string>
+    <string name="korean">কোরিয়ান</string>
+    <string name="bengali">বাংলা</string>
+    <string name="settings">সেটিংস</string>
+    <string name="follow_system_theme">সিস্টেম থিম অনুসরণ করুন</string>
+    <string name="follow_system_theme_desc">সিস্টেম সেটিংসের ওপর ভিত্তি করে লাইট বা ডার্ক থিম ব্যবহার করুন।</string>
+    <string name="dark_theme">ডার্ক থিম</string>
+    <string name="dynamic_color">ডায়নামিক কালার</string>
+    <string name="dynamic_color_desc">ব্যক্তিগত অভিজ্ঞতার জন্য ডায়নামিক কালার চালু করুন।</string>
+    <string name="nsfw_content">NSFW কন্টেন্ট</string>
+    <string name="nsfw_content_desc">চালু থাকলে প্রাপ্তবয়স্ক বা সংবেদনশীল কন্টেন্ট দেখায়।</string>
+    <string name="privacy_policy">গোপনীয়তা নীতি</string>
+    <string name="privacy_policy_desc">গোপনীয়তা নীতি পড়ুন</string>
+    <string name="disclaimer">গেম এবং মূল্যের তথ্য CheapShark, IsThereAnyDeal.com এবং Steam থেকে নেওয়া হয়েছে। G Dealz এই তথ্যের সঠিকতা, প্রাপ্যতা বা সম্পূর্ণতার গ্যারান্টি দেয় না।</string>
+    <string name="country">দেশ</string>
+    <string name="country_desc">আপনার স্থানীয় মুদ্রায় ডিল দেখতে আপনার দেশ পরিবর্তন করুন। যদি আপনার মুদ্রায় ডিল ডেটা উপলব্ধ না থাকে, তবে এটি ডিফল্ট হিসেবে মার্কিন ডলারে ($) দেখাবে।</string>
+    <string name="choose_country">দেশ বেছে নিন</string>
+    <string name="filters">ফিল্টার</string>
+    <string name="filter_store">স্টোর</string>
+    <string name="filter_price">মূল্য</string>
+    <string name="filter_sorting">সর্টিং</string>
+    <string name="filter_order">ক্রম</string>
+    <string name="special_deal">স্পেশাল ডিল</string>
+    <string name="free">ফ্রি</string>
+    <string name="off">ছাড়</string>
+    <string name="rating_and_review">রেটিং এবং রিভিউ</string>
+    <string name="reviews">রিভিউ</string>
+    <string name="meta_critic">মেটা ক্রিটিক</string>
+    <string name="total_rating">মোট রেটিং</string>
+    <string name="rate">রেট করুন</string>
+    <string name="overall_rating">সামগ্রিক রেটিং</string>
+    <string name="unknown">অজানা</string>
+    <string name="available_on">উপলব্ধ :</string>
+    <string name="release_info">মুক্তির তথ্য</string>
+    <string name="fresh_deals">নতুন ডিল</string>
+    <string name="no_deals_found">কোনো ডিল পাওয়া যায়নি!</string>
+    <string name="filter_discount">ডিসকাউন্ট</string>
+    <string name="try_searching">কিছু খোঁজার চেষ্টা করুন…</string>
+    <string name="error_occurred">একটি ত্রুটি ঘটেছে</string>
+    <string name="tab_stores">স্টোর</string>
+    <string name="tab_fav">ফেভারিট</string>
+    <string name="nothing_here">এখানে কিছুই নেই..</string>
+    <string name="no_stores_found">কোনো স্টোর পাওয়া যায়নি</string>
+    <string name="delete_single_fav_warning">আপনি কি নিশ্চিত যে আপনি %1$s মুছতে চান?</string>
+    <string name="delete_all_fav_warning">আপনি কি নিশ্চিত যে আপনি সব ফেভারিট মুছতে চান?</string>
+    <string name="tab_games">গেমস</string>
+    <string name="un_claimed">দাবিহীন</string>
+    <string name="claimed">দাবি করা হয়েছে</string>
+    <string name="free_title">ফ্রি</string>
+    <string name="active">সক্রিয়</string>
+    <string name="expired">মেয়াদোত্তীর্ণ</string>
+    <string name="no_active_giveaways">এই মুহূর্তে কোনো সক্রিয় গিভঅ্যাওয়ে নেই, দয়া করে পরে চেষ্টা করুন।</string>
+    <string name="nothing_claimed_yet">আপনি এখনো কিছুই দাবি করেননি।</string>
+    <string name="description">বর্ণনা</string>
+    <string name="published">প্রকাশিত</string>
+    <string name="instruction">নির্দেশনা</string>
+    <string name="publisher">প্রকাশক</string>
+    <string name="price_history">মূল্যের ইতিহাস</string>
+    <string name="lowest_in_history">ইতিহাসের সর্বনিম্ন</string>
+    <string name="lowest_in_1_year">১ বছরের মধ্যে সর্বনিম্ন</string>
+    <string name="lowest_in_3_months">৩ মাসের মধ্যে সর্বনিম্ন</string>
+    <string name="features">বৈশিষ্ট্য</string>
+    <string name="about_this_game">এই গেমটি সম্পর্কে</string>
+    <string name="screenshots">স্ক্রিনশট</string>
+    <string name="system_requirements">সিস্টেম রিকোয়ারমেন্ট</string>
+    <string name="mature_18_plus">১৮+</string>
+    <string name="mature_all">সবাই</string>
+    <string name="added_to_favourites">ফেভারিটে যোগ করা হয়েছে</string>
+    <string name="failed_to_add_to_favourites">ফেভারিটে যোগ করতে ব্যর্থ হয়েছে</string>
+    <string name="removed_from_favourites">ফেভারিট থেকে সরানো হয়েছে</string>
+    <string name="failed_to_remove_from_favourites">ফেভারিট থেকে সরাতে ব্যর্থ হয়েছে</string>
+    <string name="unable_to_connect">কানেক্ট করা যাচ্ছে না, দয়া করে আপনার ইন্টারনেট সংযোগ চেক করুন।</string>
+    <string name="new_giveaway">নতুন গিভঅ্যাওয়ে: %1$s</string>
+    <string name="claim">দাবি করুন</string>
+    <string name="something_went_wrong">কিছু ভুল হয়েছে</string>
+    <string name="something_went_wrong_try_again">কিছু ভুল হয়েছে! পরে আবার চেষ্টা করুন।</string>
+    <string name="no_data_found">কোনো তথ্য পাওয়া যায়নি</string>
+    <string name="steam_game_id_not_found">Steam গেম আইডি পাওয়া যায়নি</string>
+    <string name="invalid_search_query">অকার্যকর অনুসন্ধান কুয়েরি। দয়া করে কেবল অক্ষর, সংখ্যা এবং স্পেস ব্যবহার করুন।</string>
+    <string name="http_error">HTTP ত্রুটি: %1$d। দয়া করে পরে আবার চেষ্টা করুন।</string>
+    <string name="network_error">নেটওয়ার্ক ত্রুটি। দয়া করে আপনার সংযোগ চেক করুন।</string>
+    <string name="no_results_found">\'%1$s\'-এর জন্য কোনো ফলাফল পাওয়া যায়নি।</string>
+    <string name="tab_deals">ডিল</string>
+    <string name="error_code_message">কোড : %1$d ত্রুটি : %2$s</string>
+    <string name="unable_to_get_game_details">গেমের বিস্তারিত তথ্য পাওয়া যাচ্ছে না।</string>
+    <string name="platform">প্ল্যাটফর্ম</string>
+    <string name="type">ধরন</string>
+    <string name="offer_ending">অফার শেষ হচ্ছে</string>
+    <string name="favorite_icon">ফেভারিট আইকন</string>
+    <string name="banner">ব্যানার</string>
+    <string name="rank">র‍্যাঙ্ক</string>
+    <string name="released">মুক্তি পেয়েছে</string>
+    <string name="coming">আসছে</string>
+    <string name="soon">শীঘ্রই</string>
+    <string name="developer">ডেভেলপার</string>
+    <string name="open_deal">ডিল খুলুন</string>
+    <string name="not_available">-</string>
+    <string name="score_percent_format">%1$d%%</string>
+    <string name="discount_percent_format">%1$d%% %2$s</string>
+    <string-array name="months">
+        <item>জানুয়ারি</item>
+        <item>ফেব্রুয়ারি</item>
+        <item>মার্চ</item>
+        <item>এপ্রিল</item>
+        <item>মে</item>
+        <item>জুন</item>
+        <item>জুলাই</item>
+        <item>আগস্ট</item>
+        <item>সেপ্টেম্বর</item>
+        <item>অক্টোবর</item>
+        <item>নভেম্বর</item>
+        <item>ডিসেম্বর</item>
+    </string-array>
+    <string name="genre">জেনার (Genre)</string>
+    <string name="age_limit_format">%1$s+</string>
+    <string name="deal_label">ডিল</string>
+    <string name="price_format">%1$s $</string>
+    <string name="store_logo">স্টোর লোগো</string>
+</resources>

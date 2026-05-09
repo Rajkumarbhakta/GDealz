@@ -11,14 +11,20 @@ import jakarta.inject.Inject
 import jakarta.inject.Singleton
 
 data class Language(
+    val name: String,
     val code: String,
     val displayLanguage: String
 )
 
 val appLanguages = listOf(
-    Language("en", "English"), // default language
-    Language("ru", "Русский"),
-    Language("hi", "हिन्दी")
+    Language("english","en", "English"), // default language
+    Language("russian","ru", "Русский"),
+    Language("hindi","hi", "हिन्दी"),
+    Language("german", "de", "Deutsch"),
+    Language("french", "fr", "Français"),
+    Language("japanese", "ja", "日本語"),
+    Language("korean", "ko", "한국어"),
+    Language("bengali", "bn", "বাংলা")
 )
 
 object AppLocaleManager {
@@ -41,6 +47,10 @@ object AppLocaleManager {
             AppCompatDelegate.getApplicationLocales().get(0)
         }
         return locale?.language ?: getDefaultLanguageCode()
+    }
+
+    fun getLanguageFromCode(languageCode: String): Language {
+        return appLanguages.find { it.code == languageCode } ?: appLanguages.first()
     }
 
     private fun getDefaultLanguageCode(): String {

@@ -9,6 +9,7 @@ import com.rkbapps.gdealz.network.api.SteamApi
 import com.rkbapps.gdealz.network.safeApiCall
 import com.rkbapps.gdealz.util.UiState
 import android.content.Context
+import com.rkbapps.gdealz.util.AppLocaleManager
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -30,7 +31,9 @@ class SteamDetailsRepository @Inject constructor(
             return
         }
         _steamGameData.value = UiState(isLoading = true)
-        val response = safeApiCall { steamApi.getGameDetails(appId) }
+        val systemLanguageCode = AppLocaleManager.getLanguageCode(context)
+        val language = AppLocaleManager.getLanguageFromCode(systemLanguageCode)
+        val response = safeApiCall { steamApi.getGameDetails(appId = appId, language = language.name) }
         when(response){
             is NetworkResponse.Error.HttpError -> {
                 _steamGameData.value = UiState(error = context.getString(R.string.error_code_message, response.errorCode, response.error.localizedMessage))

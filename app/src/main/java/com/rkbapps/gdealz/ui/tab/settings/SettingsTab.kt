@@ -435,6 +435,12 @@ fun LanguageItem(
     val languageName = when (currentLanguageCode) {
         "en" -> stringResource(R.string.english)
         "ru" -> stringResource(R.string.russian)
+        "hi" -> stringResource(R.string.hindi)
+        "de" -> stringResource(R.string.german)
+        "fr" -> stringResource(R.string.french)
+        "ja" -> stringResource(R.string.japanese)
+        "ko" -> stringResource(R.string.korean)
+        "bn" -> stringResource(R.string.bengali)
         else -> stringResource(R.string.english)
     }
 
