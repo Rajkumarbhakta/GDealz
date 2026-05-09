@@ -80,7 +80,6 @@ import com.rkbapps.gdealz.ui.theme.GDealzTheme
 import com.rkbapps.gdealz.util.AppLocaleManager
 import com.rkbapps.gdealz.util.Country
 import com.rkbapps.gdealz.util.appLanguages
-import com.rkbapps.gdealz.util.updateLocale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
