@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.activity.compose.LocalActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -17,6 +18,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
@@ -40,10 +42,14 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -51,6 +57,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
@@ -125,13 +132,17 @@ fun SettingsScreen(
         }
 
         if (isLanguageDialogOpen) {
-            LanguageSelectionDialog(
-                onDismissRequest = { isLanguageDialogOpen = false },
-                onLanguageSelected = { languageCode ->
+            Dialog(
+                onDismissRequest = { isLanguageDialogOpen = false }
+            ) {
+                LanguageSelectionDialog(
+                    modifier = Modifier.height(500.dp),
+                    currentLanguageCode = currentLanguageCode
+                ) { languageCode ->
                     viewModel.changeLanguage(languageCode)
                     isLanguageDialogOpen = false
                 }
-            )
+            }
         }
 
 
@@ -490,46 +501,82 @@ fun LanguageItem(
 
 @Composable
 fun LanguageSelectionDialog(
-    onDismissRequest: () -> Unit,
+    modifier: Modifier = Modifier,
+    currentLanguageCode: String,
     onLanguageSelected: (String) -> Unit
 ) {
-    Dialog(onDismissRequest = onDismissRequest) {
-        Card(
-            shape = RoundedCornerShape(16.dp),
-        ) {
-            Column(
-                modifier = Modifier
-                    .padding(16.dp)
-                    .fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                Text(
-                    stringResource(R.string.select_language),
-                    style = MaterialTheme.typography.titleLarge,
-                    modifier = Modifier.padding(bottom = 8.dp)
-                )
+    var selectedLanguageCode by remember { mutableStateOf(currentLanguageCode) }
+    var searchQuery by remember { mutableStateOf("") }
+    var languageList by remember { mutableStateOf(appLanguages) }
 
-                appLanguages.forEach {
-                    LanguageOption(
-                        name = it.displayLanguage,
-                        onClick = { onLanguageSelected(it.code) }
+    LaunchedEffect(searchQuery) {
+        languageList = if (searchQuery.isNotEmpty() && searchQuery.isNotBlank()) {
+            appLanguages.filter {
+                it.displayLanguage.contains(searchQuery, ignoreCase = true) ||
+                        it.name.contains(searchQuery, ignoreCase = true) ||
+                        it.code.contains(searchQuery, ignoreCase = true)
+            }
+        } else {
+            appLanguages
+        }
+    }
+
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .background(
+                color = MaterialTheme.colorScheme.surface,
+                shape = RoundedCornerShape(20.dp)
+            )
+            .padding(10.dp)
+    ) {
+        Text(
+            stringResource(R.string.select_language),
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier.fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.height(10.dp))
+        HorizontalDivider()
+        Spacer(modifier = Modifier.height(10.dp))
+
+        TextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = searchQuery,
+            onValueChange = { searchQuery = it },
+            placeholder = { Text(stringResource(R.string.search_here)) },
+            colors = TextFieldDefaults.colors(
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent
+            ),
+            shape = RoundedCornerShape(100.dp),
+            singleLine = true
+        )
+
+        Spacer(modifier = Modifier.height(10.dp))
+        LazyColumn(modifier = Modifier.weight(1f)) {
+            items(languageList) { language ->
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable { selectedLanguageCode = language.code },
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    RadioButton(
+                        selected = selectedLanguageCode == language.code,
+                        onClick = { selectedLanguageCode = language.code }
                     )
+                    Text(language.displayLanguage)
                 }
             }
         }
+        Spacer(modifier = Modifier.height(10.dp))
+        Button(
+            modifier = Modifier.fillMaxWidth(),
+            onClick = { onLanguageSelected(selectedLanguageCode) }
+        ) {
+            Text(stringResource(R.string.confirm))
+        }
     }
-}
-
-@Composable
-fun LanguageOption(name: String, onClick: () -> Unit) {
-    Text(
-        text = name,
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable { onClick() }
-            .padding(vertical = 12.dp, horizontal = 8.dp),
-        style = MaterialTheme.typography.bodyLarge
-    )
 }
 
 
