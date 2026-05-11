@@ -158,4 +158,5 @@
     <string name="deal_label">OFERTA</string>
     <string name="price_format">R$%1$s</string>
     <string name="store_logo">logotipo da loja</string>
+    <string name="unable_to_open_website">Não foi possível abrir o site.</string>
 </resources>

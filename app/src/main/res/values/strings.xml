@@ -159,4 +159,5 @@
     <string name="deal_label">DEAL</string>
     <string name="price_format">$%1$s</string>
     <string name="store_logo">store logo</string>
+    <string name="unable_to_open_website">Unable to open website.</string>
 </resources>

@@ -157,4 +157,5 @@
     <string name="deal_label">ডিল</string>
     <string name="price_format">%1$s $</string>
     <string name="store_logo">স্টোর লোগো</string>
+    <string name="unable_to_open_website">ওয়েবসাইট খুলতে অক্ষম।</string>
 </resources>

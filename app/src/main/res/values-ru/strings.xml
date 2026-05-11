@@ -157,4 +157,5 @@
     <string name="deal_label">СКИДКА</string>
     <string name="price_format">$%1$s</string>
     <string name="store_logo">логотип магазина</string>
+    <string name="unable_to_open_website">Не удалось открыть веб-сайт.</string>
 </resources>

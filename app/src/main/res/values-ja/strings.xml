@@ -157,4 +157,5 @@
     <string name="deal_label">セール</string>
     <string name="price_format">¥%1$s</string>
     <string name="store_logo">ストアロゴ</string>
+    <string name="unable_to_open_website">ウェブサイトを開けません。</string>
 </resources>

@@ -157,6 +157,7 @@ fun IsThereAnyDealSteamDetailsPage(
         },
         bottomBar = {
             AnimatedVisibility(steamGameData.data != null) {
+                val error = stringResource(R.string.unable_to_open_website)
                 Button(
                     modifier = Modifier
                         .padding(BottomAppBarDefaults.windowInsets.asPaddingValues())
@@ -169,7 +170,7 @@ fun IsThereAnyDealSteamDetailsPage(
                             }
                         }catch (e: Exception){
                             e.printStackTrace()
-                            Toast.makeText(context, "Unable to open website.", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
                         }
                     }
                 ) {

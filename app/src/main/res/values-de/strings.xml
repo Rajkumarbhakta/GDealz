@@ -157,4 +157,5 @@
     <string name="deal_label">ANGEBOT</string>
     <string name="price_format">$%1$s</string>
     <string name="store_logo">Shop-Logo</string>
+    <string name="unable_to_open_website">Webseite konnte nicht geöffnet werden.</string>
 </resources>
