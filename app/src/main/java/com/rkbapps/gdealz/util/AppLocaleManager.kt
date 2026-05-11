@@ -24,7 +24,8 @@ val appLanguages = listOf(
     Language("french", "fr", "Français"),
     Language("japanese", "ja", "日本語"),
     Language("korean", "ko", "한국어"),
-    Language("bengali", "bn", "বাংলা")
+    Language("bengali", "bn", "বাংলা"),
+    Language("portuguese", "pt", "Português")
 )
 
 object AppLocaleManager {

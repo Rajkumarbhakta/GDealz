@@ -1,5 +1,6 @@
 package com.rkbapps.gdealz.ui.screens.steam_details.is_there_any_deal
 
+import android.widget.Toast
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalSharedTransitionApi
@@ -162,8 +163,13 @@ fun IsThereAnyDealSteamDetailsPage(
                         .fillMaxWidth()
                         .padding(10.dp),
                     onClick = {
-                        steamGameData.data?.data?.website?.let {
-                            uriHandler.openUri(it)
+                        try {
+                            steamGameData.data?.data?.website?.let {
+                                uriHandler.openUri(it)
+                            }
+                        }catch (e: Exception){
+                            e.printStackTrace()
+                            Toast.makeText(context, "Unable to open website.", Toast.LENGTH_SHORT).show()
                         }
                     }
                 ) {
