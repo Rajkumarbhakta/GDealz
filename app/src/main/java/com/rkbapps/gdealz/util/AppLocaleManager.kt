@@ -19,12 +19,15 @@ data class Language(
 val appLanguages = listOf(
     Language("english","en", "English"), // default language
     Language("russian","ru", "Русский"),
-    Language("hindi","hi", "हिन्दी"),
+    Language("portuguese", "pt", "Português"),
+    Language("spanish", "es", "Español"),
     Language("german", "de", "Deutsch"),
     Language("french", "fr", "Français"),
     Language("japanese", "ja", "日本語"),
     Language("korean", "ko", "한국어"),
-    Language("bengali", "bn", "বাংলা")
+    Language("hindi","hi", "हिन्दी"),
+    Language("bengali", "bn", "বাংলা"),
+
 )
 
 object AppLocaleManager {
