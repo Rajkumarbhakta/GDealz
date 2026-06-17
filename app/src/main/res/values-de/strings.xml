@@ -158,4 +158,6 @@
     <string name="price_format">$%1$s</string>
     <string name="store_logo">Shop-Logo</string>
     <string name="unable_to_open_website">Webseite konnte nicht geöffnet werden.</string>
+    <string name="price_drop_title">Preisnachlass-Alarm!</string>
+    <string name="price_drop_message">Gute Nachrichten! %1$s ist jetzt für %2$s verfügbar. Schau es dir an!</string>
 </resources>

@@ -160,4 +160,6 @@
     <string name="price_format">$%1$s</string>
     <string name="store_logo">logotipo de la tienda</string>
     <string name="unable_to_open_website">No se puede abrir el sitio web.</string>
+    <string name="price_drop_title">¡Alerta de bajada de precio!</string>
+    <string name="price_drop_message">¡Buenas noticias! %1$s ya está disponible por %2$s. ¡Échale un vistazo!</string>
 </resources>

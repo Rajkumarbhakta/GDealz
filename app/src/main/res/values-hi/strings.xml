@@ -159,4 +159,6 @@
     <string name="price_format">$%1$s</string>
     <string name="store_logo">स्टोर लोगो</string>
     <string name="unable_to_open_website">वेबसाइट खोलने में असमर्थ।</string>
+    <string name="price_drop_title">कीमत में गिरावट का अलर्ट!</string>
+    <string name="price_drop_message">अच्छी खबर! %1$s अब %2$s के लिए उपलब्ध है। इसे देखें!</string>
 </resources>

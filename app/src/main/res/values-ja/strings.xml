@@ -158,4 +158,6 @@
     <string name="price_format">¥%1$s</string>
     <string name="store_logo">ストアロゴ</string>
     <string name="unable_to_open_website">ウェブサイトを開けません。</string>
+    <string name="price_drop_title">価格下落アラート！</string>
+    <string name="price_drop_message">朗報です！ %1$s が %2$s で利用可能になりました。チェックしてみてください！</string>
 </resources>
