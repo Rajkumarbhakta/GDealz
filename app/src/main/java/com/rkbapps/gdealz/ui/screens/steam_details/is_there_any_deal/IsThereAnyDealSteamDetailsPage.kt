@@ -97,7 +97,6 @@ fun IsThereAnyDealSteamDetailsPage(
 
     val uriHandler = LocalUriHandler.current
     val context = LocalContext.current
-    val months = remember { context.resources.getStringArray(R.array.months).toList() }
 
     val gameData by viewModel.gameInfo.collectAsStateWithLifecycle()
     val gamePriceInfo by viewModel.gamePriceInfo.collectAsStateWithLifecycle()
@@ -138,7 +137,8 @@ fun IsThereAnyDealSteamDetailsPage(
                             }
                         ),
                         onClick = {
-                            gameData.data?.let { viewModel.toggleFavDeal(it) }
+                            val prices = gamePriceInfo.data?.deals?:emptyList()
+                            gameData.data?.let { viewModel.toggleFavDeal(it, prices = prices) }
                         },
                         colors = IconButtonDefaults.filledIconButtonColors(
                             containerColor = Color.Transparent,
@@ -377,7 +377,7 @@ fun IsThereAnyDealSteamDetailsPage(
                                             ) ?: stringResource(R.string.not_available),
                                             subTitle = getMonths(
                                                 steamGameData.data?.data?.releaseDate?.date ?: "",
-                                                months
+                                                context.resources.getStringArray(R.array.months).toList()
                                             ) ?: stringResource(R.string.not_available),
                                             subTitle1 = getDate(
                                                 steamGameData.data?.data?.releaseDate?.date ?: ""

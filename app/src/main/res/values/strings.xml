@@ -160,4 +160,6 @@
     <string name="price_format">$%1$s</string>
     <string name="store_logo">store logo</string>
     <string name="unable_to_open_website">Unable to open website.</string>
+    <string name="price_drop_title">Price Drop Alert!</string>
+    <string name="price_drop_message">Good news! %1$s is now available for %2$s. Check it out!</string>
 </resources>

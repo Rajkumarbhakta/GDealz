@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import com.rkbapps.gdealz.db.entity.FavDeals
 import kotlinx.coroutines.flow.Flow
 
@@ -14,11 +15,17 @@ interface FavDealsDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertFavDeals(favDeals: FavDeals)
 
+    @Update
+    suspend fun updateFavDeals(favDeals: FavDeals)
+
     @Delete
     suspend fun deleteFavDeals(favDeals: FavDeals)
 
     @Query("select * from `fav-deals`")
     fun selectAllFavDeals():Flow<List<FavDeals>>
+
+    @Query("select * from `fav-deals`")
+    suspend fun getAllFavDeals(): List<FavDeals>
 
     @Query("select * from `fav-deals` where dealID=:dealID")
     suspend fun findByDealID(dealID:String):FavDeals

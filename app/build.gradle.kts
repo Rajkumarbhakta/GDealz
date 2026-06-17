@@ -38,6 +38,7 @@ android {
         }
     }
 
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -146,8 +147,5 @@ dependencies {
     implementation(libs.zoomable)
 
     implementation(libs.android.liquidglass)
-
-
-
 
 }

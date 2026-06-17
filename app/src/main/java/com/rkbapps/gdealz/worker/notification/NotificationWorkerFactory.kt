@@ -1,4 +1,4 @@
-package com.rkbapps.gdealz.worker
+package com.rkbapps.gdealz.worker.notification
 
 import android.content.Context
 import androidx.work.ListenableWorker
@@ -6,7 +6,7 @@ import androidx.work.WorkerFactory
 import androidx.work.WorkerParameters
 import javax.inject.Inject
 
-class MyWorkerFactory @Inject constructor(
+class NotificationWorkerFactory @Inject constructor(
     private val repository: NotificationWorkerRepository
 ):WorkerFactory() {
     override fun createWorker(

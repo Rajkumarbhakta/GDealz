@@ -12,7 +12,7 @@ import com.rkbapps.gdealz.db.entity.FavDeals
 import com.rkbapps.gdealz.db.entity.Store
 import com.rkbapps.gdealz.models.Giveaway
 
-@Database(entities = [Store::class,FavDeals::class, Giveaway::class], version = 2, exportSchema = false)
+@Database(entities = [Store::class,FavDeals::class, Giveaway::class], version = 3, exportSchema = false)
 abstract class GDatabase:RoomDatabase() {
     abstract fun storeDao():StoreDao
     abstract fun favDealsDao():FavDealsDao
@@ -30,5 +30,16 @@ val MIGRATION_1_2 = object : Migration(1, 2) {
             db.execSQL("ALTER TABLE `fav-deals` ADD COLUMN steamAppId TEXT")
         }catch (_: Exception){
         }
+    }
+}
+
+val MIGRATION_2_3 = object : Migration(2, 3) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        try {
+            db.execSQL("ALTER TABLE `fav-deals` ADD COLUMN actualPrice REAL")
+            db.execSQL("ALTER TABLE `fav-deals` ADD COLUMN currentlyLowestPrice REAL")
+            db.execSQL("ALTER TABLE `fav-deals` ADD COLUMN discountPercentage REAL")
+            db.execSQL("ALTER TABLE `fav-deals` ADD COLUMN currencySymbol TEXT")
+        } catch (_: Exception) {}
     }
 }

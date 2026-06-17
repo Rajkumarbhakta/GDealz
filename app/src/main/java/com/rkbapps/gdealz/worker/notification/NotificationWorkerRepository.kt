@@ -1,5 +1,6 @@
-package com.rkbapps.gdealz.worker
+package com.rkbapps.gdealz.worker.notification
 
+import android.Manifest
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -94,7 +95,7 @@ class NotificationWorkerRepository @Inject constructor(
         }
     }
 
-    @RequiresPermission(android.Manifest.permission.POST_NOTIFICATIONS)
+    @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
     suspend fun sendNotificationForNewGiveaways(context: Context, newGiveaways: List<Giveaway>) {
         Log.d("NotificationWorkerRepo", "Sending notifications for new giveaways ${newGiveaways.size}")
         val notificationManager = NotificationManagerCompat.from(context)
