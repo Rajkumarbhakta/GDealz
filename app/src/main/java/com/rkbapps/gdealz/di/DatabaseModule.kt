@@ -7,6 +7,7 @@ import com.google.gson.GsonBuilder
 import com.rkbapps.gdealz.db.GDatabase
 import com.rkbapps.gdealz.db.MIGRATION_1_2
 import com.rkbapps.gdealz.db.MIGRATION_2_3
+import com.rkbapps.gdealz.db.MIGRATION_3_4
 import com.rkbapps.gdealz.db.dao.FavDealsDao
 import com.rkbapps.gdealz.db.dao.StoreDao
 import dagger.Module
@@ -28,7 +29,7 @@ object DatabaseModule {
             GDatabase::class.java,
             "g-database"
         )
-            .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
+            .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4)
             .build()
     }
 
@@ -53,6 +54,5 @@ object DatabaseModule {
 
 
 }
-
 
 

@@ -122,7 +122,8 @@ class GameInfoRepository @Inject constructor (
             favDealsDao.insertFavDeals(
                 FavDeals(
                     dealID = gameInfo.id,
-                    gameID = gameInfo.slug?:"",
+                    gameID = gameInfo.id,
+                    slug = gameInfo.slug ?: "",
                     thumb = gameInfo.assets?.boxart,
                     title = gameInfo.title,
                     steamAppId = gameInfo.steamAppId?.toString(),
