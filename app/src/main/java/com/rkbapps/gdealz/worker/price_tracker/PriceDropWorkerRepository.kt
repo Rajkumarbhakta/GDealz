@@ -22,7 +22,10 @@ import com.rkbapps.gdealz.R
 import com.rkbapps.gdealz.activity.MainActivity
 import com.rkbapps.gdealz.db.dao.FavDealsDao
 import com.rkbapps.gdealz.db.entity.FavDeals
+import com.rkbapps.gdealz.models.price.PriceDetail
+import com.rkbapps.gdealz.network.NetworkResponse
 import com.rkbapps.gdealz.network.api.IsThereAnyDealApi
+import com.rkbapps.gdealz.network.safeApiCall
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -38,41 +41,62 @@ class PriceDropWorkerRepository @Inject constructor(
     suspend fun checkPricesAndNotify() {
         Log.d("PriceDropWorkerRepo", "Checking prices for favorite deals")
         val favDeals = favDealsDao.getAllFavDeals()
+        Log.d("PriceDropWorkerRepo", "${favDeals.count()}")
         if (favDeals.isEmpty()) return
 
-        val gameIds = favDeals.map { it.gameID }
+        val gameIds = favDeals.map {
+            if (it.gameID.isEmpty() || it.gameID.isBlank()) {
+                val id = it.dealID
+                favDealsDao.updateFavDeals(it.copy(gameID = id))
+                id
+            } else {
+                it.gameID
+            }
+        }
+
+        Log.d("PriceDropWorkerRepo", "${gameIds}")
+
         try {
-            val priceDetails = isThereAnyDealApi.getPrices(gameIds = gameIds)
-            
-            for (favDeal in favDeals) {
-                val priceDetail = priceDetails.find { it.id == favDeal.gameID } ?: continue
-                
-                // Find the minimum price among all deals for this game
-                val currentDeals = priceDetail.deals
-                if (currentDeals.isEmpty()) continue
-                
-                val minDeal = currentDeals.minByOrNull { it.price?.amount ?: Double.MAX_VALUE } ?: continue
-                val newLowestPrice = minDeal.price?.amount ?: continue
-                val actualPrice = minDeal.regular?.amount
-                val discountPercentage = minDeal.cut?.toDouble()
-                val currencySymbol = minDeal.price?.currency
+            val priceDetails = safeApiCall { isThereAnyDealApi.getPrices(gameIds = gameIds) }
+            when(priceDetails){
+                is NetworkResponse.Error.HttpError -> TODO()
+                NetworkResponse.Error.NetworkError -> TODO()
+                NetworkResponse.Error.UnknownError -> TODO()
+                is NetworkResponse.Success<List<PriceDetail>> -> {
+                    val data = priceDetails.value
+                    val favDeals = favDealsDao.getAllFavDeals()
+                    for (favDeal in favDeals) {
+                        val priceDetail = data.find { it.id == (favDeal.gameID.ifEmpty { favDeal.id }) } ?: continue
+                        Log.d("PriceDropWorkerRepo", "Working for ${priceDetail.id}")
 
-                val oldLowestPrice = favDeal.currentlyLowestPrice
+                        // Find the minimum price among all deals for this game
+                        val currentDeals = priceDetail.deals
+                        if (currentDeals.isEmpty()) continue
 
-                if (oldLowestPrice == null || newLowestPrice != oldLowestPrice) {
-                    Log.d("PriceDropWorkerRepo", "Price drop detected for ${favDeal.title}: $oldLowestPrice -> $newLowestPrice")
-                    
-                    // Update database
-                    val updatedFavDeal = favDeal.copy(
-                        actualPrice = actualPrice,
-                        currentlyLowestPrice = newLowestPrice,
-                        discountPercentage = discountPercentage,
-                        currencySymbol = currencySymbol
-                    )
-                    favDealsDao.updateFavDeals(updatedFavDeal)
-                    
+                        val minDeal = currentDeals.minByOrNull { it.price?.amount ?: Double.MAX_VALUE } ?: continue
+                        val newLowestPrice = minDeal.price?.amount ?: continue
+                        val actualPrice = minDeal.regular?.amount
+                        val discountPercentage = minDeal.cut?.toDouble()
+                        val currencySymbol = minDeal.price?.currency
 
-                    sendPriceDropNotification(updatedFavDeal)
+                        val oldLowestPrice = favDeal.currentlyLowestPrice
+
+                        if (oldLowestPrice == null || newLowestPrice != oldLowestPrice) {
+                            Log.d("PriceDropWorkerRepo", "Price drop detected for ${favDeal.title}: $oldLowestPrice -> $newLowestPrice")
+
+                            // Update database
+                            val updatedFavDeal = favDeal.copy(
+                                actualPrice = actualPrice,
+                                currentlyLowestPrice = newLowestPrice,
+                                discountPercentage = discountPercentage,
+                                currencySymbol = currencySymbol
+                            )
+                            favDealsDao.updateFavDeals(updatedFavDeal)
+                            Log.d("PriceDropWorkerRepo", "Updated  ${updatedFavDeal}")
+
+                            sendPriceDropNotification(updatedFavDeal)
+                        }
+                    }
                 }
             }
         } catch (e: Exception) {
