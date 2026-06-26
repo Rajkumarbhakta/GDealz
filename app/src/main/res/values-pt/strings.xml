@@ -43,6 +43,9 @@
     <string name="korean">Coreano</string>
     <string name="bengali">Bengali</string>
     <string name="portuguese">Português</string>
+    <string name="spanish">Espanhol</string>
+    <string name="simplified_chinese">Chinês Simplificado</string>
+    <string name="traditional_chinese">Chinês Tradicional</string>
     <string name="settings">Configurações</string>
     <string name="follow_system_theme">Seguir Tema do Sistema</string>
     <string name="follow_system_theme_desc">Use o tema claro ou escuro com base nas configurações do seu sistema.</string>

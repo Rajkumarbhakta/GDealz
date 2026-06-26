@@ -42,6 +42,10 @@
     <string name="japanese">Japonais</string>
     <string name="korean">Coréen</string>
     <string name="bengali">Bengali</string>
+    <string name="portuguese">Portugais</string>
+    <string name="spanish">Espagnol</string>
+    <string name="simplified_chinese">Chinois Simplifié</string>
+    <string name="traditional_chinese">Chinois Traditionnel</string>
     <string name="settings">Paramètres</string>
     <string name="follow_system_theme">Suivre le thème du système</string>
     <string name="follow_system_theme_desc">Utiliser le thème clair ou sombre en fonction des paramètres de votre système.</string>

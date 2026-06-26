@@ -1,0 +1,168 @@
+<resources>
+    <string name="app_name">G Dealz</string>
+    <string name="search_country">搜索国家</string>
+    <string name="confirm">确认</string>
+    <string name="delete_confirm_title">删除？</string>
+    <string name="delete">删除</string>
+    <string name="cancel">取消</string>
+    <string name="apply_filter">应用筛选</string>
+    <string name="all">全部</string>
+    <string name="ascending">升序</string>
+    <string name="descending">降序</string>
+    <string name="grab_the_deal">抢购优惠</string>
+    <string name="grab_deal">抢购</string>
+    <string name="mark_as_unclaimed">标记为未领取</string>
+    <string name="go_official_website">前往官方网站</string>
+    <string name="clear_filter">清除筛选</string>
+    <string name="hot_deals_subtitle">每日更新的热门游戏优惠</string>
+    <string name="apply_filters">应用筛选</string>
+    <string name="select_stores">选择商店</string>
+    <string name="choose_price_range">选择价格区间</string>
+    <string name="any">任意</string>
+    <string name="range">区间</string>
+    <string name="enter_max_price">输入最高价格</string>
+    <string name="discount_selected">已选择：%1$s%%</string>
+    <string name="delete_all">全部删除</string>
+    <string name="games">游戏</string>
+    <string name="search_here">在此搜索…</string>
+    <string name="search">搜索</string>
+    <string name="raise_a_issue">反馈问题</string>
+    <string name="buy_me_a_coffee">请我喝杯咖啡</string>
+    <string name="notifications_enabled">已启用通知</string>
+    <string name="notifications_disabled">已禁用通知</string>
+    <string name="check_out_giveaway">看看这个价值 %1$s 的赠品游戏</string>
+    <string name="language">语言</string>
+    <string name="select_language">选择语言</string>
+    <string name="language_description">为应用程序选择您首选的语言以查看您语言的内容。如果任何游戏内容不支持您的语言，它将默认为英语 (en)。</string>
+    <string name="english">英语</string>
+    <string name="russian">俄语</string>
+    <string name="hindi">印地语</string>
+    <string name="german">德语</string>
+    <string name="french">法语</string>
+    <string name="japanese">日语</string>
+    <string name="korean">韩语</string>
+    <string name="bengali">孟加拉语</string>
+    <string name="portuguese">葡萄牙语</string>
+    <string name="spanish">西班牙语</string>
+    <string name="simplified_chinese">简体中文</string>
+    <string name="traditional_chinese">繁体中文</string>
+    <string name="settings">设置</string>
+    <string name="follow_system_theme">跟随系统主题</string>
+    <string name="follow_system_theme_desc">根据您的系统设置使用浅色或深色主题。</string>
+    <string name="dark_theme">暗色主题</string>
+    <string name="dynamic_color">动态颜色</string>
+    <string name="dynamic_color_desc">启用 dynamic color 以获得更个性化的体验。</string>
+    <string name="nsfw_content">NSFW 内容</string>
+    <string name="nsfw_content_desc">开启时显示成人或敏感内容。</string>
+    <string name="privacy_policy">隐私政策</string>
+    <string name="privacy_policy_desc">阅读隐私政策</string>
+    <string name="disclaimer">游戏和价格信息源自 CheapShark、IsThereAnyDeal.com 和 Steam。G Dealz 不保证该信息的准确性、可用性或完整性。</string>
+    <string name="country">国家/地区</string>
+    <string name="country_desc">更改您的国家/地区以查看您当地货币的优惠。如果您的货币无法提供优惠数据，它将默认为美元 ($)。</string>
+    <string name="choose_country">选择国家/地区</string>
+    <string name="filters">筛选</string>
+    <string name="filter_store">商店</string>
+    <string name="filter_price">价格</string>
+    <string name="filter_sorting">排序</string>
+    <string name="filter_order">顺序</string>
+    <string name="special_deal">特别优惠</string>
+    <string name="free">免费</string>
+    <string name="off">折扣</string>
+    <string name="rating_and_review">评分与评价</string>
+    <string name="reviews">评价</string>
+    <string name="meta_critic">Meta Critic</string>
+    <string name="total_rating">总评分</string>
+    <string name="rate">评分</string>
+    <string name="overall_rating">综合评分</string>
+    <string name="unknown">未知</string>
+    <string name="available_on">可用于</string>
+    <string name="release_info">发布信息</string>
+    <string name="fresh_deals">最新优惠</string>
+    <string name="no_deals_found">未找到优惠！</string>
+    <string name="filter_discount">折扣</string>
+    <string name="try_searching">尝试搜索一些内容…</string>
+    <string name="error_occurred">发生错误</string>
+    <string name="tab_stores">商店</string>
+    <string name="tab_fav">收藏</string>
+    <string name="nothing_here">这里空空如也..</string>
+    <string name="no_stores_found">未找到商店</string>
+    <string name="delete_single_fav_warning">您确定要删除 %1$s 吗？</string>
+    <string name="delete_all_fav_warning">您确定要删除所有收藏吗？</string>
+    <string name="tab_games">游戏</string>
+    <string name="un_claimed">未领取</string>
+    <string name="claimed">已领取</string>
+    <string name="free_title">免费</string>
+    <string name="active">进行中</string>
+    <string name="expired">已过期</string>
+    <string name="no_active_giveaways">目前没有进行中的赠品活动，请稍后再试。</string>
+    <string name="nothing_claimed_yet">您还没有领取过任何内容。</string>
+    <string name="description">描述</string>
+    <string name="published">发布于</string>
+    <string name="instruction">说明</string>
+    <string name="publisher">发行商</string>
+    <string name="price_history">价格历史</string>
+    <string name="lowest_in_history">历史最低</string>
+    <string name="lowest_in_1_year">1年内最低</string>
+    <string name="lowest_in_3_months">3个月内最低</string>
+    <string name="features">特色</string>
+    <string name="about_this_game">关于这款游戏</string>
+    <string name="screenshots">屏幕截图</string>
+    <string name="system_requirements">系统需求</string>
+    <string name="mature_18_plus">18+</string>
+    <string name="mature_all">全年龄</string>
+    <string name="added_to_favourites">已添加到收藏</string>
+    <string name="failed_to_add_to_favourites">无法添加到收藏</string>
+    <string name="removed_from_favourites">已从收藏中移除</string>
+    <string name="failed_to_remove_from_favourites">无法从收藏中移除</string>
+    <string name="unable_to_connect">无法连接，请检查您的互联网连接。</string>
+    <string name="new_giveaway">新赠品：%1$s</string>
+    <string name="claim">领取</string>
+    <string name="something_went_wrong">出错了</string>
+    <string name="something_went_wrong_try_again">出错了！请稍后再试。</string>
+    <string name="no_data_found">未找到数据</string>
+    <string name="steam_game_id_not_found">未找到 Steam 游戏 ID</string>
+    <string name="invalid_search_query">搜索词无效。请仅使用字母数字字符和空格。</string>
+    <string name="http_error">HTTP 错误：%1$d。请稍后再试。</string>
+    <string name="network_error">网络错误。请检查您的网络连接。</string>
+    <string name="no_results_found">未找到与“%1$s”相关的结果。</string>
+    <string name="tab_deals">优惠</string>
+    <string name="error_code_message">代码：%1$d 错误：%2$s</string>
+    <string name="unable_to_get_game_details">无法获取游戏详情。</string>
+    <string name="platform">平台</string>
+    <string name="type">类型</string>
+    <string name="offer_ending">优惠即将结束</string>
+    <string name="favorite_icon">收藏图标</string>
+    <string name="banner">横幅</string>
+    <string name="rank">排名</string>
+    <string name="released">已发布</string>
+    <string name="coming">即将</string>
+    <string name="soon">推出</string>
+    <string name="developer">开发商</string>
+    <string name="open_deal">查看优惠</string>
+    <string name="not_available">-</string>
+    <string name="score_percent_format">%1$d%%</string>
+    <string name="discount_percent_format">%1$d%% %2$s</string>
+
+    <string-array name="months">
+        <item>1月</item>
+        <item>2月</item>
+        <item>3月</item>
+        <item>4月</item>
+        <item>5月</item>
+        <item>6月</item>
+        <item>7月</item>
+        <item>8月</item>
+        <item>9月</item>
+        <item>10月</item>
+        <item>11月</item>
+        <item>12月</item>
+    </string-array>
+    <string name="genre">类型</string>
+    <string name="age_limit_format">%1$s+</string>
+    <string name="deal_label">优惠</string>
+    <string name="price_format">$%1$s</string>
+    <string name="store_logo">商店图标</string>
+    <string name="unable_to_open_website">无法打开网站。</string>
+    <string name="price_drop_title">降价提醒！</string>
+    <string name="price_drop_message">好消息！%1$s 现已降至 %2$s。快来看看吧！</string>
+</resources>

@@ -27,6 +27,8 @@ val appLanguages = listOf(
     Language("korean", "ko", "한국어"),
     Language("hindi","hi", "हिन्दी"),
     Language("bengali", "bn", "বাংলা"),
+    Language("schinese", "zh-CN", "简体中文"),
+    Language("tchinese", "zh-TW", "繁體中文"),
 
 )
 
@@ -50,8 +52,13 @@ object AppLocaleManager {
             } else {
                 AppCompatDelegate.getApplicationLocales().get(0)
             }
-            locale?.language ?: getDefaultLanguageCode()
-        }catch (e: Exception){
+            val tag = locale?.toLanguageTag()
+            if (tag != null && appLanguages.any { it.code.equals(tag, ignoreCase = true) }) {
+                tag
+            } else {
+                locale?.language ?: getDefaultLanguageCode()
+            }
+        } catch (e: Exception) {
             getDefaultLanguageCode()
         }
     }

@@ -44,6 +44,8 @@
     <string name="bengali">Bengali</string>
     <string name="portuguese">Portuguese</string>
     <string name="spanish">Spanish</string>
+    <string name="simplified_chinese">Simplified Chinese</string>
+    <string name="traditional_chinese">Traditional Chinese</string>
     <string name="settings">Settings</string>
     <string name="follow_system_theme">Follow System Theme</string>
     <string name="follow_system_theme_desc">Use light or dark theme based on your system settings.</string>

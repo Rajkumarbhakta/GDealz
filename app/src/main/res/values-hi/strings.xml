@@ -43,6 +43,10 @@
     <string name="japanese">जापानी</string>
     <string name="korean">कोरियाई</string>
     <string name="bengali">बंगाली</string>
+    <string name="portuguese">पुर्तगाली</string>
+    <string name="spanish">स्पेनिश</string>
+    <string name="simplified_chinese">सरलीकृत चीनी</string>
+    <string name="traditional_chinese">पारंपरिक चीनी</string>
     <string name="settings">सेटिंग्स</string>
     <string name="follow_system_theme">सिस्टम थीम का पालन करें</string>
     <string name="follow_system_theme_desc">आपकी सिस्टम सेटिंग्स के आधार पर लाइट या डार्क थीम का उपयोग करें।</string>

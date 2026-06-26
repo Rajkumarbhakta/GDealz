@@ -83,7 +83,7 @@ class PriceDropWorkerRepository @Inject constructor(
                         val discountPercentage = minDeal.cut?.toDouble()
                         val currencySymbol = minDeal.price?.currency
 
-                        val oldLowestPrice = favDeal.currentlyLowestPrice?.plus(10)
+                        val oldLowestPrice = favDeal.currentlyLowestPrice
                         val oldCurrency = favDeal.currencySymbol
 
 

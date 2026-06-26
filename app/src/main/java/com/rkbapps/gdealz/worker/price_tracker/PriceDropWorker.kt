@@ -25,10 +25,10 @@ class PriceDropWorker @AssistedInject constructor(
     override suspend fun doWork(): Result {
         Log.d("PriceDropWorker", "Running PriceDropWorker")
         // Check if the app is in the foreground
-//        if (AppForegroundTracker.isAppInForeground()) {
-//            // If the app is in the foreground, do not send notifications
-//            return Result.success()
-//        }
+        if (AppForegroundTracker.isAppInForeground()) {
+            // If the app is in the foreground, do not send notifications
+            return Result.success()
+        }
 
         repository.checkPricesAndNotify()
 

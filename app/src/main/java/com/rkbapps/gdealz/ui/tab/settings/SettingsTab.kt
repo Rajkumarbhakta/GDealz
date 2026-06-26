@@ -106,6 +106,10 @@ fun SettingsScreen(
 
     val currentLanguageCode = AppLocaleManager.getLanguageCode(context = context)
 
+    LaunchedEffect(Unit) {
+        Log.d("currentLanguageCode","$currentLanguageCode")
+    }
+
 
     Scaffold(
         topBar = {

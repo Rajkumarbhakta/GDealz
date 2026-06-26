@@ -42,6 +42,10 @@
     <string name="japanese">日本語</string>
     <string name="korean">韓国語</string>
     <string name="bengali">ベンガル語</string>
+    <string name="portuguese">ポルトガル語</string>
+    <string name="spanish">スペイン語</string>
+    <string name="simplified_chinese">簡体字中国語</string>
+    <string name="traditional_chinese">繁体字中国語</string>
     <string name="settings">設定</string>
     <string name="follow_system_theme">システムのテーマに従う</string>
     <string name="follow_system_theme_desc">システムの設定に基づいてライトまたはダークテーマを使用します。</string>
