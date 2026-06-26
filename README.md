@@ -70,4 +70,4 @@ git clone https://github.com/yourusername/pc-game-deals-app.git
 
 ## 📃 License
 
-This project is licensed under the GNU General Public License v3.0 — see the [LICENSE](file:///Users/rajkumarbhakta/StudioProjects/GDealz/LICENSE) file for details.
+This project is licensed under the GNU General Public License v3.0 — see the [LICENSE](https://github.com/Rajkumarbhakta/GDealz/blob/master/LICENSE) file for details.
