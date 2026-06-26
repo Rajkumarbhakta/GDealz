@@ -63,14 +63,14 @@ class PriceDropWorkerRepository @Inject constructor(
         try {
             val priceDetails = safeApiCall { isThereAnyDealApi.getPrices(country = currentCountry, gameIds = gameIds) }
             when(priceDetails){
-                is NetworkResponse.Error.HttpError -> TODO()
-                NetworkResponse.Error.NetworkError -> TODO()
-                NetworkResponse.Error.UnknownError -> TODO()
+                is NetworkResponse.Error.HttpError -> {}
+                NetworkResponse.Error.NetworkError -> {}
+                NetworkResponse.Error.UnknownError -> {}
                 is NetworkResponse.Success<List<PriceDetail>> -> {
                     val data = priceDetails.value
                     val favDeals = favDealsDao.getAllFavDeals()
                     for (favDeal in favDeals) {
-                        val priceDetail = data.find { it.id == (favDeal.gameID.ifEmpty { favDeal.id }) } ?: continue
+                        val priceDetail = data.find { it.id == (favDeal.gameID.ifEmpty { favDeal.dealID }) } ?: continue
                         Log.d("PriceDropWorkerRepo", "Working for ${priceDetail.id}")
 
                         // Find the minimum price among all deals for this game
@@ -98,7 +98,7 @@ class PriceDropWorkerRepository @Inject constructor(
                             )
                             favDealsDao.updateFavDeals(updatedFavDeal)
                             Log.d("PriceDropWorkerRepo", "Updated  $updatedFavDeal")
-                            if ( (oldLowestPrice?:0.0) > newLowestPrice && oldCurrency == currencySymbol ){
+                            if (oldLowestPrice != null && oldLowestPrice > newLowestPrice && (oldCurrency == null || oldCurrency == currencySymbol)) {
                                 sendPriceDropNotification(updatedFavDeal)
                             }
                         }

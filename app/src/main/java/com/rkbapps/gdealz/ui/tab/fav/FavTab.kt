@@ -404,8 +404,8 @@ fun StoreItemPreview(modifier: Modifier = Modifier) {
 @Composable
 fun FavItem(deals: FavDeals, onDelete: () -> Unit, onItemClick: () -> Unit) {
 
-    val percentage = remember { deals.discountPercentage?.toInt() ?: 0 }
-    val isFree = remember { (deals.discountPercentage?: 0) == 100 }
+    val percentage = remember(deals.discountPercentage) { deals.discountPercentage?.toInt() ?: 0 }
+    val isFree = remember(deals.discountPercentage) { (deals.discountPercentage?: 0) == 100 }
 
     OutlinedCard(
         onClick = { onItemClick.invoke() },

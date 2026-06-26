@@ -377,7 +377,7 @@ fun IsThereAnyDealSteamDetailsPage(
                                             ) ?: stringResource(R.string.not_available),
                                             subTitle = getMonths(
                                                 steamGameData.data?.data?.releaseDate?.date ?: "",
-                                                context.resources.getStringArray(R.array.months).toList()
+                                                remember(context) { context.resources.getStringArray(R.array.months).toList() }
                                             ) ?: stringResource(R.string.not_available),
                                             subTitle1 = getDate(
                                                 steamGameData.data?.data?.releaseDate?.date ?: ""
