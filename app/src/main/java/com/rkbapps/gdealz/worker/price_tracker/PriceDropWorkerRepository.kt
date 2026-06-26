@@ -20,9 +20,11 @@ import coil.request.ImageRequest
 import coil.request.SuccessResult
 import com.rkbapps.gdealz.R
 import com.rkbapps.gdealz.activity.MainActivity
+import com.rkbapps.gdealz.db.PreferenceManager
 import com.rkbapps.gdealz.db.dao.FavDealsDao
 import com.rkbapps.gdealz.db.entity.FavDeals
 import com.rkbapps.gdealz.models.price.PriceDetail
+import com.rkbapps.gdealz.network.ApiConst
 import com.rkbapps.gdealz.network.NetworkResponse
 import com.rkbapps.gdealz.network.api.IsThereAnyDealApi
 import com.rkbapps.gdealz.network.safeApiCall
@@ -34,16 +36,18 @@ import javax.inject.Inject
 class PriceDropWorkerRepository @Inject constructor(
     private val favDealsDao: FavDealsDao,
     private val isThereAnyDealApi: IsThereAnyDealApi,
+    private val preferenceManager: PreferenceManager,
     @ApplicationContext private val context: Context
 ) {
 
     @SuppressLint("MissingPermission")
     suspend fun checkPricesAndNotify() {
+
         Log.d("PriceDropWorkerRepo", "Checking prices for favorite deals")
         val favDeals = favDealsDao.getAllFavDeals()
         Log.d("PriceDropWorkerRepo", "${favDeals.count()}")
         if (favDeals.isEmpty()) return
-
+        val currentCountry = preferenceManager.getStringPreferenceSynchronous(PreferenceManager.SELECTED_COUNTRY)?: ApiConst.COUNTRY
         val gameIds = favDeals.map {
             if (it.gameID.isEmpty() || it.gameID.isBlank()) {
                 val id = it.dealID
@@ -54,10 +58,10 @@ class PriceDropWorkerRepository @Inject constructor(
             }
         }
 
-        Log.d("PriceDropWorkerRepo", "${gameIds}")
+        Log.d("PriceDropWorkerRepo", "$gameIds")
 
         try {
-            val priceDetails = safeApiCall { isThereAnyDealApi.getPrices(gameIds = gameIds) }
+            val priceDetails = safeApiCall { isThereAnyDealApi.getPrices(country = currentCountry, gameIds = gameIds) }
             when(priceDetails){
                 is NetworkResponse.Error.HttpError -> TODO()
                 NetworkResponse.Error.NetworkError -> TODO()
@@ -79,11 +83,12 @@ class PriceDropWorkerRepository @Inject constructor(
                         val discountPercentage = minDeal.cut?.toDouble()
                         val currencySymbol = minDeal.price?.currency
 
-                        val oldLowestPrice = favDeal.currentlyLowestPrice
+                        val oldLowestPrice = favDeal.currentlyLowestPrice?.plus(10)
+                        val oldCurrency = favDeal.currencySymbol
+
 
                         if (oldLowestPrice == null || newLowestPrice != oldLowestPrice) {
                             Log.d("PriceDropWorkerRepo", "Price drop detected for ${favDeal.title}: $oldLowestPrice -> $newLowestPrice")
-
                             // Update database
                             val updatedFavDeal = favDeal.copy(
                                 actualPrice = actualPrice,
@@ -92,9 +97,10 @@ class PriceDropWorkerRepository @Inject constructor(
                                 currencySymbol = currencySymbol
                             )
                             favDealsDao.updateFavDeals(updatedFavDeal)
-                            Log.d("PriceDropWorkerRepo", "Updated  ${updatedFavDeal}")
-
-                            sendPriceDropNotification(updatedFavDeal)
+                            Log.d("PriceDropWorkerRepo", "Updated  $updatedFavDeal")
+                            if ( (oldLowestPrice?:0.0) > newLowestPrice && oldCurrency == currencySymbol ){
+                                sendPriceDropNotification(updatedFavDeal)
+                            }
                         }
                     }
                 }

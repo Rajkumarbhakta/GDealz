@@ -42,7 +42,7 @@ class PriceDropWorker @AssistedInject constructor(
                 .setRequiredNetworkType(NetworkType.CONNECTED)
                 .build()
 
-            val workRequest = PeriodicWorkRequestBuilder<PriceDropWorker>(20, TimeUnit.MINUTES)
+            val workRequest = PeriodicWorkRequestBuilder<PriceDropWorker>(5, TimeUnit.MINUTES)
                 .setConstraints(constraints)
                 .build()
 

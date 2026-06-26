@@ -14,7 +14,7 @@ interface IsThereAnyDealApi {
 
     @GET("/deals/v2")
     suspend fun getDeals(
-        @Query("country") country: String = "US",
+        @Query("country") country: String = ApiConst.COUNTRY,
         @Query("offset") offset: Int,
         @Query("limit") limit: Int,
         @Query("sort") sort: String,
@@ -34,7 +34,7 @@ interface IsThereAnyDealApi {
 
     @POST("/games/prices/v3")
     suspend fun getPrices(
-        @Query("country") country:String = "US",
+        @Query("country") country:String = ApiConst.COUNTRY,
         @Query("deals") deals: Boolean = true,
         @Query("vouchers") vouchers: Boolean = true,
         @Query("key") apiKey: String = ApiConst.IS_THERE_ANY_DEAL_API_KEY,
