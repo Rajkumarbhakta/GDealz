@@ -4,8 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import com.rkbapps.gdealz.db.PreferenceManager
 import com.rkbapps.gdealz.db.dao.GiveawaysDao
-import com.rkbapps.gdealz.util.FavStoreIds
-import com.rkbapps.gdealz.worker.NotificationWorkerRepository
+import com.rkbapps.gdealz.worker.notification.NotificationWorkerRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject

@@ -9,7 +9,12 @@ data class FavDeals (
     val id:Int = 0,
     val dealID: String,
     val gameID: String,
+    val slug: String,
     val thumb: String?,
     val title: String?,
-    val steamAppId: String? = null
+    val steamAppId: String? = null,
+    val actualPrice: Double? = null,
+    val currentlyLowestPrice: Double? = null,
+    val discountPercentage: Double? = null,
+    val currencySymbol: String? = null
 )

@@ -7,6 +7,8 @@ import androidx.navigation.toRoute
 import com.google.gson.Gson
 import com.rkbapps.gdealz.models.deal.Deal
 import com.rkbapps.gdealz.models.game_info.GameInfo
+import com.rkbapps.gdealz.models.price.Deals
+import com.rkbapps.gdealz.models.price.PriceDetail
 import com.rkbapps.gdealz.navigation.Routes
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -41,9 +43,9 @@ class GameInfoViewModel @Inject constructor(
         }
     }
 
-    fun toggleFavDeal(gameInfo: GameInfo){
+    fun toggleFavDeal(gameInfo: GameInfo,prices: List<Deals>){
         viewModelScope.launch(Dispatchers.IO){
-            repository.markFavDeals(gameInfo = gameInfo,)
+            repository.markFavDeals(gameInfo = gameInfo, prices = prices)
         }
     }
 

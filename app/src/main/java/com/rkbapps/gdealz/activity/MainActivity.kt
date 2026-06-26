@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.appcompat.app.AppCompatActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
@@ -16,6 +17,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
 import com.rkbapps.gdealz.db.PreferenceManager
 import com.rkbapps.gdealz.navigation.NavGraph
+import com.rkbapps.gdealz.navigation.Routes
 import com.rkbapps.gdealz.ui.theme.GDealzTheme
 import com.rkbapps.gdealz.util.AppForegroundTracker
 import dagger.hilt.android.AndroidEntryPoint
@@ -27,38 +29,19 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    @Inject
-    lateinit var preferenceManager: PreferenceManager
+    private val viewModel: MainViewModel by viewModels<MainViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        val isSystemTheme = preferenceManager.getBooleanPreference(PreferenceManager.IS_USE_SYSTEM_THEME, true)
-                .stateIn(
-                    lifecycleScope,
-                    SharingStarted.WhileSubscribed(5000),
-                    true
-                )
 
-        val isDarkTheme = preferenceManager.getBooleanPreference(PreferenceManager.IS_DARK_THEME, false)
-            .stateIn(
-                lifecycleScope,
-                SharingStarted.WhileSubscribed(5000),
-                false
-            )
-        val isDynamicColor = preferenceManager.getBooleanPreference(PreferenceManager.IS_DYNAMIC_THEME, true)
-            .stateIn(
-                lifecycleScope,
-                SharingStarted.WhileSubscribed(5000),
-                true
-            )
 
         setContent {
 
-            val isSystemTheme by isSystemTheme.collectAsStateWithLifecycle()
-            val darkTheme by isDarkTheme.collectAsStateWithLifecycle()
-            val isDynamicColor by isDynamicColor.collectAsStateWithLifecycle()
+            val isSystemTheme by viewModel.isSystemTheme.collectAsStateWithLifecycle()
+            val darkTheme by viewModel.isDarkTheme.collectAsStateWithLifecycle()
+            val isDynamicColor by viewModel.isDynamicColor.collectAsStateWithLifecycle()
 
             GDealzTheme(
                 darkTheme = if (isSystemTheme) isSystemInDarkTheme() else darkTheme,

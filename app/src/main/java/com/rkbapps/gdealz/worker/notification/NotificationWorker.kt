@@ -1,14 +1,12 @@
-package com.rkbapps.gdealz.worker
+package com.rkbapps.gdealz.worker.notification
 
 import android.content.Context
 import android.util.Log
-import androidx.core.content.ContextCompat
 import androidx.hilt.work.HiltWorker
 import androidx.work.Constraints
 import androidx.work.CoroutineWorker
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.NetworkType
-import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
@@ -82,7 +80,7 @@ class NotificationWorker @AssistedInject constructor(
 
             WorkManager.getInstance(context).enqueueUniquePeriodicWork(
                 "GiveawayWorker",
-                ExistingPeriodicWorkPolicy.CANCEL_AND_REENQUEUE, // KEEP prevents duplicate workers
+                ExistingPeriodicWorkPolicy.CANCEL_AND_REENQUEUE,
                 workRequest
             )
         }

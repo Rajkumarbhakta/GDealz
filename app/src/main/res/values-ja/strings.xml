@@ -42,6 +42,10 @@
     <string name="japanese">日本語</string>
     <string name="korean">韓国語</string>
     <string name="bengali">ベンガル語</string>
+    <string name="portuguese">ポルトガル語</string>
+    <string name="spanish">スペイン語</string>
+    <string name="simplified_chinese">簡体字中国語</string>
+    <string name="traditional_chinese">繁体字中国語</string>
     <string name="settings">設定</string>
     <string name="follow_system_theme">システムのテーマに従う</string>
     <string name="follow_system_theme_desc">システムの設定に基づいてライトまたはダークテーマを使用します。</string>
@@ -157,4 +161,7 @@
     <string name="deal_label">セール</string>
     <string name="price_format">¥%1$s</string>
     <string name="store_logo">ストアロゴ</string>
+    <string name="unable_to_open_website">ウェブサイトを開けません。</string>
+    <string name="price_drop_title">価格下落アラート！</string>
+    <string name="price_drop_message">朗報です！ %1$s が %2$s で利用可能になりました。チェックしてみてください！</string>
 </resources>

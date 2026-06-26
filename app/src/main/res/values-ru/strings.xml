@@ -42,6 +42,10 @@
     <string name="japanese">Японский</string>
     <string name="korean">Корейский</string>
     <string name="bengali">Бенгальский</string>
+    <string name="portuguese">Португальский</string>
+    <string name="spanish">Испанский</string>
+    <string name="simplified_chinese">Упрощенный китайский</string>
+    <string name="traditional_chinese">Традиционный китайский</string>
     <string name="settings">Настройки</string>
     <string name="follow_system_theme">Следовать системной теме</string>
     <string name="follow_system_theme_desc">Использовать светлую или темную тему на основе системных настроек.</string>
@@ -157,4 +161,7 @@
     <string name="deal_label">СКИДКА</string>
     <string name="price_format">$%1$s</string>
     <string name="store_logo">логотип магазина</string>
+    <string name="unable_to_open_website">Не удалось открыть веб-сайт.</string>
+    <string name="price_drop_title">Оповещение о снижении цены!</string>
+    <string name="price_drop_message">Хорошие новости! %1$s теперь доступна за %2$s. Проверьте это!</string>
 </resources>

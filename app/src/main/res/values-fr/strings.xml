@@ -42,6 +42,10 @@
     <string name="japanese">Japonais</string>
     <string name="korean">Coréen</string>
     <string name="bengali">Bengali</string>
+    <string name="portuguese">Portugais</string>
+    <string name="spanish">Espagnol</string>
+    <string name="simplified_chinese">Chinois Simplifié</string>
+    <string name="traditional_chinese">Chinois Traditionnel</string>
     <string name="settings">Paramètres</string>
     <string name="follow_system_theme">Suivre le thème du système</string>
     <string name="follow_system_theme_desc">Utiliser le thème clair ou sombre en fonction des paramètres de votre système.</string>
@@ -157,4 +161,7 @@
     <string name="deal_label">OFFRE</string>
     <string name="price_format">%1$s $</string>
     <string name="store_logo">Logo du magasin</string>
+    <string name="unable_to_open_website">Impossible d\'ouvrir le site Web.</string>
+    <string name="price_drop_title">Alerte de baisse de prix !</string>
+    <string name="price_drop_message">Bonne nouvelle ! %1$s est maintenant disponible pour %2$s. Allez voir !</string>
 </resources>

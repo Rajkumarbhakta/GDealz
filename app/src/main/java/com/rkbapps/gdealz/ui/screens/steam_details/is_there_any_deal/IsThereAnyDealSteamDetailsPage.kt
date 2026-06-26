@@ -97,7 +97,6 @@ fun IsThereAnyDealSteamDetailsPage(
 
     val uriHandler = LocalUriHandler.current
     val context = LocalContext.current
-    val months = remember { context.resources.getStringArray(R.array.months).toList() }
 
     val gameData by viewModel.gameInfo.collectAsStateWithLifecycle()
     val gamePriceInfo by viewModel.gamePriceInfo.collectAsStateWithLifecycle()
@@ -138,7 +137,8 @@ fun IsThereAnyDealSteamDetailsPage(
                             }
                         ),
                         onClick = {
-                            gameData.data?.let { viewModel.toggleFavDeal(it) }
+                            val prices = gamePriceInfo.data?.deals?:emptyList()
+                            gameData.data?.let { viewModel.toggleFavDeal(it, prices = prices) }
                         },
                         colors = IconButtonDefaults.filledIconButtonColors(
                             containerColor = Color.Transparent,
@@ -157,6 +157,7 @@ fun IsThereAnyDealSteamDetailsPage(
         },
         bottomBar = {
             AnimatedVisibility(steamGameData.data != null) {
+                val error = stringResource(R.string.unable_to_open_website)
                 Button(
                     modifier = Modifier
                         .padding(BottomAppBarDefaults.windowInsets.asPaddingValues())
@@ -169,7 +170,7 @@ fun IsThereAnyDealSteamDetailsPage(
                             }
                         }catch (e: Exception){
                             e.printStackTrace()
-                            Toast.makeText(context, "Unable to open website.", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
                         }
                     }
                 ) {
@@ -376,7 +377,7 @@ fun IsThereAnyDealSteamDetailsPage(
                                             ) ?: stringResource(R.string.not_available),
                                             subTitle = getMonths(
                                                 steamGameData.data?.data?.releaseDate?.date ?: "",
-                                                months
+                                                remember(context) { context.resources.getStringArray(R.array.months).toList() }
                                             ) ?: stringResource(R.string.not_available),
                                             subTitle1 = getDate(
                                                 steamGameData.data?.data?.releaseDate?.date ?: ""

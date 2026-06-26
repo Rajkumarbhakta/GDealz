@@ -7,6 +7,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.rkbapps.gdealz.models.DealsInfo
 import com.rkbapps.gdealz.models.game_info.GameInfo
+import com.rkbapps.gdealz.models.price.Deals
+import com.rkbapps.gdealz.models.price.PriceDetail
 import com.rkbapps.gdealz.navigation.Routes
 import com.rkbapps.gdealz.ui.screens.dealslookup.FavDealsState
 import com.rkbapps.gdealz.ui.screens.game_info.GameInfoRepository
@@ -54,10 +56,10 @@ class IsThereAnyDealSteamViewModel @Inject constructor(
         }
     }
 
-    fun toggleFavDeal(gameInfo: GameInfo) {
+    fun toggleFavDeal(gameInfo: GameInfo,prices: List<Deals>) {
         viewModelScope.launch(Dispatchers.IO) {
             route.gameId.let {
-                gameInfoRepository.markFavDeals(gameInfo)
+                gameInfoRepository.markFavDeals(gameInfo,prices)
             }
         }
     }

@@ -10,6 +10,7 @@ import com.rkbapps.gdealz.db.entity.FavDeals
 import com.rkbapps.gdealz.models.DealsInfo
 import com.rkbapps.gdealz.models.deal.Deal
 import com.rkbapps.gdealz.models.game_info.GameInfo
+import com.rkbapps.gdealz.models.price.Deals
 import com.rkbapps.gdealz.models.price.PriceDetail
 import com.rkbapps.gdealz.network.ApiConst
 import com.rkbapps.gdealz.network.NetworkResponse
@@ -92,12 +93,12 @@ class GameInfoRepository @Inject constructor (
     }
 
 
-    suspend fun markFavDeals(gameInfo: GameInfo,) {
+    suspend fun markFavDeals(gameInfo: GameInfo,prices: List<Deals>) {
         try {
             if (isFavDeal.value) {
                 removeFromFav(gameInfo.id)
             } else {
-                markDealsInFav(gameInfo)
+                markDealsInFav(gameInfo,prices)
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -115,15 +116,21 @@ class GameInfoRepository @Inject constructor (
         }
     }
 
-    private suspend fun markDealsInFav(gameInfo: GameInfo,) {
+    private suspend fun markDealsInFav(gameInfo: GameInfo,prices: List<Deals>) {
         try {
+            val cheapDeal = prices.minByOrNull { it.price?.amount?:Double.MAX_VALUE }
             favDealsDao.insertFavDeals(
                 FavDeals(
                     dealID = gameInfo.id,
-                    gameID = gameInfo.slug?:"",
+                    gameID = gameInfo.id,
+                    slug = gameInfo.slug ?: "",
                     thumb = gameInfo.assets?.boxart,
                     title = gameInfo.title,
                     steamAppId = gameInfo.steamAppId?.toString(),
+                    actualPrice = cheapDeal?.regular?.amount,
+                    currentlyLowestPrice = cheapDeal?.price?.amount,
+                    discountPercentage = cheapDeal?.cut?.toDouble(),
+                    currencySymbol = cheapDeal?.price?.currency
                 )
             )
             isFav.value = true

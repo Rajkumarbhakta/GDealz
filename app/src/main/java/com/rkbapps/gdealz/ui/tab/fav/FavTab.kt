@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -29,6 +30,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButtonDefaults
@@ -46,6 +48,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
@@ -83,6 +86,12 @@ import kotlinx.coroutines.launch
 
 
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextDecoration
+import com.kyant.backdrop.backdrops.rememberBackdrop
+import com.rkbapps.gdealz.ui.theme.darkGreen
+import com.rkbapps.gdealz.ui.theme.normalTextColor
+import com.rkbapps.gdealz.util.CurrencyAndCountryUtil
+import kotlin.collections.get
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -391,8 +400,13 @@ fun StoreItemPreview(modifier: Modifier = Modifier) {
 }
 
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun FavItem(deals: FavDeals, onDelete: () -> Unit, onItemClick: () -> Unit) {
+
+    val percentage = remember(deals.discountPercentage) { deals.discountPercentage?.toInt() ?: 0 }
+    val isFree = remember(deals.discountPercentage) { (deals.discountPercentage?: 0) == 100 }
+
     OutlinedCard(
         onClick = { onItemClick.invoke() },
         modifier = Modifier
@@ -439,13 +453,44 @@ fun FavItem(deals: FavDeals, onDelete: () -> Unit, onItemClick: () -> Unit) {
                 )
             }
 
-            Text(
-                text = deals.title ?: "",
-                maxLines = 1,
-                style = TextStyle(fontWeight = FontWeight.Bold),
-                overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.weight(1f)
-            )
+            Column(
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .weight(1f)
+            ) {
+                Text(
+                    text = deals.title ?: "",
+                    maxLines = 1,
+                    style = TextStyle(fontWeight = FontWeight.Bold),
+                    overflow = TextOverflow.Ellipsis,
+                    //modifier = Modifier.weight(1f)
+                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(5.dp),
+                ) {
+
+                    Text(
+                        text = if (isFree) stringResource(R.string.free) else "${percentage}% OFF",
+                        color = if (isFree) darkGreen else MaterialTheme.colorScheme.primary,
+                        style = MaterialTheme.typography.labelMediumEmphasized
+                    )
+                    Text("●")
+                    Text(
+                        text = "${CurrencyAndCountryUtil.currencySymbolMap[deals.currencySymbol] ?: "-"}${CurrencyAndCountryUtil.formatAmount(deals.actualPrice)}",
+                        color = normalTextColor,
+                        style = MaterialTheme.typography.bodySmall.copy(textDecoration = TextDecoration.LineThrough),
+                    )
+                    Text(
+                        text = if (isFree) stringResource(R.string.free) else "${CurrencyAndCountryUtil.currencySymbolMap[deals.currencySymbol] ?: "-"}${CurrencyAndCountryUtil.formatAmount(deals.currentlyLowestPrice)}",
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            color = if (isFree) darkGreen else MaterialTheme.colorScheme.primary
+                        )
+                    )
+                }
+            }
+
 
             FilledIconButton(
                 onClick = onDelete,

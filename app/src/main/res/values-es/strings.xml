@@ -44,6 +44,8 @@
     <string name="bengali">Bengalí</string>
     <string name="portuguese">Portugués</string>
     <string name="spanish">Español</string>
+    <string name="simplified_chinese">Chino Simplificado</string>
+    <string name="traditional_chinese">Chino Tradicional</string>
     <string name="settings">Ajustes</string>
     <string name="follow_system_theme">Seguir el tema del sistema</string>
     <string name="follow_system_theme_desc">Usa el tema claro o oscuro según la configuración de tu sistema.</string>
@@ -159,4 +161,7 @@
     <string name="deal_label">OFERTA</string>
     <string name="price_format">$%1$s</string>
     <string name="store_logo">logotipo de la tienda</string>
+    <string name="unable_to_open_website">No se puede abrir el sitio web.</string>
+    <string name="price_drop_title">¡Alerta de bajada de precio!</string>
+    <string name="price_drop_message">¡Buenas noticias! %1$s ya está disponible por %2$s. ¡Échale un vistazo!</string>
 </resources>

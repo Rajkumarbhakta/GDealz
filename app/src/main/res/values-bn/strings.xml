@@ -42,6 +42,10 @@
     <string name="japanese">জাপানি</string>
     <string name="korean">কোরিয়ান</string>
     <string name="bengali">বাংলা</string>
+    <string name="portuguese">পর্তুগিজ</string>
+    <string name="spanish">স্প্যানিশ</string>
+    <string name="simplified_chinese">সরলীকৃত চীনা</string>
+    <string name="traditional_chinese">ঐতিহ্যবাহী চীনা</string>
     <string name="settings">সেটিংস</string>
     <string name="follow_system_theme">সিস্টেম থিম অনুসরণ করুন</string>
     <string name="follow_system_theme_desc">সিস্টেম সেটিংসের ওপর ভিত্তি করে লাইট বা ডার্ক থিম ব্যবহার করুন।</string>
@@ -157,4 +161,7 @@
     <string name="deal_label">ডিল</string>
     <string name="price_format">%1$s $</string>
     <string name="store_logo">স্টোর লোগো</string>
+    <string name="unable_to_open_website">ওয়েবসাইট খুলতে অক্ষম।</string>
+    <string name="price_drop_title">দাম কমার সতর্কতা!</string>
+    <string name="price_drop_message">সুসংবাদ! %1$s এখন %2$s এ পাওয়া যাচ্ছে। এখনই দেখুন!</string>
 </resources>

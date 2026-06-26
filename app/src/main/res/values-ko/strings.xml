@@ -42,6 +42,10 @@
     <string name="japanese">일본어</string>
     <string name="korean">한국어</string>
     <string name="bengali">뱅골어</string>
+    <string name="portuguese">포르투갈어</string>
+    <string name="spanish">스페인어</string>
+    <string name="simplified_chinese">중국어 간체</string>
+    <string name="traditional_chinese">중국어 번체</string>
     <string name="settings">설정</string>
     <string name="follow_system_theme">시스템 테마 따르기</string>
     <string name="follow_system_theme_desc">시스템 설정에 따라 라이트 또는 다크 테마를 사용합니다.</string>
@@ -157,4 +161,7 @@
     <string name="deal_label">딜</string>
     <string name="price_format">₩%1$s</string>
     <string name="store_logo">스토어 로고</string>
+    <string name="unable_to_open_website">웹사이트를 열 수 없습니다.</string>
+    <string name="price_drop_title">가격 하락 알림!</string>
+    <string name="price_drop_message">좋은 소식입니다! %1$s을(를) 이제 %2$s에 구매하실 수 있습니다. 확인해 보세요!</string>
 </resources>

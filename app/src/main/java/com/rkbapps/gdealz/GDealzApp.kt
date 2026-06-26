@@ -3,7 +3,8 @@ package com.rkbapps.gdealz
 import android.app.Application
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
-import com.rkbapps.gdealz.worker.NotificationWorker
+import com.rkbapps.gdealz.worker.notification.NotificationWorker
+import com.rkbapps.gdealz.worker.price_tracker.PriceDropWorker
 import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
 
@@ -15,6 +16,7 @@ class GDealzApp() :Application(),Configuration.Provider{
     override fun onCreate() {
         super.onCreate()
         NotificationWorker.scheduleGiveawayWorker(this)
+        PriceDropWorker.schedulePriceDropWorker(this)
     }
 
     override val workManagerConfiguration: Configuration

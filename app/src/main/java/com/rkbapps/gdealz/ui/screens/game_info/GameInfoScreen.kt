@@ -94,7 +94,8 @@ fun GameInfoScreen(
                 actions = {
                     FilledIconButton(
                         onClick = {
-                            gameInfo.data?.let { viewModel.toggleFavDeal(it) }
+                            val prices = gamePriceInfo.data?.deals?:emptyList()
+                            gameInfo.data?.let { viewModel.toggleFavDeal(it, prices = prices) }
                         },
                         colors = IconButtonDefaults.filledIconButtonColors(
                             containerColor = Color.White.copy(alpha = 0.2f),
