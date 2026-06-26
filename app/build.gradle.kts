@@ -26,8 +26,8 @@ android {
         applicationId = "com.rkbapps.gdealz"
         minSdk = 23
         targetSdk = 36
-        versionCode = 10
-        versionName = "1.3.0"
+        versionCode = 11
+        versionName = "1.3.1"
 
         // build configs
         buildConfigField("String", "API_KEY", properties.getProperty("API_KEY"))
