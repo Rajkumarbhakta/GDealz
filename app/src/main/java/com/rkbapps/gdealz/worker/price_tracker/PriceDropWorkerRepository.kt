@@ -15,6 +15,7 @@ import androidx.annotation.RequiresApi
 import androidx.annotation.RequiresPermission
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.work.ListenableWorker
 import coil.Coil.imageLoader
 import coil.request.ImageRequest
 import coil.request.SuccessResult
@@ -28,6 +29,7 @@ import com.rkbapps.gdealz.network.ApiConst
 import com.rkbapps.gdealz.network.NetworkResponse
 import com.rkbapps.gdealz.network.api.IsThereAnyDealApi
 import com.rkbapps.gdealz.network.safeApiCall
+import com.rkbapps.gdealz.util.AppForegroundTracker
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -40,7 +42,6 @@ class PriceDropWorkerRepository @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
 
-    @SuppressLint("MissingPermission")
     suspend fun checkPricesAndNotify() {
 
         Log.d("PriceDropWorkerRepo", "Checking prices for favorite deals")
@@ -98,8 +99,10 @@ class PriceDropWorkerRepository @Inject constructor(
                             )
                             favDealsDao.updateFavDeals(updatedFavDeal)
                             Log.d("PriceDropWorkerRepo", "Updated  $updatedFavDeal")
-                            if (oldLowestPrice != null && oldLowestPrice > newLowestPrice && (oldCurrency == null || oldCurrency == currencySymbol)) {
-                                sendPriceDropNotification(updatedFavDeal)
+                            if (!AppForegroundTracker.isAppInForeground()) {
+                                if (oldLowestPrice != null && oldLowestPrice > newLowestPrice && (oldCurrency == null || oldCurrency == currencySymbol)) {
+                                    sendPriceDropNotification(updatedFavDeal)
+                                }
                             }
                         }
                     }

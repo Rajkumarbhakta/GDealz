@@ -25,13 +25,7 @@ class PriceDropWorker @AssistedInject constructor(
     override suspend fun doWork(): Result {
         Log.d("PriceDropWorker", "Running PriceDropWorker")
         // Check if the app is in the foreground
-        if (AppForegroundTracker.isAppInForeground()) {
-            // If the app is in the foreground, do not send notifications
-            return Result.success()
-        }
-
         repository.checkPricesAndNotify()
-
         return Result.success()
     }
 
@@ -42,7 +36,7 @@ class PriceDropWorker @AssistedInject constructor(
                 .setRequiredNetworkType(NetworkType.CONNECTED)
                 .build()
 
-            val workRequest = PeriodicWorkRequestBuilder<PriceDropWorker>(5, TimeUnit.HOURS)
+            val workRequest = PeriodicWorkRequestBuilder<PriceDropWorker>(1, TimeUnit.HOURS)
                 .setConstraints(constraints)
                 .build()
 
