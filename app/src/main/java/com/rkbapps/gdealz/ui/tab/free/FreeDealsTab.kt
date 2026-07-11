@@ -1,14 +1,12 @@
 package com.rkbapps.gdealz.ui.tab.free
 
-import android.util.Log
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
@@ -28,18 +26,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableIntState
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.LayoutDirection
@@ -47,7 +40,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
-import coil.compose.AsyncImage
 import coil.compose.SubcomposeAsyncImage
 import com.rkbapps.gdealz.R
 import com.rkbapps.gdealz.models.Giveaway
@@ -57,12 +49,7 @@ import com.rkbapps.gdealz.ui.composables.CommonTopBar
 import com.rkbapps.gdealz.ui.composables.ErrorScreen
 import com.rkbapps.gdealz.util.getStatusFromEndDate
 import com.rkbapps.gdealz.util.shimmerBrush
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-
-
-import androidx.compose.ui.res.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -90,10 +77,12 @@ fun FreeDealsTab(
         topBar = { CommonTopBar(title = stringResource(R.string.free_title)) },
     ) { paddingValue ->
         Column(
-            modifier = Modifier.fillMaxSize().padding(
-                top = paddingValue.calculateTopPadding(),
-                start = paddingValue.calculateStartPadding(LayoutDirection.Ltr),
-                end = paddingValue.calculateEndPadding(LayoutDirection.Ltr)
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(
+                    top = paddingValue.calculateTopPadding(),
+                    start = paddingValue.calculateStartPadding(LayoutDirection.Ltr),
+                    end = paddingValue.calculateEndPadding(LayoutDirection.Ltr)
                 )
         ) {
 
@@ -208,9 +197,7 @@ fun FreeDealsTab(
 @Composable
 fun FreeGameItems(item: Giveaway, onClick: () -> Unit) {
 
-    val status = remember {
-        getStatusFromEndDate(item.endDate)
-    }
+    val status = remember(item.endDate) { getStatusFromEndDate(item.endDate) }
 
     Card(
         onClick = {
@@ -225,7 +212,9 @@ fun FreeGameItems(item: Giveaway, onClick: () -> Unit) {
                     model = item.image,
                     contentDescription = "giveaway poster",
                     contentScale = ContentScale.FillBounds,
-                    modifier = Modifier.fillMaxWidth().height(150.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(150.dp),
                     error = {
                         Image(
                             painter = painterResource(R.drawable.console),
@@ -258,23 +247,39 @@ fun FreeGameItems(item: Giveaway, onClick: () -> Unit) {
 
                 }
             }
-            status?.let {
-                Box(
-                    Modifier
-                        .background(
-                            color = if (it) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.errorContainer,
-                            shape = RoundedCornerShape(10.dp)
-                        )
-                        .padding(vertical = 10.dp, horizontal = 15.dp)
-                        .align(Alignment.TopEnd),
-                    contentAlignment = Alignment.Center
+
+            Box(
+                modifier = Modifier.align(Alignment.TopEnd).padding(8.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Text(
-                        if (it) stringResource(R.string.active) else stringResource(R.string.expired),
-                        color = if (it) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.error
+                        modifier = Modifier
+                            .background(
+                                color = MaterialTheme.colorScheme.primaryContainer,
+                                shape = RoundedCornerShape(12.dp)
+                            )
+                            .padding(vertical = 5.dp, horizontal = 10.dp),
+                        text = item.type,
+                        color = MaterialTheme.colorScheme.onPrimaryContainer,
                     )
+                    status?.let {
+                        Text(
+                            modifier = Modifier
+                                .background(
+                                    color = if (it) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.errorContainer,
+                                    shape = RoundedCornerShape(12.dp)
+                                )
+                                .padding(vertical = 5.dp, horizontal = 10.dp),
+                            text = if (it) stringResource(R.string.active) else stringResource(R.string.expired),
+                            color = if (it) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.error
+                        )
+                    }
                 }
             }
+
         }
 
     }

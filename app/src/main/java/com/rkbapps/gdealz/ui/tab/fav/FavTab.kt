@@ -219,7 +219,6 @@ fun FavTab(
                             deletableFav.value = deal
                         }
                     }
-
                     1 -> {
                         FavStoreListUi(
                             favStoreIds = favStoreIds?.ids,
@@ -246,15 +245,13 @@ fun FavGameListUi(
         ErrorScreen(stringResource(R.string.nothing_here))
     } else {
         LazyColumn(
-            modifier
-                .fillMaxSize()
-                .padding(horizontal = 16.dp),
+            modifier.fillMaxSize().padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp),
         ) {
             item {
                 Spacer(Modifier.height(10.dp))
             }
-            items(favList) {
+            items(favList, key = { it.id }) {
                 FavItem(it, onDelete = {
                     onDelete(it)
                 }) {
@@ -466,17 +463,16 @@ fun FavItem(deals: FavDeals, onDelete: () -> Unit, onItemClick: () -> Unit) {
                     overflow = TextOverflow.Ellipsis,
                     //modifier = Modifier.weight(1f)
                 )
+                Text(
+                    text = if (isFree) stringResource(R.string.free) else "${percentage}% OFF",
+                    color = if (isFree) darkGreen else MaterialTheme.colorScheme.primary,
+                    style = MaterialTheme.typography.labelMediumEmphasized
+                )
+                //Text("●")
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(5.dp),
                 ) {
-
-                    Text(
-                        text = if (isFree) stringResource(R.string.free) else "${percentage}% OFF",
-                        color = if (isFree) darkGreen else MaterialTheme.colorScheme.primary,
-                        style = MaterialTheme.typography.labelMediumEmphasized
-                    )
-                    Text("●")
                     Text(
                         text = "${CurrencyAndCountryUtil.currencySymbolMap[deals.currencySymbol] ?: "-"}${CurrencyAndCountryUtil.formatAmount(deals.actualPrice)}",
                         color = normalTextColor,
