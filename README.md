@@ -44,9 +44,9 @@ An **ad-free, open-source Android app** to help gamers discover the best **PC ga
 |:-----------------------------------------------------:|---------------------------------------------------|------------------------------------------------------|
 | <img height="500" src="screenshots\fresh_deals.png"/> | <img height="500" src="screenshots\filters.png"/> | <img height="500" src="screenshots\free_games.png"/> |
 
-|                      Game Details                      | Fav Deals                                               | Customization                                          |
-|:------------------------------------------------------:|---------------------------------------------------------|--------------------------------------------------------|
-| <img height="500" src="screenshots\game_details.png"/> | <img height="500" src="screenshots\favourite.png.png"/> | <img height="500" src="screenshots\settings.png.png"/> |
+|                      Game Details                      | Fav Deals                                           | Customization                                      |
+|:------------------------------------------------------:|-----------------------------------------------------|----------------------------------------------------|
+| <img height="500" src="screenshots\game_details.png"/> | <img height="500" src="screenshots\favourite.png"/> | <img height="500" src="screenshots\settings.png"/> |
 
 ## 🔧 Building from Source
 
