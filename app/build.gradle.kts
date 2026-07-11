@@ -20,14 +20,14 @@ if (propertiesFile?.exists()==true){
 
 android {
     namespace = "com.rkbapps.gdealz"
-    compileSdk = 36
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "com.rkbapps.gdealz"
         minSdk = 23
-        targetSdk = 36
-        versionCode = 11
-        versionName = "1.3.1"
+        targetSdk = 37
+        versionCode = 13
+        versionName = "1.3.2"
 
         // build configs
         buildConfigField("String", "API_KEY", properties.getProperty("API_KEY"))
