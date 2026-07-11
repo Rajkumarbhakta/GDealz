@@ -40,13 +40,13 @@ An **ad-free, open-source Android app** to help gamers discover the best **PC ga
 
 ## 📷 Screenshots
 
-|                      Home                      | Free Games                                          | Search                                           |
-|:----------------------------------------------:|-----------------------------------------------------|--------------------------------------------------|
-| <img height="500" src="screenshots\home.png"/> | <img height="500" src="screenshots\freeGames.png"/> | <img height="500" src="screenshots\search.png"/> |
+|                         Deals                         | Filters                                           | Free Games                                           |
+|:-----------------------------------------------------:|---------------------------------------------------|------------------------------------------------------|
+| <img height="500" src="screenshots\fresh_deals.png"/> | <img height="500" src="screenshots\filters.png"/> | <img height="500" src="screenshots\free_games.png"/> |
 
-|                     Game Details                      | Fav Deals                                          |
-|:-----------------------------------------------------:|----------------------------------------------------|
-| <img height="500" src="screenshots\gameDetails.png"/> | <img height="500" src="screenshots\favDeals.png"/> |
+|                      Game Details                      | Fav Deals                                               | Customization                                          |
+|:------------------------------------------------------:|---------------------------------------------------------|--------------------------------------------------------|
+| <img height="500" src="screenshots\game_details.png"/> | <img height="500" src="screenshots\favourite.png.png"/> | <img height="500" src="screenshots\settings.png.png"/> |
 
 ## 🔧 Building from Source
 
@@ -70,4 +70,5 @@ git clone https://github.com/yourusername/pc-game-deals-app.git
 
 ## 📃 License
 
-This project is licensed under the GNU General Public License v3.0 — see the [LICENSE](https://github.com/Rajkumarbhakta/GDealz/blob/master/LICENSE) file for details.
+This project is licensed under the GNU General Public License v3.0 — see
+the [LICENSE](https://github.com/Rajkumarbhakta/GDealz/blob/master/LICENSE) file for details.
