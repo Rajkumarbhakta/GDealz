@@ -53,7 +53,7 @@ An **ad-free, open-source Android app** to help gamers discover the best **PC ga
 1️⃣ Clone the repo:
 
 ```bash
-git clone https://github.com/yourusername/pc-game-deals-app.git
+https://github.com/Rajkumarbhakta/GDealz.git
 ```
 
 2️⃣ Open the project in Android Studio (Giraffe or newer recommended)
