@@ -3,6 +3,7 @@ package com.rkbapps.gdealz.di
 import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.rkbapps.gdealz.BuildConfig
 import com.rkbapps.gdealz.network.ApiConst
 import com.rkbapps.gdealz.network.ApiConst.CHEAP_SHARK_BASE_URL
 import com.rkbapps.gdealz.network.ApiConst.BASE_URL_GAME_POWER
@@ -42,10 +43,12 @@ object NetworkModule {
             .addInterceptor {chain ->
                 var request = chain.request()
                 val hasNetwork = context.hasNetwork() == true
+                val requestBuilder = request.newBuilder()
+                    .header("User-Agent", "GDealz/1.0 (${BuildConfig.APPLICATION_ID})")
                 request = if (hasNetwork)
-                    request.newBuilder().header("Cache-Control", "public, max-age=" + 5).build()
+                    requestBuilder.header("Cache-Control", "public, max-age=" + 5).build()
                 else
-                    request.newBuilder().header("Cache-Control", "public, only-if-cached, max-stale=" + 60 * 60 * 24 * 7).build()
+                    requestBuilder.header("Cache-Control", "public, only-if-cached, max-stale=" + 60 * 60 * 24 * 7).build()
                 chain.proceed(request)
             }
             .build()
