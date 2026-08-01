@@ -16,8 +16,8 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class FreeGameDetailsViewModel @Inject constructor(
     private val repository: FreeGamesDetailsRepository,
-    gson: Gson,
-    saveStateHandle: SavedStateHandle
+    private val gson: Gson,
+    private val saveStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private val deal = saveStateHandle.toRoute<Routes.FreeGameDetails>()

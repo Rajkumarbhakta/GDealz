@@ -68,12 +68,8 @@ fun SearchTab(
     navController: NavHostController,
     viewModel: SearchViewModel = hiltViewModel()
 ) {
-
-    val searchResult = viewModel.searchResult.collectAsState()
     val searchQuery by viewModel.searchQuery.collectAsStateWithLifecycle()
     val isThereAnyDealSearchResult by viewModel.isThereAnyDealSearchResult.collectAsStateWithLifecycle()
-
-    val query = rememberSaveable { mutableStateOf("") }
 
     Scaffold(
         topBar = {
@@ -148,7 +144,7 @@ fun SearchTab(
                     }
                 }
                 isThereAnyDealSearchResult.error!=null->{
-                    ErrorScreen(searchResult.value.error ?: stringResource(R.string.error_occurred))
+                    ErrorScreen(isThereAnyDealSearchResult.error ?: stringResource(R.string.error_occurred))
                 }
                 isThereAnyDealSearchResult.data!=null->{
                     LazyColumn(

@@ -14,8 +14,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -25,8 +23,9 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.material3.rememberBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -51,7 +50,6 @@ import com.rkbapps.gdealz.R
 import com.rkbapps.gdealz.models.IsThereAnyDealFilters
 import com.rkbapps.gdealz.navigation.Routes
 import com.rkbapps.gdealz.ui.composables.ChooseCountryDialog
-import com.rkbapps.gdealz.ui.composables.CommonFilledIconButton
 import com.rkbapps.gdealz.ui.composables.CommonTopBar
 import com.rkbapps.gdealz.ui.composables.ErrorScreen
 import com.rkbapps.gdealz.ui.tab.deals.composables.DealsItemShimmer
@@ -59,16 +57,13 @@ import com.rkbapps.gdealz.ui.tab.deals.composables.FilterBottomSheet
 import com.rkbapps.gdealz.ui.tab.deals.composables.IsThereAnyDealDealsItem
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.milliseconds
 
 
 @SuppressLint("ConfigurationScreenWidthHeight", "UnusedBoxWithConstraintsScope")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DealsTab(navController: NavHostController, viewModel: DealsTabViewModel = hiltViewModel()) {
-
-    //val dealsPagingData = viewModel.dealsPagingData.collectAsLazyPagingItems()
-    //val filter = viewModel.filter.collectAsStateWithLifecycle()
-    //val stores = viewModel.stores.collectAsStateWithLifecycle()
 
     val filter by viewModel.isThereAnyDealFilter.collectAsStateWithLifecycle()
     val country by viewModel.country.collectAsStateWithLifecycle()
@@ -79,7 +74,7 @@ fun DealsTab(navController: NavHostController, viewModel: DealsTabViewModel = hi
     val isFilterDialogVisible = remember { mutableStateOf(false) }
 
 
-    val sheetState = rememberModalBottomSheetState()
+    val sheetState = rememberBottomSheetState(initialValue = SheetValue.Hidden)
     val scope = rememberCoroutineScope()
     val showBottomSheet = remember { mutableStateOf(false) }
 
@@ -90,7 +85,7 @@ fun DealsTab(navController: NavHostController, viewModel: DealsTabViewModel = hi
     val defaultFilter = remember { IsThereAnyDealFilters() }
 
     LaunchedEffect(country) {
-        delay(500)
+        delay(500.milliseconds)
         if (country == null) {
             isChooseCountryDialogOpen.value = true
         }
@@ -116,22 +111,7 @@ fun DealsTab(navController: NavHostController, viewModel: DealsTabViewModel = hi
             },
             containerColor = MaterialTheme.colorScheme.background,
         ) { innerPadding ->
-
-            /*if (isFilterDialogVisible.value) {
-                Dialog(onDismissRequest = {
-                    isFilterDialogVisible.value = !isFilterDialogVisible.value
-                }) {
-                    FilterDialog(
-                        filter = filter.value,
-                        stores = stores.value,
-                        onCancel = { isFilterDialogVisible.value = false }
-                    ) {
-                        viewModel.updateFilter(it)
-                        isFilterDialogVisible.value = false
-                    }
-                }
-            }*/
-
+            // open country choose dialog.
             if (isChooseCountryDialogOpen.value) {
                 Dialog(onDismissRequest = {}) {
                     ChooseCountryDialog(modifier = Modifier.height(500.dp)) {
@@ -141,6 +121,7 @@ fun DealsTab(navController: NavHostController, viewModel: DealsTabViewModel = hi
                 }
             }
 
+            // open filter bottom-sheet
             if (showBottomSheet.value) {
                 ModalBottomSheet(
                     modifier = Modifier.fillMaxWidth().padding(top = innerPadding.calculateTopPadding()),
@@ -227,7 +208,7 @@ fun DealsTab(navController: NavHostController, viewModel: DealsTabViewModel = hi
                         is LoadState.NotLoading -> {}
                     }
 
-                    if (isThereAnyDealPager.itemCount <= 0) {
+                    if (isThereAnyDealPager.itemCount <= 0 && !isThereAnyDealPager.loadState.hasError) {
                         item {
                             ErrorScreen(stringResource(R.string.no_deals_found))
                         }
@@ -270,101 +251,9 @@ fun DealsTab(navController: NavHostController, viewModel: DealsTabViewModel = hi
                                 )
                             }
                         }
-
                         is LoadState.NotLoading -> {}
                     }
-
                 }
-
-                /*if (false) {
-                    LazyColumn(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(horizontal = 16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)
-                    ) {
-
-                        when (dealsPagingData.loadState.refresh) {
-                            is LoadState.Loading -> {
-                                items(10) {
-                                    DealsItemShimmer()
-                                }
-                            }
-
-                            is LoadState.Error -> {
-                                item {
-                                    ErrorScreen("Something went wrong...")
-                                }
-                            }
-
-                            is LoadState.NotLoading -> {}
-                        }
-
-                        if (dealsPagingData.itemCount <= 0) {
-                            item {
-                                ErrorScreen("No Deals Found!")
-                            }
-                        }
-
-                        items(
-                            count = dealsPagingData.itemCount,
-                        ) { position ->
-                            val deal = dealsPagingData[position]
-                            deal?.let {
-                                DealsItem(it) {
-                                    if (it.steamAppID!=null){
-                                        navController.navigate(
-                                            Routes.SteamGameDetails(
-                                                steamId = it.steamAppID,
-                                                dealId = it.dealID,
-                                                title = it.title
-                                            )
-                                        )
-                                    }else{
-                                        navController.navigate(
-                                            Routes.DealsLookup(
-                                                dealId = it.dealID,
-                                                title = it.title
-                                            )
-                                        )
-                                    }
-
-                                }
-                            }
-                        }
-
-                        when (dealsPagingData.loadState.append) {
-                            is LoadState.Loading -> {
-                                item {
-                                    Box(
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .padding(10.dp), contentAlignment = Alignment.Center
-                                    ) {
-                                        CircularProgressIndicator()
-                                    }
-                                }
-                            }
-
-                            is LoadState.Error -> {
-                                item {
-                                    Text(
-                                        "Something went wrong!",
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .padding(10.dp),
-                                    )
-                                }
-                            }
-
-                            is LoadState.NotLoading -> {}
-                        }
-
-
-                        item {
-                            Spacer(Modifier.height(10.dp))
-                        }
-                    }
-                }*/
             }
         }
 

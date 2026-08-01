@@ -7,7 +7,6 @@ import com.rkbapps.gdealz.BuildConfig
 import com.rkbapps.gdealz.network.ApiConst
 import com.rkbapps.gdealz.network.ApiConst.CHEAP_SHARK_BASE_URL
 import com.rkbapps.gdealz.network.ApiConst.BASE_URL_GAME_POWER
-import com.rkbapps.gdealz.network.api.CheapSharkApi
 import com.rkbapps.gdealz.network.api.GamePowerApi
 import com.rkbapps.gdealz.network.api.IsThereAnyDealApi
 import com.rkbapps.gdealz.network.api.SteamApi
@@ -27,7 +26,8 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object NetworkModule {
+object
+NetworkModule {
 
     @Provides
     @Singleton
@@ -72,12 +72,6 @@ object NetworkModule {
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-    }
-
-    @Provides
-    @Singleton
-    fun provideApiInterface(retrofit: Retrofit): CheapSharkApi {
-        return retrofit.create(CheapSharkApi::class.java)
     }
 
     @Provides

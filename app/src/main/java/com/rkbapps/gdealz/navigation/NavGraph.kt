@@ -10,13 +10,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.rkbapps.gdealz.ui.screens.MainScreen
-import com.rkbapps.gdealz.ui.screens.dealslookup.DealLookupScreen
 import com.rkbapps.gdealz.ui.screens.free_game_details.FreeGameDetailsScreen
 import com.rkbapps.gdealz.ui.screens.game_info.GameInfoScreen
 import com.rkbapps.gdealz.ui.screens.image_preview.ImagePreviewScreen
 import com.rkbapps.gdealz.ui.tab.settings.SettingsScreen
 import com.rkbapps.gdealz.ui.screens.splash.SplashScreen
-import com.rkbapps.gdealz.ui.screens.steam_details.cheapshark.SteamDetailsPage
 import com.rkbapps.gdealz.ui.screens.steam_details.is_there_any_deal.IsThereAnyDealSteamDetailsPage
 import com.rkbapps.gdealz.ui.tab.fav.FavTab
 import com.rkbapps.gdealz.ui.tab.deals.DealsTab
@@ -73,14 +71,6 @@ fun NavGraphBuilder.destinations(
 
     composable<Routes.Main> {
         MainScreen(navController)
-    }
-
-    composable<Routes.DealsLookup> {
-        DealLookupScreen(navController)
-    }
-
-    composable<Routes.SteamGameDetails> {
-        SteamDetailsPage(navController)
     }
 
     composable<Routes.FreeGameDetails> {

@@ -7,16 +7,13 @@ import com.rkbapps.gdealz.R
 import com.rkbapps.gdealz.db.PreferenceManager
 import com.rkbapps.gdealz.db.dao.FavDealsDao
 import com.rkbapps.gdealz.db.entity.FavDeals
-import com.rkbapps.gdealz.models.DealsInfo
-import com.rkbapps.gdealz.models.deal.Deal
 import com.rkbapps.gdealz.models.game_info.GameInfo
 import com.rkbapps.gdealz.models.price.Deals
 import com.rkbapps.gdealz.models.price.PriceDetail
-import com.rkbapps.gdealz.network.ApiConst
 import com.rkbapps.gdealz.network.NetworkResponse
 import com.rkbapps.gdealz.network.api.IsThereAnyDealApi
 import com.rkbapps.gdealz.network.safeApiCall
-import com.rkbapps.gdealz.ui.screens.dealslookup.FavDealsState
+import com.rkbapps.gdealz.ui.tab.fav.FavDealsState
 import com.rkbapps.gdealz.util.UiState
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
