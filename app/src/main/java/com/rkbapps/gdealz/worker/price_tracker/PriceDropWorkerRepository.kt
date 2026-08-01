@@ -6,15 +6,18 @@ import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
+import android.app.TaskStackBuilder
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.BitmapDrawable
+import android.net.Uri
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.annotation.RequiresPermission
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.net.toUri
 import androidx.work.ListenableWorker
 import coil.Coil.imageLoader
 import coil.request.ImageRequest
@@ -25,6 +28,7 @@ import com.rkbapps.gdealz.db.PreferenceManager
 import com.rkbapps.gdealz.db.dao.FavDealsDao
 import com.rkbapps.gdealz.db.entity.FavDeals
 import com.rkbapps.gdealz.models.price.PriceDetail
+import com.rkbapps.gdealz.navigation.DeepLinkBasePaths
 import com.rkbapps.gdealz.network.ApiConst
 import com.rkbapps.gdealz.network.NetworkResponse
 import com.rkbapps.gdealz.network.api.IsThereAnyDealApi
@@ -135,17 +139,26 @@ class PriceDropWorkerRepository @Inject constructor(
         }
     }
 
-    private suspend fun buildNotification(favDeal: FavDeals): Notification {
-        val intent = Intent(context, MainActivity::class.java).apply {
+    private fun createPendingIntent(context: Context, favDeal: FavDeals,code: Int): PendingIntent {
+        val uri = "${DeepLinkBasePaths.GAME_DETAILS}/${Uri.encode(favDeal.gameID)}/${Uri.encode(favDeal.title?:"")}".toUri()
+
+        val deepLinkIntent = Intent(
+            Intent.ACTION_VIEW,
+            uri,
+            context,
+            MainActivity::class.java
+        ).apply {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
         }
-        val pendingIntent = PendingIntent.getActivity(
-            context, 
-            favDeal.gameID.hashCode(), 
-            intent, 
-            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
-        )
 
+        return TaskStackBuilder.create(context).run {
+            addNextIntentWithParentStack(deepLinkIntent)
+            getPendingIntent(code, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+        }
+    }
+
+    private suspend fun buildNotification(favDeal: FavDeals): Notification {
+        val pendingIntent = createPendingIntent(context = context, favDeal = favDeal, code = favDeal.id)
         val priceText = "${favDeal.currencySymbol ?: ""}${favDeal.currentlyLowestPrice}"
         val contentText = context.getString(R.string.price_drop_message, favDeal.title, priceText)
 

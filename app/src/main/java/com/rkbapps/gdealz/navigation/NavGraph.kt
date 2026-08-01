@@ -86,7 +86,9 @@ fun NavGraphBuilder.destinations(
         GameInfoScreen(navController)
     }
 
-    composable<Routes.IsThereAnyDealSteamGameDetails> {
+    composable<Routes.IsThereAnyDealSteamGameDetails>(
+        deepLinks = listOf(navDeepLink<Routes.IsThereAnyDealSteamGameDetails>(basePath = DeepLinkBasePaths.GAME_DETAILS))
+    ) {
         IsThereAnyDealSteamDetailsPage(
             navController = navController,
             sharedTransitionScope = sharedTransitionScope,
