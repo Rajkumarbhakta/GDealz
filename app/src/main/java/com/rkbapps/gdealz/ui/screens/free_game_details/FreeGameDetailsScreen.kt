@@ -42,13 +42,14 @@ fun FreeGameDetailsScreen(
             CommonTopBar(
                 title = giveaway.data?.title ?: "",
                 isNavigationBack = true,
-                actions = {
-                    Button(onClick = {
-                        viewModel.sendNotification()
-                    }) {
-                        Text("Send")
-                    }
-                }
+                // * for notification testing.
+//                actions = {
+//                    Button(onClick = {
+//                        viewModel.sendNotification()
+//                    }) {
+//                        Text("Send")
+//                    }
+//                }
             ) {
                 navController.navigateUp()
             }
