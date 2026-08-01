@@ -63,8 +63,8 @@ import com.rkbapps.gdealz.models.price.Deals
 import com.rkbapps.gdealz.ui.composables.CommonCard
 import com.rkbapps.gdealz.ui.composables.CommonTopBar
 import com.rkbapps.gdealz.ui.composables.ErrorScreen
-import com.rkbapps.gdealz.ui.screens.dealslookup.getTotalReviews
-import com.rkbapps.gdealz.ui.screens.steam_details.cheapshark.OverviewRowItems
+import com.rkbapps.gdealz.ui.screens.steam_details.is_there_any_deal.OverviewRowItems
+import com.rkbapps.gdealz.ui.screens.steam_details.is_there_any_deal.getTotalReviews
 import com.rkbapps.gdealz.util.CurrencyAndCountryUtil
 import com.rkbapps.gdealz.util.StoreUtil
 
@@ -207,15 +207,7 @@ fun GameInfoScreen(
                                         )
                                     }
                                 }
-                                /*item {
-                                    OverviewRowItems(
-                                        title = "DEAL",
-                                        value = "${viewModel.deal.cut ?: 0}% OFF",
-                                        subTitle = "${viewModel.deal.regular?.amount ?: 0}",
-                                        subTitle1 = "${viewModel.deal.price?.amount ?: 0}",
-                                        isSubTitleLineThrough = true
-                                    )
-                                }*/
+
                                 item {
                                     OverviewRowItems(
                                         title = stringResource(R.string.rank).uppercase(),
@@ -263,13 +255,6 @@ fun GameInfoScreen(
                                 title = stringResource(R.string.publisher),
                                 subtitle = gameInfo.data?.publishers?.firstOrNull()?.name ?: stringResource(R.string.not_available)
                             )
-                            /*Column(
-                                modifier = Modifier.weight(1f),
-                                verticalArrangement = Arrangement.spacedBy(8.dp)
-                            ) {
-
-                            }*/
-
                         }
                     }
                     item {

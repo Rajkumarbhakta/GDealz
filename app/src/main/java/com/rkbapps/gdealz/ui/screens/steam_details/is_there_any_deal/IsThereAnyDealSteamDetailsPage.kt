@@ -31,13 +31,10 @@ import androidx.compose.material3.BottomAppBarDefaults
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButtonDefaults
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.LinearWavyProgressIndicator
 import androidx.compose.material3.LoadingIndicator
 import androidx.compose.material3.MaterialTheme
@@ -63,11 +60,11 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.fromHtml
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
-import coil.compose.AsyncImage
 import coil.compose.SubcomposeAsyncImage
 import com.kyant.backdrop.backdrops.rememberLayerBackdrop
 import com.kyant.backdrop.drawBackdrop
@@ -76,14 +73,10 @@ import com.kyant.backdrop.effects.lens
 import com.kyant.backdrop.effects.vibrancy
 import com.rkbapps.gdealz.R
 import com.rkbapps.gdealz.navigation.Routes
-import com.rkbapps.gdealz.network.ApiConst.IMAGE_URL
 import com.rkbapps.gdealz.ui.composables.CommonCard
 import com.rkbapps.gdealz.ui.composables.CommonTopBar
-import com.rkbapps.gdealz.ui.screens.dealslookup.getTotalReviews
 import com.rkbapps.gdealz.ui.screens.game_info.DealCard
 import com.rkbapps.gdealz.ui.screens.game_info.PriceHistoryCard
-import com.rkbapps.gdealz.ui.screens.steam_details.cheapshark.OverviewRowItems
-import com.rkbapps.gdealz.util.calculatePercentage
 
 
 @OptIn(ExperimentalSharedTransitionApi::class, ExperimentalMaterial3ExpressiveApi::class)
@@ -102,7 +95,6 @@ fun IsThereAnyDealSteamDetailsPage(
     val gamePriceInfo by viewModel.gamePriceInfo.collectAsStateWithLifecycle()
     val steamGameData by viewModel.steamGameData.collectAsStateWithLifecycle()
 
-    val favStatus by viewModel.dealFavStatus.collectAsStateWithLifecycle()
     val isFav = remember { viewModel.isFavDeal }
 
 
@@ -230,8 +222,7 @@ fun IsThereAnyDealSteamDetailsPage(
                                 }
                             )
                             Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
+                                modifier = Modifier.fillMaxWidth()
                                     .align(Alignment.BottomCenter)
                                     .padding(horizontal = 16.dp, vertical = 10.dp),
                                 verticalAlignment = Alignment.CenterVertically,
@@ -690,5 +681,58 @@ private fun getYear(date: String): String? {
         return parts[2]
     } catch (_: Exception) {
         return null
+    }
+}
+
+fun getTotalReviews(count: String): String {
+    return try {
+        if (count.toLong() > 1000) {
+            "${count.toLong() / 1000}K"
+        } else {
+            count
+        }
+    } catch (_: Exception) {
+        count
+    }
+}
+fun getTotalReviews(count: Int): String {
+    return try {
+        if (count.toLong() > 1000) {
+            "${count.toLong() / 1000}K"
+        } else {
+            "$count"
+        }
+    } catch (_: Exception) {
+        "$count"
+    }
+}
+
+@Composable
+fun OverviewRowItems(
+    modifier: Modifier = Modifier,
+    title: String,
+    value: String,
+    subTitle: String,
+    subTitle1: String,
+    isSubTitleLineThrough: Boolean = false
+) {
+    OutlinedCard {
+        Column(
+            modifier = modifier.padding(10.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(title, style = MaterialTheme.typography.labelLarge, maxLines = 1)
+            Text(
+                value,
+                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
+            )
+            Text(
+                subTitle,
+                style = MaterialTheme.typography.labelMedium.copy(
+                    textDecoration = if (isSubTitleLineThrough) TextDecoration.LineThrough else TextDecoration.None
+                ),
+            )
+            Text(subTitle1, style = MaterialTheme.typography.labelSmall, minLines = 1)
+        }
     }
 }

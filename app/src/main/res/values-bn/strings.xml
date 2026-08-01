@@ -56,7 +56,7 @@
     <string name="nsfw_content_desc">চালু থাকলে প্রাপ্তবয়স্ক বা সংবেদনশীল কন্টেন্ট দেখায়।</string>
     <string name="privacy_policy">গোপনীয়তা নীতি</string>
     <string name="privacy_policy_desc">গোপনীয়তা নীতি পড়ুন</string>
-    <string name="disclaimer">গেম এবং মূল্যের তথ্য CheapShark, IsThereAnyDeal.com এবং Steam থেকে নেওয়া হয়েছে। G Dealz এই তথ্যের সঠিকতা, প্রাপ্যতা বা সম্পূর্ণতার গ্যারান্টি দেয় না।</string>
+    <string name="disclaimer">গেম এবং মূল্যের তথ্য GamePower, IsThereAnyDeal.com এবং Steam থেকে নেওয়া হয়েছে। G Dealz এই তথ্যের সঠিকতা, প্রাপ্যতা বা সম্পূর্ণতার গ্যারান্টি দেয় না।</string>
     <string name="country">দেশ</string>
     <string name="country_desc">আপনার স্থানীয় মুদ্রায় ডিল দেখতে আপনার দেশ পরিবর্তন করুন। যদি আপনার মুদ্রায় ডিল ডেটা উপলব্ধ না থাকে, তবে এটি ডিফল্ট হিসেবে মার্কিন ডলারে ($) দেখাবে।</string>
     <string name="choose_country">দেশ বেছে নিন</string>

@@ -5,14 +5,11 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import com.rkbapps.gdealz.models.DealsInfo
 import com.rkbapps.gdealz.models.game_info.GameInfo
 import com.rkbapps.gdealz.models.price.Deals
-import com.rkbapps.gdealz.models.price.PriceDetail
 import com.rkbapps.gdealz.navigation.Routes
-import com.rkbapps.gdealz.ui.screens.dealslookup.FavDealsState
 import com.rkbapps.gdealz.ui.screens.game_info.GameInfoRepository
-import com.rkbapps.gdealz.ui.screens.steam_details.cheapshark.SteamDetailsRepository
+import com.rkbapps.gdealz.ui.tab.fav.FavDealsState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -63,10 +60,4 @@ class IsThereAnyDealSteamViewModel @Inject constructor(
             }
         }
     }
-
-
-
-
-
-
 }

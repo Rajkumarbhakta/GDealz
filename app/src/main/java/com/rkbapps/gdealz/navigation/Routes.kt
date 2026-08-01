@@ -31,7 +31,7 @@ sealed class Routes {
     data class SteamGameDetails(val steamId: String, val dealId: String?, val title: String?) : Routes()
 
     @Serializable
-    data class FreeGameDetails(val giveaway: String) : Routes()
+    data class FreeGameDetails(val giveawayId: Int) : Routes()
 
     @Serializable
     data class GameInfo(
@@ -47,6 +47,6 @@ sealed class Routes {
 
     @Serializable
     data class ImagePreview(val imageUrl: String) : Routes()
-
-
 }
+
+

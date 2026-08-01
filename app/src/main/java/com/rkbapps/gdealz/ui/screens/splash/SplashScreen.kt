@@ -33,6 +33,7 @@ import coil.compose.AsyncImage
 import com.rkbapps.gdealz.R
 import com.rkbapps.gdealz.navigation.Routes
 import kotlinx.coroutines.delay
+import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -66,9 +67,9 @@ fun SplashScreen(
 
             if (isSuccess.value) {
                 LaunchedEffect(key1 = Unit) {
-                    delay(500L)
+                    delay(500L.milliseconds)
                     navController.navigate(Routes.Main) {
-                        popUpTo(0)
+                        popUpTo(Routes.Splash) { inclusive = true }
                     }
                 }
             }

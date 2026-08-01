@@ -146,8 +146,8 @@ fun FreeDealsTab(
                                             key = { it.id }
                                         ) {
                                             FreeGameItems(it) {
-                                                val giveaway = viewModel.getGiveawayJson(it)
-                                                navController.navigate(Routes.FreeGameDetails(giveaway))
+                                                //val giveaway = viewModel.getGiveawayJson(it)
+                                                navController.navigate(Routes.FreeGameDetails(it.id))
                                             }
                                         }
                                     }
@@ -160,8 +160,8 @@ fun FreeDealsTab(
                                             key = { it.id }
                                         ) {
                                             FreeGameItems(it) {
-                                                val giveaway = viewModel.getGiveawayJson(it)
-                                                navController.navigate(Routes.FreeGameDetails(giveaway))
+//                                                val giveaway = viewModel.getGiveawayJson(it)
+                                                navController.navigate(Routes.FreeGameDetails(it.id))
                                             }
                                         }
                                     }

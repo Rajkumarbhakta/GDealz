@@ -56,7 +56,7 @@
     <string name="nsfw_content_desc">Muestra contenido para adultos o sensible cuando está activado.</string>
     <string name="privacy_policy">Política de privacidad</string>
     <string name="privacy_policy_desc">Leer la política de privacidad</string>
-    <string name="disclaimer">La información de juegos y precios proviene de CheapShark, IsThereAnyDeal.com y Steam. G Dealz no garantiza la exactitud, disponibilidad o integridad de esta información.</string>
+    <string name="disclaimer">La información de juegos y precios proviene de GamePower, IsThereAnyDeal.com y Steam. G Dealz no garantiza la exactitud, disponibilidad o integridad de esta información.</string>
     <string name="country">País</string>
     <string name="country_desc">Cambia tu país para ver las ofertas en tu moneda local. Si no hay datos disponibles en tu moneda, se mostrará en dólares estadounidenses ($) de forma predeterminada.</string>
     <string name="choose_country">Elegir país</string>

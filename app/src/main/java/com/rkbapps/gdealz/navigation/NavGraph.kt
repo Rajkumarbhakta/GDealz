@@ -8,15 +8,14 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navDeepLink
 import androidx.navigation.toRoute
 import com.rkbapps.gdealz.ui.screens.MainScreen
-import com.rkbapps.gdealz.ui.screens.dealslookup.DealLookupScreen
 import com.rkbapps.gdealz.ui.screens.free_game_details.FreeGameDetailsScreen
 import com.rkbapps.gdealz.ui.screens.game_info.GameInfoScreen
 import com.rkbapps.gdealz.ui.screens.image_preview.ImagePreviewScreen
 import com.rkbapps.gdealz.ui.tab.settings.SettingsScreen
 import com.rkbapps.gdealz.ui.screens.splash.SplashScreen
-import com.rkbapps.gdealz.ui.screens.steam_details.cheapshark.SteamDetailsPage
 import com.rkbapps.gdealz.ui.screens.steam_details.is_there_any_deal.IsThereAnyDealSteamDetailsPage
 import com.rkbapps.gdealz.ui.tab.fav.FavTab
 import com.rkbapps.gdealz.ui.tab.deals.DealsTab
@@ -75,15 +74,11 @@ fun NavGraphBuilder.destinations(
         MainScreen(navController)
     }
 
-    composable<Routes.DealsLookup> {
-        DealLookupScreen(navController)
-    }
-
-    composable<Routes.SteamGameDetails> {
-        SteamDetailsPage(navController)
-    }
-
-    composable<Routes.FreeGameDetails> {
+    composable<Routes.FreeGameDetails>(
+        deepLinks = listOf(
+            navDeepLink <Routes.FreeGameDetails>(basePath = DeepLinkBasePaths.FREE_GAME_DETAILS)
+        )
+    ) {
         FreeGameDetailsScreen(navController)
     }
 
@@ -91,7 +86,9 @@ fun NavGraphBuilder.destinations(
         GameInfoScreen(navController)
     }
 
-    composable<Routes.IsThereAnyDealSteamGameDetails> {
+    composable<Routes.IsThereAnyDealSteamGameDetails>(
+        deepLinks = listOf(navDeepLink<Routes.IsThereAnyDealSteamGameDetails>(basePath = DeepLinkBasePaths.GAME_DETAILS))
+    ) {
         IsThereAnyDealSteamDetailsPage(
             navController = navController,
             sharedTransitionScope = sharedTransitionScope,

@@ -16,12 +16,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DealsTabViewModel @Inject constructor(
-    private val repository: DealsTabRepository,
-    private val gson: Gson
-) : ViewModel() {
+    private val repository: DealsTabRepository, ) : ViewModel() {
 
     val deals = repository.deals
-    val filter = repository.filter
     val isThereAnyDealFilter = repository.isThereAnyDealFilter
 
     val country = repository.currentCountry.stateIn(
@@ -36,40 +33,10 @@ class DealsTabViewModel @Inject constructor(
         null
     )
 
-
-//    val stores = repository.storeFlow.stateIn(
-//        viewModelScope,
-//        SharingStarted.Lazily,
-//        emptyList()
-//    )
-
-
-    init {
-        viewModelScope.launch {
-
-        }
-    }
-
-    fun getDealsByFilter(storeId:Int,upperPrice:Int){
-        viewModelScope.launch {
-            repository.getDealsByFilter(storeId, upperPrice)
-        }
-    }
-
-//    val dealsPagingData = repository.getDealsPager().cachedIn(viewModelScope)
-
     val isThereAnyDeals = repository.getIsThereAnyDealPager.cachedIn(viewModelScope)
-
-    fun dealToJson(deal: Deal): String{
-        return gson.toJson(deal)
-    }
-
-
-    fun updateFilter(filter: Filter) = repository.updateFilter(filter)
 
     fun updateIsThereAnyDealFilter(filter: IsThereAnyDealFilters) = repository.updateIsThereAnyDealFilter(filter)
     fun clearIsThereAnyDealFilter() = repository.updateIsThereAnyDealFilter(IsThereAnyDealFilters())
-
     fun updateCountry(value: String) = viewModelScope.launch {
         repository.updateCountry(value)
     }

@@ -56,7 +56,7 @@
     <string name="nsfw_content_desc">開啟時顯示成人或敏感內容。</string>
     <string name="privacy_policy">隱私權政策</string>
     <string name="privacy_policy_desc">閱讀隱私權政策</string>
-    <string name="disclaimer">遊戲和價格資訊源自 CheapShark、IsThereAnyDeal.com 和 Steam。G Dealz 不保證該資訊的準確性、可用性或完整性。</string>
+    <string name="disclaimer">遊戲和價格資訊源自 GamePower、IsThereAnyDeal.com 和 Steam。G Dealz 不保證該資訊的準確性、可用性或完整性。</string>
     <string name="country">國家/地區</string>
     <string name="country_desc">變更您的國家/地區以查看您當地貨幣的優惠。如果您的貨幣無法提供優惠數據，它將默認為美元 ($)。</string>
     <string name="choose_country">選擇國家/地區</string>
