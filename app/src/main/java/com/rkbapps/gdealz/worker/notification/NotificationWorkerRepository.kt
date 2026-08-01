@@ -5,6 +5,7 @@ import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
+import android.app.TaskStackBuilder
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.BitmapDrawable
@@ -14,14 +15,15 @@ import androidx.annotation.RequiresApi
 import androidx.annotation.RequiresPermission
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.net.toUri
 import coil.Coil.imageLoader
 import coil.request.ImageRequest
 import coil.request.SuccessResult
 import com.rkbapps.gdealz.R
-import com.rkbapps.gdealz.activity.FreeGameDetailsActivity
 import com.rkbapps.gdealz.activity.MainActivity
 import com.rkbapps.gdealz.db.dao.GiveawaysDao
 import com.rkbapps.gdealz.models.Giveaway
+import com.rkbapps.gdealz.navigation.DeepLinkBasePaths
 import com.rkbapps.gdealz.network.NetworkResponse
 import com.rkbapps.gdealz.network.api.GamePowerApi
 import com.rkbapps.gdealz.network.safeApiCall
@@ -132,11 +134,18 @@ class NotificationWorkerRepository @Inject constructor(
     }
 
     private fun claimPendingIntent(context: Context, giveawayId: Int, code: Int): PendingIntent {
-        val detailsIntent = Intent(context, FreeGameDetailsActivity::class.java).apply {
-            putExtra(GAME_GIVEAWAY_ID, giveawayId)
+        val deepLinkIntent = Intent(
+            Intent.ACTION_VIEW,
+            "${DeepLinkBasePaths.FREE_GAME_DETAILS}/$giveawayId".toUri(),
+            context,
+            MainActivity::class.java
+        ).apply {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
         }
-        return PendingIntent.getActivity(context, code, detailsIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+        return TaskStackBuilder.create(context).run {
+            addNextIntentWithParentStack(deepLinkIntent)
+            getPendingIntent(code, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+        }
     }
 
     private suspend fun buildNotification(context: Context, giveaway: Giveaway,index:Int): Notification{

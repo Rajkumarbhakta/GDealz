@@ -1,5 +1,6 @@
 package com.rkbapps.gdealz.activity
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.appcompat.app.AppCompatActivity
@@ -14,6 +15,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.rkbapps.gdealz.db.PreferenceManager
 import com.rkbapps.gdealz.navigation.NavGraph
@@ -31,17 +33,16 @@ class MainActivity : ComponentActivity() {
 
     private val viewModel: MainViewModel by viewModels<MainViewModel>()
 
+    lateinit var navController: NavHostController
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-
-
-
         setContent {
-
             val isSystemTheme by viewModel.isSystemTheme.collectAsStateWithLifecycle()
             val darkTheme by viewModel.isDarkTheme.collectAsStateWithLifecycle()
             val isDynamicColor by viewModel.isDynamicColor.collectAsStateWithLifecycle()
+            navController = rememberNavController()
 
             GDealzTheme(
                 darkTheme = if (isSystemTheme) isSystemInDarkTheme() else darkTheme,
@@ -51,10 +52,17 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    val navController = rememberNavController()
                     NavGraph(navController)
                 }
             }
+        }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        if (::navController.isInitialized){
+            navController.handleDeepLink(intent)
         }
     }
 

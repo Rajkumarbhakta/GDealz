@@ -8,6 +8,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navDeepLink
 import androidx.navigation.toRoute
 import com.rkbapps.gdealz.ui.screens.MainScreen
 import com.rkbapps.gdealz.ui.screens.free_game_details.FreeGameDetailsScreen
@@ -73,7 +74,11 @@ fun NavGraphBuilder.destinations(
         MainScreen(navController)
     }
 
-    composable<Routes.FreeGameDetails> {
+    composable<Routes.FreeGameDetails>(
+        deepLinks = listOf(
+            navDeepLink <Routes.FreeGameDetails>(basePath = DeepLinkBasePaths.FREE_GAME_DETAILS)
+        )
+    ) {
         FreeGameDetailsScreen(navController)
     }
 
