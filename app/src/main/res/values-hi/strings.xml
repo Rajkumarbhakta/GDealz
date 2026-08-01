@@ -57,7 +57,7 @@
     <string name="nsfw_content_desc">चालू होने पर वयस्क या संवेदनशील सामग्री प्रदर्शित करता है।</string>
     <string name="privacy_policy">गोपनीयता नीति</string>
     <string name="privacy_policy_desc">गोपनीयता नीति पढ़ें</string>
-    <string name="disclaimer">खेल और मूल्य निर्धारण की जानकारी CheapShark, IsThereAnyDeal.com और Steam से प्राप्त की गई है। G Dealz इस जानकारी की सटीकता, उपलब्धता या पूर्णता की गारंटी नहीं देता है।</string>
+    <string name="disclaimer">खेल और मूल्य निर्धारण की जानकारी GamePower, IsThereAnyDeal.com और Steam से प्राप्त की गई है। G Dealz इस जानकारी की सटीकता, उपलब्धता या पूर्णता की गारंटी नहीं देता है।</string>
     <string name="country">देश</string>
     <string name="country_desc">अपनी स्थानीय मुद्रा में सौदे देखने के लिए अपना देश बदलें। यदि आपकी मुद्रा में डील डेटा उपलब्ध नहीं है, तो यह डिफ़ॉल्ट रूप से अमेरिकी डॉलर ($) पर सेट हो जाएगा।</string>
     <string name="choose_country">देश चुनें</string>

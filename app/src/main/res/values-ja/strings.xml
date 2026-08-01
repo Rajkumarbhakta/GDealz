@@ -56,7 +56,7 @@
     <string name="nsfw_content_desc">オンにすると、成人向けまたは機密性の高いコンテンツを表示します。</string>
     <string name="privacy_policy">プライバシーポリシー</string>
     <string name="privacy_policy_desc">プライバシーポリシーを読む</string>
-    <string name="disclaimer">ゲームおよび価格情報は CheapShark、IsThereAnyDeal.com、および Steam から取得しています。G Dealz は、この情報の正確性、可用性、または完全性を保証しません。</string>
+    <string name="disclaimer">ゲームおよび価格情報は GamePower、IsThereAnyDeal.com、および Steam から取得しています。G Dealz は、この情報の正確性、可用性、または完全性を保証しません。</string>
     <string name="country">国</string>
     <string name="country_desc">国を変更して、現地の通貨でセール情報を表示します。現地の通貨でのセールデータが利用できない場合は、デフォルトで米ドル ($) になります。</string>
     <string name="choose_country">国を選択</string>
