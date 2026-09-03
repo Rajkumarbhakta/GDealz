@@ -1,0 +1,179 @@
+name: Android Release
+
+on:
+  push:
+    branches: [ "master" ]
+  workflow_dispatch:
+
+# Two quick pushes to master must not race to create the same tag.
+concurrency:
+  group: android-release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    name: Build & publish release APK
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      # Gradle 9.5 + AGP 9.3.1 need JDK 21, not 17.
+      - name: Set up JDK 21
+        uses: actions/setup-java@v5
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      # compileSdk/targetSdk are 37; don't rely on the runner image shipping it.
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Read app version
+        id: version
+        run: |
+          set -euo pipefail
+          VERSION_NAME=$(sed -n 's/.*versionName[[:space:]]*=[[:space:]]*"\([^"]*\)".*/\1/p' \
+            app/build.gradle.kts | head -1)
+          if [ -z "$VERSION_NAME" ]; then
+            echo "::error file=app/build.gradle.kts::Could not parse versionName"
+            exit 1
+          fi
+          echo "name=$VERSION_NAME" >> "$GITHUB_OUTPUT"
+          echo "tag=v$VERSION_NAME" >> "$GITHUB_OUTPUT"
+          echo "Version $VERSION_NAME -> tag v$VERSION_NAME"
+
+      - name: Check whether the tag already exists
+        id: tag
+        run: |
+          set -euo pipefail
+          TAG='${{ steps.version.outputs.tag }}'
+          if git ls-remote --tags --exit-code origin "refs/tags/$TAG" >/dev/null 2>&1; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+            echo "$TAG already exists — release will be skipped."
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+            echo "$TAG is new — a release will be published."
+          fi
+
+      # Secrets are checked BEFORE any Gradle run. app/build.gradle.kts only applies the
+      # signing config `if (keystoreFile.exists())`, so a missing secret would otherwise
+      # produce a silently UNSIGNED apk rather than a failure.
+      - name: Verify signing secrets are present
+        if: steps.tag.outputs.exists == 'false'
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          KEY_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: |
+          missing=0
+          for name in KEYSTORE_BASE64 KEY_STORE_PASSWORD KEY_ALIAS KEY_PASSWORD; do
+            if [ -z "${!name}" ]; then
+              echo "::error::Required secret $name is missing or empty"
+              missing=1
+            fi
+          done
+          [ "$missing" -eq 0 ] || exit 1
+
+      # Decoded before the test run so that the keystore is on disk for *every* Gradle
+      # invocation. If it appeared only later, a reused configuration cache could pin the
+      # "no keystore" branch and hand us an unsigned build.
+      - name: Decode keystore
+        if: steps.tag.outputs.exists == 'false'
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+        run: |
+          set -euo pipefail
+          echo "$KEYSTORE_BASE64" | base64 -d > app/release.keystore
+          if [ ! -s app/release.keystore ]; then
+            echo "::error::Keystore decoded to an empty file — is KEYSTORE_BASE64 valid base64?"
+            exit 1
+          fi
+          echo "Keystore decoded ($(stat -c%s app/release.keystore) bytes)"
+
+      # Runs even when the release is skipped, so master always gets a test signal.
+      # AGP 9 only configures unit tests for the debug variant — there is no
+      # testReleaseUnitTest task.
+      - name: Run unit tests
+        run: ./gradlew testDebugUnitTest
+
+      - name: Build release APK
+        if: steps.tag.outputs.exists == 'false'
+        env:
+          KEY_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: ./gradlew assembleRelease
+
+      - name: Verify the APK is signed
+        id: apk
+        if: steps.tag.outputs.exists == 'false'
+        run: |
+          set -euo pipefail
+          DIR=app/build/outputs/apk/release
+          # AGP emits app-release-unsigned.apk when the signing config did not apply.
+          if [ -f "$DIR/app-release-unsigned.apk" ] || [ ! -f "$DIR/app-release.apk" ]; then
+            echo "::error::Release APK is not signed — the signing config did not apply."
+            ls -la "$DIR" || true
+            exit 1
+          fi
+          NAME="GDealz-${{ steps.version.outputs.tag }}.apk"
+          cp "$DIR/app-release.apk" "$NAME"
+
+          APKSIGNER=$(ls -d "$ANDROID_HOME"/build-tools/*/apksigner 2>/dev/null | sort -V | tail -1)
+          if [ -n "$APKSIGNER" ]; then
+            "$APKSIGNER" verify --print-certs "$NAME"
+          fi
+
+          echo "path=$NAME" >> "$GITHUB_OUTPUT"
+
+      - name: Publish GitHub Release
+        if: steps.tag.outputs.exists == 'false'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.version.outputs.tag }}
+          name: ${{ steps.version.outputs.tag }}
+          files: ${{ steps.apk.outputs.path }}
+          generate_release_notes: true
+          fail_on_unmatched_files: true
+
+      - name: Upload APK as a workflow artifact
+        if: steps.tag.outputs.exists == 'false'
+        uses: actions/upload-artifact@v4
+        with:
+          name: TooAi-${{ steps.version.outputs.tag }}
+          path: ${{ steps.apk.outputs.path }}
+          if-no-files-found: error
+          retention-days: 30
+
+      # Conditions are exact rather than always(): a failed build must not report "Released".
+      - name: Summary — release skipped
+        if: steps.tag.outputs.exists == 'true'
+        run: |
+          {
+            echo "### Release skipped"
+            echo
+            echo "\`${{ steps.version.outputs.tag }}\` has already been released."
+            echo "Bump \`versionCode\`/\`versionName\` in \`app/build.gradle.kts\` to publish a new one."
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Summary — released
+        if: success() && steps.tag.outputs.exists == 'false'
+        run: |
+          {
+            echo "### Released \`${{ steps.version.outputs.tag }}\`"
+            echo
+            echo "Signed APK attached to the release."
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      # Never leave a signing key in the workspace, even on failure.
+      - name: Remove keystore
+        if: always()
+        run: rm -f app/release.keystore
