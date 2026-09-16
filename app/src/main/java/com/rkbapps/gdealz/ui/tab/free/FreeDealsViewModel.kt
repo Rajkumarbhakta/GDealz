@@ -1,12 +1,19 @@
 package com.rkbapps.gdealz.ui.tab.free
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
 import com.rkbapps.gdealz.db.dao.GiveawaysDao
+import com.rkbapps.gdealz.models.FreeDealsFilter
 import com.rkbapps.gdealz.models.Giveaway
+import com.rkbapps.gdealz.util.toPlatformList
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,7 +25,15 @@ class FreeDealsViewModel @Inject constructor(
     private val giveawaysDao: GiveawaysDao
 ) : ViewModel() {
 
-    val giveaways = giveawaysDao.getGiveawaysByOrder().stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList(),)
+    private val _filter = MutableStateFlow(FreeDealsFilter())
+    val filter = _filter.asStateFlow()
+
+
+    val stores = giveawaysDao.getPlatforms().map { rows -> rows.flatMap { it.toPlatformList() }.distinct().sorted() }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+
+    val giveaways = giveawaysDao.getGiveawaysByOrder()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     val claimedGiveaway = giveawaysDao.getGiveawaysByClaimed(true).stateIn(
         viewModelScope,
@@ -26,7 +41,15 @@ class FreeDealsViewModel @Inject constructor(
         emptyList()
     )
 
-    val unClaimedGiveaway = giveawaysDao.getGiveawaysByClaimed(false).stateIn(
+    val unClaimedGiveaway = giveawaysDao.getGiveawaysByClaimed(false).combine(_filter){ items, filter ->
+        if (filter.stores.isEmpty()){
+            items
+        }else{
+            items.filter { giveaway ->
+                giveaway.platforms.toPlatformList().any { it in filter.stores}
+            }
+        }
+    }.stateIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(5000),
         emptyList()
@@ -50,5 +73,12 @@ class FreeDealsViewModel @Inject constructor(
         return gson.toJson(giveaway)
     }
 
+    fun updateFilter(filter: FreeDealsFilter) {
+        _filter.value = filter
+    }
+
+    fun clearFilter(){
+        _filter.value = FreeDealsFilter()
+    }
 
 }

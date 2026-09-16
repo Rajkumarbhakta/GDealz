@@ -1,6 +1,7 @@
 package com.rkbapps.gdealz.ui.tab.free
 
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,17 +24,26 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.LayoutDirection
@@ -44,9 +55,12 @@ import coil.compose.SubcomposeAsyncImage
 import com.rkbapps.gdealz.R
 import com.rkbapps.gdealz.models.Giveaway
 import com.rkbapps.gdealz.navigation.Routes
+import com.rkbapps.gdealz.ui.composables.CommonFilledIconButton
 import com.rkbapps.gdealz.ui.composables.CommonTabs
 import com.rkbapps.gdealz.ui.composables.CommonTopBar
 import com.rkbapps.gdealz.ui.composables.ErrorScreen
+import com.rkbapps.gdealz.ui.tab.deals.composables.filterOptionsMap
+import com.rkbapps.gdealz.ui.tab.free.composables.FilterBottomSheet
 import com.rkbapps.gdealz.util.getStatusFromEndDate
 import com.rkbapps.gdealz.util.shimmerBrush
 import kotlinx.coroutines.launch
@@ -63,10 +77,16 @@ fun FreeDealsTab(
         stringResource(R.string.claimed)
     )
 
+    val stores by viewModel.stores.collectAsStateWithLifecycle()
     val giveaways = viewModel.giveaways.collectAsStateWithLifecycle()
     val unClaimedGiveaway = viewModel.unClaimedGiveaway.collectAsStateWithLifecycle()
     val claimedGiveaway = viewModel.claimedGiveaway.collectAsStateWithLifecycle()
     val giveawayState = viewModel.giveawayState.collectAsStateWithLifecycle()
+
+    val appliedFilter by viewModel.filter.collectAsStateWithLifecycle()
+
+    val sheetState = rememberBottomSheetState(initialValue = SheetValue.Hidden)
+    val showBottomSheet = remember { mutableStateOf(false) }
 
     val pagerState = rememberPagerState(
         initialPage = 0
@@ -74,8 +94,53 @@ fun FreeDealsTab(
     val scope = rememberCoroutineScope()
 
     Scaffold(
-        topBar = { CommonTopBar(title = stringResource(R.string.free_title)) },
+        topBar = { CommonTopBar(title = stringResource(R.string.free_title), actions = {
+            AnimatedVisibility(
+                visible = pagerState.currentPage == 0
+            ) {
+                CommonFilledIconButton(
+                    icon = ImageVector.vectorResource(R.drawable.filter)
+                ) {
+                    showBottomSheet.value = true
+                }
+            }
+        }) },
     ) { paddingValue ->
+
+
+        // open filter bottom-sheet
+        if (showBottomSheet.value) {
+            ModalBottomSheet(
+                modifier = Modifier.fillMaxWidth().padding(top = paddingValue.calculateTopPadding()),
+                onDismissRequest = { showBottomSheet.value = false },
+                sheetState = sheetState,
+                contentWindowInsets = { WindowInsets(top = 0.dp) }
+            ) {
+                FilterBottomSheet(
+                    stores = stores.toList(),
+                    appliedFilters = appliedFilter,
+                    onClearFilters = {
+                        viewModel.clearFilter()
+                        scope.launch { sheetState.hide() }.invokeOnCompletion {
+                            if (!sheetState.isVisible) {
+                                showBottomSheet.value = false
+                            }
+                        }
+                    }
+                ) {
+                    viewModel.updateFilter(it)
+                    scope.launch { sheetState.hide() }.invokeOnCompletion {
+                        if (!sheetState.isVisible) {
+                            showBottomSheet.value = false
+                        }
+                    }
+                }
+            }
+        }
+
+
+
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -97,6 +162,13 @@ fun FreeDealsTab(
                         CommonTabs(title = name, isSelected = pagerState.currentPage == index) {
                             scope.launch {
                                 pagerState.animateScrollToPage(index)
+                                if (pagerState.currentPage == 1 && showBottomSheet.value){
+                                    scope.launch { sheetState.hide() }.invokeOnCompletion {
+                                        if (!sheetState.isVisible) {
+                                            showBottomSheet.value = false
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -110,7 +182,9 @@ fun FreeDealsTab(
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp)
             ) {
+
                 Text(text = stringResource(R.string.tab_games))
+
                 Spacer(modifier = Modifier.height(10.dp))
                 when {
                     giveawayState.value.isLoading -> {

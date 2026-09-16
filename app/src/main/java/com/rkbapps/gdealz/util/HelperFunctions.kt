@@ -41,6 +41,14 @@ fun getStatusFromEndDate(endDateStr: String): Boolean? {
 }
 
 
+/**
+ * GamerPower sends the platforms of a giveaway as one comma separated string,
+ * e.g. "PC, Steam, DRM-Free", so it has to be split before it can be matched or listed.
+ */
+fun String.toPlatformList(): List<String> =
+    split(",").map { it.trim() }.filter { it.isNotEmpty() }
+
+
 fun Context.hasNetwork(): Boolean? {
     var isConnected: Boolean? = false // Initial Value
     val connectivityManager = this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager

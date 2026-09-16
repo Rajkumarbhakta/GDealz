@@ -21,8 +21,6 @@ data class IsThereAnyDealFilters(
     val upperPrice: Int? = null,
     val discount:Int? = null
 ){
-
-
     fun generateFilter():String?{
 
         if (lowerPrice==null&&upperPrice==null&&discount==null) return null
@@ -40,13 +38,11 @@ data class IsThereAnyDealFilters(
         val compressedJsonString = LZString.compressToBase64(jsonString)
         return compressedJsonString
     }
-
-
-
-
-
-
 }
+
+data class FreeDealsFilter(
+    val stores: List<String> = emptyList(),
+)
 
 
 @Serializable
