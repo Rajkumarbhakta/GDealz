@@ -18,7 +18,7 @@ interface GamePowerApi {
     @GET("filter")
     suspend fun getGiveawayByFilter(
         @Query("platform",encoded = true) platform:String = GiveawayPlatforms.PC /*+ GiveawayPlatforms.STEAM*/,
-        @Query("type") type:String = "game",//+"loot",
+        //@Query("type") type:String = "game",//+"loot",
         @Query("sort-by") sortBY :String = GiveawaySortingOptions.DATE,
     ):List<Giveaway>?
 

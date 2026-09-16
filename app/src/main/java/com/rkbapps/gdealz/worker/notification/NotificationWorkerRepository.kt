@@ -126,13 +126,6 @@ class NotificationWorkerRepository @Inject constructor(
         }
     }
 
-
-    private fun createPendingIntent(context: Context): PendingIntent{
-        val intent = Intent(context, MainActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-        return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
-    }
-
     private fun claimPendingIntent(context: Context, giveawayId: Int, code: Int): PendingIntent {
         val deepLinkIntent = Intent(
             Intent.ACTION_VIEW,
