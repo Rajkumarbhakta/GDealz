@@ -58,6 +58,7 @@ import com.rkbapps.gdealz.util.StoreUtil
 
 val filterOptionsMap = mapOf(
     "Store" to R.string.filter_store,
+    "Type" to R.string.type,
 )
 
 
@@ -67,6 +68,7 @@ fun FilterBottomSheet(
     modifier: Modifier = Modifier,
     appliedFilters: FreeDealsFilter = FreeDealsFilter(),
     stores: List<String> = emptyList(),
+    types: List<String> = emptyList(),
     onClearFilters: () -> Unit = {},
     onApplyFilters: (FreeDealsFilter) -> Unit
 ) {
@@ -186,6 +188,40 @@ fun FilterBottomSheet(
                                 }else{
                                     item {
                                         Text(text = stringResource(R.string.no_stores_found))
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+                    "Type" -> {
+                        Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                            LazyColumn(
+                                contentPadding = ScaffoldDefaults.contentWindowInsets.asPaddingValues(),
+                                verticalArrangement = Arrangement.spacedBy(8.dp),
+                            ) {
+                                if (types.isNotEmpty()){
+                                    items(types) { type ->
+                                        Row(
+                                            modifier = Modifier.fillMaxWidth(),
+                                            verticalAlignment = Alignment.CenterVertically
+                                        ) {
+                                            Checkbox(
+                                                checked = updatedFilters.types.contains(type),
+                                                onCheckedChange = {
+                                                    updatedFilters = if (it) {
+                                                        updatedFilters.copy(types = updatedFilters.types + type)
+                                                    } else {
+                                                        updatedFilters.copy(types = updatedFilters.types - type)
+                                                    }
+                                                }
+                                            )
+                                            Text(type)
+                                        }
+                                    }
+                                }else{
+                                    item {
+                                        Text(text = stringResource(R.string.nothing_here))
                                     }
                                 }
                             }

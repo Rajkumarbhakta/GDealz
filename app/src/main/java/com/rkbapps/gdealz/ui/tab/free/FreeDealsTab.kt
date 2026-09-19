@@ -53,8 +53,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import coil.compose.SubcomposeAsyncImage
 import com.rkbapps.gdealz.R
+import com.rkbapps.gdealz.models.FreeDealsFilter
 import com.rkbapps.gdealz.models.Giveaway
 import com.rkbapps.gdealz.navigation.Routes
+import com.rkbapps.gdealz.ui.composables.CommonButton
 import com.rkbapps.gdealz.ui.composables.CommonFilledIconButton
 import com.rkbapps.gdealz.ui.composables.CommonTabs
 import com.rkbapps.gdealz.ui.composables.CommonTopBar
@@ -78,6 +80,7 @@ fun FreeDealsTab(
     )
 
     val stores by viewModel.stores.collectAsStateWithLifecycle()
+    val types by viewModel.types.collectAsStateWithLifecycle()
     val giveaways = viewModel.giveaways.collectAsStateWithLifecycle()
     val unClaimedGiveaway = viewModel.unClaimedGiveaway.collectAsStateWithLifecycle()
     val claimedGiveaway = viewModel.claimedGiveaway.collectAsStateWithLifecycle()
@@ -98,10 +101,24 @@ fun FreeDealsTab(
             AnimatedVisibility(
                 visible = pagerState.currentPage == 0
             ) {
-                CommonFilledIconButton(
-                    icon = ImageVector.vectorResource(R.drawable.filter)
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(10.dp),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    showBottomSheet.value = true
+                    if (appliedFilter!= FreeDealsFilter()){
+                        CommonButton(
+                            onClick = {
+                                viewModel.clearFilter()
+                            }
+                        ) {
+                            Text(text = stringResource(R.string.clear_filter))
+                        }
+                    }
+                    CommonFilledIconButton(
+                        icon = ImageVector.vectorResource(R.drawable.filter)
+                    ) {
+                        showBottomSheet.value = true
+                    }
                 }
             }
         }) },
@@ -118,6 +135,7 @@ fun FreeDealsTab(
             ) {
                 FilterBottomSheet(
                     stores = stores.toList(),
+                    types = types,
                     appliedFilters = appliedFilter,
                     onClearFilters = {
                         viewModel.clearFilter()
@@ -182,10 +200,6 @@ fun FreeDealsTab(
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp)
             ) {
-
-                Text(text = stringResource(R.string.tab_games))
-
-                Spacer(modifier = Modifier.height(10.dp))
                 when {
                     giveawayState.value.isLoading -> {
                         LazyColumn {

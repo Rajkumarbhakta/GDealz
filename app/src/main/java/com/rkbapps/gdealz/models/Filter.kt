@@ -42,6 +42,7 @@ data class IsThereAnyDealFilters(
 
 data class FreeDealsFilter(
     val stores: List<String> = emptyList(),
+    val types: List<String> = emptyList(),
 )
 
 

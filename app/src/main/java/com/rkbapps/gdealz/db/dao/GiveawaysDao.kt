@@ -37,6 +37,9 @@ interface GiveawaysDao {
     @Query("select platforms from giveaways order by publishedDate DESC")
     fun getPlatforms(): Flow<List<String>>
 
+    @Query("select type from giveaways order by publishedDate DESC")
+    fun getTypes(): Flow<List<String>>
+
     @Query("SELECT * FROM giveaways")
     suspend fun getAllGiveaways(): List<Giveaway>
 
@@ -44,7 +47,7 @@ interface GiveawaysDao {
     suspend fun deleteAllGiveaways()
 
 
-    @Query("SELECT * FROM giveaways WHERE isClaimed =:isClaimed order by publishedDate DESC")
+    @Query("SELECT * FROM giveaways WHERE isClaimed =:isClaimed and type not in ('Other') order by publishedDate DESC")
     fun getGiveawaysByClaimed(isClaimed: Boolean): Flow<List<Giveaway>>
 
     @Query("DELETE FROM giveaways WHERE isClaimed =:isClaimed")

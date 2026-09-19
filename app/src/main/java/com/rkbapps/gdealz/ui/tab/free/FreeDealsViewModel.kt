@@ -32,6 +32,10 @@ class FreeDealsViewModel @Inject constructor(
     val stores = giveawaysDao.getPlatforms().map { rows -> rows.flatMap { it.toPlatformList() }.distinct().sorted() }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
+    val types = giveawaysDao.getTypes().map { rows -> rows.distinct().sorted() }.stateIn(
+        viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList()
+    )
+
     val giveaways = giveawaysDao.getGiveawaysByOrder()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
@@ -42,12 +46,10 @@ class FreeDealsViewModel @Inject constructor(
     )
 
     val unClaimedGiveaway = giveawaysDao.getGiveawaysByClaimed(false).combine(_filter){ items, filter ->
-        if (filter.stores.isEmpty()){
-            items
-        }else{
-            items.filter { giveaway ->
-                giveaway.platforms.toPlatformList().any { it in filter.stores}
-            }
+        items.filter { giveaway ->
+            val matchesStore = filter.stores.isEmpty() || giveaway.platforms.toPlatformList().any { it in filter.stores }
+            val matchesType = filter.types.isEmpty() || giveaway.type in filter.types
+            matchesStore && matchesType
         }
     }.stateIn(
         viewModelScope,

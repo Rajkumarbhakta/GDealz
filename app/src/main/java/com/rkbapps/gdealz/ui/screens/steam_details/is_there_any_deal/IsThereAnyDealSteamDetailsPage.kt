@@ -74,7 +74,9 @@ import com.kyant.backdrop.effects.vibrancy
 import com.rkbapps.gdealz.R
 import com.rkbapps.gdealz.navigation.Routes
 import com.rkbapps.gdealz.ui.composables.CommonCard
+import com.rkbapps.gdealz.ui.composables.CommonFilledIconButton
 import com.rkbapps.gdealz.ui.composables.CommonTopBar
+import com.rkbapps.gdealz.ui.composables.LocalBackdrop
 import com.rkbapps.gdealz.ui.screens.game_info.DealCard
 import com.rkbapps.gdealz.ui.screens.game_info.PriceHistoryCard
 
@@ -98,7 +100,7 @@ fun IsThereAnyDealSteamDetailsPage(
     val isFav = remember { viewModel.isFavDeal }
 
 
-    val backdrop = rememberLayerBackdrop()
+    val backdrop = LocalBackdrop.current
 
 
 
@@ -109,38 +111,12 @@ fun IsThereAnyDealSteamDetailsPage(
                 title = viewModel.title ?: stringResource(id = R.string.app_name),
                 isNavigationBack = true,
                 actions = {
-                    FilledIconButton(
-                        modifier = Modifier.drawBackdrop(
-                            backdrop = backdrop,
-                            shape = { RoundedCornerShape(100.dp)},
-                            effects = {
-                                // vibrancy effect
-                                vibrancy()
-                                // blur effect
-                                blur(16f.dp.toPx())
-                                // lens effect
-                                lens(
-                                    refractionHeight = 24f.dp.toPx(),
-                                    refractionAmount = 48f.dp.toPx(),
-                                    // ⚠️ Use `true` for large containers,
-                                    // or `false` for small containers.
-                                    depthEffect = true
-                                )
-                            }
-                        ),
-                        onClick = {
-                            val prices = gamePriceInfo.data?.deals?:emptyList()
-                            gameData.data?.let { viewModel.toggleFavDeal(it, prices = prices) }
-                        },
-                        colors = IconButtonDefaults.filledIconButtonColors(
-                            containerColor = Color.Transparent,
-                            contentColor = Color.White
-                        )
+                    CommonFilledIconButton(
+                        icon =  if (isFav.value) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
+                        contentDescription = stringResource(R.string.favorite_icon)
                     ) {
-                        Icon(
-                            imageVector = if (isFav.value) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
-                            stringResource(R.string.favorite_icon)
-                        )
+                        val prices = gamePriceInfo.data?.deals?:emptyList()
+                        gameData.data?.let { viewModel.toggleFavDeal(it, prices = prices) }
                     }
                 }
             ) {
@@ -235,22 +211,10 @@ fun IsThereAnyDealSteamDetailsPage(
                                     modifier = Modifier.drawBackdrop(
                                         backdrop = backdrop,
                                         shape = { RoundedCornerShape(100.dp)},
-                                        onDrawSurface = {
-                                            drawRect(color, blendMode = BlendMode.Hue)
-                                                        },
+                                        onDrawSurface = { drawRect(color, blendMode = BlendMode.Hue) },
                                         effects = {
-                                            // vibrancy effect
                                             vibrancy()
-                                            // blur effect
-                                            blur(16f.dp.toPx())
-                                            // lens effect
-                                            lens(
-                                                refractionHeight = 24f.dp.toPx(),
-                                                refractionAmount = 48f.dp.toPx(),
-                                                // ⚠️ Use `true` for large containers,
-                                                // or `false` for small containers.
-                                                depthEffect = true
-                                            )
+                                            blur(4f.dp.toPx())
                                         }
                                     ),
                                     shape = RoundedCornerShape(100.dp),
@@ -259,10 +223,12 @@ fun IsThereAnyDealSteamDetailsPage(
                                         contentColor = Color.White
                                     ),
                                     onClick = {
-                                        uriHandler.openUri(
-                                            steamGameData.data?.data?.metacritic?.url
-                                                ?: "https://www.metacritic.com/"
-                                        )
+                                        try {
+                                            uriHandler.openUri(steamGameData.data?.data?.metacritic?.url ?: "https://www.metacritic.com/")
+                                        }catch (e: Exception){
+                                            Toast.makeText(context, R.string.unable_to_open_website, Toast.LENGTH_SHORT).show()
+                                            e.printStackTrace()
+                                        }
                                     }
                                 ) {
                                     Row(
@@ -283,22 +249,10 @@ fun IsThereAnyDealSteamDetailsPage(
                                     modifier = Modifier.drawBackdrop(
                                         backdrop = backdrop,
                                         shape = { RoundedCornerShape(100.dp)},
-                                        onDrawSurface = {
-                                            drawRect(color,
-                                                blendMode = BlendMode.Hue)                        },
+                                        onDrawSurface = { drawRect(color, blendMode = BlendMode.Hue)},
                                         effects = {
-                                            // vibrancy effect
                                             vibrancy()
-                                            // blur effect
-                                            blur(16f.dp.toPx())
-                                            // lens effect
-                                            lens(
-                                                refractionHeight = 24f.dp.toPx(),
-                                                refractionAmount = 48f.dp.toPx(),
-                                                // ⚠️ Use `true` for large containers,
-                                                // or `false` for small containers.
-                                                depthEffect = true
-                                            )
+                                            blur(4f.dp.toPx())
                                         }
                                     ),
                                     shape = RoundedCornerShape(100.dp),

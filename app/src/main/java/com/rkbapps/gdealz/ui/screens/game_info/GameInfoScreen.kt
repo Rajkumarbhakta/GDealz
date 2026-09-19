@@ -63,6 +63,7 @@ import com.rkbapps.gdealz.models.price.Deals
 import com.rkbapps.gdealz.ui.composables.CommonCard
 import com.rkbapps.gdealz.ui.composables.CommonTopBar
 import com.rkbapps.gdealz.ui.composables.ErrorScreen
+import com.rkbapps.gdealz.ui.composables.LocalBackdrop
 import com.rkbapps.gdealz.ui.screens.steam_details.is_there_any_deal.OverviewRowItems
 import com.rkbapps.gdealz.ui.screens.steam_details.is_there_any_deal.getTotalReviews
 import com.rkbapps.gdealz.util.CurrencyAndCountryUtil
@@ -411,7 +412,7 @@ fun PriceHistoryCard(
 @Composable
 fun DealCard(modifier: Modifier = Modifier, deals: Deals, onClick: () -> Unit = {}) {
 
-    val backdrop = rememberLayerBackdrop()
+    val backdrop = LocalBackdrop.current
 
     val store = remember { StoreUtil.getStore(deals.shop?.id ?: 0) }
     val isFree = deals.cut == 100
@@ -508,18 +509,8 @@ fun DealCard(modifier: Modifier = Modifier, deals: Deals, onClick: () -> Unit = 
                     backdrop = backdrop,
                     shape = { RoundedCornerShape(100.dp)},
                     effects = {
-                        // vibrancy effect
                         vibrancy()
-                        // blur effect
-                        blur(16f.dp.toPx())
-                        // lens effect
-                        lens(
-                            refractionHeight = 24f.dp.toPx(),
-                            refractionAmount = 48f.dp.toPx(),
-                            // ⚠️ Use `true` for large containers,
-                            // or `false` for small containers.
-                            depthEffect = false
-                        )
+                        blur(4f.dp.toPx())
                     }
                 ),
                 onClick = onClick,
