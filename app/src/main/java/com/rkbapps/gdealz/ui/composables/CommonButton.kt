@@ -30,12 +30,6 @@ fun CommonButton(
             effects = {
                 vibrancy()
                 blur(4f.dp.toPx())
-                lens(
-                    refractionHeight = 8f.dp.toPx(),
-                    refractionAmount = 16f.dp.toPx(),
-                    depthEffect = true,
-                    chromaticAberration = true
-                )
             },
             // glass is never fully clear - a thin surface tint is what makes it read as glass
             onDrawSurface = { drawRect(surfaceColor) }
