@@ -30,6 +30,7 @@ import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.material.icons.filled.Mail
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.outlined.PrivacyTip
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -73,6 +74,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.rkbapps.gdealz.R
+import com.rkbapps.gdealz.navigation.Routes
 import com.rkbapps.gdealz.ui.composables.ChooseCountryDialog
 import com.rkbapps.gdealz.ui.composables.CommonFilledIconButton
 import com.rkbapps.gdealz.ui.composables.CommonTopBar
@@ -240,6 +242,16 @@ fun SettingsScreen(
                 }
             }
 
+            item(key="notifications") {
+                TextWithArrow(
+                    text = stringResource(R.string.notifications),
+                    subText = stringResource(R.string.notifications_desc),
+                    icon = Icons.Default.Notifications
+                ) {
+                    navController.navigate(Routes.NotificationSettings)
+                }
+            }
+
             item(key="theme") {
                 TextWithSwitch(
                     text = stringResource(R.string.follow_system_theme),
@@ -357,7 +369,9 @@ fun TextWithArrow(
     onClick: () -> Unit
 ) {
     Row(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(10.dp)
     ) {

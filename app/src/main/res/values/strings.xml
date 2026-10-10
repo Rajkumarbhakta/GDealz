@@ -164,4 +164,37 @@
     <string name="unable_to_open_website">Unable to open website.</string>
     <string name="price_drop_title">Price Drop Alert!</string>
     <string name="price_drop_message">Good news! %1$s is now available for %2$s. Check it out!</string>
+    <!-- Notification settings -->
+    <string name="notifications">Notifications</string>
+    <string name="notifications_desc">Choose what you get notified about</string>
+    <string name="giveaway_notifications">Free giveaway notifications</string>
+    <string name="giveaway_notifications_desc">Get alerted when a new giveaway goes live</string>
+    <string name="price_drop_notifications">Price drop notifications</string>
+    <string name="price_drop_notifications_desc">Get alerted when a favourite drops in price</string>
+    <string name="content_types">Content types</string>
+    <string name="content_types_desc">Which kinds of giveaway to notify about</string>
+    <string name="stores_desc">Which stores to notify about</string>
+    <string name="minimum_worth">Minimum worth</string>
+    <string name="minimum_worth_desc">Giveaways with no listed value always come through</string>
+    <string name="any_worth">Any</string>
+    <string name="worth_amount">$%1$d</string>
+    <string name="quiet_hours">Quiet hours</string>
+    <string name="quiet_hours_desc">Hold notifications overnight and deliver them afterwards</string>
+    <string name="quiet_hours_start">Start</string>
+    <string name="quiet_hours_end">End</string>
+    <string name="quiet_hours_range">%1$s to %2$s</string>
+    <string name="send_test_notification">Send a test notification</string>
+    <string name="send_test_notification_desc">Check that notifications reach this device</string>
+    <string name="system_notification_settings">System notification settings</string>
+    <string name="system_notification_settings_desc">Mute individual categories from Android settings</string>
+    <string name="all_selected">All</string>
+    <string name="select_all">Select all</string>
+    <string name="clear_selection">Clear</string>
+    <string name="channel_group_giveaways">Giveaways</string>
+    <string name="channel_free_games">Free Games</string>
+    <string name="channel_free_dlc">Free DLC &amp; Loot</string>
+    <string name="channel_other_giveaways">Other Giveaways</string>
+    <string name="test_notification_title">GDealz notifications are working</string>
+    <string name="test_notification_message">This is what a giveaway alert will look like.</string>
+    <string name="new_giveaways_summary">%1$d new giveaways</string>
 </resources>

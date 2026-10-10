@@ -15,6 +15,7 @@ import com.rkbapps.gdealz.ui.screens.free_game_details.FreeGameDetailsScreen
 import com.rkbapps.gdealz.ui.screens.game_info.GameInfoScreen
 import com.rkbapps.gdealz.ui.screens.image_preview.ImagePreviewScreen
 import com.rkbapps.gdealz.ui.tab.settings.SettingsScreen
+import com.rkbapps.gdealz.ui.tab.settings.notification.NotificationSettingsScreen
 import com.rkbapps.gdealz.ui.screens.splash.SplashScreen
 import com.rkbapps.gdealz.ui.screens.steam_details.is_there_any_deal.IsThereAnyDealSteamDetailsPage
 import com.rkbapps.gdealz.ui.tab.fav.FavTab
@@ -98,6 +99,10 @@ fun NavGraphBuilder.destinations(
 
     composable<Routes.Settings> {
         SettingsScreen(navController)
+    }
+
+    composable<Routes.NotificationSettings> {
+        NotificationSettingsScreen(navController)
     }
 
     composable<Routes.ImagePreview> {

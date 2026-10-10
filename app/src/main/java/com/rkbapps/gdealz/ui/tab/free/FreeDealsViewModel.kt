@@ -7,6 +7,7 @@ import com.google.gson.Gson
 import com.rkbapps.gdealz.db.dao.GiveawaysDao
 import com.rkbapps.gdealz.models.FreeDealsFilter
 import com.rkbapps.gdealz.models.Giveaway
+import com.rkbapps.gdealz.util.matchesFilter
 import com.rkbapps.gdealz.util.toPlatformList
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -46,11 +47,7 @@ class FreeDealsViewModel @Inject constructor(
     )
 
     val unClaimedGiveaway = giveawaysDao.getGiveawaysByClaimed(false).combine(_filter){ items, filter ->
-        items.filter { giveaway ->
-            val matchesStore = filter.stores.isEmpty() || giveaway.platforms.toPlatformList().any { it in filter.stores }
-            val matchesType = filter.types.isEmpty() || giveaway.type in filter.types
-            matchesStore && matchesType
-        }
+        items.filter { it.matchesFilter(filter.stores, filter.types) }
     }.stateIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(5000),
