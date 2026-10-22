@@ -16,6 +16,11 @@ object StoreUtil {
         if (ids.isEmpty()) return emptyList()
         return storeList.filter { ids.contains(it.id) }
     }
+
+    fun getStoreIds(): List<Int>{
+        return storeList.map { it.id }
+    }
+
 }
 
 data class FavStoreIds(

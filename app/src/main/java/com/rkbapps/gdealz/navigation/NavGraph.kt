@@ -17,8 +17,9 @@ import com.rkbapps.gdealz.ui.screens.image_preview.ImagePreviewScreen
 import com.rkbapps.gdealz.ui.tab.settings.SettingsScreen
 import com.rkbapps.gdealz.ui.screens.splash.SplashScreen
 import com.rkbapps.gdealz.ui.screens.steam_details.is_there_any_deal.IsThereAnyDealSteamDetailsPage
-import com.rkbapps.gdealz.ui.tab.fav.FavTab
 import com.rkbapps.gdealz.ui.tab.deals.DealsTab
+import com.rkbapps.gdealz.ui.tab.fav.FavTab
+import com.rkbapps.gdealz.ui.tab.deals.DealsTabExpressive
 import com.rkbapps.gdealz.ui.tab.free.FreeDealsTab
 import com.rkbapps.gdealz.ui.tab.search.SearchTab
 
@@ -58,7 +59,7 @@ fun NavGraphBuilder.destinations(
         SplashScreen(navController)
     }
     composable<Routes.Deals> {
-        DealsTab(navController)
+        DealsTabExpressive(navController)
     }
     composable<Routes.Search> {
         SearchTab(navController)

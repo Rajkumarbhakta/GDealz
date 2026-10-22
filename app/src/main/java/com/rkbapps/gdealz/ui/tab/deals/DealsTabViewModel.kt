@@ -1,5 +1,6 @@
 package com.rkbapps.gdealz.ui.tab.deals
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
@@ -8,6 +9,7 @@ import com.rkbapps.gdealz.models.Filter
 import com.rkbapps.gdealz.models.IsThereAnyDealFilters
 import com.rkbapps.gdealz.models.deal.Deal
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.stateIn
@@ -16,10 +18,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DealsTabViewModel @Inject constructor(
-    private val repository: DealsTabRepository, ) : ViewModel() {
+    @ApplicationContext private val context: Context,
+    private val repository: DealsTabRepository,
+) : ViewModel() {
 
     val deals = repository.deals
     val isThereAnyDealFilter = repository.isThereAnyDealFilter
+    val bigDropDeals = repository.bigDropDeals
 
     val country = repository.currentCountry.stateIn(
         viewModelScope,
@@ -32,6 +37,13 @@ class DealsTabViewModel @Inject constructor(
         SharingStarted.WhileSubscribed(5000),
         null
     )
+
+
+    init {
+        viewModelScope.launch {
+            repository.getHighestPriceDropDeals(context)
+        }
+    }
 
     val isThereAnyDeals = repository.getIsThereAnyDealPager.cachedIn(viewModelScope)
 

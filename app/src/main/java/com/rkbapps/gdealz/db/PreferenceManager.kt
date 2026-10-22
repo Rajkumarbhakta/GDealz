@@ -70,6 +70,17 @@ class PreferenceManager @Inject constructor(
             it[key]?:defaultValue
         }
 
+    suspend fun getBooleanPreferenceSynchronous(
+        key: Preferences.Key<Boolean>,
+        defaultValue: Boolean? = false
+    ): Boolean? {
+        return try {
+            context.dataStore.data.first()[key] ?: defaultValue
+        } catch (e: Exception) {
+            defaultValue
+        }
+    }
+
     suspend fun saveBooleanPreference(key:Preferences.Key<Boolean>, value:Boolean){
         context.dataStore.edit {preferences->
             preferences[key] = value

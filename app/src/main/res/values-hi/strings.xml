@@ -165,4 +165,13 @@
     <string name="unable_to_open_website">वेबसाइट खोलने में असमर्थ।</string>
     <string name="price_drop_title">कीमत में गिरावट का अलर्ट!</string>
     <string name="price_drop_message">अच्छी खबर! %1$s अब %2$s के लिए उपलब्ध है। इसे देखें!</string>
+    <string name="biggest_drops_today">आज की सबसे बड़ी गिरावट</string>
+    <string name="latest_deals">नवीनतम डील</string>
+    <string name="all_stores">सभी स्टोर</string>
+    <string name="sort_by">क्रमबद्ध करें</string>
+    <string name="show_as_grid">ग्रिड में दिखाएँ</string>
+    <string name="show_as_list">सूची में दिखाएँ</string>
+    <string name="historical_low">अब तक का सबसे कम</string>
+    <string name="store_low">स्टोर में सबसे कम</string>
+    <string name="new_low">नया न्यूनतम</string>
 </resources>

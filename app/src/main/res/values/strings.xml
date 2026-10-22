@@ -164,4 +164,13 @@
     <string name="unable_to_open_website">Unable to open website.</string>
     <string name="price_drop_title">Price Drop Alert!</string>
     <string name="price_drop_message">Good news! %1$s is now available for %2$s. Check it out!</string>
+    <string name="biggest_drops_today">Biggest drops today</string>
+    <string name="latest_deals">Latest deals</string>
+    <string name="all_stores">All stores</string>
+    <string name="sort_by">Sort by</string>
+    <string name="show_as_grid">Show as grid</string>
+    <string name="show_as_list">Show as list</string>
+    <string name="historical_low">Historical low</string>
+    <string name="store_low">Store low</string>
+    <string name="new_low">New low</string>
 </resources>

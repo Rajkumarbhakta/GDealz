@@ -164,4 +164,13 @@
     <string name="unable_to_open_website">ওয়েবসাইট খুলতে অক্ষম।</string>
     <string name="price_drop_title">দাম কমার সতর্কতা!</string>
     <string name="price_drop_message">সুসংবাদ! %1$s এখন %2$s এ পাওয়া যাচ্ছে। এখনই দেখুন!</string>
+    <string name="biggest_drops_today">আজকের সবচেয়ে বড় ছাড়</string>
+    <string name="latest_deals">সর্বশেষ ডিল</string>
+    <string name="all_stores">সব স্টোর</string>
+    <string name="sort_by">সাজান</string>
+    <string name="show_as_grid">গ্রিডে দেখান</string>
+    <string name="show_as_list">তালিকায় দেখান</string>
+    <string name="historical_low">সর্বকালের সর্বনিম্ন</string>
+    <string name="store_low">স্টোরে সর্বনিম্ন</string>
+    <string name="new_low">নতুন সর্বনিম্ন</string>
 </resources>

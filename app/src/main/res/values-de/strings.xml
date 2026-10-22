@@ -164,4 +164,13 @@
     <string name="unable_to_open_website">Webseite konnte nicht geöffnet werden.</string>
     <string name="price_drop_title">Preisnachlass-Alarm!</string>
     <string name="price_drop_message">Gute Nachrichten! %1$s ist jetzt für %2$s verfügbar. Schau es dir an!</string>
+    <string name="biggest_drops_today">Größte Preisstürze heute</string>
+    <string name="latest_deals">Neueste Angebote</string>
+    <string name="all_stores">Alle Shops</string>
+    <string name="sort_by">Sortieren nach</string>
+    <string name="show_as_grid">Als Raster anzeigen</string>
+    <string name="show_as_list">Als Liste anzeigen</string>
+    <string name="historical_low">Historischer Tiefstpreis</string>
+    <string name="store_low">Shop-Tiefstpreis</string>
+    <string name="new_low">Neuer Tiefstpreis</string>
 </resources>

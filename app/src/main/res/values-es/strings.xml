@@ -164,4 +164,13 @@
     <string name="unable_to_open_website">No se puede abrir el sitio web.</string>
     <string name="price_drop_title">¡Alerta de bajada de precio!</string>
     <string name="price_drop_message">¡Buenas noticias! %1$s ya está disponible por %2$s. ¡Échale un vistazo!</string>
+    <string name="biggest_drops_today">Mayores rebajas de hoy</string>
+    <string name="latest_deals">Últimas ofertas</string>
+    <string name="all_stores">Todas las tiendas</string>
+    <string name="sort_by">Ordenar por</string>
+    <string name="show_as_grid">Ver en cuadrícula</string>
+    <string name="show_as_list">Ver en lista</string>
+    <string name="historical_low">Mínimo histórico</string>
+    <string name="store_low">Mínimo de la tienda</string>
+    <string name="new_low">Nuevo mínimo</string>
 </resources>

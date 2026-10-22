@@ -164,4 +164,13 @@
     <string name="unable_to_open_website">ウェブサイトを開けません。</string>
     <string name="price_drop_title">価格下落アラート！</string>
     <string name="price_drop_message">朗報です！ %1$s が %2$s で利用可能になりました。チェックしてみてください！</string>
+    <string name="biggest_drops_today">今日の大幅値下げ</string>
+    <string name="latest_deals">最新のセール</string>
+    <string name="all_stores">すべてのストア</string>
+    <string name="sort_by">並べ替え</string>
+    <string name="show_as_grid">グリッド表示</string>
+    <string name="show_as_list">リスト表示</string>
+    <string name="historical_low">過去最安値</string>
+    <string name="store_low">ストア最安値</string>
+    <string name="new_low">最安値更新</string>
 </resources>

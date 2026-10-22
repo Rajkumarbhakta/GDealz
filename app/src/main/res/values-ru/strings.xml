@@ -164,4 +164,13 @@
     <string name="unable_to_open_website">Не удалось открыть веб-сайт.</string>
     <string name="price_drop_title">Оповещение о снижении цены!</string>
     <string name="price_drop_message">Хорошие новости! %1$s теперь доступна за %2$s. Проверьте это!</string>
+    <string name="biggest_drops_today">Самые большие скидки сегодня</string>
+    <string name="latest_deals">Последние скидки</string>
+    <string name="all_stores">Все магазины</string>
+    <string name="sort_by">Сортировка</string>
+    <string name="show_as_grid">Показать сеткой</string>
+    <string name="show_as_list">Показать списком</string>
+    <string name="historical_low">Исторический минимум</string>
+    <string name="store_low">Минимум в магазине</string>
+    <string name="new_low">Новый минимум</string>
 </resources>

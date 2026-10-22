@@ -24,7 +24,7 @@ android {
 
     defaultConfig {
         applicationId = "com.rkbapps.gdealz"
-        minSdk = 23
+        minSdk = 24
         targetSdk = 37
         versionCode = 15
         versionName = "1.3.4"
