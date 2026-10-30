@@ -41,8 +41,8 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -53,6 +53,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLocale
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
@@ -70,6 +71,10 @@ import com.rkbapps.gdealz.R
 import com.rkbapps.gdealz.models.Giveaway
 import com.rkbapps.gdealz.ui.composables.ErrorScreen
 import com.rkbapps.gdealz.ui.screens.steam_details.is_there_any_deal.HeroButton
+import com.rkbapps.gdealz.ui.screens.steam_details.is_there_any_deal.HeroStatusBarIcons
+import com.rkbapps.gdealz.ui.screens.steam_details.is_there_any_deal.HeroStatusBarScrim
+import com.rkbapps.gdealz.ui.screens.steam_details.is_there_any_deal.heroTopBarColors
+import com.rkbapps.gdealz.ui.screens.steam_details.is_there_any_deal.heroTopBarHeightPx
 import com.rkbapps.gdealz.ui.tab.deals.composables.DealPoster
 import com.rkbapps.gdealz.ui.tab.deals.composables.DiscountBadge
 import com.rkbapps.gdealz.ui.tab.free.parseApiDate
@@ -81,6 +86,7 @@ import com.rkbapps.gdealz.ui.theme.extendedColors
 import java.text.SimpleDateFormat
 
 private val PageSidePadding = 16.dp
+private val HeroHeight = 260.dp
 
 /** GamerPower sends instructions as numbered lines; the number is drawn by the step itself. */
 private fun Giveaway.claimSteps(): List<String> =
@@ -123,6 +129,13 @@ fun FreeGameDetailsScreenExpressive(
     val hasEnded = end != null && end <= now
     val dateFormat = remember { SimpleDateFormat("EEE, d MMM yyyy", java.util.Locale.getDefault()) }
     val notAvailable = stringResource(R.string.not_available)
+    val scrollState = rememberScrollState()
+    val topBarHeightPx = heroTopBarHeightPx()
+    val heroHeightPx = with(LocalDensity.current) { HeroHeight.roundToPx() }
+    val isPastHero by remember(heroHeightPx, topBarHeightPx) {
+        derivedStateOf { heroHeightPx - scrollState.value < topBarHeightPx }
+    }
+    HeroStatusBarIcons(isPastHero)
 
     Scaffold(
         topBar = {
@@ -154,10 +167,7 @@ fun FreeGameDetailsScreenExpressive(
                         )
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color.Transparent,
-                    scrolledContainerColor = Color.Transparent,
-                )
+                colors = heroTopBarColors(isPastHero),
             )
         }
     ) {  innerPadding ->
@@ -169,7 +179,7 @@ fun FreeGameDetailsScreenExpressive(
             Column(
                 modifier = Modifier
                     .weight(1f)
-                    .verticalScroll(rememberScrollState())
+                    .verticalScroll(scrollState)
                     .padding(bottom = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
@@ -226,10 +236,11 @@ private fun Hero(imageUrl: String, onBack: () -> Unit, onShare: () -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(260.dp)
+            .height(HeroHeight)
             .clip(RoundedCornerShape(bottomStart = 36.dp, bottomEnd = 36.dp))
     ) {
         DealPoster(url = imageUrl, modifier = Modifier.fillMaxSize())
+        HeroStatusBarScrim()
         DiscountBadge(
             cut = 100,
             size = 96.dp,

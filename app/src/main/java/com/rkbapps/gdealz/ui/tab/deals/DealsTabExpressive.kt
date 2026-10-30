@@ -111,9 +111,7 @@ import com.rkbapps.gdealz.util.CurrencyAndCountryUtil
 import com.rkbapps.gdealz.util.IsThereAnyDealSortingOptions
 import com.rkbapps.gdealz.util.Store
 import com.rkbapps.gdealz.util.StoreUtil
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlin.time.Duration.Companion.milliseconds
 
 private val ListSidePadding = 12.dp
 
@@ -125,6 +123,7 @@ fun DealsTabExpressive(
 ) {
     val filter by viewModel.isThereAnyDealFilter.collectAsStateWithLifecycle()
     val country by viewModel.country.collectAsStateWithLifecycle()
+    val isCountryUnset by viewModel.isCountryUnset.collectAsStateWithLifecycle()
     val favStoreIds by viewModel.favStoreIds.collectAsStateWithLifecycle()
     val bigDropDeals by viewModel.bigDropDeals.collectAsStateWithLifecycle()
     val deals = viewModel.isThereAnyDeals.collectAsLazyPagingItems()
@@ -138,9 +137,8 @@ fun DealsTabExpressive(
 
     val defaultFilter = remember { IsThereAnyDealFilters() }
 
-    LaunchedEffect(country) {
-        delay(500.milliseconds)
-        if (country == null) showCountryDialog = true
+    LaunchedEffect(isCountryUnset) {
+        if (isCountryUnset) showCountryDialog = true
     }
 
     val openDetails: (DealItem) -> Unit = { deal ->

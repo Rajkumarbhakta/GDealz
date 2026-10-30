@@ -3,11 +3,13 @@ package com.rkbapps.gdealz.ui.screens.steam_details.is_there_any_deal
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.widget.Toast
+import androidx.activity.compose.LocalActivity
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -29,9 +31,11 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -61,11 +65,14 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.ToggleButton
 import androidx.compose.material3.ToggleButtonDefaults
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.carousel.HorizontalMultiBrowseCarousel
 import androidx.compose.material3.carousel.rememberCarouselState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -76,11 +83,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -91,6 +101,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.core.view.WindowCompat
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -193,6 +204,9 @@ fun IsThereAnyDealSteamDetailsPageExpressive(
     val scope = rememberCoroutineScope()
     val prices = gamePriceInfo.data
     val bestDeal = remember(prices) { prices?.deals?.minByOrNull { it.price?.amount ?: Double.MAX_VALUE } }
+    val topBarHeightPx = heroTopBarHeightPx()
+    val isPastHero by remember(topBarHeightPx) { derivedStateOf { listState.isPastHero(topBarHeightPx) } }
+    HeroStatusBarIcons(isPastHero)
 
     Scaffold(
         topBar = {
@@ -239,10 +253,7 @@ fun IsThereAnyDealSteamDetailsPageExpressive(
                         })
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color.Transparent,
-                    scrolledContainerColor = Color.Transparent,
-                )
+                colors = heroTopBarColors(isPastHero),
             )
         }
     ) { _ ->
@@ -272,7 +283,7 @@ fun IsThereAnyDealSteamDetailsPageExpressive(
                     isLoading = gamePriceInfo.isLoading,
                     bestDeal = bestDeal,
                     onOpen = { openUrl(bestDeal?.url) },
-                    onChooseStore = { scope.launch { listState.animateScrollToItem(StoresItemIndex) } },
+                    onChooseStore = { scope.launch { listState.animateScrollToItem(StoresItemIndex, -topBarHeightPx) } },
                 )
             }
             item(key = "price_history") {
@@ -362,7 +373,62 @@ internal fun Hero(
             .clip(RoundedCornerShape(bottomStart = 36.dp, bottomEnd = 36.dp))
     ) {
         DealPoster(url = imageUrl, modifier = Modifier.fillMaxSize())
+        HeroStatusBarScrim()
     }
+}
+
+/** Keeps the light status bar icons readable on bright art. */
+@Composable
+internal fun HeroStatusBarScrim() {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(96.dp)
+            .background(Brush.verticalGradient(listOf(Color.Black.copy(alpha = 0.5f), Color.Transparent)))
+    )
+}
+
+/** Light status bar icons over the hero art; the theme's own icons once the bar turns solid. */
+@Composable
+internal fun HeroStatusBarIcons(isPastHero: Boolean) {
+    val window = LocalActivity.current?.window
+    val isLightSurface = MaterialTheme.colorScheme.surface.luminance() > 0.5f
+    DisposableEffect(window, isPastHero, isLightSurface) {
+        val controller = window?.let { WindowCompat.getInsetsController(it, it.decorView) }
+        if (!isPastHero) controller?.isAppearanceLightStatusBars = false
+        onDispose {
+            // Past the hero nothing was changed, and the screenshot viewer may own the icons by now.
+            if (!isPastHero) controller?.isAppearanceLightStatusBars = isLightSurface
+        }
+    }
+}
+
+/** Full height of a top bar drawn over the hero, status bar included. */
+@Composable
+internal fun heroTopBarHeightPx(): Int {
+    val density = LocalDensity.current
+    return WindowInsets.statusBars.getTop(density) +
+        with(density) { TopAppBarDefaults.TopAppBarExpandedHeight.roundToPx() }
+}
+
+/** True once the first item (the hero) no longer fills the area behind the top bar. */
+internal fun LazyListState.isPastHero(topBarHeightPx: Int): Boolean {
+    val hero = layoutInfo.visibleItemsInfo.firstOrNull() ?: return false
+    return hero.index > 0 || hero.size + hero.offset < topBarHeightPx
+}
+
+/** Clear over the hero art, solid once page content would otherwise run under the clock and buttons. */
+@Composable
+internal fun heroTopBarColors(isPastHero: Boolean): TopAppBarColors {
+    val surface = MaterialTheme.colorScheme.surface
+    val container by animateColorAsState(
+        targetValue = if (isPastHero) surface else surface.copy(alpha = 0f),
+        animationSpec = MaterialTheme.motionScheme.fastEffectsSpec()
+    )
+    return TopAppBarDefaults.topAppBarColors(
+        containerColor = container,
+        scrolledContainerColor = container,
+    )
 }
 
 @Composable

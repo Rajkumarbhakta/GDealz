@@ -12,6 +12,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -30,6 +31,13 @@ class DealsTabViewModel @Inject constructor(
         viewModelScope,
         SharingStarted.WhileSubscribed(5000),
         null
+    )
+
+    // Starts false: `country` is also null until the preference has loaded, which isn't "not set".
+    val isCountryUnset = repository.currentCountry.map { it == null }.stateIn(
+        viewModelScope,
+        SharingStarted.WhileSubscribed(5000),
+        false
     )
 
     val favStoreIds = repository.favStoreList.stateIn(

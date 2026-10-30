@@ -28,14 +28,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
@@ -57,7 +56,11 @@ import com.rkbapps.gdealz.ui.screens.steam_details.is_there_any_deal.PriceHistor
 import com.rkbapps.gdealz.ui.screens.steam_details.is_there_any_deal.QuickFact
 import com.rkbapps.gdealz.ui.screens.steam_details.is_there_any_deal.QuickFactsRow
 import com.rkbapps.gdealz.ui.screens.steam_details.is_there_any_deal.StorePrices
+import com.rkbapps.gdealz.ui.screens.steam_details.is_there_any_deal.HeroStatusBarIcons
 import com.rkbapps.gdealz.ui.screens.steam_details.is_there_any_deal.StoresItemIndex
+import com.rkbapps.gdealz.ui.screens.steam_details.is_there_any_deal.heroTopBarColors
+import com.rkbapps.gdealz.ui.screens.steam_details.is_there_any_deal.heroTopBarHeightPx
+import com.rkbapps.gdealz.ui.screens.steam_details.is_there_any_deal.isPastHero
 import com.rkbapps.gdealz.ui.screens.steam_details.is_there_any_deal.getTotalReviews
 import com.rkbapps.gdealz.ui.theme.PriceTextStyles
 import kotlinx.coroutines.launch
@@ -127,6 +130,9 @@ fun GameInfoScreenExpressive(
     val scope = rememberCoroutineScope()
     val prices = gamePriceInfo.data
     val bestDeal = remember(prices) { prices?.deals?.minByOrNull { it.price?.amount ?: Double.MAX_VALUE } }
+    val topBarHeightPx = heroTopBarHeightPx()
+    val isPastHero by remember(topBarHeightPx) { derivedStateOf { listState.isPastHero(topBarHeightPx) } }
+    HeroStatusBarIcons(isPastHero)
 
     // Keep this order in step with StoresItemIndex.
     Scaffold(
@@ -173,10 +179,7 @@ fun GameInfoScreenExpressive(
                         })
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color.Transparent,
-                    scrolledContainerColor = Color.Transparent,
-                )
+                colors = heroTopBarColors(isPastHero),
             )
         }
     ) {_->
@@ -203,7 +206,7 @@ fun GameInfoScreenExpressive(
                     isLoading = gamePriceInfo.isLoading,
                     bestDeal = bestDeal,
                     onOpen = { openUrl(bestDeal?.url) },
-                    onChooseStore = { scope.launch { listState.animateScrollToItem(StoresItemIndex) } },
+                    onChooseStore = { scope.launch { listState.animateScrollToItem(StoresItemIndex, -topBarHeightPx) } },
                 )
             }
             item(key = "price_history") {

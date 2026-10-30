@@ -89,7 +89,7 @@
     <string name="delete_single_fav_warning">Are you sure you want to delete %1$s?</string>
     <string name="delete_all_fav_warning">Are you sure you want to delete all favorites?</string>
     <string name="tab_games">Games</string>
-    <string name="un_claimed">Un Claimed</string>
+    <string name="un_claimed">Unclaimed</string>
     <string name="claimed">Claimed</string>
     <string name="free_title">Free</string>
     <string name="active">Active</string>
