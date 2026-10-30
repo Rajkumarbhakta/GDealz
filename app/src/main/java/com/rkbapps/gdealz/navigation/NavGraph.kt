@@ -37,7 +37,16 @@ import com.rkbapps.gdealz.ui.theme.LocalClassicUi
 @Composable
 fun NavGraph(navController: NavHostController) {
     SharedTransitionLayout {
-        NavHost(navController = navController, startDestination = Routes.Splash) {
+        NavHost(
+            navController = navController,
+            startDestination = Routes.Splash,
+            enterTransition = navEnterTransition,
+            exitTransition = navExitTransition,
+            popEnterTransition = navPopEnterTransition,
+            popExitTransition = navPopExitTransition,
+            predictivePopEnterTransition = navPredictivePopEnterTransition,
+            predictivePopExitTransition = navPredictivePopExitTransition,
+        ) {
             destinations(navController, this@SharedTransitionLayout)
         }
     }
@@ -52,6 +61,12 @@ fun BottomNavigationNavGraph(
         NavHost(
             navController = navController,
             startDestination = Routes.Deals,
+            enterTransition = navEnterTransition,
+            exitTransition = navExitTransition,
+            popEnterTransition = navPopEnterTransition,
+            popExitTransition = navPopExitTransition,
+            predictivePopEnterTransition = navPredictivePopEnterTransition,
+            predictivePopExitTransition = navPredictivePopExitTransition,
         ) {
             destinations(navController, this@SharedTransitionLayout)
         }
@@ -59,7 +74,6 @@ fun BottomNavigationNavGraph(
 }
 
 
-@OptIn(ExperimentalSharedTransitionApi::class)
 fun NavGraphBuilder.destinations(
     navController: NavHostController,
     sharedTransitionScope: SharedTransitionScope
