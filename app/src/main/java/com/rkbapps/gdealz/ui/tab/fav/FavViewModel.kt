@@ -43,6 +43,12 @@ class FavViewModel @Inject constructor(
         }
     }
 
+    fun restoreFavs(favDeals: List<FavDeals>) {
+        viewModelScope.launch {
+            repository.restoreFavs(favDeals)
+        }
+    }
+
     fun markStoreAsFav(storeId: Int) = viewModelScope.launch {
         repository.markStoreAsFav(storeId)
     }

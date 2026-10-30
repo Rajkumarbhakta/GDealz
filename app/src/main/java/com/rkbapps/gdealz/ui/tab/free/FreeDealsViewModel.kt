@@ -45,12 +45,14 @@ class FreeDealsViewModel @Inject constructor(
         emptyList()
     )
 
-    val unClaimedGiveaway = giveawaysDao.getGiveawaysByClaimed(false).combine(_filter){ items, filter ->
-        items.filter { giveaway ->
-            val matchesStore = filter.stores.isEmpty() || giveaway.platforms.toPlatformList().any { it in filter.stores }
-            val matchesType = filter.types.isEmpty() || giveaway.type in filter.types
-            matchesStore && matchesType
-        }
+    private val allUnclaimed = giveawaysDao.getGiveawaysByClaimed(false).stateIn(
+        viewModelScope,
+        SharingStarted.WhileSubscribed(5000),
+        emptyList()
+    )
+
+    val unClaimedGiveaway = allUnclaimed.combine(_filter){ items, filter ->
+        items.filter { filter.matches(it) }
     }.stateIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(5000),
@@ -83,4 +85,19 @@ class FreeDealsViewModel @Inject constructor(
         _filter.value = FreeDealsFilter()
     }
 
+    /** How many unclaimed giveaways [filter] would show, for the filter sheet's apply button. */
+    fun countUnclaimed(filter: FreeDealsFilter): Int = allUnclaimed.value.count { filter.matches(it) }
+
+    fun setClaimed(giveaway: Giveaway, claimed: Boolean) {
+        viewModelScope.launch {
+            giveawaysDao.updateGiveaway(giveaway.copy(isClaimed = claimed))
+        }
+    }
+
+}
+
+private fun FreeDealsFilter.matches(giveaway: Giveaway): Boolean {
+    val matchesStore = stores.isEmpty() || giveaway.platforms.toPlatformList().any { it in stores }
+    val matchesType = types.isEmpty() || giveaway.type in types
+    return matchesStore && matchesType
 }

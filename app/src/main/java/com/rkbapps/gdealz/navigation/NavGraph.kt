@@ -15,12 +15,15 @@ import com.rkbapps.gdealz.ui.screens.free_game_details.FreeGameDetailsScreen
 import com.rkbapps.gdealz.ui.screens.game_info.GameInfoScreen
 import com.rkbapps.gdealz.ui.screens.image_preview.ImagePreviewScreen
 import com.rkbapps.gdealz.ui.tab.settings.SettingsScreen
+import com.rkbapps.gdealz.ui.tab.settings.SettingsScreenExpressive
 import com.rkbapps.gdealz.ui.screens.splash.SplashScreen
 import com.rkbapps.gdealz.ui.screens.steam_details.is_there_any_deal.IsThereAnyDealSteamDetailsPage
 import com.rkbapps.gdealz.ui.tab.deals.DealsTab
 import com.rkbapps.gdealz.ui.tab.fav.FavTab
+import com.rkbapps.gdealz.ui.tab.fav.FavTabExpressive
 import com.rkbapps.gdealz.ui.tab.deals.DealsTabExpressive
 import com.rkbapps.gdealz.ui.tab.free.FreeDealsTab
+import com.rkbapps.gdealz.ui.tab.free.FreeDealsTabExpressive
 import com.rkbapps.gdealz.ui.tab.search.SearchTab
 
 
@@ -65,10 +68,10 @@ fun NavGraphBuilder.destinations(
         SearchTab(navController)
     }
     composable<Routes.Fav> {
-        FavTab(navController)
+        FavTabExpressive(navController)
     }
     composable<Routes.FreeDeals> {
-        FreeDealsTab(navController)
+        FreeDealsTabExpressive(navController)
     }
 
     composable<Routes.Main> {
@@ -98,7 +101,7 @@ fun NavGraphBuilder.destinations(
     }
 
     composable<Routes.Settings> {
-        SettingsScreen(navController)
+        SettingsScreenExpressive(navController)
     }
 
     composable<Routes.ImagePreview> {

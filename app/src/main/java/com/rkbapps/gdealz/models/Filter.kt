@@ -19,19 +19,20 @@ data class IsThereAnyDealFilters(
     val sort: IsThereAnyDealSortingOptions = IsThereAnyDealSortingOptions.TRENDING,
     val lowerPrice: Int? = null,
     val upperPrice: Int? = null,
-    val discount:Int? = null
+    val discount:Int? = null,
+    val maxDiscount: Int? = null
 ){
     fun generateFilter():String?{
 
-        if (lowerPrice==null&&upperPrice==null&&discount==null) return null
+        if (lowerPrice==null&&upperPrice==null&&discount==null&&maxDiscount==null) return null
 
         val map:MutableMap<String, MinMax> = mutableMapOf()
 
         if (upperPrice!=null && lowerPrice!=null){
             map["price"] = MinMax(min = lowerPrice, max = upperPrice)
         }
-        if (discount!=null){
-            map["cut"] = MinMax(min = discount, max = 100)
+        if (discount!=null || maxDiscount!=null){
+            map["cut"] = MinMax(min = discount ?: 0, max = maxDiscount ?: 100)
         }
 
         val jsonString = json.encodeToString(map)

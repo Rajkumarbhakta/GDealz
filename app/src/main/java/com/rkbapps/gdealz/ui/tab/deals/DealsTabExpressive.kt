@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
@@ -57,6 +58,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.carousel.HorizontalMultiBrowseCarousel
 import androidx.compose.material3.carousel.rememberCarouselState
 import androidx.compose.material3.rememberBottomSheetState
@@ -98,7 +100,7 @@ import com.rkbapps.gdealz.ui.composables.ErrorScreen
 import com.rkbapps.gdealz.ui.tab.deals.composables.DealGridCard
 import com.rkbapps.gdealz.ui.tab.deals.composables.DealListItem
 import com.rkbapps.gdealz.ui.tab.deals.composables.DiscountBadge
-import com.rkbapps.gdealz.ui.tab.deals.composables.FilterBottomSheet
+import com.rkbapps.gdealz.ui.tab.deals.composables.FilterBottomSheetExpressive
 import com.rkbapps.gdealz.ui.theme.GDealzTheme
 import com.rkbapps.gdealz.ui.theme.GroupedListGap
 import com.rkbapps.gdealz.ui.theme.GroupedListShapes
@@ -165,37 +167,55 @@ fun DealsTabExpressive(
         }
     }
 
-    if (showFilterSheet) {
-        ModalBottomSheet(
-            modifier = Modifier.fillMaxWidth(),
-            onDismissRequest = { showFilterSheet = false },
-            sheetState = sheetState,
-        ) {
-            FilterBottomSheet(appliedFilters = filter, favStoreIds = favStoreIds?.ids) {
-                viewModel.updateIsThereAnyDealFilter(it)
-                scope.launch { sheetState.hide() }.invokeOnCompletion {
-                    if (!sheetState.isVisible) showFilterSheet = false
-                }
-            }
-        }
-    }
 
     Scaffold(
         topBar = {
-            DealsHeader(
-                countryName = Country.entries.find { it.key == country }?.value,
-                currency = currency,
-                onChangeRegion = { showCountryDialog = true }
+            TopAppBar(
+                title = {
+                    DealsHeader(
+                        countryName = Country.entries.find { it.key == country }?.value,
+                        currency = currency,
+                        onChangeRegion = { showCountryDialog = true }
+                    )
+                }
             )
         }
     ) { innerPadding->
+
+
+        if (showFilterSheet) {
+            ModalBottomSheet(
+                modifier = Modifier.fillMaxWidth().padding(top = innerPadding.calculateTopPadding()),
+                onDismissRequest = { showFilterSheet = false },
+                sheetState = sheetState,
+            ) {
+                val closeSheet = {
+                    scope.launch { sheetState.hide() }.invokeOnCompletion {
+                        if (!sheetState.isVisible) showFilterSheet = false
+                    }
+                }
+                FilterBottomSheetExpressive(
+                    appliedFilters = filter,
+                    favStoreIds = favStoreIds?.ids,
+                    currency = currency,
+                    onCancel = { closeSheet() },
+                ) {
+                    viewModel.updateIsThereAnyDealFilter(it)
+                    closeSheet()
+                }
+            }
+        }
+
+
+
+
         Box(
             modifier = Modifier
                 .fillMaxSize()
+                .background(MaterialTheme.colorScheme.surface)
                 .padding(
                     top = innerPadding.calculateTopPadding(),
-                    )
-                .background(MaterialTheme.colorScheme.surface)
+                )
         ) {
             val snapshot = deals.itemSnapshotList
             currency = snapshot.items.firstOrNull()?.deal?.regular?.currency
@@ -278,7 +298,7 @@ fun DealsTabExpressive(
 }
 
 private fun IsThereAnyDealFilters.activeFilterCount(): Int =
-    listOf(stores.isNotEmpty(), lowerPrice != null || upperPrice != null, discount != null).count { it }
+    listOf(stores.isNotEmpty(), lowerPrice != null || upperPrice != null, discount != null || maxDiscount != null).count { it }
 
 private fun LazyGridScope.fullWidthItem(key: String, content: @Composable () -> Unit) =
     item(key = key, span = { GridItemSpan(maxLineSpan) }) { content() }
@@ -360,13 +380,11 @@ private fun DealsHeader(
     onChangeRegion: () -> Unit,
 ) {
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 20.dp, end = 16.dp, top = 20.dp),
-        verticalAlignment = Alignment.Bottom,
-        horizontalArrangement = Arrangement.spacedBy(12.dp)
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+        Column(modifier = Modifier.weight(1f)) {
             val region = listOfNotNull(
                 countryName,
                 currency?.let { "${CurrencyAndCountryUtil.currencySymbolMap[it] ?: ""} $it".trim() }
