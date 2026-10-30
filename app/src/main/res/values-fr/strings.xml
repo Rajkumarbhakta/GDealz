@@ -302,4 +302,6 @@
     <string name="saving_screenshot">Enregistrement dans Images…</string>
     <string name="unable_to_save_screenshot">Impossible d\'enregistrer la capture.</string>
     <string name="early_access">Accès anticipé</string>
+    <string name="classic_interface">Interface classique</string>
+    <string name="classic_interface_desc">Utiliser l\'apparence et la disposition précédentes de l\'application.</string>
 </resources>

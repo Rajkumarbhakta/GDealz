@@ -302,4 +302,6 @@
     <string name="saving_screenshot">Saving to Pictures…</string>
     <string name="unable_to_save_screenshot">Unable to save screenshot.</string>
     <string name="early_access">Early Access</string>
+    <string name="classic_interface">Classic interface</string>
+    <string name="classic_interface_desc">Use the app\'s previous look and layout.</string>
 </resources>

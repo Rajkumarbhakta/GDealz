@@ -302,4 +302,6 @@
     <string name="saving_screenshot">Wird in Bilder gespeichert…</string>
     <string name="unable_to_save_screenshot">Screenshot konnte nicht gespeichert werden.</string>
     <string name="early_access">Early Access</string>
+    <string name="classic_interface">Klassische Oberfläche</string>
+    <string name="classic_interface_desc">Das frühere Aussehen und Layout der App verwenden.</string>
 </resources>

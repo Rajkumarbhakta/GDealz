@@ -302,4 +302,6 @@
     <string name="saving_screenshot">Guardando en Imágenes…</string>
     <string name="unable_to_save_screenshot">No se pudo guardar la captura.</string>
     <string name="early_access">Acceso anticipado</string>
+    <string name="classic_interface">Interfaz clásica</string>
+    <string name="classic_interface_desc">Usa el aspecto y el diseño anteriores de la app.</string>
 </resources>

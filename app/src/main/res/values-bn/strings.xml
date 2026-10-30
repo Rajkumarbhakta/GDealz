@@ -302,4 +302,6 @@
     <string name="saving_screenshot">Pictures-এ সংরক্ষণ করা হচ্ছে…</string>
     <string name="unable_to_save_screenshot">স্ক্রিনশট সংরক্ষণ করা যায়নি।</string>
     <string name="early_access">আর্লি অ্যাক্সেস</string>
+    <string name="classic_interface">ক্লাসিক ইন্টারফেস</string>
+    <string name="classic_interface_desc">অ্যাপের আগের চেহারা ও লেআউট ব্যবহার করুন।</string>
 </resources>

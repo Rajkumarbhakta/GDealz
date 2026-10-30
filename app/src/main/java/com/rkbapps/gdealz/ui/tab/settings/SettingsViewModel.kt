@@ -44,6 +44,11 @@ class SettingsViewModel @Inject constructor(
         SharingStarted.WhileSubscribed(5000),
         true
     )
+    val isClassicUi = repository.isClassicUi.stateIn(
+        viewModelScope,
+        SharingStarted.WhileSubscribed(5000),
+        false
+    )
 
 
 
@@ -61,6 +66,9 @@ class SettingsViewModel @Inject constructor(
 
     fun updateDynamicTheme(value: Boolean) =
         viewModelScope.launch { repository.updateIsDynamicTheme(value) }
+
+    fun updateClassicUi(value: Boolean) =
+        viewModelScope.launch { repository.updateIsClassicUi(value) }
 
     fun changeLanguage(languageCode: String) {
         AppLocaleManager.changeLanguage(context,languageCode)

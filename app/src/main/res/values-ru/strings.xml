@@ -312,4 +312,6 @@
     <string name="saving_screenshot">Сохранение в «Изображения»…</string>
     <string name="unable_to_save_screenshot">Не удалось сохранить скриншот.</string>
     <string name="early_access">Ранний доступ</string>
+    <string name="classic_interface">Классический интерфейс</string>
+    <string name="classic_interface_desc">Использовать прежний вид и расположение элементов приложения.</string>
 </resources>

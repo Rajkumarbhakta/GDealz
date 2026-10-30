@@ -5,6 +5,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialExpressiveTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MotionScheme
+import androidx.compose.material3.Shapes
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
@@ -140,6 +141,9 @@ private val DarkExtendedColors = ExtendedColors(
 
 val LocalExtendedColors = staticCompositionLocalOf { LightExtendedColors }
 
+/** True when the user opted into the pre-expressive screens through the "Classic interface" setting. */
+val LocalClassicUi = staticCompositionLocalOf { false }
+
 val MaterialTheme.extendedColors: ExtendedColors
     @Composable
     @ReadOnlyComposable
@@ -149,6 +153,7 @@ val MaterialTheme.extendedColors: ExtendedColors
 fun GDealzTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     dynamicColor: Boolean = true,
+    classicUi: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
@@ -157,16 +162,21 @@ fun GDealzTheme(
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
 
+        classicUi -> if (darkTheme) ClassicDarkColors else ClassicLightColors
         darkTheme -> DarkColors
         else -> LightColors
     }
     val extendedColors = if (darkTheme) DarkExtendedColors else LightExtendedColors
 
-    CompositionLocalProvider(LocalExtendedColors provides extendedColors) {
+    CompositionLocalProvider(
+        LocalExtendedColors provides extendedColors,
+        LocalClassicUi provides classicUi,
+    ) {
+        // One call for both looks: branching here would rebuild the app and lose the open tab on switching.
         MaterialExpressiveTheme(
             colorScheme = colorScheme,
-            typography = AppTypography,
-            shapes = AppShapes,
+            typography = if (classicUi) ClassicTypography else AppTypography,
+            shapes = if (classicUi) Shapes() else AppShapes,
             motionScheme = MotionScheme.expressive(),
             content = content
         )

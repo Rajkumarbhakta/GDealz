@@ -4,6 +4,8 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.ShortNavigationBar
 import androidx.compose.material3.ShortNavigationBarItem
 import androidx.compose.material3.ShortNavigationBarItemDefaults
@@ -56,6 +58,43 @@ fun BottomNavigationBar(
                     )
                 },
                 colors = itemColors,
+
+                selected = selected,
+                onClick = {
+                    navController.navigate(bottomNavigationItem.route) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                }
+            )
+        }
+    }
+}
+
+/** The bar from before the expressive update, used with the "Classic interface" setting. */
+@Composable
+fun ClassicBottomNavigationBar(
+    items: List<BottomNavigationItem>,
+    navController: NavHostController,
+    currentDestination: NavDestination?
+) {
+    NavigationBar {
+        items.forEachIndexed { _, bottomNavigationItem ->
+            val selected =
+                currentDestination?.hierarchy?.any { it.hasRoute(route = bottomNavigationItem.route::class) } == true
+            NavigationBarItem(
+                icon = {
+                    Icon(
+                        imageVector = if (selected) ImageVector.vectorResource(bottomNavigationItem.selectedIcon) else ImageVector.vectorResource(
+                            bottomNavigationItem.icon
+                        ),
+                        contentDescription = stringResource(id = bottomNavigationItem.title)
+                    )
+                },
+                label = { Text(stringResource(id = bottomNavigationItem.title)) },
 
                 selected = selected,
                 onClick = {

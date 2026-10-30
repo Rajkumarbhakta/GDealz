@@ -30,6 +30,7 @@ import com.rkbapps.gdealz.ui.tab.free.FreeDealsTab
 import com.rkbapps.gdealz.ui.tab.free.FreeDealsTabExpressive
 import com.rkbapps.gdealz.ui.tab.search.SearchTab
 import com.rkbapps.gdealz.ui.tab.search.SearchTabExpressive
+import com.rkbapps.gdealz.ui.theme.LocalClassicUi
 
 
 @OptIn(ExperimentalSharedTransitionApi::class)
@@ -67,16 +68,16 @@ fun NavGraphBuilder.destinations(
         SplashScreen(navController)
     }
     composable<Routes.Deals> {
-        DealsTabExpressive(navController)
+        if (LocalClassicUi.current) DealsTab(navController) else DealsTabExpressive(navController)
     }
     composable<Routes.Search> {
-        SearchTabExpressive(navController)
+        if (LocalClassicUi.current) SearchTab(navController) else SearchTabExpressive(navController)
     }
     composable<Routes.Fav> {
-        FavTabExpressive(navController)
+        if (LocalClassicUi.current) FavTab(navController) else FavTabExpressive(navController)
     }
     composable<Routes.FreeDeals> {
-        FreeDealsTabExpressive(navController)
+        if (LocalClassicUi.current) FreeDealsTab(navController) else FreeDealsTabExpressive(navController)
     }
 
     composable<Routes.Main> {
@@ -88,25 +89,37 @@ fun NavGraphBuilder.destinations(
             navDeepLink <Routes.FreeGameDetails>(basePath = DeepLinkBasePaths.FREE_GAME_DETAILS)
         )
     ) {
-        FreeGameDetailsScreenExpressive(navController)
+        if (LocalClassicUi.current) {
+            FreeGameDetailsScreen(navController)
+        } else {
+            FreeGameDetailsScreenExpressive(navController)
+        }
     }
 
     composable<Routes.GameInfo> {
-        GameInfoScreenExpressive(navController)
+        if (LocalClassicUi.current) GameInfoScreen(navController) else GameInfoScreenExpressive(navController)
     }
 
     composable<Routes.IsThereAnyDealSteamGameDetails>(
         deepLinks = listOf(navDeepLink<Routes.IsThereAnyDealSteamGameDetails>(basePath = DeepLinkBasePaths.GAME_DETAILS))
     ) {
-        IsThereAnyDealSteamDetailsPageExpressive(
-            navController = navController,
-            sharedTransitionScope = sharedTransitionScope,
-            animatedContentScope = this
-        )
+        if (LocalClassicUi.current) {
+            IsThereAnyDealSteamDetailsPage(
+                navController = navController,
+                sharedTransitionScope = sharedTransitionScope,
+                animatedContentScope = this
+            )
+        } else {
+            IsThereAnyDealSteamDetailsPageExpressive(
+                navController = navController,
+                sharedTransitionScope = sharedTransitionScope,
+                animatedContentScope = this
+            )
+        }
     }
 
     composable<Routes.Settings> {
-        SettingsScreenExpressive(navController)
+        if (LocalClassicUi.current) SettingsScreen(navController) else SettingsScreenExpressive(navController)
     }
 
     composable<Routes.ScreenshotViewer> {

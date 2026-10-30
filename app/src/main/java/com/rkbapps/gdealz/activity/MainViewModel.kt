@@ -32,4 +32,10 @@ class MainViewModel @Inject constructor(
             SharingStarted.WhileSubscribed(5000),
             true
         )
+    val isClassicUi = preferenceManager.getBooleanPreference(PreferenceManager.IS_CLASSIC_UI, false)
+        .stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(5000),
+            false
+        )
 }

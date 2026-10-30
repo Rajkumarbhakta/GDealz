@@ -297,4 +297,6 @@
     <string name="saving_screenshot">ピクチャに保存しています…</string>
     <string name="unable_to_save_screenshot">スクリーンショットを保存できませんでした。</string>
     <string name="early_access">早期アクセス</string>
+    <string name="classic_interface">クラシックインターフェース</string>
+    <string name="classic_interface_desc">以前のアプリの外観とレイアウトを使用します。</string>
 </resources>

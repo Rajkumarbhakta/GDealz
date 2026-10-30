@@ -298,4 +298,6 @@
     <string name="saving_screenshot">正在保存到“图片”…</string>
     <string name="unable_to_save_screenshot">无法保存截图。</string>
     <string name="early_access">抢先体验</string>
+    <string name="classic_interface">经典界面</string>
+    <string name="classic_interface_desc">使用应用之前的外观和布局。</string>
 </resources>

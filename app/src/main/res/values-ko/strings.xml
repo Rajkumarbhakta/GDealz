@@ -297,4 +297,6 @@
     <string name="saving_screenshot">사진 폴더에 저장 중…</string>
     <string name="unable_to_save_screenshot">스크린샷을 저장할 수 없습니다.</string>
     <string name="early_access">앞서 해보기</string>
+    <string name="classic_interface">클래식 인터페이스</string>
+    <string name="classic_interface_desc">앱의 이전 디자인과 레이아웃을 사용합니다.</string>
 </resources>

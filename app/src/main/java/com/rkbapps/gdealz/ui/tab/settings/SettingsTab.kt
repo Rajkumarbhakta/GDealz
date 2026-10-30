@@ -27,6 +27,7 @@ import androidx.compose.material.icons.filled.BrightnessAuto
 import androidx.compose.material.icons.filled.BugReport
 import androidx.compose.material.icons.filled.Coffee
 import androidx.compose.material.icons.filled.DarkMode
+import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.material.icons.filled.Mail
@@ -96,6 +97,7 @@ fun SettingsScreen(
     val selectedCountry by viewModel.selectedCountry.collectAsStateWithLifecycle()
     val isNsfw by viewModel.isNsfw.collectAsStateWithLifecycle()
     val isDynamicColor by viewModel.isDynamicTheme.collectAsStateWithLifecycle()
+    val isClassicUi by viewModel.isClassicUi.collectAsStateWithLifecycle()
 
     val selectedCountryEnum = remember(selectedCountry) {
         if (selectedCountry == null) Country.US else Country.valueOf(selectedCountry!!)
@@ -271,6 +273,16 @@ fun SettingsScreen(
                     ) {
                         viewModel.updateDynamicTheme(it)
                     }
+                }
+            }
+            item(key="classic interface") {
+                TextWithSwitch(
+                    text = stringResource(R.string.classic_interface),
+                    subText = stringResource(R.string.classic_interface_desc),
+                    checked = isClassicUi,
+                    icon = Icons.Default.History
+                ) {
+                    viewModel.updateClassicUi(it)
                 }
             }
             item(key="nsfw content") {

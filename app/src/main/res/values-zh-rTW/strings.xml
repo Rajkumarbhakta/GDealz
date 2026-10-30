@@ -297,4 +297,6 @@
     <string name="saving_screenshot">正在儲存至「圖片」…</string>
     <string name="unable_to_save_screenshot">無法儲存截圖。</string>
     <string name="early_access">搶先體驗</string>
+    <string name="classic_interface">經典介面</string>
+    <string name="classic_interface_desc">使用應用程式先前的外觀和版面配置。</string>
 </resources>

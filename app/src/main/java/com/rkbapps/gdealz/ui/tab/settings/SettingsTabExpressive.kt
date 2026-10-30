@@ -29,6 +29,7 @@ import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material.icons.rounded.Code
 import androidx.compose.material.icons.rounded.Coffee
 import androidx.compose.material.icons.rounded.DarkMode
+import androidx.compose.material.icons.rounded.History
 import androidx.compose.material.icons.rounded.Language
 import androidx.compose.material.icons.rounded.Mail
 import androidx.compose.material.icons.rounded.Palette
@@ -115,6 +116,7 @@ fun SettingsScreenExpressive(
     val selectedCountry by viewModel.selectedCountry.collectAsStateWithLifecycle()
     val isNsfw by viewModel.isNsfw.collectAsStateWithLifecycle()
     val isDynamicColor by viewModel.isDynamicTheme.collectAsStateWithLifecycle()
+    val isClassicUi by viewModel.isClassicUi.collectAsStateWithLifecycle()
 
     val country = remember(selectedCountry) {
         Country.entries.find { it.key == selectedCountry } ?: Country.US
@@ -154,6 +156,15 @@ fun SettingsScreenExpressive(
                 )
             )
         }
+        add(
+            SettingsRow(
+                key = "classic_interface",
+                icon = Icons.Rounded.History,
+                title = stringResource(R.string.classic_interface),
+                summary = stringResource(R.string.classic_interface_desc),
+                action = RowAction.Toggle(isClassicUi) { viewModel.updateClassicUi(it) }
+            )
+        )
         add(
             SettingsRow(
                 key = "language",
