@@ -80,7 +80,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
@@ -92,7 +91,7 @@ import com.rkbapps.gdealz.R
 import com.rkbapps.gdealz.models.IsThereAnyDealFilters
 import com.rkbapps.gdealz.models.deal.DealItem
 import com.rkbapps.gdealz.navigation.Routes
-import com.rkbapps.gdealz.ui.composables.ChooseCountryDialog
+import com.rkbapps.gdealz.ui.composables.ChooseCountryDialogExpressive
 import com.rkbapps.gdealz.ui.composables.ErrorScreen
 import com.rkbapps.gdealz.ui.tab.deals.composables.DealGridCard
 import com.rkbapps.gdealz.ui.tab.deals.composables.DealListItem
@@ -151,14 +150,14 @@ fun DealsTabExpressive(
 
     if (showCountryDialog) {
         // A country is mandatory on first launch, so the dialog only dismisses once one is set.
-        Dialog(onDismissRequest = { if (country != null) showCountryDialog = false }) {
-            ChooseCountryDialog(
-                modifier = Modifier.height(500.dp),
-                selectedCountry = Country.entries.find { it.key == country } ?: Country.US
-            ) {
-                viewModel.updateCountry(it.key)
-                showCountryDialog = false
-            }
+        ChooseCountryDialogExpressive(
+            selectedCountry = Country.entries.find { it.key == country } ?: Country.US,
+            onDismiss = if (country != null) {
+                { showCountryDialog = false }
+            } else null
+        ) {
+            viewModel.updateCountry(it.key)
+            showCountryDialog = false
         }
     }
 

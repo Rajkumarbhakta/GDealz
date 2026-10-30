@@ -67,13 +67,13 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.rkbapps.gdealz.BuildConfig
 import com.rkbapps.gdealz.R
-import com.rkbapps.gdealz.ui.composables.ChooseCountryDialog
+import com.rkbapps.gdealz.ui.composables.ChooseCountryDialogExpressive
+import com.rkbapps.gdealz.ui.composables.LanguageSelectionDialogExpressive
 import com.rkbapps.gdealz.ui.theme.GroupedListShapes
 import com.rkbapps.gdealz.ui.theme.extendedColors
 import com.rkbapps.gdealz.util.AppLocaleManager
@@ -127,20 +127,22 @@ fun SettingsScreenExpressive(
     var showLanguageDialog by remember { mutableStateOf(false) }
 
     if (showCountryDialog) {
-        Dialog(onDismissRequest = { showCountryDialog = false }) {
-            ChooseCountryDialog(modifier = Modifier.height(500.dp), selectedCountry = country) {
-                viewModel.updateCountry(it.key)
-                showCountryDialog = false
-            }
+        ChooseCountryDialogExpressive(
+            selectedCountry = country,
+            onDismiss = { showCountryDialog = false }
+        ) {
+            viewModel.updateCountry(it.key)
+            showCountryDialog = false
         }
     }
 
     if (showLanguageDialog) {
-        Dialog(onDismissRequest = { showLanguageDialog = false }) {
-            LanguageSelectionDialog(modifier = Modifier.height(500.dp), currentLanguageCode = languageCode) {
-                viewModel.changeLanguage(it)
-                showLanguageDialog = false
-            }
+        LanguageSelectionDialogExpressive(
+            currentLanguageCode = languageCode,
+            onDismiss = { showLanguageDialog = false }
+        ) {
+            viewModel.changeLanguage(it)
+            showLanguageDialog = false
         }
     }
 
