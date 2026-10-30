@@ -241,7 +241,7 @@ fun FreeDealsTabExpressive(
 
 /** Current time that ticks every minute, so countdowns stay honest while the tab is open. */
 @Composable
-private fun rememberNow(): Long {
+internal fun rememberNow(): Long {
     var now by remember { mutableLongStateOf(System.currentTimeMillis()) }
     LaunchedEffect(Unit) {
         while (true) {
@@ -254,14 +254,14 @@ private fun rememberNow(): Long {
 
 private val apiDateFormat get() = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)
 
-private fun parseApiDate(value: String): Long? =
+internal fun parseApiDate(value: String): Long? =
     runCatching { apiDateFormat.parse(value)?.time }.getOrNull()
 
 private fun isActive(giveaway: Giveaway, now: Long): Boolean =
     parseApiDate(giveaway.endDate)?.let { it > now } ?: true
 
 /** GamerPower lists "PC" alongside the actual storefront; the storefront is what users care about. */
-private fun Giveaway.storeName(): String {
+internal fun Giveaway.storeName(): String {
     val platforms = platforms.toPlatformList()
     return platforms.firstOrNull { it != "PC" && it != "DRM-Free" } ?: platforms.firstOrNull() ?: ""
 }
@@ -322,7 +322,6 @@ private fun FreeHeader(liveCount: Int, isFiltered: Boolean, onFilter: () -> Unit
     }
 }
 
-@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 private fun ClaimStatusGroup(
     selected: Int,
@@ -421,7 +420,6 @@ private fun LazyListScope.unclaimedItems(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 private fun LazyListScope.claimedItems(
     giveaways: List<Giveaway>,
     onOpen: (Giveaway) -> Unit,
