@@ -1,5 +1,6 @@
 package com.rkbapps.gdealz.network.api
 
+import com.rkbapps.gdealz.models.price.PriceHistoryEntry
 import com.rkbapps.gdealz.models.deal.Deals
 import com.rkbapps.gdealz.models.game_info.GameInfo
 import com.rkbapps.gdealz.models.price.PriceDetail
@@ -40,6 +41,14 @@ interface IsThereAnyDealApi {
         @Query("key") apiKey: String = ApiConst.IS_THERE_ANY_DEAL_API_KEY,
         @Body gameIds: List<String> = emptyList()
     ): List<PriceDetail>
+
+    @GET("/games/history/v2")
+    suspend fun getPriceHistory(
+        @Query("id") gameId: String,
+        @Query("country") country: String = ApiConst.COUNTRY,
+        @Query("since") since: String,
+        @Query("key") apiKey: String = ApiConst.IS_THERE_ANY_DEAL_API_KEY
+    ): List<PriceHistoryEntry>
 
     @GET("/games/search/v1")
     suspend fun getSearchResult(
