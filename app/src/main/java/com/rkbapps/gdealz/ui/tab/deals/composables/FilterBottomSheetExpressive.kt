@@ -76,9 +76,9 @@ private const val DiscountStep = 5
  * currency, so a single USD-style range would be useless in INR or JPY. Values are rough and
  * rounded to amounts a shopper would actually type.
  */
-private data class PriceScale(val presets: List<Int>, val max: Int, val step: Int)
+internal data class PriceScale(val presets: List<Int>, val max: Int, val step: Int)
 
-private fun priceScaleFor(currency: String?): PriceScale = when (currency) {
+internal fun priceScaleFor(currency: String?): PriceScale = when (currency) {
     "INR" -> PriceScale(listOf(200, 500, 1000), max = 3000, step = 50)
     "JPY" -> PriceScale(listOf(500, 1000, 2000), max = 8000, step = 100)
     "KRW" -> PriceScale(listOf(5000, 10000, 20000), max = 80000, step = 1000)
@@ -90,7 +90,7 @@ private fun priceScaleFor(currency: String?): PriceScale = when (currency) {
     else -> PriceScale(listOf(5, 10, 20), max = 60, step = 1)
 }
 
-private fun formatPrice(currency: String?, amount: Int): String =
+internal fun formatPrice(currency: String?, amount: Int): String =
     "${CurrencyAndCountryUtil.currencySymbolMap[currency] ?: ""}${"%,d".format(Locale.getDefault(), amount)}"
 
 

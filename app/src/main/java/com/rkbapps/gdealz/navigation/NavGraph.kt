@@ -12,12 +12,16 @@ import androidx.navigation.navDeepLink
 import androidx.navigation.toRoute
 import com.rkbapps.gdealz.ui.screens.MainScreen
 import com.rkbapps.gdealz.ui.screens.free_game_details.FreeGameDetailsScreen
+import com.rkbapps.gdealz.ui.screens.free_game_details.FreeGameDetailsScreenExpressive
 import com.rkbapps.gdealz.ui.screens.game_info.GameInfoScreen
+import com.rkbapps.gdealz.ui.screens.game_info.GameInfoScreenExpressive
 import com.rkbapps.gdealz.ui.screens.image_preview.ImagePreviewScreen
+import com.rkbapps.gdealz.ui.screens.image_preview.ScreenshotViewerScreen
 import com.rkbapps.gdealz.ui.tab.settings.SettingsScreen
 import com.rkbapps.gdealz.ui.tab.settings.SettingsScreenExpressive
 import com.rkbapps.gdealz.ui.screens.splash.SplashScreen
 import com.rkbapps.gdealz.ui.screens.steam_details.is_there_any_deal.IsThereAnyDealSteamDetailsPage
+import com.rkbapps.gdealz.ui.screens.steam_details.is_there_any_deal.IsThereAnyDealSteamDetailsPageExpressive
 import com.rkbapps.gdealz.ui.tab.deals.DealsTab
 import com.rkbapps.gdealz.ui.tab.fav.FavTab
 import com.rkbapps.gdealz.ui.tab.fav.FavTabExpressive
@@ -25,6 +29,7 @@ import com.rkbapps.gdealz.ui.tab.deals.DealsTabExpressive
 import com.rkbapps.gdealz.ui.tab.free.FreeDealsTab
 import com.rkbapps.gdealz.ui.tab.free.FreeDealsTabExpressive
 import com.rkbapps.gdealz.ui.tab.search.SearchTab
+import com.rkbapps.gdealz.ui.tab.search.SearchTabExpressive
 
 
 @OptIn(ExperimentalSharedTransitionApi::class)
@@ -65,7 +70,7 @@ fun NavGraphBuilder.destinations(
         DealsTabExpressive(navController)
     }
     composable<Routes.Search> {
-        SearchTab(navController)
+        SearchTabExpressive(navController)
     }
     composable<Routes.Fav> {
         FavTabExpressive(navController)
@@ -83,17 +88,17 @@ fun NavGraphBuilder.destinations(
             navDeepLink <Routes.FreeGameDetails>(basePath = DeepLinkBasePaths.FREE_GAME_DETAILS)
         )
     ) {
-        FreeGameDetailsScreen(navController)
+        FreeGameDetailsScreenExpressive(navController)
     }
 
     composable<Routes.GameInfo> {
-        GameInfoScreen(navController)
+        GameInfoScreenExpressive(navController)
     }
 
     composable<Routes.IsThereAnyDealSteamGameDetails>(
         deepLinks = listOf(navDeepLink<Routes.IsThereAnyDealSteamGameDetails>(basePath = DeepLinkBasePaths.GAME_DETAILS))
     ) {
-        IsThereAnyDealSteamDetailsPage(
+        IsThereAnyDealSteamDetailsPageExpressive(
             navController = navController,
             sharedTransitionScope = sharedTransitionScope,
             animatedContentScope = this
@@ -102,6 +107,17 @@ fun NavGraphBuilder.destinations(
 
     composable<Routes.Settings> {
         SettingsScreenExpressive(navController)
+    }
+
+    composable<Routes.ScreenshotViewer> {
+        val route = it.toRoute<Routes.ScreenshotViewer>()
+        ScreenshotViewerScreen(
+            navController = navController,
+            imageUrls = route.imageUrls,
+            startIndex = route.startIndex,
+            sharedTransitionScope = sharedTransitionScope,
+            animatedContentScope = this
+        )
     }
 
     composable<Routes.ImagePreview> {
