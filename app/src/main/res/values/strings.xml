@@ -337,4 +337,9 @@
     <string name="test_notification_title">GDealz notifications are working</string>
     <string name="test_notification_message">This is what a giveaway alert will look like.</string>
     <string name="new_giveaways_summary">%1$d new giveaways</string>
+    <string name="new_free_games">New free games</string>
+    <string name="price_drops_on_favorites">Price drops on favorites</string>
+    <string name="more_options">More options</string>
+    <string name="quiet_hours_off">Off</string>
+    <string name="notification_delivery">Delivery</string>
 </resources>

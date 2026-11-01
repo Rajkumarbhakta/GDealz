@@ -20,6 +20,7 @@ import com.rkbapps.gdealz.ui.screens.image_preview.ScreenshotViewerScreen
 import com.rkbapps.gdealz.ui.tab.settings.SettingsScreen
 import com.rkbapps.gdealz.ui.tab.settings.SettingsScreenExpressive
 import com.rkbapps.gdealz.ui.tab.settings.notification.NotificationSettingsScreen
+import com.rkbapps.gdealz.ui.tab.settings.notification.NotificationSettingsScreenExpressive
 import com.rkbapps.gdealz.ui.screens.splash.SplashScreen
 import com.rkbapps.gdealz.ui.screens.steam_details.is_there_any_deal.IsThereAnyDealSteamDetailsPage
 import com.rkbapps.gdealz.ui.screens.steam_details.is_there_any_deal.IsThereAnyDealSteamDetailsPageExpressive
@@ -149,7 +150,7 @@ fun NavGraphBuilder.destinations(
     }
 
     composable<Routes.NotificationSettings> {
-        NotificationSettingsScreen(navController)
+        if (LocalClassicUi.current) NotificationSettingsScreen(navController) else NotificationSettingsScreenExpressive(navController)
     }
 
     composable<Routes.ImagePreview> {

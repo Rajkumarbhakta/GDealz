@@ -394,4 +394,4 @@ private fun HourPickerDialog(
     }
 }
 
-private fun Int.asHourLabel(): String = "%02d:00".format(this)
+internal fun Int.asHourLabel(): String = "%02d:00".format(this)

@@ -217,7 +217,7 @@ fun FilterBottomSheetExpressive(
 }
 
 @Composable
-private fun SelectableChip(label: String, selected: Boolean, onClick: () -> Unit) {
+internal fun SelectableChip(label: String, selected: Boolean, onClick: () -> Unit) {
     FilterChip(
         selected = selected,
         onClick = onClick,

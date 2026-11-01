@@ -25,17 +25,21 @@ import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
 import androidx.compose.material.icons.automirrored.rounded.OpenInNew
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.rounded.BugReport
+import androidx.compose.material.icons.rounded.CardGiftcard
 import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material.icons.rounded.Code
 import androidx.compose.material.icons.rounded.Coffee
 import androidx.compose.material.icons.rounded.DarkMode
+import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.History
 import androidx.compose.material.icons.rounded.Language
 import androidx.compose.material.icons.rounded.Mail
 import androidx.compose.material.icons.rounded.Palette
 import androidx.compose.material.icons.rounded.Place
 import androidx.compose.material.icons.rounded.PrivacyTip
+import androidx.compose.material.icons.rounded.Schedule
 import androidx.compose.material.icons.rounded.Star
+import androidx.compose.material.icons.rounded.Tune
 import androidx.compose.material.icons.rounded.VisibilityOff
 import androidx.compose.material3.ButtonGroupDefaults
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
@@ -72,8 +76,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.rkbapps.gdealz.BuildConfig
 import com.rkbapps.gdealz.R
+import com.rkbapps.gdealz.navigation.Routes
 import com.rkbapps.gdealz.ui.composables.ChooseCountryDialogExpressive
 import com.rkbapps.gdealz.ui.composables.LanguageSelectionDialogExpressive
+import com.rkbapps.gdealz.ui.tab.settings.notification.NotificationSettingsViewModel
+import com.rkbapps.gdealz.ui.tab.settings.notification.asHourLabel
 import com.rkbapps.gdealz.ui.theme.GroupedListShapes
 import com.rkbapps.gdealz.ui.theme.extendedColors
 import com.rkbapps.gdealz.util.AppLocaleManager
@@ -86,13 +93,13 @@ private enum class ThemeOption(val label: Int) {
 }
 
 /** A settings row: either a switch, an in-app picker (chevron) or an external link. */
-private sealed interface RowAction {
+internal sealed interface RowAction {
     data class Toggle(val checked: Boolean, val onChange: (Boolean) -> Unit) : RowAction
     data class Navigate(val onClick: () -> Unit) : RowAction
     data class Link(val onClick: () -> Unit) : RowAction
 }
 
-private data class SettingsRow(
+internal data class SettingsRow(
     val key: String,
     val icon: ImageVector,
     val title: String,
@@ -101,12 +108,13 @@ private data class SettingsRow(
 )
 
 /** Each group gets one accent so its icons read as a set. */
-private data class GroupAccent(val container: Color, val content: Color)
+internal data class GroupAccent(val container: Color, val content: Color)
 
 @Composable
 fun SettingsScreenExpressive(
     navController: NavHostController,
-    viewModel: SettingsViewModel = hiltViewModel()
+    viewModel: SettingsViewModel = hiltViewModel(),
+    notificationViewModel: NotificationSettingsViewModel = hiltViewModel()
 ) {
     val uriHandler = LocalUriHandler.current
     val context = LocalContext.current
@@ -117,6 +125,7 @@ fun SettingsScreenExpressive(
     val isNsfw by viewModel.isNsfw.collectAsStateWithLifecycle()
     val isDynamicColor by viewModel.isDynamicTheme.collectAsStateWithLifecycle()
     val isClassicUi by viewModel.isClassicUi.collectAsStateWithLifecycle()
+    val notificationPrefs by notificationViewModel.preferences.collectAsStateWithLifecycle()
 
     val country = remember(selectedCountry) {
         Country.entries.find { it.key == selectedCountry } ?: Country.US
@@ -195,6 +204,47 @@ fun SettingsScreenExpressive(
             )
         )
     }
+
+    val notifications = listOf(
+        SettingsRow(
+            key = "new_free_games",
+            icon = Icons.Rounded.CardGiftcard,
+            title = stringResource(R.string.new_free_games),
+            // An empty selection means "no restriction", the same as the filter it comes from.
+            summary = notificationPrefs.platforms.joinToString(", ")
+                .ifEmpty { stringResource(R.string.all_stores) },
+            action = RowAction.Toggle(notificationPrefs.giveawayEnabled) { notificationViewModel.updateGiveawayEnabled(it) }
+        ),
+        SettingsRow(
+            key = "price_drops",
+            icon = Icons.Rounded.Favorite,
+            title = stringResource(R.string.price_drops_on_favorites),
+            summary = stringResource(R.string.price_drop_notifications_desc),
+            action = RowAction.Toggle(notificationPrefs.priceDropEnabled) { notificationViewModel.updatePriceDropEnabled(it) }
+        ),
+        SettingsRow(
+            key = "quiet_hours",
+            icon = Icons.Rounded.Schedule,
+            title = stringResource(R.string.quiet_hours),
+            summary = if (notificationPrefs.quietHoursEnabled) {
+                stringResource(
+                    R.string.quiet_hours_range,
+                    notificationPrefs.quietHoursStart.asHourLabel(),
+                    notificationPrefs.quietHoursEnd.asHourLabel()
+                )
+            } else {
+                stringResource(R.string.quiet_hours_off)
+            },
+            action = RowAction.Navigate { navController.navigate(Routes.NotificationSettings) }
+        ),
+        SettingsRow(
+            key = "more_notification_options",
+            icon = Icons.Rounded.Tune,
+            title = stringResource(R.string.more_options),
+            summary = stringResource(R.string.notifications_desc),
+            action = RowAction.Navigate { navController.navigate(Routes.NotificationSettings) }
+        ),
+    )
 
     val support = listOf(
         SettingsRow(
@@ -288,6 +338,17 @@ fun SettingsScreenExpressive(
             )
 
             settingsGroup(
+                title = R.string.notifications,
+                rows = notifications,
+                accent = {
+                    GroupAccent(
+                        MaterialTheme.extendedColors.giftContainer,
+                        MaterialTheme.extendedColors.onGiftContainer
+                    )
+                }
+            )
+
+            settingsGroup(
                 title = R.string.support_and_about,
                 rows = support,
                 accent = {
@@ -372,14 +433,7 @@ private fun LazyListScope.settingsGroup(
     rows: List<SettingsRow>,
     accent: @Composable () -> GroupAccent,
 ) {
-    item(key = "group_$title") {
-        Text(
-            text = stringResource(title).uppercase(),
-            style = MaterialTheme.typography.labelLargeEmphasized,
-            color = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.padding(start = 8.dp, top = 18.dp, bottom = 8.dp)
-        )
-    }
+    item(key = "group_$title") { GroupHeader(title) }
     itemsIndexed(rows, key = { _, row -> row.key }) { index, row ->
         SettingsRowItem(
             row = row,
@@ -391,7 +445,17 @@ private fun LazyListScope.settingsGroup(
 }
 
 @Composable
-private fun SettingsRowItem(
+internal fun GroupHeader(title: Int, modifier: Modifier = Modifier) {
+    Text(
+        text = stringResource(title).uppercase(),
+        style = MaterialTheme.typography.labelLargeEmphasized,
+        color = MaterialTheme.colorScheme.primary,
+        modifier = modifier.padding(start = 8.dp, top = 18.dp, bottom = 8.dp)
+    )
+}
+
+@Composable
+internal fun SettingsRowItem(
     row: SettingsRow,
     shape: androidx.compose.ui.graphics.Shape,
     accent: GroupAccent,
