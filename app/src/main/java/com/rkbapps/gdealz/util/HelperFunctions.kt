@@ -15,6 +15,8 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.paging.LOG_TAG
+import com.rkbapps.gdealz.models.Giveaway
+import java.time.LocalTime
 
 
 import java.text.SimpleDateFormat
@@ -47,6 +49,53 @@ fun getStatusFromEndDate(endDateStr: String): Boolean? {
  */
 fun String.toPlatformList(): List<String> =
     split(",").map { it.trim() }.filter { it.isNotEmpty() }
+
+
+/**
+ * Whether a giveaway passes a store/type selection.
+ *
+ * An empty list means "no restriction" on that axis, matching the Free Deals tab's filter.
+ * Shared so the tab and the notification worker cannot drift apart.
+ */
+fun Giveaway.matchesFilter(platforms: List<String>, types: List<String>): Boolean {
+    val matchesPlatform = platforms.isEmpty() || this.platforms.toPlatformList().any { it in platforms }
+    val matchesType = types.isEmpty() || this.type in types
+    return matchesPlatform && matchesType
+}
+
+/**
+ * Parses GamerPower's `worth` field, e.g. "$29.99" or "$1,299.00", into a plain amount.
+ *
+ * Returns null when there is no price to compare - most commonly the literal "N/A", which a large
+ * share of giveaways carry. Callers must treat null as passing any threshold, otherwise setting a
+ * minimum worth would silently suppress most notifications.
+ */
+fun String.toWorthAmount(): Double? =
+    replace(Regex("[^0-9.]"), "").takeIf { it.isNotBlank() }?.toDoubleOrNull()
+
+/**
+ * Whether a giveaway clears a minimum-worth threshold.
+ *
+ * A giveaway with no listed value always passes: GamerPower reports "N/A" for a large share of
+ * them, so treating that as zero would make even a $1 threshold suppress most notifications.
+ */
+fun Giveaway.meetsMinWorth(minWorth: Int): Boolean {
+    if (minWorth <= 0) return true
+    val amount = worth.toWorthAmount() ?: return true
+    return amount >= minWorth
+}
+
+/**
+ * Whether [nowHour] falls inside a quiet-hours window.
+ *
+ * Handles windows that wrap past midnight (22 -> 8). The window is start-inclusive and
+ * end-exclusive; an empty window (start == end) is treated as "never quiet".
+ */
+fun isWithinQuietHours(start: Int, end: Int, nowHour: Int = LocalTime.now().hour): Boolean = when {
+    start == end -> false
+    start < end -> nowHour in start until end
+    else -> nowHour !in end..<start
+}
 
 
 fun Context.hasNetwork(): Boolean? {

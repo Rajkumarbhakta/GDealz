@@ -57,10 +57,20 @@ interface GiveawaysDao {
     @Query("select * from giveaways where id=:id")
     suspend fun getGiveawayById(id: Int): Giveaway?
 
+    @Query("SELECT id FROM giveaways WHERE isClaimed = 1")
+    suspend fun getClaimedGiveawayIds(): List<Int>
+
+    /**
+     * Refreshes the cached giveaways while preserving rows the user has already claimed.
+     *
+     * The REPLACE insert would otherwise overwrite claimed rows and reset [Giveaway.isClaimed],
+     * so incoming rows that match a claimed id are dropped before inserting.
+     */
     @Transaction
     suspend fun replaceGiveaways(giveaways: List<Giveaway>) {
+        val claimedIds = getClaimedGiveawayIds().toSet()
         deleteGiveawaysByClaimed(false)
-        insertGiveaways(giveaways)
+        insertGiveaways(giveaways.filterNot { it.id in claimedIds })
     }
 
 }
