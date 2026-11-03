@@ -268,7 +268,7 @@ fun IsThereAnyDealSteamDetailsPageExpressive(
         ) {
             item(key = "hero") {
                 Hero(
-                    imageUrl = steam.screenshots.firstOrNull()?.pathFull ?: steam.headerImage,
+                    imageUrl =  steam.headerImage ?: steam.screenshots.firstOrNull()?.pathFull,
                 )
             }
             item(key = "title") { TitleBlock(steam = steam, fallbackTitle = viewModel.title) }

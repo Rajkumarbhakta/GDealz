@@ -204,7 +204,6 @@ class PriceDropWorkerRepository @Inject constructor(
         const val CHANNEL_NAME = "Price Drop Notifications"
         const val CHANNEL_DESCRIPTION = "Notifies when favorite game prices drop"
         
-        @RequiresApi(Build.VERSION_CODES.N)
         const val IMPORTANCE = NotificationManager.IMPORTANCE_HIGH
     }
 }
