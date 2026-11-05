@@ -23,7 +23,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v5
 
-      # Gradle 9.5 + AGP 9.3.1 need JDK 21, not 17.
+      # Gradle 9.4.1 + AGP 9.2.1 run on JDK 21 (the daemon toolchain is pinned to 21).
       - name: Set up JDK 21
         uses: actions/setup-java@v5
         with:
@@ -69,6 +69,17 @@ jobs:
             echo "$TAG is new — a release will be published."
           fi
 
+      # Every Gradle run needs the API key (secret.properties is gitignored, so CI has none),
+      # including the unit tests that run even when the release is skipped.
+      - name: Verify API key secret is present
+        env:
+          API_KEY: ${{ secrets.API_KEY }}
+        run: |
+          if [ -z "$API_KEY" ]; then
+            echo "::error::Required secret API_KEY is missing or empty"
+            exit 1
+          fi
+
       # Secrets are checked BEFORE any Gradle run. app/build.gradle.kts only applies the
       # signing config `if (keystoreFile.exists())`, so a missing secret would otherwise
       # produce a silently UNSIGNED apk rather than a failure.
@@ -109,11 +120,14 @@ jobs:
       # AGP 9 only configures unit tests for the debug variant — there is no
       # testReleaseUnitTest task.
       - name: Run unit tests
+        env:
+          API_KEY: ${{ secrets.API_KEY }}
         run: ./gradlew testDebugUnitTest
 
       - name: Build release APK
         if: steps.tag.outputs.exists == 'false'
         env:
+          API_KEY: ${{ secrets.API_KEY }}
           KEY_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}

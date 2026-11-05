@@ -13,3 +13,6 @@ local.properties
 /.idea/
 chats
 /chats/
+
+# CI decodes the signing key here; it must never be committed.
+app/release.keystore
