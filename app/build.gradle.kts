@@ -64,6 +64,13 @@ android {
             )
         }
     }
+    // Ship every language in the base APK. With split languages, Play-sourced installs only get
+    // the device language, so picking another one in Settings silently stays in English.
+    bundle {
+        language {
+            enableSplit = false
+        }
+    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17

@@ -148,7 +148,8 @@ object CurrencyAndCountryUtil {
         "TZS" to "TZS",
         "UAH" to "UAH",
         "UGX" to "UGX",
-        "USD" to "$",
+        // Not a bare "$": pesos (COP, MXN, ARS...) are written with "$" too, so 18 USD would read as 18 pesos.
+        "USD" to "US$",
         "UYU" to "UYU",
         "UZS" to "UZS",
         "VEF" to "VEF",
