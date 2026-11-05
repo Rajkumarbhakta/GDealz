@@ -30,7 +30,12 @@ android {
         versionName = "2.0.0"
 
         // build configs
-        buildConfigField("String", "API_KEY", properties.getProperty("API_KEY"))
+        // secret.properties holds the key already quoted; CI has no such file and passes the raw
+        // key in the API_KEY environment variable instead.
+        val apiKey = properties.getProperty("API_KEY")
+            ?: System.getenv("API_KEY")?.takeIf { it.isNotBlank() }?.let { "\"$it\"" }
+            ?: error("API_KEY not set: add it to secret.properties or the API_KEY environment variable")
+        buildConfigField("String", "API_KEY", apiKey)
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
