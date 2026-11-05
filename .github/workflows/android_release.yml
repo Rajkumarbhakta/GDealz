@@ -32,8 +32,13 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
 
       # compileSdk/targetSdk are 37; don't rely on the runner image shipping it.
+      # The action's default packages include the legacy `tools` package, which Google has
+      # removed from the SDK repository, so sdkmanager fails. Only platform-tools is needed:
+      # with the licenses accepted here, AGP downloads the missing platform and build-tools.
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
+        with:
+          packages: 'platform-tools'
 
       - name: Read app version
         id: version
@@ -148,7 +153,7 @@ jobs:
         if: steps.tag.outputs.exists == 'false'
         uses: actions/upload-artifact@v4
         with:
-          name: TooAi-${{ steps.version.outputs.tag }}
+          name: GDealz-${{ steps.version.outputs.tag }}
           path: ${{ steps.apk.outputs.path }}
           if-no-files-found: error
           retention-days: 30
