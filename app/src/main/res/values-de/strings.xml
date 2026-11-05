@@ -342,4 +342,9 @@
     <string name="more_options">Weitere Optionen</string>
     <string name="quiet_hours_off">Aus</string>
     <string name="notification_delivery">Zustellung</string>
+    <string name="accent_color">Akzentfarbe</string>
+    <string name="accent_indigo">Indigo</string>
+    <string name="accent_teal">Petrol</string>
+    <string name="accent_amber">Bernstein</string>
+    <string name="accent_rose">Rosé</string>
 </resources>

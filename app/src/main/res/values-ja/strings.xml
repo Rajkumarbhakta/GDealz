@@ -337,4 +337,9 @@
     <string name="more_options">その他のオプション</string>
     <string name="quiet_hours_off">オフ</string>
     <string name="notification_delivery">配信</string>
+    <string name="accent_color">アクセントカラー</string>
+    <string name="accent_indigo">インディゴ</string>
+    <string name="accent_teal">ティール</string>
+    <string name="accent_amber">アンバー</string>
+    <string name="accent_rose">ローズ</string>
 </resources>

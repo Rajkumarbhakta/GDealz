@@ -352,4 +352,9 @@
     <string name="more_options">Дополнительно</string>
     <string name="quiet_hours_off">Выкл.</string>
     <string name="notification_delivery">Доставка</string>
+    <string name="accent_color">Акцентный цвет</string>
+    <string name="accent_indigo">Индиго</string>
+    <string name="accent_teal">Бирюзовый</string>
+    <string name="accent_amber">Янтарный</string>
+    <string name="accent_rose">Розовый</string>
 </resources>

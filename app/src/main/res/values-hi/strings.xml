@@ -343,4 +343,9 @@
     <string name="more_options">और विकल्प</string>
     <string name="quiet_hours_off">बंद</string>
     <string name="notification_delivery">डिलीवरी</string>
+    <string name="accent_color">एक्सेंट रंग</string>
+    <string name="accent_indigo">इंडिगो</string>
+    <string name="accent_teal">टील</string>
+    <string name="accent_amber">एम्बर</string>
+    <string name="accent_rose">गुलाबी</string>
 </resources>

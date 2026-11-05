@@ -154,6 +154,7 @@ fun GDealzTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     dynamicColor: Boolean = true,
     classicUi: Boolean = false,
+    accentColor: AccentColor = AccentColor.INDIGO,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
@@ -162,9 +163,9 @@ fun GDealzTheme(
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
 
-        classicUi -> if (darkTheme) ClassicDarkColors else ClassicLightColors
-        darkTheme -> DarkColors
-        else -> LightColors
+        classicUi -> (if (darkTheme) ClassicDarkColors else ClassicLightColors).withAccent(accentColor, darkTheme)
+        darkTheme -> DarkColors.withAccent(accentColor, darkTheme = true)
+        else -> LightColors.withAccent(accentColor, darkTheme = false)
     }
     val extendedColors = if (darkTheme) DarkExtendedColors else LightExtendedColors
 

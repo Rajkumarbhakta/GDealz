@@ -35,6 +35,7 @@ class PreferenceManager @Inject constructor(
         val FAV_STORE_IDS = stringPreferencesKey("fav_store_ids")
         val RECENT_SEARCHES = stringPreferencesKey("recent_searches")
         val IS_CLASSIC_UI = booleanPreferencesKey("is_classic_ui")
+        val ACCENT_COLOR = stringPreferencesKey("accent_color")
 
         // Notification customization
         val IS_GIVEAWAY_NOTIFICATION_ENABLED = booleanPreferencesKey("is_giveaway_notification_enabled")

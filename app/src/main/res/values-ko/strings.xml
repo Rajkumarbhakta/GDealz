@@ -337,4 +337,9 @@
     <string name="more_options">추가 옵션</string>
     <string name="quiet_hours_off">사용 안 함</string>
     <string name="notification_delivery">전송</string>
+    <string name="accent_color">강조 색상</string>
+    <string name="accent_indigo">인디고</string>
+    <string name="accent_teal">틸</string>
+    <string name="accent_amber">앰버</string>
+    <string name="accent_rose">로즈</string>
 </resources>

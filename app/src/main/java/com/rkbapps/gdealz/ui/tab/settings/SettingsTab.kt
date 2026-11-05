@@ -76,9 +76,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.rkbapps.gdealz.R
 import com.rkbapps.gdealz.navigation.Routes
+import com.rkbapps.gdealz.ui.composables.AccentColorPicker
 import com.rkbapps.gdealz.ui.composables.ChooseCountryDialog
 import com.rkbapps.gdealz.ui.composables.CommonFilledIconButton
 import com.rkbapps.gdealz.ui.composables.CommonTopBar
+import com.rkbapps.gdealz.ui.composables.isAccentPickerVisible
 import com.rkbapps.gdealz.ui.theme.GDealzTheme
 import com.rkbapps.gdealz.util.AppLocaleManager
 import com.rkbapps.gdealz.util.Country
@@ -100,6 +102,7 @@ fun SettingsScreen(
     val isNsfw by viewModel.isNsfw.collectAsStateWithLifecycle()
     val isDynamicColor by viewModel.isDynamicTheme.collectAsStateWithLifecycle()
     val isClassicUi by viewModel.isClassicUi.collectAsStateWithLifecycle()
+    val accentColor by viewModel.accentColor.collectAsStateWithLifecycle()
 
     val selectedCountryEnum = remember(selectedCountry) {
         if (selectedCountry == null) Country.US else Country.valueOf(selectedCountry!!)
@@ -284,6 +287,20 @@ fun SettingsScreen(
                         icon = ImageVector.vectorResource(R.drawable.palette)
                     ) {
                         viewModel.updateDynamicTheme(it)
+                    }
+                }
+            }
+            item(key="accent color") {
+                AnimatedVisibility(isAccentPickerVisible(isDynamicColor)) {
+                    Column(
+                        modifier = Modifier.padding(vertical = 8.dp),
+                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        Text(
+                            text = stringResource(R.string.accent_color),
+                            style = MaterialTheme.typography.titleMedium
+                        )
+                        AccentColorPicker(selected = accentColor, onSelect = viewModel::updateAccentColor)
                     }
                 }
             }

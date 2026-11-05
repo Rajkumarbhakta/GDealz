@@ -43,12 +43,14 @@ class MainActivity : ComponentActivity() {
             val darkTheme by viewModel.isDarkTheme.collectAsStateWithLifecycle()
             val isDynamicColor by viewModel.isDynamicColor.collectAsStateWithLifecycle()
             val isClassicUi by viewModel.isClassicUi.collectAsStateWithLifecycle()
+            val accentColor by viewModel.accentColor.collectAsStateWithLifecycle()
             navController = rememberNavController()
 
             GDealzTheme(
                 darkTheme = if (isSystemTheme) isSystemInDarkTheme() else darkTheme,
                 dynamicColor = isDynamicColor,
-                classicUi = isClassicUi
+                classicUi = isClassicUi,
+                accentColor = accentColor
             ) {
                 Surface(
                     modifier = Modifier.fillMaxSize(),

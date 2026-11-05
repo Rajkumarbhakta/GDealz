@@ -342,4 +342,9 @@
     <string name="more_options">আরও অপশন</string>
     <string name="quiet_hours_off">বন্ধ</string>
     <string name="notification_delivery">ডেলিভারি</string>
+    <string name="accent_color">অ্যাকসেন্ট রঙ</string>
+    <string name="accent_indigo">নীল</string>
+    <string name="accent_teal">টিল</string>
+    <string name="accent_amber">অ্যাম্বার</string>
+    <string name="accent_rose">গোলাপি</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.rkbapps.gdealz.ui.tab.settings
 
 import android.os.Build
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -77,10 +78,13 @@ import androidx.navigation.NavHostController
 import com.rkbapps.gdealz.BuildConfig
 import com.rkbapps.gdealz.R
 import com.rkbapps.gdealz.navigation.Routes
+import com.rkbapps.gdealz.ui.composables.AccentColorPicker
 import com.rkbapps.gdealz.ui.composables.ChooseCountryDialogExpressive
+import com.rkbapps.gdealz.ui.composables.isAccentPickerVisible
 import com.rkbapps.gdealz.ui.composables.LanguageSelectionDialogExpressive
 import com.rkbapps.gdealz.ui.tab.settings.notification.NotificationSettingsViewModel
 import com.rkbapps.gdealz.ui.tab.settings.notification.asHourLabel
+import com.rkbapps.gdealz.ui.theme.AccentColor
 import com.rkbapps.gdealz.ui.theme.GroupedListShapes
 import com.rkbapps.gdealz.ui.theme.extendedColors
 import com.rkbapps.gdealz.util.AppLocaleManager
@@ -125,6 +129,7 @@ fun SettingsScreenExpressive(
     val isNsfw by viewModel.isNsfw.collectAsStateWithLifecycle()
     val isDynamicColor by viewModel.isDynamicTheme.collectAsStateWithLifecycle()
     val isClassicUi by viewModel.isClassicUi.collectAsStateWithLifecycle()
+    val accentColor by viewModel.accentColor.collectAsStateWithLifecycle()
     val notificationPrefs by notificationViewModel.preferences.collectAsStateWithLifecycle()
 
     val country = remember(selectedCountry) {
@@ -322,7 +327,10 @@ fun SettingsScreenExpressive(
                     onSelect = { option ->
                         viewModel.updateIsSystemTheme(option == ThemeOption.System)
                         if (option != ThemeOption.System) viewModel.updateTheme(option == ThemeOption.Dark)
-                    }
+                    },
+                    showAccentPicker = isAccentPickerVisible(isDynamicColor),
+                    accentColor = accentColor,
+                    onAccentSelect = viewModel::updateAccentColor
                 )
             }
 
@@ -382,7 +390,13 @@ fun SettingsScreenExpressive(
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-private fun ThemeCard(selected: ThemeOption, onSelect: (ThemeOption) -> Unit) {
+private fun ThemeCard(
+    selected: ThemeOption,
+    onSelect: (ThemeOption) -> Unit,
+    showAccentPicker: Boolean,
+    accentColor: AccentColor,
+    onAccentSelect: (AccentColor) -> Unit,
+) {
     Surface(
         shape = MaterialTheme.shapes.extraLarge,
         color = MaterialTheme.colorScheme.surfaceContainer,
@@ -422,6 +436,17 @@ private fun ThemeCard(selected: ThemeOption, onSelect: (ThemeOption) -> Unit) {
                     ) {
                         Text(stringResource(option.label), style = MaterialTheme.typography.labelLargeEmphasized)
                     }
+                }
+            }
+            AnimatedVisibility(visible = showAccentPicker) {
+                Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                    Text(
+                        text = stringResource(R.string.accent_color),
+                        style = MaterialTheme.typography.labelLarge,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(start = 4.dp, top = 4.dp)
+                    )
+                    AccentColorPicker(selected = accentColor, onSelect = onAccentSelect)
                 }
             }
         }

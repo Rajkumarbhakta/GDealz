@@ -338,4 +338,9 @@
     <string name="more_options">更多选项</string>
     <string name="quiet_hours_off">关闭</string>
     <string name="notification_delivery">推送</string>
+    <string name="accent_color">强调色</string>
+    <string name="accent_indigo">靛蓝</string>
+    <string name="accent_teal">青色</string>
+    <string name="accent_amber">琥珀色</string>
+    <string name="accent_rose">玫瑰色</string>
 </resources>

@@ -4,8 +4,10 @@ import android.annotation.SuppressLint
 import android.content.Context
 import com.rkbapps.gdealz.db.PreferenceManager
 import com.rkbapps.gdealz.db.dao.GiveawaysDao
+import com.rkbapps.gdealz.ui.theme.AccentColor
 import com.rkbapps.gdealz.worker.notification.NotificationWorkerRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -21,12 +23,14 @@ class SettingsRepository @Inject constructor(
     val isDynamicTheme = prefManager.getBooleanPreference(PreferenceManager.IS_DYNAMIC_THEME,true)
     val isNsfw = prefManager.getBooleanPreference(PreferenceManager.IS_NSFW_ALLOWED)
     val isClassicUi = prefManager.getBooleanPreference(PreferenceManager.IS_CLASSIC_UI)
+    val accentColor = prefManager.getStringPreference(PreferenceManager.ACCENT_COLOR).map { AccentColor.fromName(it) }
 
 
     suspend fun updateIsSystemTheme(value: Boolean)=prefManager.saveBooleanPreference(PreferenceManager.IS_USE_SYSTEM_THEME,value)
     suspend fun updateTheme(value:Boolean) = prefManager.saveBooleanPreference(PreferenceManager.IS_DARK_THEME,value)
     suspend fun updateIsDynamicTheme(value:Boolean) = prefManager.saveBooleanPreference(PreferenceManager.IS_DYNAMIC_THEME,value)
     suspend fun updateIsClassicUi(value:Boolean) = prefManager.saveBooleanPreference(PreferenceManager.IS_CLASSIC_UI,value)
+    suspend fun updateAccentColor(value: AccentColor) = prefManager.saveStringPreference(PreferenceManager.ACCENT_COLOR,value.name)
     suspend fun updateCountry(value:String) = prefManager.saveStringPreference(PreferenceManager.SELECTED_COUNTRY,value)
     suspend fun updateNsfwContentAllowance(value:Boolean) = prefManager.saveBooleanPreference(PreferenceManager.IS_NSFW_ALLOWED,value)
 
