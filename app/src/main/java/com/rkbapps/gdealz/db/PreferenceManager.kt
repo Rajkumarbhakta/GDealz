@@ -5,6 +5,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
@@ -32,7 +33,29 @@ class PreferenceManager @Inject constructor(
         val IS_NSFW_ALLOWED = booleanPreferencesKey("is_nsfw_allowed")
         val IS_DYNAMIC_THEME = booleanPreferencesKey("is_dynamic_theme")
         val FAV_STORE_IDS = stringPreferencesKey("fav_store_ids")
+        val RECENT_SEARCHES = stringPreferencesKey("recent_searches")
+        val IS_CLASSIC_UI = booleanPreferencesKey("is_classic_ui")
+        val ACCENT_COLOR = stringPreferencesKey("accent_color")
+
+        // Notification customization
+        val IS_GIVEAWAY_NOTIFICATION_ENABLED = booleanPreferencesKey("is_giveaway_notification_enabled")
+        val IS_PRICE_DROP_NOTIFICATION_ENABLED = booleanPreferencesKey("is_price_drop_notification_enabled")
+        val NOTIFICATION_PLATFORMS = stringPreferencesKey("notification_platforms")
+        val NOTIFICATION_TYPES = stringPreferencesKey("notification_types")
+        val NOTIFICATION_MIN_WORTH = intPreferencesKey("notification_min_worth")
+        val IS_QUIET_HOURS_ENABLED = booleanPreferencesKey("is_quiet_hours_enabled")
+        val QUIET_HOURS_START = intPreferencesKey("quiet_hours_start")
+        val QUIET_HOURS_END = intPreferencesKey("quiet_hours_end")
     }
+
+    /**
+     * The whole preference set as a single stream.
+     *
+     * Reading several related keys through this avoids an N-way [kotlinx.coroutines.flow.combine]
+     * (which only has typed overloads up to five flows) and keeps them consistent with each other.
+     */
+    val preferencesFlow: Flow<Preferences> = context.dataStore.data
+        .catch { emit(emptyPreferences()) }
 
 
 
@@ -69,6 +92,17 @@ class PreferenceManager @Inject constructor(
         .map {
             it[key]?:defaultValue
         }
+
+    suspend fun getBooleanPreferenceSynchronous(
+        key: Preferences.Key<Boolean>,
+        defaultValue: Boolean? = false
+    ): Boolean? {
+        return try {
+            context.dataStore.data.first()[key] ?: defaultValue
+        } catch (e: Exception) {
+            defaultValue
+        }
+    }
 
     suspend fun saveBooleanPreference(key:Preferences.Key<Boolean>, value:Boolean){
         context.dataStore.edit {preferences->

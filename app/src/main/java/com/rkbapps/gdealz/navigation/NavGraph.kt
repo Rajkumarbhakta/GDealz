@@ -12,22 +12,43 @@ import androidx.navigation.navDeepLink
 import androidx.navigation.toRoute
 import com.rkbapps.gdealz.ui.screens.MainScreen
 import com.rkbapps.gdealz.ui.screens.free_game_details.FreeGameDetailsScreen
+import com.rkbapps.gdealz.ui.screens.free_game_details.FreeGameDetailsScreenExpressive
 import com.rkbapps.gdealz.ui.screens.game_info.GameInfoScreen
+import com.rkbapps.gdealz.ui.screens.game_info.GameInfoScreenExpressive
 import com.rkbapps.gdealz.ui.screens.image_preview.ImagePreviewScreen
+import com.rkbapps.gdealz.ui.screens.image_preview.ScreenshotViewerScreen
 import com.rkbapps.gdealz.ui.tab.settings.SettingsScreen
+import com.rkbapps.gdealz.ui.tab.settings.SettingsScreenExpressive
+import com.rkbapps.gdealz.ui.tab.settings.notification.NotificationSettingsScreen
+import com.rkbapps.gdealz.ui.tab.settings.notification.NotificationSettingsScreenExpressive
 import com.rkbapps.gdealz.ui.screens.splash.SplashScreen
 import com.rkbapps.gdealz.ui.screens.steam_details.is_there_any_deal.IsThereAnyDealSteamDetailsPage
-import com.rkbapps.gdealz.ui.tab.fav.FavTab
+import com.rkbapps.gdealz.ui.screens.steam_details.is_there_any_deal.IsThereAnyDealSteamDetailsPageExpressive
 import com.rkbapps.gdealz.ui.tab.deals.DealsTab
+import com.rkbapps.gdealz.ui.tab.fav.FavTab
+import com.rkbapps.gdealz.ui.tab.fav.FavTabExpressive
+import com.rkbapps.gdealz.ui.tab.deals.DealsTabExpressive
 import com.rkbapps.gdealz.ui.tab.free.FreeDealsTab
+import com.rkbapps.gdealz.ui.tab.free.FreeDealsTabExpressive
 import com.rkbapps.gdealz.ui.tab.search.SearchTab
+import com.rkbapps.gdealz.ui.tab.search.SearchTabExpressive
+import com.rkbapps.gdealz.ui.theme.LocalClassicUi
 
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun NavGraph(navController: NavHostController) {
     SharedTransitionLayout {
-        NavHost(navController = navController, startDestination = Routes.Splash) {
+        NavHost(
+            navController = navController,
+            startDestination = Routes.Splash,
+            enterTransition = navEnterTransition,
+            exitTransition = navExitTransition,
+            popEnterTransition = navPopEnterTransition,
+            popExitTransition = navPopExitTransition,
+            predictivePopEnterTransition = navPredictivePopEnterTransition,
+            predictivePopExitTransition = navPredictivePopExitTransition,
+        ) {
             destinations(navController, this@SharedTransitionLayout)
         }
     }
@@ -42,6 +63,12 @@ fun BottomNavigationNavGraph(
         NavHost(
             navController = navController,
             startDestination = Routes.Deals,
+            enterTransition = navEnterTransition,
+            exitTransition = navExitTransition,
+            popEnterTransition = navPopEnterTransition,
+            popExitTransition = navPopExitTransition,
+            predictivePopEnterTransition = navPredictivePopEnterTransition,
+            predictivePopExitTransition = navPredictivePopExitTransition,
         ) {
             destinations(navController, this@SharedTransitionLayout)
         }
@@ -49,7 +76,6 @@ fun BottomNavigationNavGraph(
 }
 
 
-@OptIn(ExperimentalSharedTransitionApi::class)
 fun NavGraphBuilder.destinations(
     navController: NavHostController,
     sharedTransitionScope: SharedTransitionScope
@@ -58,16 +84,16 @@ fun NavGraphBuilder.destinations(
         SplashScreen(navController)
     }
     composable<Routes.Deals> {
-        DealsTab(navController)
+        if (LocalClassicUi.current) DealsTab(navController) else DealsTabExpressive(navController)
     }
     composable<Routes.Search> {
-        SearchTab(navController)
+        if (LocalClassicUi.current) SearchTab(navController) else SearchTabExpressive(navController)
     }
     composable<Routes.Fav> {
-        FavTab(navController)
+        if (LocalClassicUi.current) FavTab(navController) else FavTabExpressive(navController)
     }
     composable<Routes.FreeDeals> {
-        FreeDealsTab(navController)
+        if (LocalClassicUi.current) FreeDealsTab(navController) else FreeDealsTabExpressive(navController)
     }
 
     composable<Routes.Main> {
@@ -79,25 +105,52 @@ fun NavGraphBuilder.destinations(
             navDeepLink <Routes.FreeGameDetails>(basePath = DeepLinkBasePaths.FREE_GAME_DETAILS)
         )
     ) {
-        FreeGameDetailsScreen(navController)
+        if (LocalClassicUi.current) {
+            FreeGameDetailsScreen(navController)
+        } else {
+            FreeGameDetailsScreenExpressive(navController)
+        }
     }
 
     composable<Routes.GameInfo> {
-        GameInfoScreen(navController)
+        if (LocalClassicUi.current) GameInfoScreen(navController) else GameInfoScreenExpressive(navController)
     }
 
     composable<Routes.IsThereAnyDealSteamGameDetails>(
         deepLinks = listOf(navDeepLink<Routes.IsThereAnyDealSteamGameDetails>(basePath = DeepLinkBasePaths.GAME_DETAILS))
     ) {
-        IsThereAnyDealSteamDetailsPage(
+        if (LocalClassicUi.current) {
+            IsThereAnyDealSteamDetailsPage(
+                navController = navController,
+                sharedTransitionScope = sharedTransitionScope,
+                animatedContentScope = this
+            )
+        } else {
+            IsThereAnyDealSteamDetailsPageExpressive(
+                navController = navController,
+                sharedTransitionScope = sharedTransitionScope,
+                animatedContentScope = this
+            )
+        }
+    }
+
+    composable<Routes.Settings> {
+        if (LocalClassicUi.current) SettingsScreen(navController) else SettingsScreenExpressive(navController)
+    }
+
+    composable<Routes.ScreenshotViewer> {
+        val route = it.toRoute<Routes.ScreenshotViewer>()
+        ScreenshotViewerScreen(
             navController = navController,
+            imageUrls = route.imageUrls,
+            startIndex = route.startIndex,
             sharedTransitionScope = sharedTransitionScope,
             animatedContentScope = this
         )
     }
 
-    composable<Routes.Settings> {
-        SettingsScreen(navController)
+    composable<Routes.NotificationSettings> {
+        if (LocalClassicUi.current) NotificationSettingsScreen(navController) else NotificationSettingsScreenExpressive(navController)
     }
 
     composable<Routes.ImagePreview> {

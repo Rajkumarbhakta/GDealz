@@ -30,6 +30,8 @@ import androidx.navigation.compose.rememberNavController
 import com.rkbapps.gdealz.navigation.BottomNavigationItem
 import com.rkbapps.gdealz.navigation.BottomNavigationNavGraph
 import com.rkbapps.gdealz.ui.composables.BottomNavigationBar
+import com.rkbapps.gdealz.ui.composables.ClassicBottomNavigationBar
+import com.rkbapps.gdealz.ui.theme.LocalClassicUi
 
 
 import com.rkbapps.gdealz.R
@@ -74,11 +76,19 @@ fun MainScreen(navController: NavHostController){
     Scaffold(
         bottomBar = {
             AnimatedVisibility(destination) {
-                BottomNavigationBar(
-                    items = navigationItems,
-                    navController = navController,
-                    currentDestination = currentDestination
-                )
+                if (LocalClassicUi.current) {
+                    ClassicBottomNavigationBar(
+                        items = navigationItems,
+                        navController = navController,
+                        currentDestination = currentDestination
+                    )
+                } else {
+                    BottomNavigationBar(
+                        items = navigationItems,
+                        navController = navController,
+                        currentDestination = currentDestination
+                    )
+                }
             }
         }
     ) {

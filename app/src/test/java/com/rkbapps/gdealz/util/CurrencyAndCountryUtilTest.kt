@@ -105,7 +105,7 @@ class CurrencyAndCountryUtilTest {
     @Test
     fun getCurrencyAndAmount_usd_formatsWithSeparator() {
         val price = Price(amount = 1299.99, currency = "USD")
-        assertEquals("\$1,299.99", CurrencyAndCountryUtil.getCurrencyAndAmount(price))
+        assertEquals("US\$1,299.99", CurrencyAndCountryUtil.getCurrencyAndAmount(price))
     }
 
     @Test
@@ -135,7 +135,7 @@ class CurrencyAndCountryUtilTest {
     @Test
     fun getCurrencyAndAmount_nullAmount() {
         val price = Price(amount = null, currency = "USD")
-        assertEquals("\$N/A", CurrencyAndCountryUtil.getCurrencyAndAmount(price))
+        assertEquals("US\$N/A", CurrencyAndCountryUtil.getCurrencyAndAmount(price))
     }
 
     @Test

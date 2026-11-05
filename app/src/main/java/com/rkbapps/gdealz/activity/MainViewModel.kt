@@ -4,8 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import com.rkbapps.gdealz.db.PreferenceManager
+import com.rkbapps.gdealz.ui.theme.AccentColor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
@@ -31,5 +33,18 @@ class MainViewModel @Inject constructor(
             viewModelScope,
             SharingStarted.WhileSubscribed(5000),
             true
+        )
+    val isClassicUi = preferenceManager.getBooleanPreference(PreferenceManager.IS_CLASSIC_UI, false)
+        .stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(5000),
+            false
+        )
+    val accentColor = preferenceManager.getStringPreference(PreferenceManager.ACCENT_COLOR)
+        .map { AccentColor.fromName(it) }
+        .stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(5000),
+            AccentColor.INDIGO
         )
 }

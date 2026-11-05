@@ -46,7 +46,13 @@ sealed class Routes {
     data object Settings: Routes()
 
     @Serializable
+    data object NotificationSettings: Routes()
+
+    @Serializable
     data class ImagePreview(val imageUrl: String) : Routes()
+
+    @Serializable
+    data class ScreenshotViewer(val imageUrls: List<String>, val startIndex: Int) : Routes()
 }
 
 

@@ -10,6 +10,7 @@ import com.rkbapps.gdealz.db.entity.FavDeals
 import com.rkbapps.gdealz.models.game_info.GameInfo
 import com.rkbapps.gdealz.models.price.Deals
 import com.rkbapps.gdealz.models.price.PriceDetail
+import com.rkbapps.gdealz.models.price.PriceHistoryEntry
 import com.rkbapps.gdealz.network.NetworkResponse
 import com.rkbapps.gdealz.network.api.IsThereAnyDealApi
 import com.rkbapps.gdealz.network.safeApiCall
@@ -19,6 +20,11 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+import java.util.TimeZone
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class GameInfoRepository @Inject constructor (
@@ -33,6 +39,9 @@ class GameInfoRepository @Inject constructor (
 
     private val _gamePriceInfo = MutableStateFlow(UiState<PriceDetail>())
     val gamePriceInfo = _gamePriceInfo.asStateFlow()
+
+    private val _priceHistory = MutableStateFlow(UiState<List<PriceHistoryEntry>>())
+    val priceHistory = _priceHistory.asStateFlow()
 
     private val isFav = mutableStateOf(false)
     val isFavDeal: State<Boolean> = isFav
@@ -60,13 +69,15 @@ class GameInfoRepository @Inject constructor (
     }
 
 
-    suspend fun getGamePriceInfo(gameId: String){
+    /** [dealsOnly] leaves out stores selling at full price. */
+    suspend fun getGamePriceInfo(gameId: String, dealsOnly: Boolean = true){
         _gamePriceInfo.value = UiState(isLoading = true)
 
         val country = perfManager.getStringPreferenceSynchronous(PreferenceManager.SELECTED_COUNTRY,"US")?:"US"
 
         when(val response = safeApiCall { apiService.getPrices(
             country = country,
+            deals = dealsOnly,
             gameIds = listOf(gameId)) }){
             is NetworkResponse.Error.HttpError -> {
                 _gamePriceInfo.value = UiState(error = context.getString(R.string.error_code_message, response.errorCode, response.error.localizedMessage))
@@ -87,6 +98,26 @@ class GameInfoRepository @Inject constructor (
             }
         }
 
+    }
+
+
+    /** Price changes across all stores over the last 12 months (the API defaults to 3). */
+    suspend fun getPriceHistory(gameId: String) {
+        _priceHistory.value = UiState(isLoading = true)
+
+        val country = perfManager.getStringPreferenceSynchronous(PreferenceManager.SELECTED_COUNTRY,"US")?:"US"
+        val since = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US)
+            .apply { timeZone = TimeZone.getTimeZone("UTC") }
+            .format(Date(System.currentTimeMillis() - TimeUnit.DAYS.toMillis(365)))
+
+        when (val response = safeApiCall { apiService.getPriceHistory(gameId = gameId, country = country, since = since) }) {
+            is NetworkResponse.Error -> {
+                _priceHistory.value = UiState(error = context.getString(R.string.something_went_wrong_try_again))
+            }
+            is NetworkResponse.Success<List<PriceHistoryEntry>> -> {
+                _priceHistory.value = UiState(data = response.value)
+            }
+        }
     }
 
 

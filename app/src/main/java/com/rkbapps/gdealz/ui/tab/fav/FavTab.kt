@@ -88,6 +88,7 @@ import kotlinx.coroutines.launch
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDecoration
 import com.kyant.backdrop.backdrops.rememberBackdrop
+import com.rkbapps.gdealz.ui.composables.CommonButton
 import com.rkbapps.gdealz.ui.theme.darkGreen
 import com.rkbapps.gdealz.ui.theme.normalTextColor
 import com.rkbapps.gdealz.util.CurrencyAndCountryUtil
@@ -106,9 +107,6 @@ fun FavTab(
     val deletableFav = remember { mutableStateOf<FavDeals?>(null) }
     val isDeleteAllAlertDialogOpen = remember { mutableStateOf(false) }
 
-    val backdrop = rememberLayerBackdrop()
-
-
     val pagerState = rememberPagerState(initialPage = 0) { pages.size }
     val scope = rememberCoroutineScope()
 
@@ -116,32 +114,10 @@ fun FavTab(
         topBar = {
             CommonTopBar(stringResource(R.string.tab_fav), actions = {
                 AnimatedVisibility(favList.isNotEmpty() && pagerState.currentPage == 0 ) {
-                    Button(
-                        modifier = Modifier.drawBackdrop(
-                            backdrop = backdrop,
-                            shape = { RoundedCornerShape(100.dp) },
-                            effects = {
-                                // vibrancy effect
-                                vibrancy()
-                                // blur effect
-                                blur(16f.dp.toPx())
-                                // lens effect
-                                lens(
-                                    refractionHeight = 24f.dp.toPx(),
-                                    refractionAmount = 48f.dp.toPx(),
-                                    // ⚠️ Use `true` for large containers,
-                                    // or `false` for small containers.
-                                    depthEffect = false
-                                )
-                            }
-                        ),
+                    CommonButton(
                         onClick = {
                             isDeleteAllAlertDialogOpen.value = true
-                        },
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Color.Transparent,
-                            contentColor = MaterialTheme.colorScheme.onPrimary
-                        )
+                        }
                     ) {
                         Icon(painter = painterResource(R.drawable.delete), "back")
                         Text(stringResource(R.string.delete_all))

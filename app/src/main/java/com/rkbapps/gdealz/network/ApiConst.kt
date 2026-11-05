@@ -87,6 +87,29 @@ object GiveawayPlatforms {
 * */
 }
 
+/**
+ * Content types GamerPower reports on a giveaway.
+ *
+ * "Other" is deliberately absent: [com.rkbapps.gdealz.db.dao.GiveawaysDao.getGiveawaysByClaimed]
+ * filters it out, so notifying about one would deep link to an item the Free tab never lists.
+ */
+object GiveawayTypes {
+    val ALL = listOf("Game", "DLC", "Early Access")
+}
+
+/**
+ * Platform display names as GamerPower returns them inside [com.rkbapps.gdealz.models.Giveaway.platforms].
+ *
+ * Kept static rather than derived from the cached giveaways: both fetch paths request
+ * [GiveawayPlatforms.PC] only, and the table is empty on a fresh install.
+ */
+object GiveawayPlatformNames {
+    val ALL = listOf(
+        "PC", "Steam", "Epic Games Store", "GOG", "Ubisoft",
+        "Itch.io", "DRM-Free", "Battle.net", "Origin", "VR"
+    )
+}
+
 object GiveawaySortingOptions {
     const val DATE = "date"
     const val VALUE = "value"

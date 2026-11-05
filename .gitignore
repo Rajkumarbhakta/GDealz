@@ -11,3 +11,5 @@ local.properties
 /.kotlin/
 /secret.properties
 /.idea/
+chats
+/chats/

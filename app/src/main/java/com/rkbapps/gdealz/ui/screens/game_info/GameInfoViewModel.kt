@@ -23,16 +23,19 @@ class GameInfoViewModel @Inject constructor(
 
     val gameInfo = repository.gameInfo
     val gamePriceInfo =  repository.gamePriceInfo
+    val priceHistory = repository.priceHistory
     val isFavDeal = repository.isFavDeal
     val dealFavStatus = repository.dealFavStatus
 
     private val dealLookup = saveStateHandle.toRoute<Routes.GameInfo>()
     val title = dealLookup.title
+    val gameId = dealLookup.gameId
 
     init {
         viewModelScope.launch {
             repository.getGameInfo(dealLookup.gameId)
-            repository.getGamePriceInfo(dealLookup.gameId)
+            launch { repository.getPriceHistory(dealLookup.gameId) }
+            repository.getGamePriceInfo(dealLookup.gameId, dealsOnly = false)
             dealFavStatus(dealLookup.gameId)
         }
     }

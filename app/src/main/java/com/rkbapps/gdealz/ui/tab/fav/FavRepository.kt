@@ -101,6 +101,15 @@ class FavRepository @Inject constructor(
             e.printStackTrace()
         }
     }
+    /** Puts back favorites removed moments ago (undo); keeps their original ids. */
+    suspend fun restoreFavs(favDeals: List<FavDeals>) {
+        try {
+            favDeals.forEach { favDb.insertFavDeals(it) }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
     suspend fun deleteAllFav(){
         try {
             favDb.deleteAllFavDeals()

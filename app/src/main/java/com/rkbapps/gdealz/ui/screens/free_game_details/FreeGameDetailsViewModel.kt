@@ -48,14 +48,20 @@ class FreeGameDetailsViewModel @Inject constructor(
         }
     }
 
-    fun markGiveawayAsClaimed(giveaway: Giveaway) {
+    fun markGiveawayAsClaimed(giveaway: Giveaway) =
         viewModelScope.launch(Dispatchers.IO) {
             repository.markGiveawayAsClaimed(giveaway)
         }
-    }
+
 
     fun markGiveawayAsUnClaimed(giveaway: Giveaway) = viewModelScope.launch(Dispatchers.IO) {
         repository.markGiveawayAsUnClaimed(giveaway)
+    }
+
+    /** Updates the screen straight away; the database write follows in the background. */
+    fun setClaimed(giveaway: Giveaway, claimed: Boolean) {
+        _giveaway.value = UiState(data = giveaway.copy(isClaimed = claimed))
+        if (claimed) markGiveawayAsClaimed(giveaway) else markGiveawayAsUnClaimed(giveaway)
     }
 
     fun sendNotification(){

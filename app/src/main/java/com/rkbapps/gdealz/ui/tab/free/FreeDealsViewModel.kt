@@ -1,12 +1,20 @@
 package com.rkbapps.gdealz.ui.tab.free
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
 import com.rkbapps.gdealz.db.dao.GiveawaysDao
+import com.rkbapps.gdealz.models.FreeDealsFilter
 import com.rkbapps.gdealz.models.Giveaway
+import com.rkbapps.gdealz.util.matchesFilter
+import com.rkbapps.gdealz.util.toPlatformList
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,7 +26,19 @@ class FreeDealsViewModel @Inject constructor(
     private val giveawaysDao: GiveawaysDao
 ) : ViewModel() {
 
-    val giveaways = giveawaysDao.getGiveawaysByOrder().stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList(),)
+    private val _filter = MutableStateFlow(FreeDealsFilter())
+    val filter = _filter.asStateFlow()
+
+
+    val stores = giveawaysDao.getPlatforms().map { rows -> rows.flatMap { it.toPlatformList() }.distinct().sorted() }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+
+    val types = giveawaysDao.getTypes().map { rows -> rows.distinct().sorted() }.stateIn(
+        viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList()
+    )
+
+    val giveaways = giveawaysDao.getGiveawaysByOrder()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     val claimedGiveaway = giveawaysDao.getGiveawaysByClaimed(true).stateIn(
         viewModelScope,
@@ -26,7 +46,15 @@ class FreeDealsViewModel @Inject constructor(
         emptyList()
     )
 
-    val unClaimedGiveaway = giveawaysDao.getGiveawaysByClaimed(false).stateIn(
+    private val allUnclaimed = giveawaysDao.getGiveawaysByClaimed(false).stateIn(
+        viewModelScope,
+        SharingStarted.WhileSubscribed(5000),
+        emptyList()
+    )
+
+    val unClaimedGiveaway = allUnclaimed.combine(_filter){ items, filter ->
+        items.filter { it.matchesFilter(filter.stores, filter.types) }
+    }.stateIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(5000),
         emptyList()
@@ -50,5 +78,21 @@ class FreeDealsViewModel @Inject constructor(
         return gson.toJson(giveaway)
     }
 
+    fun updateFilter(filter: FreeDealsFilter) {
+        _filter.value = filter
+    }
+
+    fun clearFilter(){
+        _filter.value = FreeDealsFilter()
+    }
+
+    /** How many unclaimed giveaways [filter] would show, for the filter sheet's apply button. */
+    fun countUnclaimed(filter: FreeDealsFilter): Int = allUnclaimed.value.count { it.matchesFilter(filter.stores, filter.types) }
+
+    fun setClaimed(giveaway: Giveaway, claimed: Boolean) {
+        viewModelScope.launch {
+            giveawaysDao.updateGiveaway(giveaway.copy(isClaimed = claimed))
+        }
+    }
 
 }

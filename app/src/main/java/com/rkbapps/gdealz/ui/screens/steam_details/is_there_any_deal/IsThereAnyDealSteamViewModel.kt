@@ -26,6 +26,7 @@ class IsThereAnyDealSteamViewModel @Inject constructor(
 
     val steamGameData = steamDetailsRepository.steamGameData
     val gamePriceInfo = gameInfoRepository.gamePriceInfo
+    val priceHistory = gameInfoRepository.priceHistory
     val gameInfo = gameInfoRepository.gameInfo
 
     val isFavDeal: State<Boolean> = gameInfoRepository.isFavDeal
@@ -41,7 +42,8 @@ class IsThereAnyDealSteamViewModel @Inject constructor(
             this.async { gameInfoRepository.getGameInfo(gameId = route.gameId) }.await()
             steamDetailsRepository.getGameDetails(appId = gameInfo.value.data?.steamAppId?.toString())
             gameInfo.value.data?.steamAppId?.let {
-                gameInfoRepository.getGamePriceInfo(route.gameId)
+                launch { gameInfoRepository.getPriceHistory(route.gameId) }
+                gameInfoRepository.getGamePriceInfo(route.gameId, dealsOnly = false)
             }
 
         }

@@ -27,9 +27,11 @@ import androidx.compose.material.icons.filled.BrightnessAuto
 import androidx.compose.material.icons.filled.BugReport
 import androidx.compose.material.icons.filled.Coffee
 import androidx.compose.material.icons.filled.DarkMode
+import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.material.icons.filled.Mail
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.outlined.PrivacyTip
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -73,9 +75,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.rkbapps.gdealz.R
+import com.rkbapps.gdealz.navigation.Routes
+import com.rkbapps.gdealz.ui.composables.AccentColorPicker
 import com.rkbapps.gdealz.ui.composables.ChooseCountryDialog
 import com.rkbapps.gdealz.ui.composables.CommonFilledIconButton
 import com.rkbapps.gdealz.ui.composables.CommonTopBar
+import com.rkbapps.gdealz.ui.composables.isAccentPickerVisible
 import com.rkbapps.gdealz.ui.theme.GDealzTheme
 import com.rkbapps.gdealz.util.AppLocaleManager
 import com.rkbapps.gdealz.util.Country
@@ -96,6 +101,8 @@ fun SettingsScreen(
     val selectedCountry by viewModel.selectedCountry.collectAsStateWithLifecycle()
     val isNsfw by viewModel.isNsfw.collectAsStateWithLifecycle()
     val isDynamicColor by viewModel.isDynamicTheme.collectAsStateWithLifecycle()
+    val isClassicUi by viewModel.isClassicUi.collectAsStateWithLifecycle()
+    val accentColor by viewModel.accentColor.collectAsStateWithLifecycle()
 
     val selectedCountryEnum = remember(selectedCountry) {
         if (selectedCountry == null) Country.US else Country.valueOf(selectedCountry!!)
@@ -240,6 +247,16 @@ fun SettingsScreen(
                 }
             }
 
+            item(key="notifications") {
+                TextWithArrow(
+                    text = stringResource(R.string.notifications),
+                    subText = stringResource(R.string.notifications_desc),
+                    icon = Icons.Default.Notifications
+                ) {
+                    navController.navigate(Routes.NotificationSettings)
+                }
+            }
+
             item(key="theme") {
                 TextWithSwitch(
                     text = stringResource(R.string.follow_system_theme),
@@ -271,6 +288,30 @@ fun SettingsScreen(
                     ) {
                         viewModel.updateDynamicTheme(it)
                     }
+                }
+            }
+            item(key="accent color") {
+                AnimatedVisibility(isAccentPickerVisible(isDynamicColor)) {
+                    Column(
+                        modifier = Modifier.padding(vertical = 8.dp),
+                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        Text(
+                            text = stringResource(R.string.accent_color),
+                            style = MaterialTheme.typography.titleMedium
+                        )
+                        AccentColorPicker(selected = accentColor, onSelect = viewModel::updateAccentColor)
+                    }
+                }
+            }
+            item(key="classic interface") {
+                TextWithSwitch(
+                    text = stringResource(R.string.classic_interface),
+                    subText = stringResource(R.string.classic_interface_desc),
+                    checked = isClassicUi,
+                    icon = Icons.Default.History
+                ) {
+                    viewModel.updateClassicUi(it)
                 }
             }
             item(key="nsfw content") {
@@ -357,7 +398,9 @@ fun TextWithArrow(
     onClick: () -> Unit
 ) {
     Row(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(10.dp)
     ) {

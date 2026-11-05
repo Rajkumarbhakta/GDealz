@@ -24,9 +24,11 @@ import coil.request.ImageRequest
 import coil.request.SuccessResult
 import com.rkbapps.gdealz.R
 import com.rkbapps.gdealz.activity.MainActivity
+import com.rkbapps.gdealz.db.NotificationPreferencesRepository
 import com.rkbapps.gdealz.db.PreferenceManager
 import com.rkbapps.gdealz.db.dao.FavDealsDao
 import com.rkbapps.gdealz.db.entity.FavDeals
+import com.rkbapps.gdealz.models.NotificationPreferences
 import com.rkbapps.gdealz.models.price.PriceDetail
 import com.rkbapps.gdealz.navigation.DeepLinkBasePaths
 import com.rkbapps.gdealz.network.ApiConst
@@ -43,8 +45,11 @@ class PriceDropWorkerRepository @Inject constructor(
     private val favDealsDao: FavDealsDao,
     private val isThereAnyDealApi: IsThereAnyDealApi,
     private val preferenceManager: PreferenceManager,
+    private val notificationPreferences: NotificationPreferencesRepository,
     @ApplicationContext private val context: Context
 ) {
+
+    suspend fun preferences(): NotificationPreferences = notificationPreferences.current()
 
     suspend fun checkPricesAndNotify() {
 
@@ -199,7 +204,6 @@ class PriceDropWorkerRepository @Inject constructor(
         const val CHANNEL_NAME = "Price Drop Notifications"
         const val CHANNEL_DESCRIPTION = "Notifies when favorite game prices drop"
         
-        @RequiresApi(Build.VERSION_CODES.N)
         const val IMPORTANCE = NotificationManager.IMPORTANCE_HIGH
     }
 }

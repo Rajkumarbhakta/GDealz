@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rkbapps.gdealz.BuildConfig
+import com.rkbapps.gdealz.ui.theme.AccentColor
 import com.rkbapps.gdealz.util.AppLocaleManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -44,6 +45,16 @@ class SettingsViewModel @Inject constructor(
         SharingStarted.WhileSubscribed(5000),
         true
     )
+    val isClassicUi = repository.isClassicUi.stateIn(
+        viewModelScope,
+        SharingStarted.WhileSubscribed(5000),
+        false
+    )
+    val accentColor = repository.accentColor.stateIn(
+        viewModelScope,
+        SharingStarted.WhileSubscribed(5000),
+        AccentColor.INDIGO
+    )
 
 
 
@@ -61,6 +72,12 @@ class SettingsViewModel @Inject constructor(
 
     fun updateDynamicTheme(value: Boolean) =
         viewModelScope.launch { repository.updateIsDynamicTheme(value) }
+
+    fun updateClassicUi(value: Boolean) =
+        viewModelScope.launch { repository.updateIsClassicUi(value) }
+
+    fun updateAccentColor(value: AccentColor) =
+        viewModelScope.launch { repository.updateAccentColor(value) }
 
     fun changeLanguage(languageCode: String) {
         AppLocaleManager.changeLanguage(context,languageCode)
